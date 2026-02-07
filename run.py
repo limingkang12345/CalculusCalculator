@@ -1,12 +1,11 @@
-from ui import Ui_MainWindow
-from PySide6.QtWidgets import QApplication, QMainWindow
+import sys
+from main import MainWindow
+from PySide6.QtWidgets import QApplication
+
 
 if __name__ == "__main__":
     # 主程序
-    import sys
     app = QApplication(sys.argv)
-    Mainwindow = QMainWindow()
-    ui = Ui_MainWindow()
-    ui.setupUi(Mainwindow)
-    Mainwindow.show()
+    mainWindow = MainWindow()
+    mainWindow.show()
     sys.exit(app.exec())

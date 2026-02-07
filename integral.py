@@ -1,5 +1,6 @@
 from sympy import integrate, latex, sympify
 
+
 def integral(f, v, a = None, b = None):
     # 该函数用于计算被积函数的积分并返回Latex表达式
     # f(str):被积函数表达式

@@ -1,5 +1,6 @@
 from sympy import diff, idiff, latex, sympify, solve, Eq
 
+
 def derivative(f, v, n, x):
     # 该函数用于计算显函数的导函数并返回Latex表达式
     # f(str):原函数(显函数)表达式
@@ -12,6 +13,7 @@ def derivative(f, v, n, x):
         return latex(diff(sympify(f), sympify(v), int(n)))
     else:
         return latex(diff(sympify(f), sympify(v), int(n)).subs(sympify(v), sympify(x)))
+
 
 def yinhanshu_derivative(f, v1, v2, n, x):
     # 该函数用于计算隐函数的导函数并返回Latex表达式
