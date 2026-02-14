@@ -1,14 +1,18 @@
-from sympy import integrate, latex, sympify
+ï»¿from sympy import latex, sympify, symbols, solve, Eq
 from sympy import simplify, expand, factor, collect, cancel, apart, trigsimp, expand_trig, powsimp, expand_power_exp, expand_log, logcombine
 
 
-def simplifies(in_expr, method):
-    # ¸Ãº¯ÊıÓÃÓÚ±äĞÎ±í´ïÊ½
-    # in_expr(str):±í´ïÊ½
-    # method(int):·½·¨±àºÅ
-    # return(str):±äĞÎºó±í´ïÊ½
+def simplifies(in_expr, method, zhuyuan, huanyuan, huanyuanshi):
+    # è¯¥å‡½æ•°ç”¨äºå˜å½¢è¡¨è¾¾å¼
+    # in_expr(str):è¡¨è¾¾å¼
+    # method(int):æ–¹æ³•ç¼–å·
+    # zhuyuan(str):ä¸»å…ƒç¬¦å·
+    # huanyuan(str):æ¢å…ƒç¬¦å·
+    # huanyuanshi(str):æ¢å…ƒå¼
+    # return(str):å˜å½¢åè¡¨è¾¾å¼
 
-    expr = sympify(in_expr)
+    expr = sympify(in_expr, locals = {str(i):symbols(str(i), positive = True) for i in sympify(in_expr).free_symbols})
+    
     if method == 0:
         return simplify(expr)
     elif method == 1:
@@ -16,7 +20,7 @@ def simplifies(in_expr, method):
     elif method == 2:
         return factor(expr)
     elif method == 3:
-        return collect(expr, "x")
+        return collect(expr, zhuyuan)
     elif method == 4:
         return cancel(expr)
     elif method == 5:
@@ -33,3 +37,6 @@ def simplifies(in_expr, method):
         return expand_log(expr)
     elif method == 11:
         return logcombine(expr)
+    elif method == 12:
+        expr = sympify(in_expr)
+        return expand(expr.subs(symbols(zhuyuan), solve(Eq(symbols(huanyuan, positive = True), sympify(huanyuanshi)), symbols(zhuyuan))[0]))
