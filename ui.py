@@ -1,7 +1,7 @@
 ﻿# -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'uiEMhtts.ui'
+## Form generated from reading UI file 'uiTFcaAl.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.9.1
 ##
@@ -69,8 +69,11 @@ class Ui_MainWindow(object):
         self.groupBox3.setGeometry(QRect(10, 250, 771, 131))
         self.qiudao_daohanshu = QWebEngineView(self.groupBox3)
         self.qiudao_daohanshu.setObjectName(u"qiudao_daohanshu")
-        self.qiudao_daohanshu.setGeometry(QRect(10, 19, 751, 101))
+        self.qiudao_daohanshu.setGeometry(QRect(10, 19, 751, 71))
         self.qiudao_daohanshu.setUrl(QUrl(u"about:blank"))
+        self.qiudao_daohanshu_lineedit = QLineEdit(self.groupBox3)
+        self.qiudao_daohanshu_lineedit.setObjectName(u"qiudao_daohanshu_lineedit")
+        self.qiudao_daohanshu_lineedit.setGeometry(QRect(10, 100, 751, 21))
         self.qiudao_qiudao_button = QPushButton(self.qiudao)
         self.qiudao_qiudao_button.setObjectName(u"qiudao_qiudao_button")
         self.qiudao_qiudao_button.setGeometry(QRect(10, 530, 771, 26))
@@ -101,8 +104,11 @@ class Ui_MainWindow(object):
         self.groupBox_5.setGeometry(QRect(10, 390, 771, 131))
         self.qiudao_daoshuzhi = QWebEngineView(self.groupBox_5)
         self.qiudao_daoshuzhi.setObjectName(u"qiudao_daoshuzhi")
-        self.qiudao_daoshuzhi.setGeometry(QRect(10, 20, 751, 101))
+        self.qiudao_daoshuzhi.setGeometry(QRect(10, 20, 751, 71))
         self.qiudao_daoshuzhi.setUrl(QUrl(u"about:blank"))
+        self.qiudao_daoshuzhi_lineedit = QLineEdit(self.groupBox_5)
+        self.qiudao_daoshuzhi_lineedit.setObjectName(u"qiudao_daoshuzhi_lineedit")
+        self.qiudao_daoshuzhi_lineedit.setGeometry(QRect(10, 100, 751, 21))
         self.groupBox_6 = QGroupBox(self.qiudao)
         self.groupBox_6.setObjectName(u"groupBox_6")
         self.groupBox_6.setGeometry(QRect(400, 60, 121, 51))
@@ -134,8 +140,11 @@ class Ui_MainWindow(object):
         self.groupBox3_2.setGeometry(QRect(10, 250, 771, 131))
         self.jifen_yuanhanshu = QWebEngineView(self.groupBox3_2)
         self.jifen_yuanhanshu.setObjectName(u"jifen_yuanhanshu")
-        self.jifen_yuanhanshu.setGeometry(QRect(10, 19, 751, 101))
+        self.jifen_yuanhanshu.setGeometry(QRect(10, 19, 751, 71))
         self.jifen_yuanhanshu.setUrl(QUrl(u"about:blank"))
+        self.jifen_yuanhanshu_lineedit = QLineEdit(self.groupBox3_2)
+        self.jifen_yuanhanshu_lineedit.setObjectName(u"jifen_yuanhanshu_lineedit")
+        self.jifen_yuanhanshu_lineedit.setGeometry(QRect(10, 100, 751, 21))
         self.groupBox2_2 = QGroupBox(self.jifen)
         self.groupBox2_2.setObjectName(u"groupBox2_2")
         self.groupBox2_2.setGeometry(QRect(10, 110, 771, 131))
@@ -148,8 +157,11 @@ class Ui_MainWindow(object):
         self.groupBox_11.setGeometry(QRect(10, 390, 771, 131))
         self.jifen_dingjifenzhi = QWebEngineView(self.groupBox_11)
         self.jifen_dingjifenzhi.setObjectName(u"jifen_dingjifenzhi")
-        self.jifen_dingjifenzhi.setGeometry(QRect(10, 20, 751, 101))
+        self.jifen_dingjifenzhi.setGeometry(QRect(10, 20, 751, 71))
         self.jifen_dingjifenzhi.setUrl(QUrl(u"about:blank"))
+        self.jifen_dingjifenzhi_lineedit = QLineEdit(self.groupBox_11)
+        self.jifen_dingjifenzhi_lineedit.setObjectName(u"jifen_dingjifenzhi_lineedit")
+        self.jifen_dingjifenzhi_lineedit.setGeometry(QRect(10, 100, 751, 21))
         self.groupBox1_2 = QGroupBox(self.jifen)
         self.groupBox1_2.setObjectName(u"groupBox1_2")
         self.groupBox1_2.setGeometry(QRect(10, 10, 771, 51))
@@ -349,8 +361,8 @@ class Ui_MainWindow(object):
     # setupUi
 
     def retranslateUi(self, MainWindow):
-        MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"\u5fae\u79ef\u5206\u8ba1\u7b97\u5668v1.2", None))
-        self.shouye_welcome.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p>\u6b22\u8fce\u4f7f\u7528\u5fae\u79ef\u5206\u8ba1\u7b97\u5668v1.2\uff01</p><p>Author: Li Mingkang</p><p>Contributor: CuberAHZ</p></body></html>", None))
+        MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"\u5fae\u79ef\u5206\u8ba1\u7b97\u5668v1.2.1", None))
+        self.shouye_welcome.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p>\u6b22\u8fce\u4f7f\u7528\u5fae\u79ef\u5206\u8ba1\u7b97\u5668v1.2.1\uff01</p><p>Author: Li Mingkang</p><p>Contributor: CuberAHZ</p></body></html>", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.shouye), QCoreApplication.translate("MainWindow", u"\u9996\u9875", None))
         self.groupBox1.setTitle(QCoreApplication.translate("MainWindow", u"\u8f93\u5165\u8868\u8fbe\u5f0f", None))
         self.groupBox2.setTitle(QCoreApplication.translate("MainWindow", u"\u539f\u51fd\u6570", None))

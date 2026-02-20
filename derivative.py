@@ -7,12 +7,12 @@ def derivative(f, v, n, x):
     # v(str):自变量表达式
     # n(str):求导次数
     # x(str):自变量的值
-    # return(str):返回导函数Latex表达式
+    # return(str):返回导函数表达式
 
     if x is None:
-        return latex(diff(sympify(f), sympify(v), int(n)))
+        return diff(sympify(f), sympify(v), int(n))
     else:
-        return latex(diff(sympify(f), sympify(v), int(n)).subs(sympify(v), sympify(x)))
+        return diff(sympify(f), sympify(v), int(n)).subs(sympify(v), sympify(x))
 
 
 def yinhanshu_derivative(f, v1, v2, n, x):
@@ -22,9 +22,9 @@ def yinhanshu_derivative(f, v1, v2, n, x):
     # v2(str):因变量表达式
     # n(str):求导次数
     # x(str):自变量的值
-    # return(str):返回导函数Latex表达式
+    # return(str):返回导函数表达式
 
     if x is None:
-        return latex(idiff(sympify(f), sympify(v2), sympify(v1), int(n)))
+        return idiff(sympify(f), sympify(v2), sympify(v1), int(n))
     else:
-        return latex(idiff(sympify(f), sympify(v2), sympify(v1), int(n)).subs(sympify(v1), sympify(x)).subs(sympify(v2), solve(Eq(sympify(f).subs(sympify(v1), sympify(x)), 0), sympify(v2))[0]))
+        return idiff(sympify(f), sympify(v2), sympify(v1), int(n)).subs(sympify(v1), sympify(x)).subs(sympify(v2), solve(Eq(sympify(f).subs(sympify(v1), sympify(x)), 0), sympify(v2))[0])
