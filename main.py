@@ -5,7 +5,9 @@ from derivative import derivative, yinhanshu_derivative
 from integral import integral
 from simplification import simplifies
 from solvers import solve_fangcheng, solve_budengshi
-from sympy import sympify, latex, Eq, Rel
+from functions import get_function_attr
+
+from sympy import sympify, latex, Eq, Rel, symbols
 import os
 
 from PySide6.QtWidgets import QMainWindow, QVBoxLayout, QHBoxLayout, QSplitter, QWidget, QGroupBox, QStackedWidget
@@ -21,6 +23,7 @@ class MainWindow(QMainWindow):
         self.ps = [self.ui.tabWidget.widget(i).objectName() for i in range(self.ui.tabWidget.count())]
         self.ws = {p.objectName():[[w.parent().objectName(), w.objectName(), str(w.parent().geometry())[15::], str(w.geometry())[15::]] for w in self.ui.tabWidget.findChild(QWidget, p.objectName()).findChildren(QWebEngineView)] \
                    for p in self.ui.tabWidget.findChild(QStackedWidget).children()}
+        self.fs = {}
 
         self.setup()
 
@@ -28,23 +31,35 @@ class MainWindow(QMainWindow):
 
         self.ui.tabWidget.currentChanged.connect(self.updateWebEngineView)
         
+        self.ui.dingyi_hanshuliebiao.itemClicked.connect(self.read_function)
+        self.ui.dingyi_baocun.clicked.connect(self.save_function)
+        self.ui.dingyi_shanchu.clicked.connect(self.delete_function)
+        self.ui.dingyi_hanshushuxing.addItems(["表达式&定义域", "值域", "单调递增区间", "单调递减区间", "奇偶性", "周期", "最大值", "最小值"])
+        self.ui.dingyi_hanshushuxing.setCurrentIndex(0)
+        self.ui.dingyi_hanshushuxing.currentIndexChanged.connect(self.update_function_attr)
+        self.ui.dingyi_zibianliangzhi.textChanged.connect(self.function_value)
+
         self.ui.qiudao_input.textChanged.connect(self.setqiudao_yuanhanshu)
         self.ui.qiudao_qiudao_button.clicked.connect(self.qiudao_button_f)
         self.ui.qiudao_yinhanshu.stateChanged.connect(self.qiudao_yinhanshu_f)
         self.ui.qiudao_qiuchujutizhi.stateChanged.connect(self.qiudao_jutizhi_f)
+
         self.ui.jifen_input.textChanged.connect(self.setjifen_beijihanshu)
         self.ui.jifen_jifen_button.clicked.connect(self.jifen_button_f)
         self.ui.jifen_dingjifen.stateChanged.connect(self.jifen_dingjifen_f)
+
         self.ui.bianxing_bianxingfangfa.addItems(["通用化简(simplify)", "展开(expand)", "因式分解(factor)", "主元(collect)", "通分(cancel)", "分离(apart)"])
         self.ui.bianxing_bianxingfangfa.addItems(["三角变换(trigsimp)", "三角展开(expand_trig)", "指数合并(powsimp)", "指数展开(expand_power_exp)"])
         self.ui.bianxing_bianxingfangfa.addItems(["对数展开(expand_log)", "对数合并(logcombine)", "换元"])
         self.ui.bianxing_bianxingfangfa.currentIndexChanged.connect(self.bianxing_bianxingfangfa_f)
         self.ui.bianxing_input.textChanged.connect(self.setbianxing_yuanshi)
         self.ui.bianxing_bianxing_button.clicked.connect(self.bianxing_button_f)
+
         self.ui.fangcheng_zuoshi.textChanged.connect(self.setfangcheng_yuanfangcheng)
         self.ui.fangcheng_youshi.textChanged.connect(self.setfangcheng_yuanfangcheng)
         self.ui.fangcheng_quzhifanwei.textChanged.connect(self.setfangcheng_yuanfangcheng)
         self.ui.fangcheng_qiujie.clicked.connect(self.fangcheng_button_f)
+
         self.ui.budengshi_budenghao.addItems(["!=", ">", ">=", "<", "<="])
         self.ui.budengshi_budenghao.currentIndexChanged.connect(self.setbudengshi_yuanshi_f)
         self.ui.budengshi_zuoshi.textChanged.connect(self.setbudengshi_yuanshi_f)
@@ -60,8 +75,8 @@ class MainWindow(QMainWindow):
         homepage.setContentsMargins(0, 0, 0, 0)
         homepage.addWidget(self.ui.shouye_welcome)
 
-        help_path = os.path.join(os.path.dirname(__file__), "help.html")
-        self.ui.webEngineView.setUrl(QUrl.fromLocalFile(help_path))
+        self.help_path = os.path.join(os.path.dirname(__file__), "help.html")
+        self.ui.webEngineView.setUrl(QUrl.fromLocalFile(self.help_path))
         
         self.updateWebEngineView("shouye")
 
@@ -70,11 +85,11 @@ class MainWindow(QMainWindow):
         # n:函数名
         # l:要显示的Latex表达式
         # w:要设置的WebEngineView
-        """这个是在线的
-        w.setHtml("<html><head><script type=\"text/javascript\" \
+        # 这个是在线的
+        '''w.setHtml("<html><head><script type=\"text/javascript\" \
                    src=\"https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML\">\
-                   </script></head><body><p style=\"font-size:40px\">\\({}{}\\)</p></body></html>".format(n, l))
-        """
+                   </script></head><body><p style=\"font-size:40px\">\\({}{}\\)</p></body></html>".format(n, l))'''
+        
         # 这个是离线的
         w.setHtml("<html><head>" +
                   "<script src=\"qrc:///MathJax-4.0.0/tex-svg.js\"></script>" +
@@ -93,7 +108,7 @@ class MainWindow(QMainWindow):
             except:
                 pass
             if w[1] == "webEngineView":
-                exec("self.ui.webEngineView.setUrl(QUrl(u'file:///F:/Anaconda3/envs/PyQt/Projects/SymPy/CalculusCalculator/v1.2/src/help.html'))")
+                exec("self.ui.webEngineView.setUrl(QUrl.fromLocalFile(self.help_path))")
         for other_p in self.ps:
             if other_p != p:
                 for w in self.ws[other_p]:
@@ -101,6 +116,52 @@ class MainWindow(QMainWindow):
                         self.ui.tabWidget.findChild(QStackedWidget).findChild(QWidget, other_p).findChild(QWebEngineView, w[1]).deleteLater()
                     except:
                         pass
+    
+    def read_function(self, item):
+        # 读取函数信息，显示在文本框中
+        fn = item.text().split('(')[0]
+        if fn != '':
+            self.ui.dingyi_mingcheng.setText(self.fs[fn][0])
+            self.ui.dingyi_biaodashi.setText(self.fs[fn][1])
+            self.ui.dingyi_dingyiyu.setText(self.fs[fn][2])
+            self.ui.dingyi_zibianliang.setText(self.fs[fn][3])
+        self.ui.dingyi_hanshushuxing.setCurrentIndex(0)
+        self.update_function_attr(0)
+        self.function_value()
+
+    def save_function(self):
+        # 保存函数信息，显示在列表中
+        if self.ui.dingyi_mingcheng.text() not in self.fs.keys():
+            self.ui.dingyi_hanshuliebiao.insertItem(0, "{}({})".format(self.ui.dingyi_mingcheng.text(), self.ui.dingyi_zibianliang.text()))
+            self.ui.dingyi_hanshuliebiao.setCurrentRow(0)
+        self.fs[self.ui.dingyi_mingcheng.text()] = [self.ui.dingyi_mingcheng.text(), self.ui.dingyi_biaodashi.text(), self.ui.dingyi_dingyiyu.text(), self.ui.dingyi_zibianliang.text()]
+        self.ui.dingyi_hanshushuxing.setCurrentIndex(0)
+        self.update_function_attr(0)
+        self.function_value()
+
+    def delete_function(self):
+        # 删除相应的函数
+        f = self.ui.dingyi_hanshuliebiao.takeItem(self.ui.dingyi_hanshuliebiao.currentRow())
+        del f
+        del self.fs[self.ui.dingyi_mingcheng.text()]
+        if self.fs != {}:
+            self.read_function(self.ui.dingyi_hanshuliebiao.currentItem())
+        self.update_function_attr(0)
+        self.function_value()
+
+    def update_function_attr(self, attr):
+        # 获取函数属性并显示
+        function_attr = get_function_attr(self.ui.dingyi_biaodashi.text(), self.ui.dingyi_zibianliang.text(), self.ui.dingyi_dingyiyu.text(), attr)
+        self.ui.dingyi_hanshushuxing_lineedit.setText(str(function_attr))
+        self.setWebEngineView('' if self.ui.dingyi_hanshushuxing.currentIndex() != 0 else self.ui.dingyi_hanshuliebiao.currentItem().text() + "=", \
+            latex(function_attr) if self.ui.dingyi_hanshushuxing.currentIndex() != 0 else latex(function_attr[0]) + '({}\\in {})'.format(self.ui.dingyi_zibianliang.text(), latex(function_attr[1])), \
+            self.ui.dingyi_hanshushuxing_view)
+
+    def function_value(self):
+        # 根据给定自变量值求出函数值
+        f_value = sympify(self.ui.dingyi_biaodashi.text()).subs(symbols(self.ui.dingyi_zibianliang.text()), sympify(self.ui.dingyi_zibianliangzhi.text()))
+        self.ui.dingyi_qiuzhi_lineedit.setText(str(f_value))
+        self.setWebEngineView("{}({})=".format(self.ui.dingyi_mingcheng.text(), latex(self.ui.dingyi_zibianliangzhi.text())), latex(f_value), self.ui.dingyi_qiuzhi)
 
     def setqiudao_yuanhanshu(self):
         # 加载原函数

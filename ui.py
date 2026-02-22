@@ -1,9 +1,9 @@
 ﻿# -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'uiTFcaAl.ui'
+## Form generated from reading UI file 'uidpvPby.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.9.1
+## Created by: Qt User Interface Compiler version 6.10.2
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -16,9 +16,10 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
 from PySide6.QtWebEngineWidgets import QWebEngineView
-from PySide6.QtWidgets import (QApplication, QCheckBox, QComboBox, QGridLayout,
-    QGroupBox, QLabel, QLineEdit, QMainWindow,
-    QPushButton, QSizePolicy, QTabWidget, QWidget)
+from PySide6.QtWidgets import (QApplication, QCheckBox, QComboBox, QFormLayout,
+    QGridLayout, QGroupBox, QLabel, QLineEdit,
+    QListWidget, QListWidgetItem, QMainWindow, QPushButton,
+    QSizePolicy, QTabWidget, QWidget)
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -49,6 +50,98 @@ class Ui_MainWindow(object):
         self.gridLayout.addWidget(self.shouye_welcome, 0, 0, 1, 1)
 
         self.tabWidget.addTab(self.shouye, "")
+        self.dingyi = QWidget()
+        self.dingyi.setObjectName(u"dingyi")
+        self.groupBox_19 = QGroupBox(self.dingyi)
+        self.groupBox_19.setObjectName(u"groupBox_19")
+        self.groupBox_19.setGeometry(QRect(10, 10, 221, 301))
+        self.dingyi_hanshuliebiao = QListWidget(self.groupBox_19)
+        self.dingyi_hanshuliebiao.setObjectName(u"dingyi_hanshuliebiao")
+        self.dingyi_hanshuliebiao.setGeometry(QRect(10, 20, 201, 271))
+        self.groupBox_20 = QGroupBox(self.dingyi)
+        self.groupBox_20.setObjectName(u"groupBox_20")
+        self.groupBox_20.setGeometry(QRect(250, 10, 531, 151))
+        self.formLayoutWidget = QWidget(self.groupBox_20)
+        self.formLayoutWidget.setObjectName(u"formLayoutWidget")
+        self.formLayoutWidget.setGeometry(QRect(10, 30, 511, 91))
+        self.formLayout = QFormLayout(self.formLayoutWidget)
+        self.formLayout.setObjectName(u"formLayout")
+        self.formLayout.setHorizontalSpacing(6)
+        self.formLayout.setVerticalSpacing(6)
+        self.formLayout.setContentsMargins(0, 0, 0, 0)
+        self.label_7 = QLabel(self.formLayoutWidget)
+        self.label_7.setObjectName(u"label_7")
+
+        self.formLayout.setWidget(0, QFormLayout.ItemRole.LabelRole, self.label_7)
+
+        self.dingyi_mingcheng = QLineEdit(self.formLayoutWidget)
+        self.dingyi_mingcheng.setObjectName(u"dingyi_mingcheng")
+
+        self.formLayout.setWidget(0, QFormLayout.ItemRole.FieldRole, self.dingyi_mingcheng)
+
+        self.label_8 = QLabel(self.formLayoutWidget)
+        self.label_8.setObjectName(u"label_8")
+
+        self.formLayout.setWidget(1, QFormLayout.ItemRole.LabelRole, self.label_8)
+
+        self.dingyi_biaodashi = QLineEdit(self.formLayoutWidget)
+        self.dingyi_biaodashi.setObjectName(u"dingyi_biaodashi")
+
+        self.formLayout.setWidget(1, QFormLayout.ItemRole.FieldRole, self.dingyi_biaodashi)
+
+        self.label_9 = QLabel(self.formLayoutWidget)
+        self.label_9.setObjectName(u"label_9")
+
+        self.formLayout.setWidget(2, QFormLayout.ItemRole.LabelRole, self.label_9)
+
+        self.dingyi_dingyiyu = QLineEdit(self.formLayoutWidget)
+        self.dingyi_dingyiyu.setObjectName(u"dingyi_dingyiyu")
+
+        self.formLayout.setWidget(2, QFormLayout.ItemRole.FieldRole, self.dingyi_dingyiyu)
+
+        self.dingyi_shanchu = QPushButton(self.groupBox_20)
+        self.dingyi_shanchu.setObjectName(u"dingyi_shanchu")
+        self.dingyi_shanchu.setGeometry(QRect(440, 120, 81, 26))
+        self.dingyi_baocun = QPushButton(self.groupBox_20)
+        self.dingyi_baocun.setObjectName(u"dingyi_baocun")
+        self.dingyi_baocun.setGeometry(QRect(350, 120, 81, 26))
+        self.label_12 = QLabel(self.groupBox_20)
+        self.label_12.setObjectName(u"label_12")
+        self.label_12.setGeometry(QRect(10, 120, 84, 24))
+        self.dingyi_zibianliang = QLineEdit(self.groupBox_20)
+        self.dingyi_zibianliang.setObjectName(u"dingyi_zibianliang")
+        self.dingyi_zibianliang.setGeometry(QRect(100, 120, 241, 24))
+        self.dingyi_zibianliang.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
+        self.groupBox_21 = QGroupBox(self.dingyi)
+        self.groupBox_21.setObjectName(u"groupBox_21")
+        self.groupBox_21.setGeometry(QRect(250, 170, 531, 141))
+        self.dingyi_hanshushuxing = QComboBox(self.groupBox_21)
+        self.dingyi_hanshushuxing.setObjectName(u"dingyi_hanshushuxing")
+        self.dingyi_hanshushuxing.setGeometry(QRect(10, 20, 121, 20))
+        self.dingyi_hanshushuxing_view = QWebEngineView(self.groupBox_21)
+        self.dingyi_hanshushuxing_view.setObjectName(u"dingyi_hanshushuxing_view")
+        self.dingyi_hanshushuxing_view.setGeometry(QRect(10, 50, 511, 81))
+        self.dingyi_hanshushuxing_view.setUrl(QUrl(u"about:blank"))
+        self.dingyi_hanshushuxing_lineedit = QLineEdit(self.groupBox_21)
+        self.dingyi_hanshushuxing_lineedit.setObjectName(u"dingyi_hanshushuxing_lineedit")
+        self.dingyi_hanshushuxing_lineedit.setGeometry(QRect(140, 20, 381, 21))
+        self.groupBox_22 = QGroupBox(self.dingyi)
+        self.groupBox_22.setObjectName(u"groupBox_22")
+        self.groupBox_22.setGeometry(QRect(10, 320, 771, 241))
+        self.label_11 = QLabel(self.groupBox_22)
+        self.label_11.setObjectName(u"label_11")
+        self.label_11.setGeometry(QRect(10, 30, 71, 18))
+        self.dingyi_zibianliangzhi = QLineEdit(self.groupBox_22)
+        self.dingyi_zibianliangzhi.setObjectName(u"dingyi_zibianliangzhi")
+        self.dingyi_zibianliangzhi.setGeometry(QRect(90, 30, 671, 21))
+        self.dingyi_qiuzhi = QWebEngineView(self.groupBox_22)
+        self.dingyi_qiuzhi.setObjectName(u"dingyi_qiuzhi")
+        self.dingyi_qiuzhi.setGeometry(QRect(10, 60, 751, 141))
+        self.dingyi_qiuzhi.setUrl(QUrl(u"about:blank"))
+        self.dingyi_qiuzhi_lineedit = QLineEdit(self.groupBox_22)
+        self.dingyi_qiuzhi_lineedit.setObjectName(u"dingyi_qiuzhi_lineedit")
+        self.dingyi_qiuzhi_lineedit.setGeometry(QRect(10, 210, 751, 21))
+        self.tabWidget.addTab(self.dingyi, "")
         self.qiudao = QWidget()
         self.qiudao.setObjectName(u"qiudao")
         self.groupBox1 = QGroupBox(self.qiudao)
@@ -348,22 +441,38 @@ class Ui_MainWindow(object):
         self.webEngineView = QWebEngineView(self.help)
         self.webEngineView.setObjectName(u"webEngineView")
         self.webEngineView.setGeometry(QRect(0, 0, 791, 571))
-        self.webEngineView.setUrl(QUrl(u"file:///F:/Anaconda3/envs/PyQt/Projects/SymPy/CalculusCalculator/v1.2/src/help.html"))
+        self.webEngineView.setUrl(QUrl(u"file:///F:/Anaconda3/envs/PyQt/Projects/SymPy/CalculusCalculator/v1.3/src/help.html"))
         self.tabWidget.addTab(self.help, "")
         MainWindow.setCentralWidget(self.centralwidget)
 
         self.retranslateUi(MainWindow)
 
         self.tabWidget.setCurrentIndex(0)
+        self.dingyi_hanshushuxing.setCurrentIndex(-1)
 
 
         QMetaObject.connectSlotsByName(MainWindow)
     # setupUi
 
     def retranslateUi(self, MainWindow):
-        MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"\u5fae\u79ef\u5206\u8ba1\u7b97\u5668v1.2.1", None))
-        self.shouye_welcome.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p>\u6b22\u8fce\u4f7f\u7528\u5fae\u79ef\u5206\u8ba1\u7b97\u5668v1.2.1\uff01</p><p>Author: Li Mingkang</p><p>Contributor: CuberAHZ</p></body></html>", None))
+        MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"\u5fae\u79ef\u5206\u8ba1\u7b97\u5668v1.3", None))
+        self.shouye_welcome.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p>\u6b22\u8fce\u4f7f\u7528\u5fae\u79ef\u5206\u8ba1\u7b97\u5668v1.3\uff01</p><p>Author: Li Mingkang</p><p>Contributor: CuberAHZ</p></body></html>", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.shouye), QCoreApplication.translate("MainWindow", u"\u9996\u9875", None))
+        self.groupBox_19.setTitle(QCoreApplication.translate("MainWindow", u"\u51fd\u6570\u5217\u8868", None))
+        self.groupBox_20.setTitle(QCoreApplication.translate("MainWindow", u"\u51fd\u6570\u7f16\u8f91\u533a", None))
+        self.label_7.setText(QCoreApplication.translate("MainWindow", u"\u51fd\u6570\u540d\u79f0\uff1a", None))
+        self.dingyi_mingcheng.setText(QCoreApplication.translate("MainWindow", u"f", None))
+        self.label_8.setText(QCoreApplication.translate("MainWindow", u"\u51fd\u6570\u8868\u8fbe\u5f0f\uff1a", None))
+        self.label_9.setText(QCoreApplication.translate("MainWindow", u"\u51fd\u6570\u5b9a\u4e49\u57df\uff1a", None))
+        self.dingyi_dingyiyu.setText(QCoreApplication.translate("MainWindow", u"Reals", None))
+        self.dingyi_shanchu.setText(QCoreApplication.translate("MainWindow", u"\u5220\u9664", None))
+        self.dingyi_baocun.setText(QCoreApplication.translate("MainWindow", u"\u4fdd\u5b58", None))
+        self.label_12.setText(QCoreApplication.translate("MainWindow", u"\u51fd\u6570\u81ea\u53d8\u91cf\uff1a", None))
+        self.dingyi_zibianliang.setText(QCoreApplication.translate("MainWindow", u"x", None))
+        self.groupBox_21.setTitle(QCoreApplication.translate("MainWindow", u"\u51fd\u6570\u5c5e\u6027\u533a", None))
+        self.groupBox_22.setTitle(QCoreApplication.translate("MainWindow", u"\u51fd\u6570\u6c42\u503c", None))
+        self.label_11.setText(QCoreApplication.translate("MainWindow", u"\u81ea\u53d8\u91cf\u503c\uff1a", None))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.dingyi), QCoreApplication.translate("MainWindow", u"\u5b9a\u4e49", None))
         self.groupBox1.setTitle(QCoreApplication.translate("MainWindow", u"\u8f93\u5165\u8868\u8fbe\u5f0f", None))
         self.groupBox2.setTitle(QCoreApplication.translate("MainWindow", u"\u539f\u51fd\u6570", None))
         self.groupBox3.setTitle(QCoreApplication.translate("MainWindow", u"\u5bfc\u51fd\u6570", None))
