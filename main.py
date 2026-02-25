@@ -1,22 +1,23 @@
 ﻿from ui import Ui_MainWindow
-import mathjax_rc
 
+import resources
 from derivative import derivative, yinhanshu_derivative
 from integral import integral
 from simplification import simplifies
-from solvers import solve_fangcheng, solve_budengshi
+from solvers import solve_fangcheng, solve_weifenfangcheng, solve_budengshi
 from functions import get_function_attr
 
-from sympy import sympify, latex, Eq, Rel, symbols
+from sympy import latex, Eq, Rel, symbols
+from sympify import sympify
 import os
 
 from PySide6.QtWidgets import QMainWindow, QVBoxLayout, QHBoxLayout, QSplitter, QWidget, QGroupBox, QStackedWidget
 from PySide6.QtWebEngineWidgets import QWebEngineView
 from PySide6.QtCore import QRect, QUrl
 
-
 class MainWindow(QMainWindow):
     def __init__(self, parent=None):
+
         super().__init__(parent)
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
@@ -58,6 +59,7 @@ class MainWindow(QMainWindow):
         self.ui.fangcheng_zuoshi.textChanged.connect(self.setfangcheng_yuanfangcheng)
         self.ui.fangcheng_youshi.textChanged.connect(self.setfangcheng_yuanfangcheng)
         self.ui.fangcheng_quzhifanwei.textChanged.connect(self.setfangcheng_yuanfangcheng)
+        self.ui.fangcheng_weifenfangcheng.stateChanged.connect(self.fangcheng_weifenfangcheng_f)
         self.ui.fangcheng_qiujie.clicked.connect(self.fangcheng_button_f)
 
         self.ui.budengshi_budenghao.addItems(["!=", ">", ">=", "<", "<="])
@@ -75,8 +77,8 @@ class MainWindow(QMainWindow):
         homepage.setContentsMargins(0, 0, 0, 0)
         homepage.addWidget(self.ui.shouye_welcome)
 
-        self.help_path = os.path.join(os.path.dirname(__file__), "help.html")
-        self.ui.webEngineView.setUrl(QUrl.fromLocalFile(self.help_path))
+        self.help_path = QUrl("qrc:///help.html")
+        self.ui.webEngineView.setUrl(self.help_path)
         
         self.updateWebEngineView("shouye")
 
@@ -85,15 +87,10 @@ class MainWindow(QMainWindow):
         # n:函数名
         # l:要显示的Latex表达式
         # w:要设置的WebEngineView
-        # 这个是在线的
-        '''w.setHtml("<html><head><script type=\"text/javascript\" \
-                   src=\"https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML\">\
-                   </script></head><body><p style=\"font-size:40px\">\\({}{}\\)</p></body></html>".format(n, l))'''
         
-        # 这个是离线的
-        w.setHtml("<html><head>" +
-                  "<script src=\"qrc:///MathJax-4.0.0/tex-svg.js\"></script>" +
-                  "</head><body><p style=\"font-size:40px\">\\({}{}\\)</p></body></html>".format(n, l))
+        base_url = QUrl.fromLocalFile(os.path.dirname(__file__) + '/')
+        html = r'<html><head><script src="qrc:///MathJax/es5/tex-svg.js"></script></head><body><div><p style="font-size:34px">\({}{}\)</p></div></body></html>'.format(n, l)
+        w.setHtml(html, base_url)
 
     def updateWebEngineView(self, arg):
         # 切换页面时创建当前页面渲染框，销毁其他页面渲染框
@@ -108,7 +105,7 @@ class MainWindow(QMainWindow):
             except:
                 pass
             if w[1] == "webEngineView":
-                exec("self.ui.webEngineView.setUrl(QUrl.fromLocalFile(self.help_path))")
+                exec("self.ui.webEngineView.setUrl(self.help_path)")
         for other_p in self.ps:
             if other_p != p:
                 for w in self.ws[other_p]:
@@ -128,6 +125,10 @@ class MainWindow(QMainWindow):
         self.ui.dingyi_hanshushuxing.setCurrentIndex(0)
         self.update_function_attr(0)
         self.function_value()
+
+    def setdingyi_hanshushuxing_view(self):
+        # 切换至定义页面渲染公式
+        self.read_function(self.ui.dingyi_hanshuliebiao.currentItem())
 
     def save_function(self):
         # 保存函数信息，显示在列表中
@@ -151,22 +152,28 @@ class MainWindow(QMainWindow):
 
     def update_function_attr(self, attr):
         # 获取函数属性并显示
-        function_attr = get_function_attr(self.ui.dingyi_biaodashi.text(), self.ui.dingyi_zibianliang.text(), self.ui.dingyi_dingyiyu.text(), attr)
+        function_attr = get_function_attr(self.ui.dingyi_biaodashi.text(), self.ui.dingyi_zibianliang.text(), self.ui.dingyi_dingyiyu.text(), attr, self.fs)
         self.ui.dingyi_hanshushuxing_lineedit.setText(str(function_attr))
-        self.setWebEngineView('' if self.ui.dingyi_hanshushuxing.currentIndex() != 0 else self.ui.dingyi_hanshuliebiao.currentItem().text() + "=", \
-            latex(function_attr) if self.ui.dingyi_hanshushuxing.currentIndex() != 0 else latex(function_attr[0]) + '({}\\in {})'.format(self.ui.dingyi_zibianliang.text(), latex(function_attr[1])), \
-            self.ui.dingyi_hanshushuxing_view)
+        try:
+            self.setWebEngineView('' if self.ui.dingyi_hanshushuxing.currentIndex() != 0 else self.ui.dingyi_hanshuliebiao.currentItem().text() + "=", \
+                latex(function_attr) if self.ui.dingyi_hanshushuxing.currentIndex() != 0 else latex(function_attr[0]) + '({}\\in {})'.format(self.ui.dingyi_zibianliang.text(), latex(function_attr[1])), \
+                self.ui.dingyi_hanshushuxing_view)
+        except:
+            pass
 
     def function_value(self):
         # 根据给定自变量值求出函数值
-        f_value = sympify(self.ui.dingyi_biaodashi.text()).subs(symbols(self.ui.dingyi_zibianliang.text()), sympify(self.ui.dingyi_zibianliangzhi.text()))
+        f_value = sympify(self.ui.dingyi_biaodashi.text(), self.fs).subs(symbols(self.ui.dingyi_zibianliang.text()), sympify(self.ui.dingyi_zibianliangzhi.text(), self.fs))
         self.ui.dingyi_qiuzhi_lineedit.setText(str(f_value))
-        self.setWebEngineView("{}({})=".format(self.ui.dingyi_mingcheng.text(), latex(self.ui.dingyi_zibianliangzhi.text())), latex(f_value), self.ui.dingyi_qiuzhi)
+        try:
+            self.setWebEngineView("{}({})=".format(self.ui.dingyi_mingcheng.text(), latex(sympify(self.ui.dingyi_zibianliangzhi.text(), self.fs))), latex(f_value), self.ui.dingyi_qiuzhi)
+        except:
+            pass
 
     def setqiudao_yuanhanshu(self):
         # 加载原函数
         try:
-            self.setWebEngineView('f(x)=', latex(sympify(self.ui.qiudao_input.text())), self.ui.qiudao_yuanhanshu)
+            self.setWebEngineView('f(x)=', latex(sympify(self.ui.qiudao_input.text(), self.fs)), self.ui.qiudao_yuanhanshu)
         except:
             pass
 
@@ -186,33 +193,33 @@ class MainWindow(QMainWindow):
         self.is_jutizhi = self.ui.qiudao_qiuchujutizhi.isChecked()
         if self.is_yinhanshu:
             if self.is_jutizhi:
-                dif = yinhanshu_derivative(self.ui.qiudao_input.text(), self.ui.qiudao_zibianliang.text(), self.ui.qiudao_yinbianliang.text(), self.ui.qiudao_qiudaocishu.text(), None)
+                dif = yinhanshu_derivative(self.ui.qiudao_input.text(), self.ui.qiudao_zibianliang.text(), self.ui.qiudao_yinbianliang.text(), self.ui.qiudao_qiudaocishu.text(), None, self.fs)
                 self.setWebEngineView("f'(x)=", latex(dif), self.ui.qiudao_daohanshu)
                 self.ui.qiudao_daohanshu_lineedit.setText(str(dif))
-                dif = yinhanshu_derivative(self.ui.qiudao_input.text(), self.ui.qiudao_zibianliang.text(), self.ui.qiudao_yinbianliang.text(), self.ui.qiudao_qiudaocishu.text(), self.ui.qiudao_zibianliangzhi.text())
+                dif = yinhanshu_derivative(self.ui.qiudao_input.text(), self.ui.qiudao_zibianliang.text(), self.ui.qiudao_yinbianliang.text(), self.ui.qiudao_qiudaocishu.text(), self.ui.qiudao_zibianliangzhi.text(), self.fs)
                 self.setWebEngineView("f'({})=".format(self.ui.qiudao_zibianliangzhi.text()), latex(dif), self.ui.qiudao_daoshuzhi)
                 self.ui.qiudao_daoshuzhi_lineedit.setText(str(dif))
             else:
-                dif = yinhanshu_derivative(self.ui.qiudao_input.text(), self.ui.qiudao_zibianliang.text(), self.ui.qiudao_yinbianliang.text(), self.ui.qiudao_qiudaocishu.text(), None)
+                dif = yinhanshu_derivative(self.ui.qiudao_input.text(), self.ui.qiudao_zibianliang.text(), self.ui.qiudao_yinbianliang.text(), self.ui.qiudao_qiudaocishu.text(), None, self.fs)
                 self.setWebEngineView("f'(x)=", latex(dif), self.ui.qiudao_daohanshu)
                 self.ui.qiudao_daohanshu_lineedit.setText(str(dif))
         else:
             if self.is_jutizhi:
-                dif = derivative(self.ui.qiudao_input.text(), self.ui.qiudao_zibianliang.text(), self.ui.qiudao_qiudaocishu.text(), None)
+                dif = derivative(self.ui.qiudao_input.text(), self.ui.qiudao_zibianliang.text(), self.ui.qiudao_qiudaocishu.text(), None, self.fs)
                 self.setWebEngineView("f'(x)=", latex(dif), self.ui.qiudao_daohanshu)
                 self.ui.qiudao_daohanshu_lineedit.setText(str(dif))
-                dif = derivative(self.ui.qiudao_input.text(), self.ui.qiudao_zibianliang.text(), self.ui.qiudao_qiudaocishu.text(), self.ui.qiudao_zibianliangzhi.text())
+                dif = derivative(self.ui.qiudao_input.text(), self.ui.qiudao_zibianliang.text(), self.ui.qiudao_qiudaocishu.text(), self.ui.qiudao_zibianliangzhi.text(), self.fs)
                 self.setWebEngineView("f'({})=".format(self.ui.qiudao_zibianliangzhi.text()), latex(dif), self.ui.qiudao_daoshuzhi)
                 self.ui.qiudao_daoshuzhi_lineedit.setText(str(dif))
             else:
-                dif = derivative(self.ui.qiudao_input.text(), self.ui.qiudao_zibianliang.text(), self.ui.qiudao_qiudaocishu.text(), None)
+                dif = derivative(self.ui.qiudao_input.text(), self.ui.qiudao_zibianliang.text(), self.ui.qiudao_qiudaocishu.text(), None, self.fs)
                 self.setWebEngineView("f'(x)=", latex(dif), self.ui.qiudao_daohanshu)
                 self.ui.qiudao_daohanshu_lineedit.setText(str(dif))
 
     def setjifen_beijihanshu(self):
         # 加载原函数
         try:
-            self.setWebEngineView('f(x)=', latex(sympify(self.ui.jifen_input.text())), self.ui.jifen_beijihanshu)
+            self.setWebEngineView('f(x)=', latex(sympify(self.ui.jifen_input.text(), self.fs)), self.ui.jifen_beijihanshu)
         except:
             pass
 
@@ -226,23 +233,23 @@ class MainWindow(QMainWindow):
         # 积分
         self.is_dingjifen = self.ui.jifen_dingjifen.isChecked()
         if self.is_dingjifen:
-            F = integral(self.ui.jifen_input.text(), self.ui.jifen_jifenbianliang.text())
+            F = integral(self.ui.jifen_input.text(), self.ui.jifen_jifenbianliang.text(), self.fs)
             self.setWebEngineView('F(x)=', latex(F), self.ui.jifen_yuanhanshu)
             self.ui.jifen_yuanhanshu_lineedit.setText(str(F))
-            F = integral(self.ui.jifen_input.text(), self.ui.jifen_jifenbianliang.text(), self.ui.jifen_xiaxianzhi.text(), self.ui.jifen_shangxianzhi.text())
+            F = integral(self.ui.jifen_input.text(), self.ui.jifen_jifenbianliang.text(), self.ui.jifen_xiaxianzhi.text(), self.ui.jifen_shangxianzhi.text(), self.fs)
             self.setWebEngineView('F(x)=', latex(F), self.ui.jifen_dingjifenzhi)
             self.ui.jifen_dingjifenzhi_lineedit.setText(str(F))
             
         else:
             self.ui.jifen_dingjifenzhi.setHtml("")
-            F = integral(self.ui.jifen_input.text(), self.ui.jifen_jifenbianliang.text())
+            F = integral(self.ui.jifen_input.text(), self.ui.jifen_jifenbianliang.text(), self.fs)
             self.setWebEngineView('F(x)=', latex(F), self.ui.jifen_yuanhanshu)
             self.ui.jifen_yuanhanshu_lineedit.setText(str(F))
 
     def setbianxing_yuanshi(self):
         # 加载原式
         try:
-            self.setWebEngineView('', latex(sympify(self.ui.bianxing_input.text())), self.ui.bianxing_yuanshi)
+            self.setWebEngineView('', latex(sympify(self.ui.bianxing_input.text(), self.fs)), self.ui.bianxing_yuanshi)
         except:
             pass
 
@@ -265,34 +272,46 @@ class MainWindow(QMainWindow):
         # 变形
         self.bianxingfangfa = self.ui.bianxing_bianxingfangfa.currentIndex()
         self.bianxingshi = simplifies(self.ui.bianxing_input.text(), self.bianxingfangfa, self.ui.bianxing_zhuyuanfuhao.text() if self.ui.bianxing_zhuyuanfuhao.isEnabled() else None, \
-            self.ui.bianxing_huanyuanfuhao.text() if self.ui.bianxing_huanyuanfuhao.isEnabled() else None, self.ui.bianxing_huanyuanshi.text() if self.ui.bianxing_huanyuanshi.isEnabled() else None)
+            self.ui.bianxing_huanyuanfuhao.text() if self.ui.bianxing_huanyuanfuhao.isEnabled() else None, self.ui.bianxing_huanyuanshi.text() if self.ui.bianxing_huanyuanshi.isEnabled() else None, self.fs)
         self.setWebEngineView('', latex(self.bianxingshi), self.ui.bianxing_bianxingshi)
         self.ui.bianxing_bianxingshi_lineedit.setText(str(self.bianxingshi))
 
     def setfangcheng_yuanfangcheng(self):
         # 加载原方程
-        try:
-            self.eq_fangcheng = Eq(sympify(self.ui.fangcheng_zuoshi.text()), sympify(self.ui.fangcheng_youshi.text()))
-            self.setWebEngineView('','{}\\quad (x\\in {})'.format(latex(self.eq_fangcheng), latex(sympify(self.ui.fangcheng_quzhifanwei.text()))), self.ui.fangcheng_yuanfangcheng)
-        except:
-            pass
+            self.eq_fangcheng = Eq(sympify(self.ui.fangcheng_zuoshi.text(), self.fs if not self.ui.fangcheng_weifenfangcheng.isChecked() else {}), \
+                                   sympify(self.ui.fangcheng_youshi.text(), self.fs if not self.ui.fangcheng_weifenfangcheng.isChecked() else {}))
+            self.setWebEngineView('','{} (x\\in {})'.format(latex(self.eq_fangcheng), latex(sympify(self.ui.fangcheng_quzhifanwei.text(), self.fs))) if not self.ui.fangcheng_weifenfangcheng.isChecked() \
+                                  else latex(self.eq_fangcheng), self.ui.fangcheng_yuanfangcheng)
+
+    def fangcheng_weifenfangcheng_f(self):
+        # 更改求解模式:是否微分方程
+        self.ui.fangcheng_zhuyuanfuhao.setText("f(x)" if self.ui.fangcheng_weifenfangcheng.isChecked() else "x")
+        self.ui.fangcheng_zhuyuanfuhao.setEnabled(not self.ui.fangcheng_weifenfangcheng.isChecked())
+        self.ui.fangcheng_quzhifanwei.setText("" if self.ui.fangcheng_weifenfangcheng.isChecked() else "Reals")
+        self.ui.fangcheng_quzhifanwei.setEnabled(not self.ui.fangcheng_weifenfangcheng.isChecked())
 
     def fangcheng_button_f(self):
         # 求解方程
-        self.jieji_fangcheng = solve_fangcheng(self.eq_fangcheng, self.ui.fangcheng_zhuyuanfuhao.text(), self.ui.fangcheng_quzhifanwei.text())
-        self.setWebEngineView('', latex(self.jieji_fangcheng), self.ui.fangcheng_jieji)
-        self.ui.fangcheng_jieji_lineedit.setText(str(self.jieji_fangcheng))
+        if self.ui.fangcheng_weifenfangcheng.isChecked():
+            self.jieji_fangcheng = solve_weifenfangcheng(self.eq_fangcheng, self.ui.fangcheng_zhuyuanfuhao.text(), self.fs)
+            self.setWebEngineView('', latex(self.jieji_fangcheng), self.ui.fangcheng_jieji)
+            self.ui.fangcheng_jieji_lineedit.setText(str(self.jieji_fangcheng))
+        else:
+            print(1)
+            self.jieji_fangcheng = solve_fangcheng(self.eq_fangcheng, self.ui.fangcheng_zhuyuanfuhao.text(), self.ui.fangcheng_quzhifanwei.text(), self.fs)
+            self.setWebEngineView('', latex(self.jieji_fangcheng), self.ui.fangcheng_jieji)
+            self.ui.fangcheng_jieji_lineedit.setText(str(self.jieji_fangcheng))
 
     def setbudengshi_yuanshi_f(self):
         # 加载原不等式
         try:
-            self.rel_budengshi = Rel(sympify(self.ui.budengshi_zuoshi.text()), sympify(self.ui.budengshi_youshi.text()), self.ui.budengshi_budenghao.currentText())
-            self.setWebEngineView('', '{}\\quad (x\\in {})'.format(latex(self.rel_budengshi), latex(sympify(self.ui.budengshi_quzhifanwei.text()))), self.ui.budengshi_yuanshi)
+            self.rel_budengshi = Rel(sympify(self.ui.budengshi_zuoshi.text(), self.fs), sympify(self.ui.budengshi_youshi.text(), self.fs), self.ui.budengshi_budenghao.currentText())
+            self.setWebEngineView('', '{}\\quad (x\\in {})'.format(latex(self.rel_budengshi), latex(sympify(self.ui.budengshi_quzhifanwei.text(), self.fs))), self.ui.budengshi_yuanshi)
         except:
             pass
 
     def budengshi_button_f(self):
         # 求解不等式
-        self.jieji_budengshi = solve_budengshi(self.rel_budengshi, self.ui.budengshi_zhuyuanfuhao.text(), self.ui.budengshi_quzhifanwei.text())
+        self.jieji_budengshi = solve_budengshi(self.rel_budengshi, self.ui.budengshi_zhuyuanfuhao.text(), self.ui.budengshi_quzhifanwei.text(), self.fs)
         self.setWebEngineView('', latex(self.jieji_budengshi), self.ui.budengshi_jieji)
         self.ui.budengshi_jieji_lineedit.setText(str(self.jieji_budengshi))

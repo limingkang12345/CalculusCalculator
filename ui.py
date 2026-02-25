@@ -1,7 +1,7 @@
 ﻿# -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'uidpvPby.ui'
+## Form generated from reading UI file 'uideWhKi.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.10.2
 ##
@@ -364,7 +364,10 @@ class Ui_MainWindow(object):
         self.label_6.setGeometry(QRect(170, 20, 111, 18))
         self.fangcheng_quzhifanwei = QLineEdit(self.groupBox_15)
         self.fangcheng_quzhifanwei.setObjectName(u"fangcheng_quzhifanwei")
-        self.fangcheng_quzhifanwei.setGeometry(QRect(290, 20, 471, 21))
+        self.fangcheng_quzhifanwei.setGeometry(QRect(290, 20, 361, 21))
+        self.fangcheng_weifenfangcheng = QCheckBox(self.groupBox_15)
+        self.fangcheng_weifenfangcheng.setObjectName(u"fangcheng_weifenfangcheng")
+        self.fangcheng_weifenfangcheng.setGeometry(QRect(670, 20, 89, 22))
         self.groupBox_17 = QGroupBox(self.fangcheng)
         self.groupBox_17.setObjectName(u"groupBox_17")
         self.groupBox_17.setGeometry(QRect(10, 320, 771, 201))
@@ -441,7 +444,7 @@ class Ui_MainWindow(object):
         self.webEngineView = QWebEngineView(self.help)
         self.webEngineView.setObjectName(u"webEngineView")
         self.webEngineView.setGeometry(QRect(0, 0, 791, 571))
-        self.webEngineView.setUrl(QUrl(u"file:///F:/Anaconda3/envs/PyQt/Projects/SymPy/CalculusCalculator/v1.3/src/help.html"))
+        self.webEngineView.setUrl(QUrl(u"about:blank"))
         self.tabWidget.addTab(self.help, "")
         MainWindow.setCentralWidget(self.centralwidget)
 
@@ -455,8 +458,8 @@ class Ui_MainWindow(object):
     # setupUi
 
     def retranslateUi(self, MainWindow):
-        MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"\u5fae\u79ef\u5206\u8ba1\u7b97\u5668v1.3", None))
-        self.shouye_welcome.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p>\u6b22\u8fce\u4f7f\u7528\u5fae\u79ef\u5206\u8ba1\u7b97\u5668v1.3\uff01</p><p>Author: Li Mingkang</p><p>Contributor: CuberAHZ</p></body></html>", None))
+        MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"\u5fae\u79ef\u5206\u8ba1\u7b97\u5668v1.3.1", None))
+        self.shouye_welcome.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p>\u6b22\u8fce\u4f7f\u7528\u5fae\u79ef\u5206\u8ba1\u7b97\u5668v1.3.1\uff01</p><p>Author: Li Mingkang</p><p>Contributor: CuberAHZ</p></body></html>", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.shouye), QCoreApplication.translate("MainWindow", u"\u9996\u9875", None))
         self.groupBox_19.setTitle(QCoreApplication.translate("MainWindow", u"\u51fd\u6570\u5217\u8868", None))
         self.groupBox_20.setTitle(QCoreApplication.translate("MainWindow", u"\u51fd\u6570\u7f16\u8f91\u533a", None))
@@ -472,6 +475,7 @@ class Ui_MainWindow(object):
         self.groupBox_21.setTitle(QCoreApplication.translate("MainWindow", u"\u51fd\u6570\u5c5e\u6027\u533a", None))
         self.groupBox_22.setTitle(QCoreApplication.translate("MainWindow", u"\u51fd\u6570\u6c42\u503c", None))
         self.label_11.setText(QCoreApplication.translate("MainWindow", u"\u81ea\u53d8\u91cf\u503c\uff1a", None))
+        self.dingyi_zibianliangzhi.setText(QCoreApplication.translate("MainWindow", u"0", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.dingyi), QCoreApplication.translate("MainWindow", u"\u5b9a\u4e49", None))
         self.groupBox1.setTitle(QCoreApplication.translate("MainWindow", u"\u8f93\u5165\u8868\u8fbe\u5f0f", None))
         self.groupBox2.setTitle(QCoreApplication.translate("MainWindow", u"\u539f\u51fd\u6570", None))
@@ -519,6 +523,7 @@ class Ui_MainWindow(object):
         self.fangcheng_zhuyuanfuhao.setText(QCoreApplication.translate("MainWindow", u"x", None))
         self.label_6.setText(QCoreApplication.translate("MainWindow", u"\u4e3b\u5143\u53d6\u503c\u8303\u56f4\uff1a", None))
         self.fangcheng_quzhifanwei.setText(QCoreApplication.translate("MainWindow", u"Reals", None))
+        self.fangcheng_weifenfangcheng.setText(QCoreApplication.translate("MainWindow", u"\u5fae\u5206\u65b9\u7a0b", None))
         self.groupBox_17.setTitle(QCoreApplication.translate("MainWindow", u"\u89e3\u96c6", None))
         self.fangcheng_qiujie.setText(QCoreApplication.translate("MainWindow", u"\u6c42\u89e3", None))
         self.groupBox_18.setTitle(QCoreApplication.translate("MainWindow", u"\u539f\u65b9\u7a0b", None))
