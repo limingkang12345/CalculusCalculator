@@ -4,10 +4,10 @@ import resources
 from derivative import derivative, yinhanshu_derivative
 from integral import integral
 from simplification import simplifies
-from solvers import solve_fangcheng, solve_weifenfangcheng, solve_budengshi
+from solvers import solve_fangcheng, solve_weifenfangcheng, solve_fangchengzu, solve_budengshi, solve_budengshizu
 from functions import get_function_attr
 
-from sympy import latex, Eq, Rel, symbols
+from sympy import latex, Eq, Rel, symbols, Symbol
 from sympify import sympify
 import os
 
@@ -24,7 +24,7 @@ class MainWindow(QMainWindow):
         self.ps = [self.ui.tabWidget.widget(i).objectName() for i in range(self.ui.tabWidget.count())]
         self.ws = {p.objectName():[[w.parent().objectName(), w.objectName(), str(w.parent().geometry())[15::], str(w.geometry())[15::]] for w in self.ui.tabWidget.findChild(QWidget, p.objectName()).findChildren(QWebEngineView)] \
                    for p in self.ui.tabWidget.findChild(QStackedWidget).children()}
-        self.fs = {}
+        self.fs, self.eqs, self.rels = {}, {}, {}
 
         self.setup()
 
@@ -62,12 +62,23 @@ class MainWindow(QMainWindow):
         self.ui.fangcheng_weifenfangcheng.stateChanged.connect(self.fangcheng_weifenfangcheng_f)
         self.ui.fangcheng_qiujie.clicked.connect(self.fangcheng_button_f)
 
+        self.ui.fangchengzu_baocun.clicked.connect(self.save_fangcheng)
+        self.ui.fangchengzu_shanchu.clicked.connect(self.delete_fangcheng)
+        self.ui.fangchengzu_fangcheng.itemClicked.connect(self.read_fangcheng)
+        self.ui.fangchengzu_qiujie.clicked.connect(self.fangchengzu_button_f)
+
         self.ui.budengshi_budenghao.addItems(["!=", ">", ">=", "<", "<="])
-        self.ui.budengshi_budenghao.currentIndexChanged.connect(self.setbudengshi_yuanshi_f)
-        self.ui.budengshi_zuoshi.textChanged.connect(self.setbudengshi_yuanshi_f)
-        self.ui.budengshi_youshi.textChanged.connect(self.setbudengshi_yuanshi_f)
-        self.ui.budengshi_quzhifanwei.textChanged.connect(self.setbudengshi_yuanshi_f)
+        self.ui.budengshi_budenghao.currentIndexChanged.connect(self.setbudengshi_yuanshi)
+        self.ui.budengshi_zuoshi.textChanged.connect(self.setbudengshi_yuanshi)
+        self.ui.budengshi_youshi.textChanged.connect(self.setbudengshi_yuanshi)
+        self.ui.budengshi_quzhifanwei.textChanged.connect(self.setbudengshi_yuanshi)
         self.ui.budengshi_qiujie.clicked.connect(self.budengshi_button_f)
+
+        self.ui.budengshizu_budenghao.addItems(["!=", ">", ">=", "<", "<="])
+        self.ui.budengshizu_baocun.clicked.connect(self.save_budengshi)
+        self.ui.budengshizu_shanchu.clicked.connect(self.delete_budengshi)
+        self.ui.budengshizu_budengshi.itemClicked.connect(self.read_budengshi)
+        self.ui.budengshizu_qiujie.clicked.connect(self.budengshizu_button_f)
 
         layout = QVBoxLayout(self.ui.centralwidget)
         layout.setContentsMargins(0, 0, 0, 0)
@@ -297,12 +308,49 @@ class MainWindow(QMainWindow):
             self.setWebEngineView('', latex(self.jieji_fangcheng), self.ui.fangcheng_jieji)
             self.ui.fangcheng_jieji_lineedit.setText(str(self.jieji_fangcheng))
         else:
-            print(1)
             self.jieji_fangcheng = solve_fangcheng(self.eq_fangcheng, self.ui.fangcheng_zhuyuanfuhao.text(), self.ui.fangcheng_quzhifanwei.text(), self.fs)
             self.setWebEngineView('', latex(self.jieji_fangcheng), self.ui.fangcheng_jieji)
             self.ui.fangcheng_jieji_lineedit.setText(str(self.jieji_fangcheng))
+    
+    def read_fangcheng(self, item):
+        # 读取方程并显示
+        self.setWebEngineView('', latex(self.eqs[item.text()]), self.ui.fangchengzu_yuanfangcheng)
+        self.ui.fangchengzu_zuoshi.setText(str(self.eqs[item.text()].lhs))
+        self.ui.fangchengzu_youshi.setText(str(self.eqs[item.text()].rhs))
 
-    def setbudengshi_yuanshi_f(self):
+    def setfangchengzu_yuanfangcheng(self):
+        # 切换至当前选项卡时加载不等式
+        if self.ui.fangchengzu_fangcheng.count() != 0:
+            self.read_fangcheng(self.ui.fangchengzu_fangcheng.currentItem())
+
+    def save_fangcheng(self):
+        # 保存方程
+        if Eq(sympify(self.ui.fangchengzu_zuoshi.text(), self.fs), sympify(self.ui.fangchengzu_youshi.text(), self.fs)) not in self.eqs.values():
+            self.eqs[str(Eq(sympify(self.ui.fangchengzu_zuoshi.text(), self.fs), sympify(self.ui.fangchengzu_youshi.text(), self.fs)))] = Eq(sympify(self.ui.fangchengzu_zuoshi.text(), self.fs), sympify(self.ui.fangchengzu_youshi.text(), self.fs))
+            self.ui.fangchengzu_fangcheng.addItem(str(Eq(sympify(self.ui.fangchengzu_zuoshi.text(), self.fs), sympify(self.ui.fangchengzu_youshi.text(), self.fs))))
+            self.ui.fangchengzu_fangcheng.setCurrentRow(self.ui.fangchengzu_fangcheng.count() - 1)
+        else:
+            self.eqs[str(Eq(sympify(self.ui.fangchengzu_zuoshi.text(), self.fs), sympify(self.ui.fangchengzu_youshi.text(), self.fs)))] = Eq(sympify(self.ui.fangchengzu_zuoshi.text(), self.fs), sympify(self.ui.fangchengzu_youshi.text(), self.fs))
+        self.read_fangcheng(self.ui.fangchengzu_fangcheng.currentItem())
+
+    def delete_fangcheng(self):
+        # 删除方程
+        fangcheng = self.ui.fangchengzu_fangcheng.takeItem(self.ui.fangchengzu_fangcheng.currentRow())
+        del self.eqs[fangcheng.text()]
+        del fangcheng
+        if self.eqs != {}:
+            self.read_fangcheng(self.ui.fangchengzu_fangcheng.currentItem())
+
+    def fangchengzu_button_f(self):
+        # 求解方程组
+        try:
+            result = solve_fangchengzu(list(self.eqs.values()), [Symbol(s) for s in self.ui.fangchengzu_ziyoubianliang.text().split(',')], self.fs)
+        except:
+            result = "无解"
+        self.setWebEngineView('', latex(result).replace(':', "="), self.ui.fangchengzu_jieji)
+        self.ui.fangchengzu_jieji_lineedit.setText(result)
+
+    def setbudengshi_yuanshi(self):
         # 加载原不等式
         try:
             self.rel_budengshi = Rel(sympify(self.ui.budengshi_zuoshi.text(), self.fs), sympify(self.ui.budengshi_youshi.text(), self.fs), self.ui.budengshi_budenghao.currentText())
@@ -315,3 +363,44 @@ class MainWindow(QMainWindow):
         self.jieji_budengshi = solve_budengshi(self.rel_budengshi, self.ui.budengshi_zhuyuanfuhao.text(), self.ui.budengshi_quzhifanwei.text(), self.fs)
         self.setWebEngineView('', latex(self.jieji_budengshi), self.ui.budengshi_jieji)
         self.ui.budengshi_jieji_lineedit.setText(str(self.jieji_budengshi))
+
+    def read_budengshi(self, item):
+        # 读取不等式并显示
+        self.setWebEngineView('', latex(self.rels[item.text()]), self.ui.budengshizu_yuanbudengshi)
+        self.ui.budengshizu_zuoshi.setText(str(self.rels[item.text()].lhs))
+        self.ui.budengshizu_youshi.setText(str(self.rels[item.text()].rhs))
+
+    def setbudengshizu_yuanbudengshi(self):
+        # 切换至当前选项卡时加载不等式
+        if self.ui.budengshizu_budengshi.count() != 0:
+            self.read_budengshi(self.ui.budengshizu_budengshi.currentItem())
+
+    def save_budengshi(self):
+        # 保存不等式
+        if Rel(sympify(self.ui.budengshizu_zuoshi.text(), self.fs), sympify(self.ui.budengshizu_youshi.text(), self.fs), self.ui.budengshizu_budenghao.currentText()) not in self.rels.values():
+            self.rels[str(Rel(sympify(self.ui.budengshizu_zuoshi.text(), self.fs), sympify(self.ui.budengshizu_youshi.text(), self.fs), self.ui.budengshizu_budenghao.currentText()))] = \
+                Rel(sympify(self.ui.budengshizu_zuoshi.text(), self.fs), sympify(self.ui.budengshizu_youshi.text(), self.fs), self.ui.budengshizu_budenghao.currentText())
+            self.ui.budengshizu_budengshi.addItem(str(Rel(sympify(self.ui.budengshizu_zuoshi.text(), self.fs), sympify(self.ui.budengshizu_youshi.text(), self.fs), self.ui.budengshizu_budenghao.currentText())))
+            self.ui.budengshizu_budengshi.setCurrentRow(self.ui.budengshizu_budengshi.count() - 1)
+        else:
+            self.rels[str(Rel(sympify(self.ui.budengshizu_zuoshi.text(), self.fs), sympify(self.ui.budengshizu_youshi.text(), self.fs), self.ui.budengshizu_budenghao.currentText()))] = \
+                Rel(sympify(self.ui.budengshizu_zuoshi.text(), self.fs), sympify(self.ui.budengshizu_youshi.text(), self.fs), self.ui.budengshizu_budenghao.currentText())
+        self.read_budengshi(self.ui.budengshizu_budengshi.currentItem())
+    
+    def delete_budengshi(self):
+        # 删除不等式
+        budengshi = self.ui.budengshizu_budengshi.takeItem(self.ui.budengshizu_budengshi.currentRow())
+        del self.rels[budengshi.text()]
+        del budengshi
+        if self.rels != {}:
+            self.read_budengshi(self.ui.budengshizu_budengshi.currentItem())
+
+    def budengshizu_button_f(self):
+        # 求解不等式组
+        try:
+            result = solve_budengshizu(list(self.rels.values()), Symbol(self.ui.budengshizu_ziyoubianliang.text()), self.fs) \
+                if solve_budengshizu(list(self.rels.values()), Symbol(self.ui.budengshizu_ziyoubianliang.text()), self.fs) else "无解"
+        except:
+            result = "无解"
+        self.setWebEngineView('', latex(result), self.ui.budengshizu_jieji)
+        self.ui.budengshizu_jieji_lineedit.setText(str(result))

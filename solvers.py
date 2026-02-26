@@ -1,4 +1,4 @@
-﻿from sympy import symbols, solveset, dsolve, Function
+﻿from sympy import symbols, solveset, dsolve, Function, solve
 from sympy.abc import x
 from sympify import sympify
 
@@ -20,6 +20,14 @@ def solve_weifenfangcheng(eq, zhuyuan, fs):
     f = symbols("f", cls = Function)
     return dsolve(eq, f(x))
 
+def solve_fangchengzu(eqs, zhuyuan, fs):
+    # eq(list of sympy.core.relational.Equality):方程组等式列表
+    # zhuyuan(list of Symbol):主元符号列表
+    # fs(dict):函数列表
+    # return:解
+
+    return solve(eqs, zhuyuan)
+
 def solve_budengshi(rel, zhuyuan, domain, fs):
     # rel(sympy.core.relational.Relational):不等式
     # zhuyuan(str):主元符号
@@ -28,3 +36,11 @@ def solve_budengshi(rel, zhuyuan, domain, fs):
     # return(sympy.sets.sets.FiniteSet):解集
 
     return solveset(rel, symbols(zhuyuan), sympify(domain, fs))
+
+def solve_budengshizu(rels, zhuyuan, fs):
+    # rels(list of sympy.core.relational.Relational):不等式列表
+    # zhuyuan(Symbol):主元符号
+    # fs(dict):函数列表
+    # return:解集
+
+    return solve(rels, zhuyuan)
