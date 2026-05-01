@@ -1,4 +1,4 @@
-﻿from sympy import diff, solveset, Rel, symbols, maximum, minimum, Interval, Intersection, oo, imageset, Lambda, periodicity
+﻿from sympy import diff, solveset, Rel, symbols, maximum, minimum, Interval, Intersection, oo, imageset, Lambda, periodicity, simplify
 from sympy.calculus.util import function_range
 from sympify import sympify
 
@@ -91,4 +91,4 @@ def get_function_attr(f, s, d, attr, fs):
     attrs = [[frange, None], [monotonic_interval, True], [monotonic_interval, False], [odd_or_even, None], \
         [period, None], [mvalues, True], [mvalues, False]]
 
-    return attrs[attr - 1][0](f, s, d, attrs[attr - 1][1], fs) if attr != 0 else (sympify(f, fs), sympify(d, fs))
+    return simplify(attrs[attr - 1][0](f, s, d, attrs[attr - 1][1], fs)) if attr != 0 else (sympify(f, fs), sympify(d, fs))

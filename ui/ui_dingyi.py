@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'dingyibtRRsW.ui'
+## Form generated from reading UI file 'dingyiHaebzq.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.9.1
 ##
@@ -24,6 +24,7 @@ class Ui_dingyi(object):
     def setupUi(self, dingyi):
         if not dingyi.objectName():
             dingyi.setObjectName(u"dingyi")
+        dingyi.setWindowModality(Qt.WindowModality.NonModal)
         dingyi.resize(801, 551)
         self.groupBox_20 = QGroupBox(dingyi)
         self.groupBox_20.setObjectName(u"groupBox_20")

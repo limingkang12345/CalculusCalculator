@@ -1,7 +1,7 @@
 ﻿from sympy import sympify as sympify_sympy
 from sympy import Symbol, simplify
 
-def sympify(expr, fs, locals = None, is_simplify = True):
+def sympify(expr, fs, locals = None, is_simplify = False):
     # 用于处理输入的表达式
     # expr(str):符合Python和Sympy规范的表达式
     # fs(dict):函数字典
