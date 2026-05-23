@@ -48,9 +48,9 @@ class Dingyi(QWidget, Ui_dingyi):
         self.dingyi_hanshuliebiao.itemClicked.connect(self.read_function)
         self.dingyi_baocun.clicked.connect(self.save_function)
         self.dingyi_shanchu.clicked.connect(self.delete_function)
-        self.dingyi_hanshushuxing.addItems(["表达式&定义域", "值域", "单调递增区间", "单调递减区间", "奇偶性", "周期", "最大值", "最小值"])
-        self.dingyi_hanshushuxing.setCurrentIndex(0)
-        self.dingyi_hanshushuxing.currentIndexChanged.connect(self.update_function_attr)
+        self.dingyi_hanshushuxing_cbx.addItems(["表达式&定义域", "值域", "单调递增区间", "单调递减区间", "奇偶性", "周期", "最大值", "最小值"])
+        self.dingyi_hanshushuxing_cbx.setCurrentIndex(0)
+        self.dingyi_hanshushuxing_cbx.currentIndexChanged.connect(self.update_function_attr)
         self.dingyi_zibianliangzhi.textChanged.connect(self.function_value)
 
         self.fs = fs
@@ -64,7 +64,7 @@ class Dingyi(QWidget, Ui_dingyi):
             self.dingyi_biaodashi.setText(self.fs[fn][1])
             self.dingyi_dingyiyu.setText(self.fs[fn][2])
             self.dingyi_zibianliang.setText(self.fs[fn][3])
-        self.dingyi_hanshushuxing.setCurrentIndex(0)
+        self.dingyi_hanshushuxing_cbx.setCurrentIndex(0)
         self.update_function_attr(0)
         self.function_value()
 
@@ -78,7 +78,7 @@ class Dingyi(QWidget, Ui_dingyi):
             self.dingyi_hanshuliebiao.insertItem(0, "{}({})".format(self.dingyi_mingcheng.text(), self.dingyi_zibianliang.text()))
             self.dingyi_hanshuliebiao.setCurrentRow(0)
         self.fs[self.dingyi_mingcheng.text()] = [self.dingyi_mingcheng.text(), self.dingyi_biaodashi.text(), self.dingyi_dingyiyu.text(), self.dingyi_zibianliang.text()]
-        self.dingyi_hanshushuxing.setCurrentIndex(0)
+        self.dingyi_hanshushuxing_cbx.setCurrentIndex(0)
         self.update_function_attr(0)
         self.function_value()
 
@@ -97,9 +97,9 @@ class Dingyi(QWidget, Ui_dingyi):
         function_attr = get_function_attr(self.dingyi_biaodashi.text(), self.dingyi_zibianliang.text(), self.dingyi_dingyiyu.text(), attr, self.fs)
         self.dingyi_hanshushuxing_lineedit.setText(str(function_attr))
         try:
-            setWebEngineView('' if self.dingyi_hanshushuxing.currentIndex() != 0 else self.dingyi_hanshuliebiao.currentItem().text() + "=", \
-                latex(function_attr) if self.dingyi_hanshushuxing.currentIndex() != 0 else latex(function_attr[0]) + '({}\\in {})'.format(self.dingyi_zibianliang.text(), latex(function_attr[1])), \
-                self.dingyi_hanshushuxing_view)
+            setWebEngineView('' if self.dingyi_hanshushuxing_cbx.currentIndex() != 0 else self.dingyi_hanshuliebiao.currentItem().text() + "=", \
+                latex(function_attr) if self.dingyi_hanshushuxing_cbx.currentIndex() != 0 else latex(function_attr[0]) + '({}\\in {})'.format(self.dingyi_zibianliang.text(), latex(function_attr[1])), \
+                self.dingyi_hanshushuxing)
         except:
             pass
 
@@ -436,3 +436,4 @@ class Help(QWidget, Ui_help):
         self.webEngineView.setUrl(self.help_path)
 
 tabs_list = [Shouye, Dingyi, Qiudao, Jifen, Bianxing, Fangcheng, Fangchengzu, Budengshi, Budengshizu, Help]
+tabs_dict = {"首页":0, "定义":1, "求导":2, "积分":3, "变形":4, "方程":5, "方程组":6, "不等式":7, "不等式组":8, "帮助":9}

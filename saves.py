@@ -1,0 +1,57 @@
+from PySide6.QtWidgets import QFileDialog, QLineEdit
+from PySide6.QtWebEngineWidgets import QWebEngineView
+from PySide6.QtCore import Qt
+from sympy import latex
+from sympify import sympify
+import ui
+import json
+
+def savefile(main_class):
+    # 保存项目
+    # main_class(class):主窗口类
+    filename = QFileDialog.getSaveFileName(main_class, "Save File", "Project", "JSON Files (*.json)")[0]
+    output = {}
+    with open(filename, mode = "w") as file:
+        item_output = {}
+        for i in main_class.tabs.items():
+            item_output[i[0]] = {}
+            for lineedit in i[1].findChildren(QLineEdit, options = Qt.FindChildrenRecursively):
+                item_output[i[0]][lineedit.objectName()] = lineedit.text()
+        output["texts"] = item_output
+        output["fs"] = main_class.fs
+        output["tabs_n"] = main_class.tabs_n
+        file.write(json.dumps(output))
+
+def openfile(main_class):
+    # 打开项目
+    # main_class(class):主窗口类
+    filename = QFileDialog.getOpenFileName(main_class, "Open File", "", "JSON Files (*.json)")[0]
+    with open(filename, mode = "r") as file:
+        json_data = json.loads(file.read())
+        main_class.fs = json_data["fs"]
+        main_class.tabs_n = json_data["tabs_n"]
+        for i in range(main_class.ui.tabWidget.count() - 1, -1, -1):
+            main_class.close_tab(i, auto_create = False)
+        for tab_name in json_data["texts"].keys():
+            name_str = ''.join([c for c in tab_name if not c.isdigit()])
+            n_str = ''.join([c for c in tab_name if c.isdigit()])
+            main_class.create_tab(ui.tabs_dict[name_str], n = int(n_str) if n_str else 0)
+            # 将保存的文本框文本自动填入对应的 QLineEdit
+            saved_texts = json_data["texts"].get(tab_name, {})
+            if tab_name in main_class.tabs:
+                tab_widget = main_class.tabs[tab_name]
+                for lineedit in tab_widget.findChildren(QLineEdit):
+                    if lineedit.objectName() in saved_texts:
+                        lineedit.setText(saved_texts[lineedit.objectName()])
+                # 自动渲染数学公式：文本框名称后缀为"_lineedit"则去掉该后缀即为对应的Web浏览框对象名
+                for lineedit in tab_widget.findChildren(QLineEdit):
+                    if lineedit.objectName().endswith('_lineedit') and lineedit.text():
+                        view_name = lineedit.objectName()[:-9]
+                        view = tab_widget.findChild(QWebEngineView, view_name)
+                        if view is not None:
+                            try:
+                                expr = sympify(lineedit.text(), main_class.fs)
+                                ui.setWebEngineView('', latex(expr), view)
+                            except:
+                                pass
+    

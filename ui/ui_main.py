@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'mainXMyOPG.ui'
+## Form generated from reading UI file 'mainVhHUoc.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.9.1
 ##
@@ -52,6 +52,12 @@ class Ui_MainWindow(object):
         self.actionwebsite.setObjectName(u"actionwebsite")
         self.actiondingyi = QAction(MainWindow)
         self.actiondingyi.setObjectName(u"actiondingyi")
+        self.actionsaveas = QAction(MainWindow)
+        self.actionsaveas.setObjectName(u"actionsaveas")
+        self.actionopen = QAction(MainWindow)
+        self.actionopen.setObjectName(u"actionopen")
+        self.actionexit = QAction(MainWindow)
+        self.actionexit.setObjectName(u"actionexit")
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
         self.tabWidget = QTabWidget(self.centralwidget)
@@ -68,8 +74,11 @@ class Ui_MainWindow(object):
         self.new_tab.setObjectName(u"new_tab")
         self.about = QMenu(self.menubar)
         self.about.setObjectName(u"about")
+        self.file = QMenu(self.menubar)
+        self.file.setObjectName(u"file")
         MainWindow.setMenuBar(self.menubar)
 
+        self.menubar.addAction(self.file.menuAction())
         self.menubar.addAction(self.new_tab.menuAction())
         self.menubar.addAction(self.about.menuAction())
         self.new_tab.addAction(self.actionshouye)
@@ -84,6 +93,9 @@ class Ui_MainWindow(object):
         self.new_tab.addAction(self.actionhelp)
         self.about.addAction(self.actiongithub)
         self.about.addAction(self.actionwebsite)
+        self.file.addAction(self.actionsaveas)
+        self.file.addAction(self.actionopen)
+        self.file.addAction(self.actionexit)
 
         self.retranslateUi(MainWindow)
 
@@ -109,7 +121,11 @@ class Ui_MainWindow(object):
         self.actiongithub.setText(QCoreApplication.translate("MainWindow", u"Github\u94fe\u63a5", None))
         self.actionwebsite.setText(QCoreApplication.translate("MainWindow", u"\u7f51\u9875\u7248", None))
         self.actiondingyi.setText(QCoreApplication.translate("MainWindow", u"\u5b9a\u4e49", None))
+        self.actionsaveas.setText(QCoreApplication.translate("MainWindow", u"\u4fdd\u5b58\u4e3a", None))
+        self.actionopen.setText(QCoreApplication.translate("MainWindow", u"\u6253\u5f00", None))
+        self.actionexit.setText(QCoreApplication.translate("MainWindow", u"\u9000\u51fa", None))
         self.new_tab.setTitle(QCoreApplication.translate("MainWindow", u"\u65b0\u5efa", None))
         self.about.setTitle(QCoreApplication.translate("MainWindow", u"\u5173\u4e8e", None))
+        self.file.setTitle(QCoreApplication.translate("MainWindow", u"\u6587\u4ef6", None))
     # retranslateUi
 

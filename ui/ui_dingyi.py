@@ -99,13 +99,13 @@ class Ui_dingyi(object):
         self.groupBox_21 = QGroupBox(dingyi)
         self.groupBox_21.setObjectName(u"groupBox_21")
         self.groupBox_21.setGeometry(QRect(250, 170, 531, 141))
-        self.dingyi_hanshushuxing = QComboBox(self.groupBox_21)
+        self.dingyi_hanshushuxing_cbx = QComboBox(self.groupBox_21)
+        self.dingyi_hanshushuxing_cbx.setObjectName(u"dingyi_hanshushuxing_cbx")
+        self.dingyi_hanshushuxing_cbx.setGeometry(QRect(10, 20, 121, 20))
+        self.dingyi_hanshushuxing = QWebEngineView(self.groupBox_21)
         self.dingyi_hanshushuxing.setObjectName(u"dingyi_hanshushuxing")
-        self.dingyi_hanshushuxing.setGeometry(QRect(10, 20, 121, 20))
-        self.dingyi_hanshushuxing_view = QWebEngineView(self.groupBox_21)
-        self.dingyi_hanshushuxing_view.setObjectName(u"dingyi_hanshushuxing_view")
-        self.dingyi_hanshushuxing_view.setGeometry(QRect(10, 50, 511, 81))
-        self.dingyi_hanshushuxing_view.setUrl(QUrl(u"about:blank"))
+        self.dingyi_hanshushuxing.setGeometry(QRect(10, 50, 511, 81))
+        self.dingyi_hanshushuxing.setUrl(QUrl(u"about:blank"))
         self.dingyi_hanshushuxing_lineedit = QLineEdit(self.groupBox_21)
         self.dingyi_hanshushuxing_lineedit.setObjectName(u"dingyi_hanshushuxing_lineedit")
         self.dingyi_hanshushuxing_lineedit.setGeometry(QRect(140, 20, 381, 21))
@@ -118,7 +118,7 @@ class Ui_dingyi(object):
 
         self.retranslateUi(dingyi)
 
-        self.dingyi_hanshushuxing.setCurrentIndex(-1)
+        self.dingyi_hanshushuxing_cbx.setCurrentIndex(-1)
 
 
         QMetaObject.connectSlotsByName(dingyi)
