@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'jifeneBkkNh.ui'
+## Form generated from reading UI file 'jifenWUoWFQ.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.9.1
 ##
@@ -30,12 +30,14 @@ class Ui_jifen(object):
         self.jifen_input = QLineEdit(self.groupBox1_2)
         self.jifen_input.setObjectName(u"jifen_input")
         self.jifen_input.setGeometry(QRect(10, 20, 751, 21))
+        self.jifen_input.setClearButtonEnabled(True)
         self.groupBox_7 = QGroupBox(jifen)
         self.groupBox_7.setObjectName(u"groupBox_7")
         self.groupBox_7.setGeometry(QRect(10, 60, 251, 51))
         self.jifen_jifenbianliang = QLineEdit(self.groupBox_7)
         self.jifen_jifenbianliang.setObjectName(u"jifen_jifenbianliang")
         self.jifen_jifenbianliang.setGeometry(QRect(10, 20, 231, 24))
+        self.jifen_jifenbianliang.setClearButtonEnabled(True)
         self.groupBox3_2 = QGroupBox(jifen)
         self.groupBox3_2.setObjectName(u"groupBox3_2")
         self.groupBox3_2.setGeometry(QRect(10, 240, 771, 131))
@@ -56,6 +58,9 @@ class Ui_jifen(object):
         self.jifen_dingjifenzhi_lineedit = QLineEdit(self.groupBox_11)
         self.jifen_dingjifenzhi_lineedit.setObjectName(u"jifen_dingjifenzhi_lineedit")
         self.jifen_dingjifenzhi_lineedit.setGeometry(QRect(10, 100, 751, 21))
+        self.jifen_dingjifen = QCheckBox(jifen)
+        self.jifen_dingjifen.setObjectName(u"jifen_dingjifen")
+        self.jifen_dingjifen.setGeometry(QRect(530, 80, 89, 22))
         self.groupBox_8 = QGroupBox(jifen)
         self.groupBox_8.setObjectName(u"groupBox_8")
         self.groupBox_8.setGeometry(QRect(400, 60, 121, 51))
@@ -63,6 +68,7 @@ class Ui_jifen(object):
         self.jifen_shangxianzhi.setObjectName(u"jifen_shangxianzhi")
         self.jifen_shangxianzhi.setEnabled(False)
         self.jifen_shangxianzhi.setGeometry(QRect(10, 20, 101, 24))
+        self.jifen_shangxianzhi.setClearButtonEnabled(True)
         self.jifen_jifen_button = QPushButton(jifen)
         self.jifen_jifen_button.setObjectName(u"jifen_jifen_button")
         self.jifen_jifen_button.setGeometry(QRect(10, 510, 771, 26))
@@ -73,6 +79,7 @@ class Ui_jifen(object):
         self.jifen_xiaxianzhi.setObjectName(u"jifen_xiaxianzhi")
         self.jifen_xiaxianzhi.setEnabled(False)
         self.jifen_xiaxianzhi.setGeometry(QRect(10, 20, 101, 24))
+        self.jifen_xiaxianzhi.setClearButtonEnabled(True)
         self.groupBox2_2 = QGroupBox(jifen)
         self.groupBox2_2.setObjectName(u"groupBox2_2")
         self.groupBox2_2.setGeometry(QRect(10, 110, 771, 131))
@@ -80,9 +87,6 @@ class Ui_jifen(object):
         self.jifen_beijihanshu.setObjectName(u"jifen_beijihanshu")
         self.jifen_beijihanshu.setGeometry(QRect(10, 20, 751, 101))
         self.jifen_beijihanshu.setUrl(QUrl(u"about:blank"))
-        self.jifen_dingjifen = QCheckBox(jifen)
-        self.jifen_dingjifen.setObjectName(u"jifen_dingjifen")
-        self.jifen_dingjifen.setGeometry(QRect(530, 80, 89, 22))
 
         self.retranslateUi(jifen)
 
@@ -96,10 +100,10 @@ class Ui_jifen(object):
         self.jifen_jifenbianliang.setText(QCoreApplication.translate("jifen", u"x", None))
         self.groupBox3_2.setTitle(QCoreApplication.translate("jifen", u"\u539f\u51fd\u6570", None))
         self.groupBox_11.setTitle(QCoreApplication.translate("jifen", u"\u5b9a\u79ef\u5206\u503c", None))
+        self.jifen_dingjifen.setText(QCoreApplication.translate("jifen", u"\u5b9a\u79ef\u5206", None))
         self.groupBox_8.setTitle(QCoreApplication.translate("jifen", u"\u4e0a\u9650\u503c", None))
         self.jifen_jifen_button.setText(QCoreApplication.translate("jifen", u"\u79ef\u5206", None))
         self.groupBox_9.setTitle(QCoreApplication.translate("jifen", u"\u4e0b\u9650\u503c", None))
         self.groupBox2_2.setTitle(QCoreApplication.translate("jifen", u"\u88ab\u79ef\u51fd\u6570", None))
-        self.jifen_dingjifen.setText(QCoreApplication.translate("jifen", u"\u5b9a\u79ef\u5206", None))
     # retranslateUi
 

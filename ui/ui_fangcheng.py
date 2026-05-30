@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'fangchengwakGeg.ui'
+## Form generated from reading UI file 'fangchengQGYhly.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.9.1
 ##
@@ -33,12 +33,14 @@ class Ui_fangcheng(object):
         self.fangcheng_zhuyuanfuhao = QLineEdit(self.groupBox_15)
         self.fangcheng_zhuyuanfuhao.setObjectName(u"fangcheng_zhuyuanfuhao")
         self.fangcheng_zhuyuanfuhao.setGeometry(QRect(100, 20, 51, 21))
+        self.fangcheng_zhuyuanfuhao.setClearButtonEnabled(True)
         self.label_6 = QLabel(self.groupBox_15)
         self.label_6.setObjectName(u"label_6")
         self.label_6.setGeometry(QRect(170, 20, 111, 18))
         self.fangcheng_quzhifanwei = QLineEdit(self.groupBox_15)
         self.fangcheng_quzhifanwei.setObjectName(u"fangcheng_quzhifanwei")
         self.fangcheng_quzhifanwei.setGeometry(QRect(290, 20, 361, 21))
+        self.fangcheng_quzhifanwei.setClearButtonEnabled(True)
         self.fangcheng_weifenfangcheng = QCheckBox(self.groupBox_15)
         self.fangcheng_weifenfangcheng.setObjectName(u"fangcheng_weifenfangcheng")
         self.fangcheng_weifenfangcheng.setGeometry(QRect(670, 20, 89, 22))
@@ -48,12 +50,14 @@ class Ui_fangcheng(object):
         self.fangcheng_zuoshi = QLineEdit(self.groupBox_14)
         self.fangcheng_zuoshi.setObjectName(u"fangcheng_zuoshi")
         self.fangcheng_zuoshi.setGeometry(QRect(10, 20, 751, 21))
+        self.fangcheng_zuoshi.setClearButtonEnabled(True)
         self.label_4 = QLabel(self.groupBox_14)
         self.label_4.setObjectName(u"label_4")
         self.label_4.setGeometry(QRect(10, 50, 16, 18))
         self.fangcheng_youshi = QLineEdit(self.groupBox_14)
         self.fangcheng_youshi.setObjectName(u"fangcheng_youshi")
         self.fangcheng_youshi.setGeometry(QRect(30, 50, 731, 21))
+        self.fangcheng_youshi.setClearButtonEnabled(True)
         self.groupBox_17 = QGroupBox(fangcheng)
         self.groupBox_17.setObjectName(u"groupBox_17")
         self.groupBox_17.setGeometry(QRect(10, 310, 771, 191))
@@ -69,10 +73,10 @@ class Ui_fangcheng(object):
         self.fangcheng_qiujie.setGeometry(QRect(10, 510, 771, 26))
         self.groupBox_18 = QGroupBox(fangcheng)
         self.groupBox_18.setObjectName(u"groupBox_18")
-        self.groupBox_18.setGeometry(QRect(10, 150, 771, 161))
+        self.groupBox_18.setGeometry(QRect(10, 150, 771, 151))
         self.fangcheng_yuanfangcheng = QWebEngineView(self.groupBox_18)
         self.fangcheng_yuanfangcheng.setObjectName(u"fangcheng_yuanfangcheng")
-        self.fangcheng_yuanfangcheng.setGeometry(QRect(10, 20, 751, 131))
+        self.fangcheng_yuanfangcheng.setGeometry(QRect(10, 20, 751, 121))
         self.fangcheng_yuanfangcheng.setUrl(QUrl(u"about:blank"))
 
         self.retranslateUi(fangcheng)

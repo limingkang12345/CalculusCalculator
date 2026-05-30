@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'shouyeSLMgwv.ui'
+## Form generated from reading UI file 'shouye.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.9.1
 ##
@@ -16,7 +16,7 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
 from PySide6.QtWidgets import (QApplication, QGridLayout, QLabel, QSizePolicy,
-    QWidget)
+    QVBoxLayout, QWidget)
 
 class Ui_shouye(object):
     def setupUi(self, shouye):
@@ -24,19 +24,14 @@ class Ui_shouye(object):
             shouye.setObjectName(u"shouye")
         shouye.setWindowModality(Qt.WindowModality.NonModal)
         shouye.resize(801, 551)
-        self.gridLayoutWidget = QWidget(shouye)
-        self.gridLayoutWidget.setObjectName(u"gridLayoutWidget")
-        self.gridLayoutWidget.setGeometry(QRect(0, 0, 801, 551))
-        self.gridLayout = QGridLayout(self.gridLayoutWidget)
-        self.gridLayout.setObjectName(u"gridLayout")
-        self.gridLayout.setContentsMargins(0, 0, 0, 0)
-        self.shouye_welcome = QLabel(self.gridLayoutWidget)
+        self.shouye_layout = QVBoxLayout(shouye)
+        self.shouye_layout.setObjectName(u"shouye_layout")
+        self.shouye_layout.setContentsMargins(0, 0, 0, 0)
+        self.shouye_welcome = QLabel(shouye)
         self.shouye_welcome.setObjectName(u"shouye_welcome")
         self.shouye_welcome.setStyleSheet(u"background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1, stop:0 rgba(0, 120, 240, 255), stop:1 rgba(255, 255, 255, 255));")
         self.shouye_welcome.setAlignment(Qt.AlignmentFlag.AlignCenter)
-
-        self.gridLayout.addWidget(self.shouye_welcome, 0, 0, 1, 1)
-
+        self.shouye_layout.addWidget(self.shouye_welcome)
 
         self.retranslateUi(shouye)
 
@@ -47,4 +42,3 @@ class Ui_shouye(object):
         shouye.setWindowTitle(QCoreApplication.translate("shouye", u"Form", None))
         self.shouye_welcome.setText(QCoreApplication.translate("shouye", u"<html><head/><body><p><span style=\" font-size:50pt; font-weight:700; color:#000000; font-family:'Times New Roman',Times,serif;\">CalculusCalculator</span></p><p><span style=\" font-size:18pt; font-family:'Times New Roman',Times,serif;\">Author: Li Mingkang</span></p><p><span style=\" font-size:18pt; font-family:'Times New Roman',Times,serif;\">Contributor: CuberAHZ</span></p></body></html>", None))
     # retranslateUi
-

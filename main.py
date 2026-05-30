@@ -13,8 +13,8 @@ class MainWindow(QMainWindow):
         super().__init__(parent)
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
-        self.fs, self.tabs = {}, {}
-        self.tabs_n = [1] * 10
+        self.fs, self.tabs, self.eqs, self.rels = {}, {}, {}, {}
+        self.tabs_n = [1] * 11
         self._preinit_view = None
 
         self.setup()
@@ -33,7 +33,8 @@ class MainWindow(QMainWindow):
         self.ui.actionfangchengzu.triggered.connect(lambda:self.create_tab(6))
         self.ui.actionbudengshi.triggered.connect(lambda:self.create_tab(7))
         self.ui.actionbudengshizu.triggered.connect(lambda:self.create_tab(8))
-        self.ui.actionhelp.triggered.connect(lambda:self.create_tab(9))
+        self.ui.actionjisuan.triggered.connect(lambda:self.create_tab(9))
+        self.ui.actionhelp.triggered.connect(lambda:self.create_tab(10))
         self.ui.actiongithub.triggered.connect(lambda:webbrowser.open("https://github.com/limingkang12345/CalculusCalculator"))
         self.ui.actionwebsite.triggered.connect(lambda:webbrowser.open("https://limingkang.pythonanywhere.com"))
         
@@ -69,8 +70,8 @@ class MainWindow(QMainWindow):
         # n(int):标签页序号，默认为0，有传入则使用传入值，否则使用默认值
         # 不传父对象（None），由 addTab 自动设置正确的父对象为 tabWidget 的堆叠窗口
         # 避免标签页先被设为 MainWindow 的子对象后又重新父化，导致原生窗口句柄重建引发闪退
-        new_tab = tabs_list[index](None, self.fs)
-        new_tab_name = tabs_name[index] + str(n if n else self.tabs_n[index])
+        new_tab = tabs_list[index](self, self.fs)
+        new_tab_name = list(tabs_dict.keys())[index] + str(n if n else self.tabs_n[index])
         self.tabs_n[index] += (0 if n else 1)
         self.ui.tabWidget.setCurrentIndex(self.ui.tabWidget.addTab(new_tab, new_tab_name))
         self.tabs[new_tab_name] = self.ui.tabWidget.currentWidget()

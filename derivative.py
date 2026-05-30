@@ -1,4 +1,4 @@
-﻿from sympy import diff, idiff, solve, Eq
+﻿from sympy import diff, idiff, solve, Eq, radsimp
 from sympify import sympify
 
 
@@ -12,9 +12,9 @@ def derivative(f, v, n, x, fs):
     # return:返回导函数表达式
 
     if x is None:
-        return diff(sympify(f, fs), sympify(v, fs), int(n))
+        return radsimp(diff(sympify(f, fs), sympify(v, fs), int(n)))
     else:
-        return diff(sympify(f, fs), sympify(v, fs), int(n)).subs(sympify(v, fs), sympify(x, fs))
+        return radsimp(diff(sympify(f, fs), sympify(v, fs), int(n)).subs(sympify(v, fs), sympify(x, fs)))
 
 def yinhanshu_derivative(f, v1, v2, n, x, fs):
     # 该函数用于计算隐函数的导函数并返回Latex表达式
@@ -27,7 +27,7 @@ def yinhanshu_derivative(f, v1, v2, n, x, fs):
     # return:返回导函数表达式
 
     if x is None:
-        return idiff(sympify(f, fs), sympify(v2, fs), sympify(v1, fs), int(n))
+        return radsimp(idiff(sympify(f, fs), sympify(v2, fs), sympify(v1, fs), int(n)))
     else:
-        return idiff(sympify(f, fs), sympify(v2, fs), sympify(v1, fs), int(n)).subs(sympify(v1, fs), sympify(x, fs)).subs(sympify(v2, fs), \
-            solve(Eq(sympify(f, fs).subs(sympify(v1, fs), sympify(x, fs)), 0), sympify(v2, fs))[0])
+        return radsimp(idiff(sympify(f, fs), sympify(v2, fs), sympify(v1, fs), int(n)).subs(sympify(v1, fs), sympify(x, fs)).subs(sympify(v2, fs), \
+            solve(Eq(sympify(f, fs).subs(sympify(v1, fs), sympify(x, fs)), 0), sympify(v2, fs))[0]))

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'bianxingmaCmcd.ui'
+## Form generated from reading UI file 'bianxingsgrXHS.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.9.1
 ##
@@ -34,6 +34,7 @@ class Ui_bianxing(object):
         self.bianxing_zhuyuanfuhao.setObjectName(u"bianxing_zhuyuanfuhao")
         self.bianxing_zhuyuanfuhao.setEnabled(False)
         self.bianxing_zhuyuanfuhao.setGeometry(QRect(100, 20, 51, 21))
+        self.bianxing_zhuyuanfuhao.setClearButtonEnabled(True)
         self.label_2 = QLabel(self.groupBox_10)
         self.label_2.setObjectName(u"label_2")
         self.label_2.setGeometry(QRect(170, 20, 71, 20))
@@ -41,6 +42,7 @@ class Ui_bianxing(object):
         self.bianxing_huanyuanfuhao.setObjectName(u"bianxing_huanyuanfuhao")
         self.bianxing_huanyuanfuhao.setEnabled(False)
         self.bianxing_huanyuanfuhao.setGeometry(QRect(250, 20, 51, 21))
+        self.bianxing_huanyuanfuhao.setClearButtonEnabled(True)
         self.label_3 = QLabel(self.groupBox_10)
         self.label_3.setObjectName(u"label_3")
         self.label_3.setGeometry(QRect(310, 20, 16, 18))
@@ -48,6 +50,7 @@ class Ui_bianxing(object):
         self.bianxing_huanyuanshi.setObjectName(u"bianxing_huanyuanshi")
         self.bianxing_huanyuanshi.setEnabled(False)
         self.bianxing_huanyuanshi.setGeometry(QRect(330, 20, 431, 21))
+        self.bianxing_huanyuanshi.setClearButtonEnabled(True)
         self.groupBox_13 = QGroupBox(bianxing)
         self.groupBox_13.setObjectName(u"groupBox_13")
         self.groupBox_13.setGeometry(QRect(10, 60, 771, 51))
@@ -58,10 +61,10 @@ class Ui_bianxing(object):
         self.bianxing_bianxingfangfa.setMaxVisibleItems(13)
         self.groupBox_16 = QGroupBox(bianxing)
         self.groupBox_16.setObjectName(u"groupBox_16")
-        self.groupBox_16.setGeometry(QRect(10, 160, 771, 151))
+        self.groupBox_16.setGeometry(QRect(10, 160, 771, 141))
         self.bianxing_yuanshi = QWebEngineView(self.groupBox_16)
         self.bianxing_yuanshi.setObjectName(u"bianxing_yuanshi")
-        self.bianxing_yuanshi.setGeometry(QRect(10, 20, 751, 121))
+        self.bianxing_yuanshi.setGeometry(QRect(10, 20, 751, 111))
         self.bianxing_yuanshi.setUrl(QUrl(u"about:blank"))
         self.groupBox_2 = QGroupBox(bianxing)
         self.groupBox_2.setObjectName(u"groupBox_2")
@@ -69,19 +72,20 @@ class Ui_bianxing(object):
         self.bianxing_input = QLineEdit(self.groupBox_2)
         self.bianxing_input.setObjectName(u"bianxing_input")
         self.bianxing_input.setGeometry(QRect(10, 20, 751, 21))
+        self.bianxing_input.setClearButtonEnabled(True)
         self.bianxing_bianxing_button = QPushButton(bianxing)
         self.bianxing_bianxing_button.setObjectName(u"bianxing_bianxing_button")
         self.bianxing_bianxing_button.setGeometry(QRect(10, 510, 771, 26))
         self.groupBox_12 = QGroupBox(bianxing)
         self.groupBox_12.setObjectName(u"groupBox_12")
-        self.groupBox_12.setGeometry(QRect(10, 320, 771, 181))
+        self.groupBox_12.setGeometry(QRect(10, 310, 771, 191))
         self.bianxing_bianxingshi = QWebEngineView(self.groupBox_12)
         self.bianxing_bianxingshi.setObjectName(u"bianxing_bianxingshi")
-        self.bianxing_bianxingshi.setGeometry(QRect(10, 20, 751, 121))
+        self.bianxing_bianxingshi.setGeometry(QRect(10, 20, 751, 131))
         self.bianxing_bianxingshi.setUrl(QUrl(u"about:blank"))
         self.bianxing_bianxingshi_lineedit = QLineEdit(self.groupBox_12)
         self.bianxing_bianxingshi_lineedit.setObjectName(u"bianxing_bianxingshi_lineedit")
-        self.bianxing_bianxingshi_lineedit.setGeometry(QRect(10, 150, 751, 21))
+        self.bianxing_bianxingshi_lineedit.setGeometry(QRect(10, 160, 751, 21))
 
         self.retranslateUi(bianxing)
 

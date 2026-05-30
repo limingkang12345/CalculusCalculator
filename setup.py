@@ -15,8 +15,8 @@ target = Executable(
 # SETUP CX FREEZE
 setup(
     name = "CalculusCalculator",
-    version = "1.4.3",
-    description = "微积分计算器v1.4.3",
+    version = "1.4.4",
+    description = "微积分计算器v1.4.4",
     author = "LiMingkang",
     options = {'build_exe' : {'include_files' : files}},
     executables = [target]

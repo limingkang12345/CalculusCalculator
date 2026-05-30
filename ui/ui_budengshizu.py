@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'budengshizuDqeyhE.ui'
+## Form generated from reading UI file 'budengshizuOyRXwR.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.9.1
 ##
@@ -41,9 +41,11 @@ class Ui_budengshizu(object):
         self.budengshizu_zuoshi = QLineEdit(self.groupBox_61)
         self.budengshizu_zuoshi.setObjectName(u"budengshizu_zuoshi")
         self.budengshizu_zuoshi.setGeometry(QRect(270, 20, 491, 21))
+        self.budengshizu_zuoshi.setClearButtonEnabled(True)
         self.budengshizu_youshi = QLineEdit(self.groupBox_61)
         self.budengshizu_youshi.setObjectName(u"budengshizu_youshi")
         self.budengshizu_youshi.setGeometry(QRect(350, 50, 411, 21))
+        self.budengshizu_youshi.setClearButtonEnabled(True)
         self.budengshizu_shanchu = QPushButton(self.groupBox_61)
         self.budengshizu_shanchu.setObjectName(u"budengshizu_shanchu")
         self.budengshizu_shanchu.setGeometry(QRect(670, 80, 87, 26))
@@ -58,7 +60,8 @@ class Ui_budengshizu(object):
         self.label_33.setGeometry(QRect(270, 80, 151, 18))
         self.budengshizu_ziyoubianliang = QLineEdit(self.groupBox_61)
         self.budengshizu_ziyoubianliang.setObjectName(u"budengshizu_ziyoubianliang")
-        self.budengshizu_ziyoubianliang.setGeometry(QRect(420, 80, 131, 21))
+        self.budengshizu_ziyoubianliang.setGeometry(QRect(430, 80, 121, 21))
+        self.budengshizu_ziyoubianliang.setClearButtonEnabled(True)
         self.budengshizu_budenghao = QComboBox(self.groupBox_61)
         self.budengshizu_budenghao.setObjectName(u"budengshizu_budenghao")
         self.budengshizu_budenghao.setGeometry(QRect(270, 50, 71, 21))

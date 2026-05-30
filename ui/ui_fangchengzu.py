@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'fangchengzuiXmwHO.ui'
+## Form generated from reading UI file 'fangchengzuzUUFqH.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.9.1
 ##
@@ -51,12 +51,14 @@ class Ui_fangchengzu(object):
         self.fangchengzu_zuoshi = QLineEdit(self.groupBox_23)
         self.fangchengzu_zuoshi.setObjectName(u"fangchengzu_zuoshi")
         self.fangchengzu_zuoshi.setGeometry(QRect(270, 20, 491, 21))
+        self.fangchengzu_zuoshi.setClearButtonEnabled(True)
         self.label_10 = QLabel(self.groupBox_23)
         self.label_10.setObjectName(u"label_10")
         self.label_10.setGeometry(QRect(270, 50, 16, 18))
         self.fangchengzu_youshi = QLineEdit(self.groupBox_23)
         self.fangchengzu_youshi.setObjectName(u"fangchengzu_youshi")
         self.fangchengzu_youshi.setGeometry(QRect(290, 50, 471, 21))
+        self.fangchengzu_youshi.setClearButtonEnabled(True)
         self.fangchengzu_shanchu = QPushButton(self.groupBox_23)
         self.fangchengzu_shanchu.setObjectName(u"fangchengzu_shanchu")
         self.fangchengzu_shanchu.setGeometry(QRect(670, 80, 87, 26))
@@ -72,6 +74,7 @@ class Ui_fangchengzu(object):
         self.fangchengzu_ziyoubianliang = QLineEdit(self.groupBox_23)
         self.fangchengzu_ziyoubianliang.setObjectName(u"fangchengzu_ziyoubianliang")
         self.fangchengzu_ziyoubianliang.setGeometry(QRect(340, 80, 211, 21))
+        self.fangchengzu_ziyoubianliang.setClearButtonEnabled(True)
         self.label_25 = QLabel(self.groupBox_23)
         self.label_25.setObjectName(u"label_25")
         self.label_25.setGeometry(QRect(270, 110, 281, 51))

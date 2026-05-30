@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'dingyiHaebzq.ui'
+## Form generated from reading UI file 'dingyiNSOByB.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.9.1
 ##
@@ -44,6 +44,7 @@ class Ui_dingyi(object):
 
         self.dingyi_mingcheng = QLineEdit(self.formLayoutWidget)
         self.dingyi_mingcheng.setObjectName(u"dingyi_mingcheng")
+        self.dingyi_mingcheng.setClearButtonEnabled(True)
 
         self.formLayout.setWidget(0, QFormLayout.ItemRole.FieldRole, self.dingyi_mingcheng)
 
@@ -52,11 +53,6 @@ class Ui_dingyi(object):
 
         self.formLayout.setWidget(1, QFormLayout.ItemRole.LabelRole, self.label_8)
 
-        self.dingyi_biaodashi = QLineEdit(self.formLayoutWidget)
-        self.dingyi_biaodashi.setObjectName(u"dingyi_biaodashi")
-
-        self.formLayout.setWidget(1, QFormLayout.ItemRole.FieldRole, self.dingyi_biaodashi)
-
         self.label_9 = QLabel(self.formLayoutWidget)
         self.label_9.setObjectName(u"label_9")
 
@@ -64,8 +60,15 @@ class Ui_dingyi(object):
 
         self.dingyi_dingyiyu = QLineEdit(self.formLayoutWidget)
         self.dingyi_dingyiyu.setObjectName(u"dingyi_dingyiyu")
+        self.dingyi_dingyiyu.setClearButtonEnabled(True)
 
         self.formLayout.setWidget(2, QFormLayout.ItemRole.FieldRole, self.dingyi_dingyiyu)
+
+        self.dingyi_biaodashi = QLineEdit(self.formLayoutWidget)
+        self.dingyi_biaodashi.setObjectName(u"dingyi_biaodashi")
+        self.dingyi_biaodashi.setClearButtonEnabled(True)
+
+        self.formLayout.setWidget(1, QFormLayout.ItemRole.FieldRole, self.dingyi_biaodashi)
 
         self.dingyi_shanchu = QPushButton(self.groupBox_20)
         self.dingyi_shanchu.setObjectName(u"dingyi_shanchu")
@@ -78,8 +81,9 @@ class Ui_dingyi(object):
         self.label_12.setGeometry(QRect(10, 120, 84, 24))
         self.dingyi_zibianliang = QLineEdit(self.groupBox_20)
         self.dingyi_zibianliang.setObjectName(u"dingyi_zibianliang")
-        self.dingyi_zibianliang.setGeometry(QRect(100, 120, 241, 24))
+        self.dingyi_zibianliang.setGeometry(QRect(107, 120, 231, 25))
         self.dingyi_zibianliang.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
+        self.dingyi_zibianliang.setClearButtonEnabled(True)
         self.groupBox_22 = QGroupBox(dingyi)
         self.groupBox_22.setObjectName(u"groupBox_22")
         self.groupBox_22.setGeometry(QRect(10, 310, 771, 231))
@@ -89,6 +93,7 @@ class Ui_dingyi(object):
         self.dingyi_zibianliangzhi = QLineEdit(self.groupBox_22)
         self.dingyi_zibianliangzhi.setObjectName(u"dingyi_zibianliangzhi")
         self.dingyi_zibianliangzhi.setGeometry(QRect(90, 20, 671, 21))
+        self.dingyi_zibianliangzhi.setClearButtonEnabled(True)
         self.dingyi_qiuzhi = QWebEngineView(self.groupBox_22)
         self.dingyi_qiuzhi.setObjectName(u"dingyi_qiuzhi")
         self.dingyi_qiuzhi.setGeometry(QRect(10, 50, 751, 141))
@@ -101,14 +106,14 @@ class Ui_dingyi(object):
         self.groupBox_21.setGeometry(QRect(250, 170, 531, 141))
         self.dingyi_hanshushuxing_cbx = QComboBox(self.groupBox_21)
         self.dingyi_hanshushuxing_cbx.setObjectName(u"dingyi_hanshushuxing_cbx")
-        self.dingyi_hanshushuxing_cbx.setGeometry(QRect(10, 20, 121, 20))
+        self.dingyi_hanshushuxing_cbx.setGeometry(QRect(10, 20, 151, 20))
         self.dingyi_hanshushuxing = QWebEngineView(self.groupBox_21)
         self.dingyi_hanshushuxing.setObjectName(u"dingyi_hanshushuxing")
         self.dingyi_hanshushuxing.setGeometry(QRect(10, 50, 511, 81))
         self.dingyi_hanshushuxing.setUrl(QUrl(u"about:blank"))
         self.dingyi_hanshushuxing_lineedit = QLineEdit(self.groupBox_21)
         self.dingyi_hanshushuxing_lineedit.setObjectName(u"dingyi_hanshushuxing_lineedit")
-        self.dingyi_hanshushuxing_lineedit.setGeometry(QRect(140, 20, 381, 21))
+        self.dingyi_hanshushuxing_lineedit.setGeometry(QRect(170, 20, 351, 21))
         self.groupBox_19 = QGroupBox(dingyi)
         self.groupBox_19.setObjectName(u"groupBox_19")
         self.groupBox_19.setGeometry(QRect(10, 10, 221, 301))

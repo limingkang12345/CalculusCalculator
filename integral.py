@@ -1,4 +1,4 @@
-﻿from sympy import integrate
+﻿from sympy import integrate, radsimp
 from sympify import sympify
 
 
@@ -12,6 +12,6 @@ def integral(f, v, fs, a = None, b = None):
     # return:返回导函数表达式
 
     if a is None and b is None:
-        return integrate(sympify(f, fs), sympify(v, fs))
+        return radsimp(integrate(sympify(f, fs), sympify(v, fs)))
     else:
-        return integrate(sympify(f, fs), (sympify(v, fs), sympify(a, fs), sympify(b, fs)))
+        return radsimp(integrate(sympify(f, fs), (sympify(v, fs), sympify(a, fs), sympify(b, fs))))

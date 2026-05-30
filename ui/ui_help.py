@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'helpWaWUFq.ui'
+## Form generated from reading UI file 'helpKfNAof.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.9.1
 ##
@@ -17,6 +17,7 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QPalette, QPixmap, QRadialGradient, QTransform)
 from PySide6.QtWebEngineWidgets import QWebEngineView
 from PySide6.QtWidgets import (QApplication, QSizePolicy, QWidget)
+import resources_rc
 
 class Ui_help(object):
     def setupUi(self, help):
@@ -25,8 +26,8 @@ class Ui_help(object):
         help.resize(801, 551)
         self.webEngineView = QWebEngineView(help)
         self.webEngineView.setObjectName(u"webEngineView")
-        self.webEngineView.setGeometry(QRect(10, 10, 791, 571))
-        self.webEngineView.setUrl(QUrl(u"qrc:/help.html"))
+        self.webEngineView.setGeometry(QRect(0, 0, 801, 551))
+        self.webEngineView.setUrl(QUrl(u"qrc:///help.html"))
 
         self.retranslateUi(help)
 

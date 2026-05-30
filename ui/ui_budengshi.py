@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'budengshiXtHTMl.ui'
+## Form generated from reading UI file 'budengshiUFULwn.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.9.1
 ##
@@ -40,9 +40,11 @@ class Ui_budengshi(object):
         self.budengshi_zuoshi = QLineEdit(self.groupBox_38)
         self.budengshi_zuoshi.setObjectName(u"budengshi_zuoshi")
         self.budengshi_zuoshi.setGeometry(QRect(10, 20, 751, 21))
+        self.budengshi_zuoshi.setClearButtonEnabled(True)
         self.budengshi_youshi = QLineEdit(self.groupBox_38)
         self.budengshi_youshi.setObjectName(u"budengshi_youshi")
         self.budengshi_youshi.setGeometry(QRect(90, 50, 671, 21))
+        self.budengshi_youshi.setClearButtonEnabled(True)
         self.budengshi_budenghao = QComboBox(self.groupBox_38)
         self.budengshi_budenghao.setObjectName(u"budengshi_budenghao")
         self.budengshi_budenghao.setGeometry(QRect(10, 50, 71, 21))
@@ -55,18 +57,20 @@ class Ui_budengshi(object):
         self.budengshi_zhuyuanfuhao = QLineEdit(self.groupBox_39)
         self.budengshi_zhuyuanfuhao.setObjectName(u"budengshi_zhuyuanfuhao")
         self.budengshi_zhuyuanfuhao.setGeometry(QRect(100, 20, 51, 21))
+        self.budengshi_zhuyuanfuhao.setClearButtonEnabled(True)
         self.label_15 = QLabel(self.groupBox_39)
         self.label_15.setObjectName(u"label_15")
         self.label_15.setGeometry(QRect(170, 20, 111, 18))
         self.budengshi_quzhifanwei = QLineEdit(self.groupBox_39)
         self.budengshi_quzhifanwei.setObjectName(u"budengshi_quzhifanwei")
         self.budengshi_quzhifanwei.setGeometry(QRect(290, 20, 471, 21))
+        self.budengshi_quzhifanwei.setClearButtonEnabled(True)
         self.groupBox_37 = QGroupBox(budengshi)
         self.groupBox_37.setObjectName(u"groupBox_37")
-        self.groupBox_37.setGeometry(QRect(10, 150, 771, 161))
+        self.groupBox_37.setGeometry(QRect(10, 150, 771, 151))
         self.budengshi_yuanshi = QWebEngineView(self.groupBox_37)
         self.budengshi_yuanshi.setObjectName(u"budengshi_yuanshi")
-        self.budengshi_yuanshi.setGeometry(QRect(10, 20, 751, 131))
+        self.budengshi_yuanshi.setGeometry(QRect(10, 20, 751, 121))
         self.budengshi_yuanshi.setUrl(QUrl(u"about:blank"))
         self.budengshi_qiujie = QPushButton(budengshi)
         self.budengshi_qiujie.setObjectName(u"budengshi_qiujie")
