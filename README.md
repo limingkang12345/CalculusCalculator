@@ -138,6 +138,7 @@ CalculusCalculator/
 ├── integral.py          # 积分计算
 ├── functions.py         # 函数性质分析
 ├── simplification.py    # 表达式变形（13种方法）
+├── layouts_tool.py      # 窗口布局调整
 ├── solvers.py           # 方程/不等式/微分方程求解
 ├── saves.py             # JSON 存档/读档
 ├── help.html            # 内置帮助文档
