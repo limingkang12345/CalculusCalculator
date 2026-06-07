@@ -1,4 +1,4 @@
-﻿from PySide6.QtWidgets import QMainWindow
+﻿from PySide6.QtWidgets import QMainWindow, QMessageBox
 from PySide6.QtWebEngineWidgets import QWebEngineView
 from PySide6.QtCore import QUrl, QTimer
 
@@ -13,8 +13,8 @@ class MainWindow(QMainWindow):
         super().__init__(parent)
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
-        self.fs, self.tabs, self.eqs, self.rels = {}, {}, {}, {}
-        self.tabs_n = [1] * 11
+        self.fs, self.tabs, self.eqs, self.rels, self.vs = {}, {}, {}, {}, {}
+        self.tabs_n = [1] * len(tabs_list)
         self._preinit_view = None
 
         self.setup()
@@ -35,6 +35,11 @@ class MainWindow(QMainWindow):
         self.ui.actionbudengshizu.triggered.connect(lambda:self.create_tab(8))
         self.ui.actionjisuan.triggered.connect(lambda:self.create_tab(9))
         self.ui.actionhelp.triggered.connect(lambda:self.create_tab(10))
+        self.ui.actiondingyixiangliang.triggered.connect(lambda:self.create_tab(11))
+        self.ui.actionhuitu_hanshu.triggered.connect(lambda:self.create_tab(12))
+        self.ui.actionjiesanjiaoxing.triggered.connect(lambda:self.create_tab(13))
+        self.ui.actionhuitu_pingmianjihe.triggered.connect(lambda:QMessageBox.information(self, "功能未完善", "抱歉！该功能目前尚未完善\n请关注本项目后续进展！", buttons=QMessageBox.StandardButton.Ok))
+        self.ui.actionhuitu_litijihe.triggered.connect(lambda:QMessageBox.information(self, "功能未完善", "抱歉！该功能目前尚未完善\n请关注本项目后续进展！", buttons=QMessageBox.StandardButton.Ok))
         self.ui.actiongithub.triggered.connect(lambda:webbrowser.open("https://github.com/limingkang12345/CalculusCalculator"))
         self.ui.actionwebsite.triggered.connect(lambda:webbrowser.open("https://limingkang.pythonanywhere.com"))
         

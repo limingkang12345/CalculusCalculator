@@ -1,6 +1,6 @@
 # CalculusCalculator 微积分计算器
 
-**CalculusCalculator** 是一个基于 SymPy 和 PySide6 的图形化微积分计算工具，支持求导、积分、函数性质分析、表达式变形、方程（组）与不等式（组）求解、微分方程求解、符号计算等功能，并提供了存档/读档及 Web 版本。
+**CalculusCalculator** 是一个基于 SymPy 和 PySide6 的图形化微积分计算工具，支持求导、积分、函数性质分析、表达式变形、方程（组）与不等式（组）求解、微分方程求解、符号计算、向量运算、解三角形、函数绘图等功能，并提供了存档/读档及 Web 版本。
 
 [![Python](https://img.shields.io/badge/Python-3.8%2B-blue)](https://www.python.org/)
 [![PySide6](https://img.shields.io/badge/PySide6-6.9.1-green)](https://pypi.org/project/PySide6/)
@@ -12,7 +12,7 @@
 
 - **项目地址**：[GitHub - limingkang12345/CalculusCalculator](https://github.com/limingkang12345/CalculusCalculator)
 - **网页版**：[https://limingkang.pythonanywhere.com](https://limingkang.pythonanywhere.com)
-- **最新版本**：v1.4.4
+- **最新版本**：v1.5.0
 - **开发语言**：Python 3.8+
 - **核心库**：SymPy（符号计算）、PySide6（GUI 框架）
 - **功能概览**：
@@ -22,23 +22,23 @@
   - 表达式化简、展开、因式分解、通分、部分分式、三角恒等变换、对数变换、换元等 13 种方法
   - 方程、不等式、方程组、不等式组的求解
   - 常微分方程求解
-  - **符号计算**（v1.4.4）：三种计算引擎（Python 内置 / Mpmath 高精度 / SymPy 符号），支持 LaTeX 渲染与源码复制
-  - **自定义函数列表**（`fs` 字典），支持**函数调用传参** `f(3)` 及**嵌套调用** `f(g(2))`（v1.4.4）
-  - **分母有理化**（v1.4.4）：求导、积分、方程求解等结果自动执行有理化
+  - 符号计算：三种计算引擎（Python 内置 / Mpmath 高精度 / SymPy 符号），支持 LaTeX 渲染与源码复制
+  - 自定义函数列表（`fs` 字典），支持函数调用传参 `f(3)` 及嵌套调用 `f(g(2))`
+  - 分母有理化：求导、积分、方程求解等结果自动执行有理化
+  - **向量运算**（v1.5.0）：定义二维向量，支持加法、减法、点积、夹角计算及向量属性显示
+  - **解三角形**（v1.5.0）：支持 ASA、AAS、SAS、SSA、SSS 等多种三角形条件求解
+  - **函数绘图**（v1.5.0）：基于 Matplotlib 绘制函数图像，支持自定义定义域
   - 工程存档/读档（JSON 格式），支持保存方程组与不等式组
 
 ---
 
-## v1.4.4 更新内容
+## v1.5.0 更新内容
 
-1. 新增**计算**选项卡，支持 Python 内置引擎、Mpmath 高精度引擎、SymPy 符号引擎三种模式，结果同时以 LaTeX 渲染和纯文本形式显示
-2. 定义的函数可以以 `函数名(自变量值)` 的形式直接调用，支持嵌套函数输入，如 `f(g(2))`
-3. 求导、积分、方程求解、表达式变形等结果自动执行**分母有理化**
-4. 不等式组的解以集合或区间的形式返回
-5. 方程组和不等式组也会被写入 JSON 存档
-6. 优化 UI 界面布局，增大公式显示区域
-7. 修复求解方程组时多解导致报错问题
-8. 更新帮助文档
+1. 新增**向量**功能，支持定义二维向量并执行简单的向量运算（加法、减法、点积、夹角、模、方向角、单位向量）
+2. 新增**解三角形**功能，支持 ASA、AAS、SAS、SSA、SSS 等多种三角形条件求解
+3. 新增**绘图**功能，支持绘制单个函数的图像
+4. 更改菜单栏布局，"新建"更名为"功能"，并对功能进行归类
+5. 修复函数名被错误识别的问题（定义函数 t 后会将 sqrt 的 t 误替换为函数 t）
 
 ---
 
@@ -65,8 +65,17 @@
 7. **跨平台打包**  
    提供了 `cx_Freeze` 的打包配置（`setup.py`），可以生成 Windows 可执行文件，便于分发。
 
-8. **Web 版补充**  
-   除了桌面客户端，还提供了在线网页版（基于 PythonAnywhere），方便快速体验。
+8. **向量运算**（v1.5.0 新增）  
+   支持定义二维向量，查看向量的模、方向角、单位向量等属性，并可进行向量加法、减法、点积、夹角计算。
+
+9. **解三角形**（v1.5.0 新增）  
+   输入三角形的已知角度和边长条件，系统自动识别 ASA、AAS、SAS、SSA、SSS 等情形并求解，支持多解情况。
+
+10. **函数绘图**（v1.5.0 新增）  
+    基于 Matplotlib 绘制单个函数的图像，支持自定义定义域，自动处理间断点断线。
+
+11. **Web 版补充**  
+    除了桌面客户端，还提供了在线网页版（基于 PythonAnywhere），方便快速体验。
 
 ---
 
@@ -133,32 +142,36 @@ python setup.py build
 CalculusCalculator/
 ├── main.py              # 主窗口逻辑
 ├── run.py               # 程序入口
-├── sympify.py           # 表达式安全转换、函数调用预处理、分母有理化
-├── derivative.py        # 显/隐函数求导
-├── integral.py          # 积分计算
-├── functions.py         # 函数性质分析
-├── simplification.py    # 表达式变形（13种方法）
-├── solvers.py           # 方程/不等式/微分方程求解
-├── saves.py             # JSON 存档/读档
-├── help.html            # 内置帮助文档
-├── setup.py             # cx_Freeze 打包脚本
-├── requirements.txt     # Python 依赖列表
-├── update.txt           # 版本更新日志
+├── sympify.py                # 表达式安全转换、函数调用预处理、分母有理化
+├── derivative.py             # 显/隐函数求导
+├── integral.py               # 积分计算
+├── functions.py              # 函数性质分析
+├── simplification.py         # 表达式变形（13种方法）
+├── solvers.py                # 方程/不等式/微分方程/解三角形求解
+├── vectors.py                # 向量数据结构（预留）
+├── layouts_tool.py           # 自适应布局管理器
+├── saves.py                  # JSON 存档/读档
+├── help.html                 # 内置帮助文档
+├── setup.py                  # cx_Freeze 打包脚本
+├── requirements.txt          # Python 依赖列表
+├── update.txt                # 版本更新日志
 ├── ui/
-│   ├── __init__.py      # 各选项卡逻辑实现
-│   ├── ui_main.py       # 主窗口布局
-│   ├── ui_dingyi.py     # 定义页布局
-│   ├── ui_qiudao.py     # 求导页布局
-│   ├── ui_jifen.py      # 积分页布局
-│   ├── ui_bianxing.py   # 变形页布局
-│   ├── ui_fangcheng.py  # 方程页布局
-│   ├── ui_fangchengzu.py# 方程组页布局
-│   ├── ui_budengshi.py  # 不等式页布局
-│   ├── ui_budengshizu.py# 不等式组页布局
-│   ├── ui_jisuan.py     # 计算页布局
-│   ├── ui_shouye.py     # 首页布局
-│   └── ui_help.py       # 帮助页布局
-│   └── *.ui             # Qt Designer 界面源文件
+│   ├── __init__.py           # 各选项卡逻辑实现
+│   ├── ui_main.py            # 主窗口布局
+│   ├── ui_dingyi.py          # 定义页布局
+│   ├── ui_qiudao.py          # 求导页布局
+│   ├── ui_jifen.py           # 积分页布局
+│   ├── ui_bianxing.py        # 变形页布局
+│   ├── ui_fangcheng.py       # 方程页布局
+│   ├── ui_fangchengzu.py     # 方程组页布局
+│   ├── ui_budengshi.py       # 不等式页布局
+│   ├── ui_budengshizu.py     # 不等式组页布局
+│   ├── ui_jisuan.py          # 计算页布局
+│   ├── ui_shouye.py          # 首页布局
+│   ├── ui_help.py            # 帮助页布局
+│   ├── ui_dingyixiangliang.py # 定义向量页布局
+│   ├── ui_huitu_hanshu.py    # 绘制函数页布局
+│   └── ui_jiesanjiaoxing.py  # 解三角形页布局
 └── resources.qrc        # 资源文件（MathJax等）
 ```
 

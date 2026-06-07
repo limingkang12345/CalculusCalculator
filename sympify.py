@@ -16,11 +16,12 @@ def _preprocess_func_calls(expr_str, fs):
     result = expr_str
 
     while True:
-        # 查找最左侧的函数调用
+        # 查找最左侧的函数调用（使用 \b 避免 sqrt( 中的 t( 被误匹配）
         best_pos = len(result)
         best_func = None
         for func_name in func_names:
-            pos = result.find(f"{func_name}(")
+            match = re.search(r'\b' + re.escape(func_name) + r'\(', result)
+            pos = match.start() if match else -1
             if pos != -1 and pos < best_pos:
                 best_pos = pos
                 best_func = func_name
