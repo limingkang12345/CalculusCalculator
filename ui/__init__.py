@@ -13,6 +13,10 @@ from ui.ui_help import *
 from ui.ui_dingyixiangliang import *
 from ui.ui_huitu_hanshu import *
 from ui.ui_jiesanjiaoxing import *
+from ui.ui_dingyi_pj import *
+from ui.ui_huitu_pj import *
+from ui.ui_dingyi_lj import *
+from ui.ui_huitu_lj import *
 
 import resources_rc
 from derivative import derivative, yinhanshu_derivative
@@ -24,9 +28,9 @@ from functions import get_function_attr
 from sympy import latex, Eq, Rel, symbols, Symbol, radsimp, radsimp, simplify
 from sympify import sympify
 
-from PySide6.QtWidgets import QWidget, QVBoxLayout
+from PySide6.QtWidgets import QWidget, QVBoxLayout, QMessageBox, QListWidgetItem
 from PySide6.QtWebEngineWidgets import QWebEngineView
-from PySide6.QtCore import QUrl
+from PySide6.QtCore import QUrl, Qt
 
 def setWebEngineView(n, l, w):
         # 显示表达式
@@ -279,6 +283,410 @@ class Dingyixiangliang(QWidget, Ui_dingyixiangliang):
             setWebEngineView('', latex_str, self.dingyixiangliang_jisuan)
         except:
             pass
+
+class Dingyi_pj(QWidget, Ui_dingyi_pj):
+    def __init__(self, parent, fs):
+        super(Dingyi_pj, self).__init__(parent)
+        self.setupUi(self)
+
+        self.fs = fs
+        self.parent = parent
+
+        if not hasattr(self.parent, 'pjs'):
+            self.parent.pjs = {}  # {name: (类别, 对象, [元数据])}
+            # 类别: "点","直线","线段","三角形","多边形","圆"
+
+        self.pjs = self.parent.pjs
+
+        # 下拉框选择方法后显示提示标签
+        self.dingyi_pj_fangfa.currentIndexChanged.connect(self._on_method_changed)
+
+        # 回车创建 / 点击"保存"按钮创建
+        self.dingyi_pj_canshu.returnPressed.connect(self._do_create)
+        self.dingyi_pj_baocun.clicked.connect(self._do_create)
+
+        # 各列表的读取/删除按钮
+        self.dingyi_pj_dian_read.clicked.connect(lambda: self._read_item("点"))
+        self.dingyi_pj_dian_delete.clicked.connect(lambda: self._delete_item("点"))
+        self.dingyi_pj_zhixian_read.clicked.connect(lambda: self._read_item("直线"))
+        self.dingyi_pj_zhixian_delete.clicked.connect(lambda: self._delete_item("直线"))
+        self.dingyi_pj_xianduan_read.clicked.connect(lambda: self._read_item("线段"))
+        self.dingyi_pj_xianduan_delete.clicked.connect(lambda: self._delete_item("线段"))
+        self.dingyi_pj_duobianxing_read.clicked.connect(lambda: self._read_item("三角形"))
+        self.dingyi_pj_duobianxing_delete.clicked.connect(lambda: self._delete_item("三角形"))
+        self.dingyi_pj_yuan_read.clicked.connect(lambda: self._read_item("圆"))
+        self.dingyi_pj_yuan_delete.clicked.connect(lambda: self._delete_item("圆"))
+
+        # 刷新全部列表
+        self._refresh_all_lists()
+
+    # ========== 方法索引 → 名称映射 ==========
+
+    @staticmethod
+    def _method_names():
+        return [
+            "未选择",
+            "create_point",           # 1: x坐标, y坐标
+            "create_line",            # 2: 点1名, 点2名
+            "create_circle",          # 3: 圆心名, 半径
+            "create_circle_three_points",  # 4: 点1名, 点2名, 点3名
+            "create_triangle",        # 5: 点1名, 点2名, 点3名
+            "create_polygon",         # 6: 点1名, 点2名, ..., 点n名
+            "circle_with_diameter",   # 7: 点1名, 点2名
+            "circle_by_center_and_point",  # 8: 点1名, 点2名
+            "perpendicular_bisector",  # 9: 线段名
+            "line_parallel_through_point",  # 10: 点名, 线段名
+            "line_perpendicular_through_point",  # 11: 点名, 线段名
+            "angle_bisector_line",    # 12: 直线名, 直线名
+            "angle_bisector",         # 13: 点1名, 点2名, 点3名
+            "triangle_median",        # 14: 三角形名, 顶点名(索引0,1,2)
+            "triangle_altitude",      # 15: 三角形名, 顶点名(索引0,1,2)
+            "triangle_midsegment",    # 16: 三角形名, 多余参数忽略
+            "triangle_incircle",      # 17: 三角形名
+            "triangle_excircle",      # 18: 三角形名, 顶点名(索引0,1,2)
+            "segment_from_points",    # 19: 点1名, 点2名
+        ]
+
+    @classmethod
+    def _method_params_hint(cls, idx):
+        hints = {
+            0:  "",
+            1:  "x坐标, y坐标",
+            2:  "点1名称, 点2名称",
+            3:  "圆心名称, 半径",
+            4:  "点1名称, 点2名称, 点3名称",
+            5:  "点1名称, 点2名称, 点3名称",
+            6:  "点1名称, 点2名称, ……",
+            7:  "点1名称, 点2名称",
+            8:  "圆心名称, 圆上点名称",
+            9:  "线段名称",
+            10: "点名, 线段名",
+            11: "点名, 线段名",
+            12: "直线1名称, 直线2名称",
+            13: "点1名称, 点2名称(顶点), 点3名称",
+            14: "三角形名称, 顶点索引(0/1/2)",
+            15: "三角形名称, 顶点索引(0/1/2)",
+            16: "三角形名称",
+            17: "三角形名称",
+            18: "三角形名称, 顶点索引(0/1/2)",
+            19: "点1名称, 点2名称",
+        }
+        return hints.get(idx, "")
+
+    def _on_method_changed(self, idx):
+        hint = self._method_params_hint(idx)
+        if idx > 0 and hint:
+            self.label_2.setText("参数(" + hint + ")：")
+        else:
+            self.label_2.setText("参数(直接输入，以英文半角逗号分隔)：")
+
+    # ========== 名称 → 对象 查找 ==========
+
+    def _find_point(self, name):
+        name = name.strip()
+        if name in self.pjs and self.pjs[name][0] == "点":
+            return self.pjs[name][1]
+        return None
+
+    def _find_line(self, name):
+        name = name.strip()
+        if name in self.pjs and self.pjs[name][0] == "直线":
+            return self.pjs[name][1]
+        return None
+
+    def _find_segment(self, name):
+        name = name.strip()
+        if name in self.pjs and self.pjs[name][0] == "线段":
+            return self.pjs[name][1]
+        return None
+
+    def _find_triangle(self, name):
+        name = name.strip()
+        if name in self.pjs and self.pjs[name][0] == "三角形":
+            return self.pjs[name][1]
+        return None
+
+    def _find_circle(self, name):
+        name = name.strip()
+        if name in self.pjs and self.pjs[name][0] == "圆":
+            return self.pjs[name][1]
+        return None
+
+    def _find_points(self, names_str):
+        """将逗号分隔的点名称字符串解析为 Point 列表"""
+        pts = []
+        for n in names_str.split(','):
+            p = self._find_point(n.strip())
+            if p is None:
+                raise ValueError(f"未找到点'{n.strip()}'")
+            pts.append(p)
+        return pts
+
+    # ========== 对象存入与分类 ==========
+
+    def _store(self, name, category, obj):
+        """存入对象，同时更新 pjs 和各分类列表"""
+        self.pjs[name] = (category, obj)
+        self._refresh_all_lists()
+
+    def _refresh_all_lists(self):
+        """根据 pjs 刷新五个列表（仅显示对象名称）"""
+        self.dingyi_pj_dian.clear()
+        self.dingyi_pj_zhixian.clear()
+        self.dingyi_pj_xianduan.clear()
+        self.dingyi_pj_duobianxing.clear()
+        self.dingyi_pj_yuan.clear()
+        for name, val in self.pjs.items():
+            cat = val[0]
+            if cat == "点":
+                self.dingyi_pj_dian.addItem(name)
+            elif cat == "直线":
+                self.dingyi_pj_zhixian.addItem(name)
+            elif cat == "线段":
+                self.dingyi_pj_xianduan.addItem(name)
+            elif cat == "三角形" or cat == "多边形":
+                self.dingyi_pj_duobianxing.addItem(name)
+            elif cat == "圆":
+                self.dingyi_pj_yuan.addItem(name)
+
+    # ========== 创建核心逻辑 ==========
+
+    def _do_create(self):
+        idx = self.dingyi_pj_fangfa.currentIndex()
+        if idx == 0:
+            return
+        name = self.dingyi_pj_mingcheng.text().strip()
+        if not name:
+            return
+        params_str = self.dingyi_pj_canshu.text().strip()
+        # 解析参数列表
+        raw_params = [p.strip() for p in params_str.split(',')] if params_str else []
+
+        try:
+            from planes import (
+                create_point, create_line, create_circle, create_circle_three_points,
+                create_triangle, create_polygon, circle_with_diameter, circle_by_center_and_point,
+                perpendicular_bisector, line_parallel_through_point, line_perpendicular_through_point,
+                angle_bisector_line, angle_bisector, triangle_median, triangle_altitude,
+                triangle_midsegment, triangle_incircle, triangle_excircle, segment_from_points
+            )
+            from sympy import Point
+
+            if idx == 1:  # create_point: x, y
+                if len(raw_params) < 2:
+                    return
+                pt = create_point(raw_params[0], raw_params[1], self.fs)
+                self._store(name, "点", pt)
+
+            elif idx == 2:  # create_line: point1_name, point2_name
+                if len(raw_params) < 2:
+                    return
+                p1, p2 = self._find_points(raw_params[0] + "," + raw_params[1])
+                line = create_line(p1, p2)
+                self._store(name, "直线", line)
+
+            elif idx == 3:  # create_circle: center_name, radius
+                if len(raw_params) < 2:
+                    return
+                pts = self._find_points(raw_params[0])
+                center = pts[0]
+                c = create_circle(center, raw_params[1], self.fs)
+                self._store(name, "圆", c)
+
+            elif idx == 4:  # create_circle_three_points: p1, p2, p3
+                if len(raw_params) < 3:
+                    return
+                pts = self._find_points(raw_params[0] + "," + raw_params[1] + "," + raw_params[2])
+                c = create_circle_three_points(*pts)
+                self._store(name, "圆", c)
+
+            elif idx == 5:  # create_triangle: p1, p2, p3
+                if len(raw_params) < 3:
+                    return
+                pts = self._find_points(raw_params[0] + "," + raw_params[1] + "," + raw_params[2])
+                tri = create_triangle(*pts)
+                self._store(name, "三角形", tri)
+
+            elif idx == 6:  # create_polygon: p1, p2, ..., pn
+                if len(raw_params) < 3:
+                    return
+                pts = self._find_points(",".join(raw_params))
+                poly = create_polygon(pts)
+                self._store(name, "多边形", poly)
+
+            elif idx == 7:  # circle_with_diameter: p1, p2
+                if len(raw_params) < 2:
+                    return
+                pts = self._find_points(raw_params[0] + "," + raw_params[1])
+                c = circle_with_diameter(*pts)
+                self._store(name, "圆", c)
+
+            elif idx == 8:  # circle_by_center_and_point:
+                if len(raw_params) < 2:
+                    return
+                pts = self._find_points(raw_params[0] + "," + raw_params[1])
+                c = circle_by_center_and_point(pts[0], pts[1])
+                self._store(name, "圆", c)
+
+            elif idx == 9:  # perpendicular_bisector: 线段名
+                if len(raw_params) < 1:
+                    return
+                seg = self._find_segment(raw_params[0])
+                if seg is None:
+                    return
+                line = perpendicular_bisector(seg.points[0], seg.points[1])
+                self._store(name, "直线", line)
+
+            elif idx == 10:  # line_parallel_through_point: 点名, 线段名
+                if len(raw_params) < 2:
+                    return
+                pts = self._find_points(raw_params[0])
+                line_ref = self._find_line(raw_params[1]) or (
+                    self._find_segment(raw_params[1]) and
+                    Line(self._find_segment(raw_params[1]).points[0],
+                         self._find_segment(raw_params[1]).points[1]))
+                if line_ref is None:
+                    return
+                line = line_parallel_through_point(line_ref, pts[0])
+                self._store(name, "直线", line)
+
+            elif idx == 11:  # line_perpendicular_through_point: 点名, 线段名
+                if len(raw_params) < 2:
+                    return
+                pts = self._find_points(raw_params[0])
+                line_ref = self._find_line(raw_params[1]) or (
+                    self._find_segment(raw_params[1]) and
+                    Line(self._find_segment(raw_params[1]).points[0],
+                         self._find_segment(raw_params[1]).points[1]))
+                if line_ref is None:
+                    return
+                line = line_perpendicular_through_point(line_ref, pts[0])
+                self._store(name, "直线", line)
+
+            elif idx == 12:  # angle_bisector_line: 直线1名, 直线2名
+                if len(raw_params) < 2:
+                    return
+                l1 = self._find_line(raw_params[0])
+                l2 = self._find_line(raw_params[1])
+                if l1 is None or l2 is None:
+                    return
+                result = angle_bisector_line(l1, l2)
+                if isinstance(result, str):
+                    return
+                self._store(name, "直线", result)
+
+            elif idx == 13:  # angle_bisector: p1, p2, p3
+                if len(raw_params) < 3:
+                    return
+                pts = self._find_points(raw_params[0] + "," + raw_params[1] + "," + raw_params[2])
+                line = angle_bisector(*pts)
+                self._store(name, "直线", line)
+
+            elif idx == 14:  # triangle_median: 三角形名, 顶点索引
+                if len(raw_params) < 2:
+                    return
+                tri = self._find_triangle(raw_params[0])
+                if tri is None:
+                    return
+                v_idx = int(raw_params[1])
+                seg = triangle_median(tri, v_idx)
+                self._store(name, "线段", seg)
+
+            elif idx == 15:  # triangle_altitude: 三角形名, 顶点索引
+                if len(raw_params) < 2:
+                    return
+                tri = self._find_triangle(raw_params[0])
+                if tri is None:
+                    return
+                v_idx = int(raw_params[1])
+                line = triangle_altitude(tri, v_idx)
+                self._store(name, "直线", line)
+
+            elif idx == 16:  # triangle_midsegment: 三角形名
+                if len(raw_params) < 1:
+                    return
+                tri = self._find_triangle(raw_params[0])
+                if tri is None:
+                    return
+                seg = triangle_midsegment(tri)
+                self._store(name, "线段", seg)
+
+            elif idx == 17:  # triangle_incircle: 三角形名
+                if len(raw_params) < 1:
+                    return
+                tri = self._find_triangle(raw_params[0])
+                if tri is None:
+                    return
+                c = triangle_incircle(tri)
+                self._store(name, "圆", c)
+
+            elif idx == 18:  # triangle_excircle: 三角形名, 顶点索引
+                if len(raw_params) < 2:
+                    return
+                tri = self._find_triangle(raw_params[0])
+                if tri is None:
+                    return
+                v_idx = int(raw_params[1])
+                c = triangle_excircle(tri, v_idx)
+                self._store(name, "圆", c)
+
+            elif idx == 19:  # segment_from_points: p1, p2
+                if len(raw_params) < 2:
+                    return
+                pts = self._find_points(raw_params[0] + "," + raw_params[1])
+                seg = segment_from_points(*pts)
+                self._store(name, "线段", seg)
+
+        except Exception as e:
+            QMessageBox.warning(self, "创建失败", f"创建对象时出错：\n{e}")
+
+    # ========== 列表读取/删除 ==========
+    _LIST_MAP = {
+        "点":   "dingyi_pj_dian",
+        "直线": "dingyi_pj_zhixian",
+        "线段": "dingyi_pj_xianduan",
+        "三角形": "dingyi_pj_duobianxing",
+        "多边形": "dingyi_pj_duobianxing",
+        "圆":   "dingyi_pj_yuan",
+    }
+
+    def _read_item(self, cat):
+        """读取选中项到对象属性面板"""
+        list_name = self._LIST_MAP.get(cat)
+        if not list_name:
+            return
+        lst = getattr(self, list_name)
+        item = lst.currentItem()
+        if not item:
+            return
+        name = item.text().strip()
+        if name not in self.pjs:
+            return
+        cat2, obj = self.pjs[name][0], self.pjs[name][1]
+        self.dingyi_pj_shuxing_mingcheng.setText(name)
+        try:
+            eq = obj.equation() if hasattr(obj, 'equation') else None
+            eq_str = str(eq) if eq is not None else str(obj)
+        except:
+            eq_str = str(obj)
+        self.dingyi_pj_shuxing_fangcheng.setText(eq_str)
+
+    def _delete_item(self, cat):
+        """删除选中项"""
+        list_name = self._LIST_MAP.get(cat)
+        if not list_name:
+            return
+        lst = getattr(self, list_name)
+        row = lst.currentRow()
+        if row < 0:
+            return
+        name = lst.currentItem().text().strip()
+        if name in self.pjs:
+            del self.pjs[name]
+        self._refresh_all_lists()
+        # 清空属性面板
+        self.dingyi_pj_shuxing_mingcheng.setText("")
+        self.dingyi_pj_shuxing_fangcheng.setText("")
 
 class Qiudao(QWidget, Ui_qiudao):
     def __init__(self, parent, fs):
@@ -801,7 +1209,91 @@ class Huitu_hanshu(QWidget, Ui_huitu_hanshu):
             self.draw_layout.addWidget(self.canvas)
         except Exception:
             pass
-    
+
+class Huitu_pj(QWidget, Ui_huitu_pj):
+    def __init__(self, parent, fs):
+        super(Huitu_pj, self).__init__(parent)
+        self.setupUi(self)
+
+        self.fs = fs
+        self.parent = parent
+
+        self.canvas = None
+        self._pjs_hash = None  # 跟踪 pjs 变化，避免重复刷新列表
+        self.draw_layout = QVBoxLayout(self.huitu_pingji)
+        self.draw_layout.setContentsMargins(0, 0, 0, 0)
+
+        self.huitu_pj_button.clicked.connect(self._draw)
+
+    def showEvent(self, event):
+        """切换至本页时自动刷新对象列表（仅在 pjs 内容变化时重建）"""
+        super().showEvent(event)
+        if hasattr(self.parent, 'pjs'):
+            new_hash = len(self.parent.pjs)
+            if new_hash != self._pjs_hash:
+                self._refresh_object_list()
+                self._pjs_hash = new_hash
+        elif self._pjs_hash is not None:
+            self._refresh_object_list()
+            self._pjs_hash = None
+
+    def _refresh_object_list(self):
+        """根据 pjs 刷新对象列表（全选 + 复选框），Qt 自动处理点击切换"""
+        self.huitu_pj_list.clear()
+        if not hasattr(self.parent, 'pjs') or not self.parent.pjs:
+            return
+        for name, val in self.parent.pjs.items():
+            cat = val[0]
+            display = f"[{cat}] {name}"
+            item = QListWidgetItem(display)
+            item.setData(Qt.ItemDataRole.UserRole, name)  # 存储原始名称
+            item.setFlags(item.flags() | Qt.ItemFlag.ItemIsUserCheckable)
+            item.setCheckState(Qt.CheckState.Checked)  # 默认选中
+            self.huitu_pj_list.addItem(item)
+
+    def _draw(self):
+        """仅绘制列表中选中的对象"""
+        # 销毁之前画的canvas
+        if self.canvas is not None:
+            self.draw_layout.removeWidget(self.canvas)
+            self.canvas.deleteLater()
+            self.canvas = None
+
+        # 获取已定义的对象
+        if not hasattr(self.parent, 'pjs') or not self.parent.pjs:
+            return
+
+        # 收集选中对象名称
+        checked_names = set()
+        for i in range(self.huitu_pj_list.count()):
+            item = self.huitu_pj_list.item(i)
+            if item.checkState() == Qt.CheckState.Checked:
+                checked_names.add(item.data(Qt.ItemDataRole.UserRole))
+
+        if not checked_names:
+            return
+
+        from paint2D import draw2d
+        from matplotlib.backends.backend_qtagg import FigureCanvasQTAgg as FigureCanvas
+
+        # 构建 (obj, style) 列表：仅选中的对象
+        objects = []
+        for name in checked_names:
+            if name in self.parent.pjs:
+                obj = self.parent.pjs[name][1]
+                objects.append((obj, {'label': name}))
+
+        if not objects:
+            return
+
+        try:
+            fig = draw2d(objects, figsize=(6.0, 5.1), dpi=100)
+            self.fig = fig
+            self.canvas = FigureCanvas(self.fig)
+            self.draw_layout.addWidget(self.canvas)
+        except Exception as e:
+            QMessageBox.warning(self, "绘制失败", f"绘制时出错：\n{e}")
+
 class Jiesanjiaoxing(QWidget, Ui_jiesanjiaoxing):
     def __init__(self, parent, fs):
         super(Jiesanjiaoxing, self).__init__(parent)
@@ -907,6 +1399,309 @@ class Jiesanjiaoxing(QWidget, Ui_jiesanjiaoxing):
         except Exception:
             pass
 
+class Dingyi_lj(QWidget, Ui_dingyi_lj):
+    """立体几何对象定义页面"""
+    def __init__(self, parent, fs):
+        super(Dingyi_lj, self).__init__(parent)
+        self.setupUi(self)
+
+        self.fs = fs
+        self.parent = parent
+
+        if not hasattr(self.parent, 'ljs'):
+            self.parent.ljs = {}
+
+        self.ljs = self.parent.ljs
+
+        self.dingyi_lj_fangfa.currentIndexChanged.connect(self._on_method_changed)
+        self.dingyi_lj_canshu.returnPressed.connect(self._do_create)
+        self.dingyi_lj_baocun.clicked.connect(self._do_create)
+
+        for cat, btn_read, btn_del in [
+            ("点",   self.dingyi_lj_dian_read,     self.dingyi_lj_dian_delete),
+            ("直线", self.dingyi_lj_zhixian_read,  self.dingyi_lj_zhixian_delete),
+            ("平面", self.dingyi_lj_pingmian_read, self.dingyi_lj_pingmian_delete),
+            ("线段", self.dingyi_lj_xianduan_read, self.dingyi_lj_xianduan_delete),
+        ]:
+            btn_read.clicked.connect(lambda ch=False, c=cat: self._read_item(c))
+            btn_del.clicked.connect(lambda ch=False, c=cat: self._delete_item(c))
+
+        self._refresh_all_lists()
+
+    @staticmethod
+    def _method_names():
+        return [
+            "未选择",
+            "create_point3d",          # 1: x, y, z
+            "create_line3d",           # 2: 点1名, 点2名
+            "plane_parallel_through_point",    # 3: 平面名, 点名
+            "plane_perpendicular_to_line_through_point",  # 4: 直线名, 点名
+            "line_parallel_through_point_3d",  # 5: 直线名, 点名
+            "line_perpendicular_to_line_through_point",  # 6: 点名, 直线名 (垂线)
+            "line_perpendicular_to_plane_through_point",  # 7: 平面名, 点名
+            "plane_through_line_and_point",    # 8: 直线名, 点名
+            "plane_through_two_lines",         # 9: 直线1名, 直线2名
+            "perpendicular_foot_to_plane",     # 10: 点名, 平面名
+            "perpendicular_foot_to_line_3d",   # 11: 点名, 直线名
+            "segment3d_from_points",  # 12: 点1名, 点2名
+        ]
+
+    @classmethod
+    def _method_params_hint(cls, idx):
+        hints = {
+            0:  "", 1: "x坐标, y坐标, z坐标",
+            2: "点1名称, 点2名称", 3: "平面名称, 点名称",
+            4: "直线名称, 点名称", 5: "直线名称, 点名称",
+            6: "点名称, 直线名称", 7: "平面名称, 点名称",
+            8: "直线名称, 点名称", 9: "直线1名称, 直线2名称",
+            10: "点名称, 平面名称", 11: "点名称, 直线名称",
+            12: "点1名称, 点2名称",
+        }
+        return hints.get(idx, "")
+
+    def _on_method_changed(self, idx):
+        hint = self._method_params_hint(idx)
+        if idx > 0 and hint:
+            self.label_2.setText("参数(" + hint + ")：")
+        else:
+            self.label_2.setText("参数(直接输入，以英文半角逗号分隔)：")
+
+    def _find_point3d(self, name):
+        n = name.strip()
+        return self.ljs[n][1] if n in self.ljs and self.ljs[n][0] == "点" else None
+
+    def _find_line3d(self, name):
+        n = name.strip()
+        return self.ljs[n][1] if n in self.ljs and self.ljs[n][0] == "直线" else None
+
+    def _find_plane(self, name):
+        n = name.strip()
+        return self.ljs[n][1] if n in self.ljs and self.ljs[n][0] == "平面" else None
+
+    def _find_points3d(self, names_str):
+        pts = []
+        for n in names_str.split(','):
+            p = self._find_point3d(n.strip())
+            if p is None:
+                raise ValueError(f"未找到点'{n.strip()}'")
+            pts.append(p)
+        return pts
+
+    def _store(self, name, category, obj):
+        self.ljs[name] = (category, obj)
+        self._refresh_all_lists()
+
+    _LJ_CATS = {"点":"dingyi_lj_dian","直线":"dingyi_lj_zhixian","平面":"dingyi_lj_pingmian","线段":"dingyi_lj_xianduan"}
+
+    def _refresh_all_lists(self):
+        getattr(self, "dingyi_lj_dian").clear()
+        getattr(self, "dingyi_lj_zhixian").clear()
+        getattr(self, "dingyi_lj_pingmian").clear()
+        getattr(self, "dingyi_lj_xianduan").clear()
+        for name, val in self.ljs.items():
+            cat = val[0]
+            lst_name = self._LJ_CATS.get(cat)
+            if lst_name:
+                getattr(self, lst_name).addItem(name)
+
+    def _do_create(self):
+        idx = self.dingyi_lj_fangfa.currentIndex()
+        if idx == 0: return
+        name = self.dingyi_lj_mingcheng.text().strip()
+        if not name: return
+        params_str = self.dingyi_lj_canshu.text().strip()
+        raw_params = [p.strip() for p in params_str.split(',')] if params_str else []
+
+        try:
+            from solids import (create_point3d, create_line3d,
+                plane_parallel_through_point, plane_perpendicular_to_line_through_point,
+                line_parallel_through_point_3d, line_perpendicular_to_plane_through_point,
+                plane_through_line_and_point, plane_through_two_lines,
+                perpendicular_foot_to_plane, perpendicular_foot_to_line_3d, segment3d_from_points)
+
+            if idx == 1:  # create_point3d
+                if len(raw_params) < 3: return
+                pt = create_point3d(raw_params[0], raw_params[1], raw_params[2], self.fs)
+                self._store(name, "点", pt)
+
+            elif idx == 2:  # create_line3d
+                if len(raw_params) < 2: return
+                pts = self._find_points3d(raw_params[0] + "," + raw_params[1])
+                self._store(name, "直线", create_line3d(*pts))
+
+            elif idx == 3:  # plane_parallel_through_point
+                if len(raw_params) < 2: return
+                pl = self._find_plane(raw_params[0])
+                pt = self._find_point3d(raw_params[1])
+                if pl and pt: self._store(name, "平面", plane_parallel_through_point(pl, pt))
+
+            elif idx == 4:  # plane_perpendicular_to_line_through_point
+                if len(raw_params) < 2: return
+                line = self._find_line3d(raw_params[0])
+                pt = self._find_point3d(raw_params[1])
+                if line and pt: self._store(name, "平面", plane_perpendicular_to_line_through_point(line, pt))
+
+            elif idx == 5:  # line_parallel_through_point_3d: 直线名, 点名
+                if len(raw_params) < 2: return
+                line = self._find_line3d(raw_params[0])
+                pt = self._find_point3d(raw_params[1])
+                if line and pt: self._store(name, "直线", line_parallel_through_point_3d(line, pt))
+
+            elif idx == 6:  # 过一点作已知直线的垂线: 点名, 直线名
+                if len(raw_params) < 2: return
+                pt = self._find_point3d(raw_params[0])
+                line = self._find_line3d(raw_params[1])
+                if pt and line:
+                    foot = perpendicular_foot_to_line_3d(pt, line)
+                    self._store(name, "直线", create_line3d(pt, foot))
+
+            elif idx == 7:  # line_perpendicular_to_plane_through_point: 平面名, 点名
+                if len(raw_params) < 2: return
+                pl = self._find_plane(raw_params[0])
+                pt = self._find_point3d(raw_params[1])
+                if pl and pt: self._store(name, "直线", line_perpendicular_to_plane_through_point(pl, pt))
+
+            elif idx == 8:  # plane_through_line_and_point: 直线名, 点名
+                if len(raw_params) < 2: return
+                line = self._find_line3d(raw_params[0])
+                pt = self._find_point3d(raw_params[1])
+                if line and pt:
+                    result = plane_through_line_and_point(line, pt)
+                    if not isinstance(result, str): self._store(name, "平面", result)
+
+            elif idx == 9:  # plane_through_two_lines: 直线1名, 直线2名
+                if len(raw_params) < 2: return
+                l1 = self._find_line3d(raw_params[0])
+                l2 = self._find_line3d(raw_params[1])
+                if l1 and l2:
+                    result = plane_through_two_lines(l1, l2)
+                    if not isinstance(result, str): self._store(name, "平面", result)
+
+            elif idx == 10:  # perpendicular_foot_to_plane: 点名, 平面名
+                if len(raw_params) < 2: return
+                pt = self._find_point3d(raw_params[0])
+                pl = self._find_plane(raw_params[1])
+                if pt and pl: self._store(name, "点", perpendicular_foot_to_plane(pt, pl))
+
+            elif idx == 11:  # perpendicular_foot_to_line_3d: 点名, 直线名
+                if len(raw_params) < 2: return
+                pt = self._find_point3d(raw_params[0])
+                line = self._find_line3d(raw_params[1])
+                if pt and line: self._store(name, "点", perpendicular_foot_to_line_3d(pt, line))
+
+            elif idx == 12:  # segment3d_from_points: 点1名, 点2名
+                if len(raw_params) < 2: return
+                pts = self._find_points3d(raw_params[0] + "," + raw_params[1])
+                self._store(name, "线段", segment3d_from_points(*pts))
+
+        except Exception as e:
+            QMessageBox.warning(self, "创建失败", f"创建对象时出错：\n{e}")
+
+    def _read_item(self, cat):
+        lst_name = self._LJ_CATS.get(cat)
+        if not lst_name: return
+        lst = getattr(self, lst_name)
+        item = lst.currentItem()
+        if not item: return
+        name = item.text().strip()
+        if name not in self.ljs: return
+        _, obj = self.ljs[name]
+        self.dingyi_lj_shuxing_mingcheng.setText(name)
+        try:
+            eq = obj.equation() if hasattr(obj, 'equation') else str(obj)
+        except:
+            eq = str(obj)
+        self.dingyi_lj_shuxing_fangcheng.setText(str(eq))
+
+    def _delete_item(self, cat):
+        lst_name = self._LJ_CATS.get(cat)
+        if not lst_name: return
+        lst = getattr(self, lst_name)
+        row = lst.currentRow()
+        if row < 0: return
+        name = lst.currentItem().text().strip()
+        if name in self.ljs: del self.ljs[name]
+        self._refresh_all_lists()
+        self.dingyi_lj_shuxing_mingcheng.setText("")
+        self.dingyi_lj_shuxing_fangcheng.setText("")
+
+
+class Huitu_lj(QWidget, Ui_huitu_lj):
+    """立体几何绘图页面"""
+    def __init__(self, parent, fs):
+        super(Huitu_lj, self).__init__(parent)
+        self.setupUi(self)
+
+        self.fs = fs
+        self.parent = parent
+
+        self.canvas = None
+        self._ljs_hash = None
+        self.draw_layout = QVBoxLayout(self.huitu_pingji)
+        self.draw_layout.setContentsMargins(0, 0, 0, 0)
+
+        self.huitu_lj_button.clicked.connect(self._draw)
+
+    def showEvent(self, event):
+        super().showEvent(event)
+        if hasattr(self.parent, 'ljs'):
+            new_hash = len(self.parent.ljs)
+            if new_hash != self._ljs_hash:
+                self._refresh_object_list()
+                self._ljs_hash = new_hash
+        elif self._ljs_hash is not None:
+            self._refresh_object_list()
+            self._ljs_hash = None
+
+    def _refresh_object_list(self):
+        self.huitu_lj_list.clear()
+        if not hasattr(self.parent, 'ljs') or not self.parent.ljs:
+            return
+        for name, val in self.parent.ljs.items():
+            cat = val[0]
+            display = f"[{cat}] {name}"
+            item = QListWidgetItem(display)
+            item.setData(Qt.ItemDataRole.UserRole, name)
+            item.setFlags(item.flags() | Qt.ItemFlag.ItemIsUserCheckable)
+            item.setCheckState(Qt.CheckState.Checked)
+            self.huitu_lj_list.addItem(item)
+
+    def _draw(self):
+        if self.canvas is not None:
+            self.draw_layout.removeWidget(self.canvas)
+            self.canvas.deleteLater()
+            self.canvas = None
+
+        if not hasattr(self.parent, 'ljs') or not self.parent.ljs:
+            return
+
+        checked_names = set()
+        for i in range(self.huitu_lj_list.count()):
+            item = self.huitu_lj_list.item(i)
+            if item.checkState() == Qt.CheckState.Checked:
+                checked_names.add(item.data(Qt.ItemDataRole.UserRole))
+
+        if not checked_names: return
+
+        from paint3D import draw3d
+        from matplotlib.backends.backend_qtagg import FigureCanvasQTAgg as FigureCanvas
+
+        objects = []
+        for name in checked_names:
+            if name in self.parent.ljs:
+                objects.append((self.parent.ljs[name][1], {'label': name}))
+
+        if not objects: return
+
+        try:
+            fig = draw3d(objects, figsize=(6.0, 5.1), dpi=100)
+            self.fig = fig
+            self.canvas = FigureCanvas(self.fig)
+            self.draw_layout.addWidget(self.canvas)
+        except Exception as e:
+            QMessageBox.warning(self, "绘制失败", f"绘制时出错：\n{e}")
+
+
 #tabs_name = ["首页", "定义", "求导", "积分", "变形", "方程", "方程组", "不等式", "不等式组", "帮助"]
-tabs_list = [Shouye, Dingyi, Qiudao, Jifen, Bianxing, Fangcheng, Fangchengzu, Budengshi, Budengshizu, Jisuan, Help, Dingyixiangliang, Huitu_hanshu, Jiesanjiaoxing]
-tabs_dict = {"首页":0, "定义":1, "求导":2, "积分":3, "变形":4, "方程":5, "方程组":6, "不等式":7, "不等式组":8, "计算":9, "帮助":10, "定义向量":11, "绘制函数":12, "解三角形":13}
+tabs_list = [Shouye, Dingyi, Qiudao, Jifen, Bianxing, Fangcheng, Fangchengzu, Budengshi, Budengshizu, Jisuan, Help, Dingyixiangliang, Huitu_hanshu, Jiesanjiaoxing, Dingyi_pj, Huitu_pj, Dingyi_lj, Huitu_lj]
+tabs_dict = {"首页":0, "定义":1, "求导":2, "积分":3, "变形":4, "方程":5, "方程组":6, "不等式":7, "不等式组":8, "计算":9, "帮助":10, "定义向量":11, "绘制函数":12, "解三角形":13, "平面几何":14, "平面绘图":15, "立体几何":16, "立体绘图":17}

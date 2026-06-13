@@ -1,6 +1,6 @@
 # CalculusCalculator 微积分计算器
 
-**CalculusCalculator** 是一个基于 SymPy 和 PySide6 的图形化微积分计算工具，支持求导、积分、函数性质分析、表达式变形、方程（组）与不等式（组）求解、微分方程求解、符号计算、向量运算、解三角形、函数绘图等功能，并提供了存档/读档及 Web 版本。
+**CalculusCalculator** 是一个基于 SymPy 和 PySide6 的图形化微积分计算工具，支持求导、积分、函数性质分析、表达式变形、方程（组）与不等式（组）求解、微分方程求解、符号计算、向量运算、解三角形、函数绘图、**平面/立体几何定义与绘图**等功能，并提供了存档/读档及 Web 版本。
 
 [![Python](https://img.shields.io/badge/Python-3.8%2B-blue)](https://www.python.org/)
 [![PySide6](https://img.shields.io/badge/PySide6-6.9.1-green)](https://pypi.org/project/PySide6/)
@@ -12,9 +12,9 @@
 
 - **项目地址**：[GitHub - limingkang12345/CalculusCalculator](https://github.com/limingkang12345/CalculusCalculator)
 - **网页版**：[https://limingkang.pythonanywhere.com](https://limingkang.pythonanywhere.com)
-- **最新版本**：v1.5.0
+- **最新版本**：v1.5.1
 - **开发语言**：Python 3.8+
-- **核心库**：SymPy（符号计算）、PySide6（GUI 框架）
+- **核心库**：SymPy（符号计算）、PySide6（GUI 框架）、Matplotlib（几何绘图）
 - **功能概览**：
   - 显函数 / 隐函数求导（支持代入求值）
   - 不定积分 / 定积分
@@ -28,7 +28,19 @@
   - **向量运算**（v1.5.0）：定义二维向量，支持加法、减法、点积、夹角计算及向量属性显示
   - **解三角形**（v1.5.0）：支持 ASA、AAS、SAS、SSA、SSS 等多种三角形条件求解
   - **函数绘图**（v1.5.0）：基于 Matplotlib 绘制函数图像，支持自定义定义域
-  - 工程存档/读档（JSON 格式），支持保存方程组与不等式组
+  - **平面几何**（v1.5.1）：定义点/直线/线段/圆/三角形/多边形，支持位置关系构造（中垂线、角平分线、中线、高线、内切圆、旁切圆等），复选框筛选绘图
+  - **立体几何**（v1.5.1）：定义三维点/直线/线段/平面，支持平行/垂直构造、垂足计算、斜二测画法，复选框筛选 3D 绘图
+  - 工程存档/读档（JSON 格式），支持保存所有几何对象
+
+---
+
+## v1.5.1 更新内容
+
+1. **平面几何**：新增平面几何对象定义（点/直线/线段/圆/三角形/多边形），支持 19 种位置关系构造方法（中垂线、角平分线、平行线、垂线、中线、高线、中位线、内切圆、旁切圆等）
+2. **立体几何**：新增立体几何对象定义（三维点/直线/线段/平面），支持平行/垂直构造、垂足计算、斜二测画法面积缩放
+3. **几何绘图**：平面几何与立体几何均可通过复选框筛选要绘制的对象，基于 Matplotlib 渲染
+4. 更正平面几何与立体几何定义页面的下拉框参数提示
+5. 修复几何绘图中的字体渲染、直线符号匹配、存档/读档类型兼容等问题
 
 ---
 
@@ -45,7 +57,7 @@
 ## 亮点分析
 
 1. **功能全面**  
-   覆盖了微积分、代数、方程求解中的常见需求，从基础的化简求导到隐函数、微分方程一应俱全。
+   覆盖了微积分、代数、方程求解、几何计算中的常见需求，从基础的化简求导到隐函数、微分方程、平面立体几何一应俱全。
 
 2. **可视化界面**  
    基于 PySide6 构建多标签页界面，每个功能独立窗口，支持公式的 LaTeX 实时渲染（`QWebEngineView` + MathJax）。
@@ -60,7 +72,7 @@
    新增的"计算"选项卡提供三种引擎：Python 内置适用于简单数值计算，Mpmath 适用于高精度计算，SymPy 适用于符号运算与 LaTeX 生成。
 
 6. **存档与恢复**  
-   可以将当前所有标签页的输入、自定义函数列表、标签页序号等保存为 JSON 文件，下次打开时自动恢复现场。
+   可以将当前所有标签页的输入、自定义函数列表、标签页序号、几何对象等保存为 JSON 文件，下次打开时自动恢复现场。
 
 7. **跨平台打包**  
    提供了 `cx_Freeze` 的打包配置（`setup.py`），可以生成 Windows 可执行文件，便于分发。
@@ -74,7 +86,10 @@
 10. **函数绘图**（v1.5.0 新增）  
     基于 Matplotlib 绘制单个函数的图像，支持自定义定义域，自动处理间断点断线。
 
-11. **Web 版补充**  
+11. **平面/立体几何**（v1.5.1 新增）  
+    支持平面几何 19 种构造和立体几何 12 种构造，并通过复选框筛选绘图，基于 Matplotlib 渲染 2D/3D 图像。
+
+12. **Web 版补充**  
     除了桌面客户端，还提供了在线网页版（基于 PythonAnywhere），方便快速体验。
 
 ---
@@ -96,6 +111,8 @@ pip install -r requirements.txt
 
 - PySide6==6.9.1
 - sympy==1.14.0
+- numpy
+- matplotlib
 
 ### 运行桌面版
 
@@ -142,36 +159,44 @@ python setup.py build
 CalculusCalculator/
 ├── main.py              # 主窗口逻辑
 ├── run.py               # 程序入口
-├── sympify.py                # 表达式安全转换、函数调用预处理、分母有理化
-├── derivative.py             # 显/隐函数求导
-├── integral.py               # 积分计算
-├── functions.py              # 函数性质分析
-├── simplification.py         # 表达式变形（13种方法）
-├── solvers.py                # 方程/不等式/微分方程/解三角形求解
-├── vectors.py                # 向量数据结构（预留）
-├── layouts_tool.py           # 自适应布局管理器
-├── saves.py                  # JSON 存档/读档
-├── help.html                 # 内置帮助文档
-├── setup.py                  # cx_Freeze 打包脚本
-├── requirements.txt          # Python 依赖列表
-├── update.txt                # 版本更新日志
+├── sympify.py           # 表达式安全转换、函数调用预处理
+├── derivative.py        # 显/隐函数求导
+├── integral.py          # 积分计算
+├── functions.py         # 函数性质分析
+├── simplification.py    # 表达式变形（13种方法）
+├── solvers.py           # 方程/不等式/微分方程/解三角形求解
+├── planes.py            # 平面几何计算与构造 API（30+函数）
+├── solids.py            # 立体几何计算与构造 API（29+函数，含斜二测画法）
+├── paint2D.py           # 平面几何绘图渲染模块
+├── paint3D.py           # 立体几何 3D 绘图渲染模块
+├── layouts_tool.py      # 自适应布局管理器
+├── saves.py             # JSON 存档/读档
+├── help.html            # 内置帮助文档
+├── setup.py             # cx_Freeze 打包脚本
+├── requirements.txt     # Python 依赖列表
+├── update.txt           # 版本更新日志
+├── geometry_api.md      # 几何模块 API 文档
 ├── ui/
-│   ├── __init__.py           # 各选项卡逻辑实现
-│   ├── ui_main.py            # 主窗口布局
-│   ├── ui_dingyi.py          # 定义页布局
-│   ├── ui_qiudao.py          # 求导页布局
-│   ├── ui_jifen.py           # 积分页布局
-│   ├── ui_bianxing.py        # 变形页布局
-│   ├── ui_fangcheng.py       # 方程页布局
-│   ├── ui_fangchengzu.py     # 方程组页布局
-│   ├── ui_budengshi.py       # 不等式页布局
-│   ├── ui_budengshizu.py     # 不等式组页布局
-│   ├── ui_jisuan.py          # 计算页布局
-│   ├── ui_shouye.py          # 首页布局
-│   ├── ui_help.py            # 帮助页布局
-│   ├── ui_dingyixiangliang.py # 定义向量页布局
-│   ├── ui_huitu_hanshu.py    # 绘制函数页布局
-│   └── ui_jiesanjiaoxing.py  # 解三角形页布局
+│   ├── __init__.py      # 各选项卡逻辑实现
+│   ├── ui_main.py       # 主窗口布局
+│   ├── ui_dingyi.py     # 定义页布局
+│   ├── ui_qiudao.py     # 求导页布局
+│   ├── ui_jifen.py      # 积分页布局
+│   ├── ui_bianxing.py   # 变形页布局
+│   ├── ui_fangcheng.py  # 方程页布局
+│   ├── ui_fangchengzu.py  # 方程组页布局
+│   ├── ui_budengshi.py  # 不等式页布局
+│   ├── ui_budengshizu.py  # 不等式组页布局
+│   ├── ui_jisuan.py     # 计算页布局
+│   ├── ui_shouye.py     # 首页布局
+│   ├── ui_help.py       # 帮助页布局
+│   ├── ui_dingyixiangliang.py  # 定义向量页布局
+│   ├── ui_huitu_hanshu.py     # 绘制函数页布局
+│   ├── ui_jiesanjiaoxing.py   # 解三角形页布局
+│   ├── ui_dingyi_pj.py  # 平面几何定义页布局
+│   ├── ui_huitu_pj.py   # 平面几何绘图页布局
+│   ├── ui_dingyi_lj.py  # 立体几何定义页布局
+│   └── ui_huitu_lj.py   # 立体几何绘图页布局
 └── resources.qrc        # 资源文件（MathJax等）
 ```
 

@@ -38,8 +38,10 @@ class MainWindow(QMainWindow):
         self.ui.actiondingyixiangliang.triggered.connect(lambda:self.create_tab(11))
         self.ui.actionhuitu_hanshu.triggered.connect(lambda:self.create_tab(12))
         self.ui.actionjiesanjiaoxing.triggered.connect(lambda:self.create_tab(13))
-        self.ui.actionhuitu_pingmianjihe.triggered.connect(lambda:QMessageBox.information(self, "功能未完善", "抱歉！该功能目前尚未完善\n请关注本项目后续进展！", buttons=QMessageBox.StandardButton.Ok))
-        self.ui.actionhuitu_litijihe.triggered.connect(lambda:QMessageBox.information(self, "功能未完善", "抱歉！该功能目前尚未完善\n请关注本项目后续进展！", buttons=QMessageBox.StandardButton.Ok))
+        self.ui.actiondingyi_pj.triggered.connect(lambda:self.create_tab(14))
+        self.ui.actionhuitu_pingmianjihe.triggered.connect(lambda:self.create_tab(15))
+        self.ui.actiondingyi_lj.triggered.connect(lambda:self.create_tab(16))
+        self.ui.actionhuitu_litijihe.triggered.connect(lambda:self.create_tab(17))
         self.ui.actiongithub.triggered.connect(lambda:webbrowser.open("https://github.com/limingkang12345/CalculusCalculator"))
         self.ui.actionwebsite.triggered.connect(lambda:webbrowser.open("https://limingkang.pythonanywhere.com"))
         
