@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'helpKfNAof.ui'
+## Form generated from reading UI file 'helpAvKpkU.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.9.1
 ##
@@ -16,7 +16,7 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
 from PySide6.QtWebEngineWidgets import QWebEngineView
-from PySide6.QtWidgets import (QApplication, QSizePolicy, QWidget)
+from PySide6.QtWidgets import (QApplication, QGridLayout, QSizePolicy, QWidget)
 import resources_rc
 
 class Ui_help(object):
@@ -24,10 +24,15 @@ class Ui_help(object):
         if not help.objectName():
             help.setObjectName(u"help")
         help.resize(801, 551)
+        self.gridLayout = QGridLayout(help)
+        self.gridLayout.setObjectName(u"gridLayout")
+        self.gridLayout.setContentsMargins(0, 0, 0, 0)
         self.webEngineView = QWebEngineView(help)
         self.webEngineView.setObjectName(u"webEngineView")
-        self.webEngineView.setGeometry(QRect(0, 0, 801, 551))
         self.webEngineView.setUrl(QUrl(u"qrc:///help.html"))
+
+        self.gridLayout.addWidget(self.webEngineView, 0, 0, 1, 1)
+
 
         self.retranslateUi(help)
 

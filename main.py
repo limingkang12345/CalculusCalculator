@@ -42,6 +42,8 @@ class MainWindow(QMainWindow):
         self.ui.actionhuitu_pingmianjihe.triggered.connect(lambda:self.create_tab(15))
         self.ui.actiondingyi_lj.triggered.connect(lambda:self.create_tab(16))
         self.ui.actionhuitu_litijihe.triggered.connect(lambda:self.create_tab(17))
+        self.ui.actionpjjisuan.triggered.connect(lambda:self.create_tab(18))
+        self.ui.actionljjisuan.triggered.connect(lambda:self.create_tab(19))
         self.ui.actiongithub.triggered.connect(lambda:webbrowser.open("https://github.com/limingkang12345/CalculusCalculator"))
         self.ui.actionwebsite.triggered.connect(lambda:webbrowser.open("https://limingkang.pythonanywhere.com"))
         

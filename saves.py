@@ -80,7 +80,11 @@ def openfile(main_class):
             #try:
             if 1:
                 main_class.fs = json_data["fs"]
-                main_class.tabs_n = json_data["tabs_n"]
+                if len(json_data["tabs_n"]) == len(ui.tabs_list):  main_class.tabs_n = json_data["tabs_n"]
+                else:
+                    tabs_n = json_data['tabs_n']
+                    tabs_n.extend((len(ui.tabs_list) - len(json_data["tabs_n"])) * [1])
+                    main_class.tabs_n = tabs_n
                 main_class.eqs = {i:sympify(i, main_class.fs) for i in json_data["eqs"]}
                 main_class.rels = {i:sympify(i, main_class.fs) for i in json_data["rels"]}
                 main_class.vs = json_data["vs"]
@@ -130,5 +134,5 @@ def openfile(main_class):
                                         ui.setWebEngineView('', latex(expr), view)
                                     except:
                                         pass
-            #except:
-                #QMessageBox.warning(main_class, "警告", "提供的配置文件错误")
+            '''except:
+                QMessageBox.warning(main_class, "警告", "提供的配置文件错误")'''

@@ -17,6 +17,8 @@ from ui.ui_dingyi_pj import *
 from ui.ui_huitu_pj import *
 from ui.ui_dingyi_lj import *
 from ui.ui_huitu_lj import *
+from ui.ui_pjjisuan import *
+from ui.ui_ljjisuan import *
 
 import resources_rc
 from derivative import derivative, yinhanshu_derivative
@@ -54,6 +56,10 @@ class Dingyi(QWidget, Ui_dingyi):
         self.dingyi_hanshuliebiao.itemClicked.connect(self.read_function)
         self.dingyi_baocun.clicked.connect(self.save_function)
         self.dingyi_shanchu.clicked.connect(self.delete_function)
+        self.dingyi_mingcheng.returnPressed.connect(self.dingyi_baocun.click)
+        self.dingyi_biaodashi.returnPressed.connect(self.dingyi_baocun.click)
+        self.dingyi_dingyiyu.returnPressed.connect(self.dingyi_baocun.click)
+        self.dingyi_zibianliang.returnPressed.connect(self.dingyi_baocun.click)
         self.dingyi_hanshushuxing_cbx.addItems(["表达式&定义域", "值域", "单调递增区间", "单调递减区间", "奇偶性", "周期", "最大值", "最小值"])
         self.dingyi_hanshushuxing_cbx.setCurrentIndex(0)
         self.dingyi_hanshushuxing_cbx.currentIndexChanged.connect(self.update_function_attr)
@@ -128,6 +134,9 @@ class Dingyixiangliang(QWidget, Ui_dingyixiangliang):
         self.dingyixiangliang_xiangliangliebiao.itemClicked.connect(self.read_vector)
         self.dingyixiangliang_baocun.clicked.connect(self.save_vector)
         self.dingyixiangliang_shanchu.clicked.connect(self.delete_vector)
+        self.dingyixiangliang_mingcheng.returnPressed.connect(self.dingyixiangliang_baocun.click)
+        self.dingyixiangliang_x.returnPressed.connect(self.dingyixiangliang_baocun.click)
+        self.dingyixiangliang_y.returnPressed.connect(self.dingyixiangliang_baocun.click)
         self.dingyixiangliang_xiangliangshuxing_cbx.addItems(["表达式", "模", "方向角", "单位向量"])
         self.dingyixiangliang_xiangliangshuxing_cbx.setCurrentIndex(0)
         self.dingyixiangliang_xiangliangshuxing_cbx.currentIndexChanged.connect(self.update_vector_attr)
@@ -284,6 +293,7 @@ class Dingyixiangliang(QWidget, Ui_dingyixiangliang):
         except:
             pass
 
+# 该类为AI生成
 class Dingyi_pj(QWidget, Ui_dingyi_pj):
     def __init__(self, parent, fs):
         super(Dingyi_pj, self).__init__(parent)
@@ -688,12 +698,14 @@ class Dingyi_pj(QWidget, Ui_dingyi_pj):
         self.dingyi_pj_shuxing_mingcheng.setText("")
         self.dingyi_pj_shuxing_fangcheng.setText("")
 
+# 该类为AI生成
 class Qiudao(QWidget, Ui_qiudao):
     def __init__(self, parent, fs):
         super(Qiudao, self).__init__(parent)
         self.setupUi(self)
         
         self.qiudao_input.textChanged.connect(self.setqiudao_yuanhanshu)
+        self.qiudao_input.returnPressed.connect(self.qiudao_qiudao_button.click)
         self.qiudao_qiudao_button.clicked.connect(self.qiudao_button_f)
         self.qiudao_yinhanshu.stateChanged.connect(self.qiudao_yinhanshu_f)
         self.qiudao_qiuchujutizhi.stateChanged.connect(self.qiudao_jutizhi_f)
@@ -753,6 +765,7 @@ class Jifen(QWidget, Ui_jifen):
         self.setupUi(self)
 
         self.jifen_input.textChanged.connect(self.setjifen_beijihanshu)
+        self.jifen_input.returnPressed.connect(self.jifen_jifen_button.click)
         self.jifen_jifen_button.clicked.connect(self.jifen_button_f)
         self.jifen_dingjifen.stateChanged.connect(self.jifen_dingjifen_f)
 
@@ -799,6 +812,7 @@ class Bianxing(QWidget, Ui_bianxing):
         self.bianxing_bianxingfangfa.addItems(["对数展开(expand_log)", "对数合并(logcombine)", "换元"])
         self.bianxing_bianxingfangfa.currentIndexChanged.connect(self.bianxing_bianxingfangfa_f)
         self.bianxing_input.textChanged.connect(self.setbianxing_yuanshi)
+        self.bianxing_input.returnPressed.connect(self.bianxing_bianxing_button.click)
         self.bianxing_bianxing_button.clicked.connect(self.bianxing_button_f)
 
         self.fs = fs
@@ -842,6 +856,9 @@ class Fangcheng(QWidget, Ui_fangcheng):
         self.fangcheng_zuoshi.textChanged.connect(self.setfangcheng_yuanfangcheng)
         self.fangcheng_youshi.textChanged.connect(self.setfangcheng_yuanfangcheng)
         self.fangcheng_quzhifanwei.textChanged.connect(self.setfangcheng_yuanfangcheng)
+        self.fangcheng_zuoshi.returnPressed.connect(self.fangcheng_qiujie.click)
+        self.fangcheng_youshi.returnPressed.connect(self.fangcheng_qiujie.click)
+        self.fangcheng_quzhifanwei.returnPressed.connect(self.fangcheng_qiujie.click)
         self.fangcheng_weifenfangcheng.stateChanged.connect(self.fangcheng_weifenfangcheng_f)
         self.fangcheng_qiujie.clicked.connect(self.fangcheng_button_f)
 
@@ -885,6 +902,8 @@ class Fangchengzu(QWidget, Ui_fangchengzu):
         self.fangchengzu_shanchu.clicked.connect(self.delete_fangcheng)
         self.fangchengzu_fangcheng.itemClicked.connect(self.read_fangcheng)
         self.fangchengzu_qiujie.clicked.connect(self.fangchengzu_button_f)
+        self.fangchengzu_zuoshi.returnPressed.connect(self.fangchengzu_baocun.click)
+        self.fangchengzu_youshi.returnPressed.connect(self.fangchengzu_baocun.click)
 
         self.fs = fs
         self.parent = parent
@@ -940,6 +959,9 @@ class Budengshi(QWidget, Ui_budengshi):
         self.budengshi_zuoshi.textChanged.connect(self.setbudengshi_yuanshi)
         self.budengshi_youshi.textChanged.connect(self.setbudengshi_yuanshi)
         self.budengshi_quzhifanwei.textChanged.connect(self.setbudengshi_yuanshi)
+        self.budengshi_zuoshi.returnPressed.connect(self.budengshi_qiujie.click)
+        self.budengshi_youshi.returnPressed.connect(self.budengshi_qiujie.click)
+        self.budengshi_quzhifanwei.returnPressed.connect(self.budengshi_qiujie.click)
         self.budengshi_qiujie.clicked.connect(self.budengshi_button_f)
 
         self.fs = fs
@@ -969,6 +991,8 @@ class Budengshizu(QWidget, Ui_budengshizu):
         self.budengshizu_shanchu.clicked.connect(self.delete_budengshi)
         self.budengshizu_budengshi.itemClicked.connect(self.read_budengshi)
         self.budengshizu_qiujie.clicked.connect(self.budengshizu_button_f)
+        self.budengshizu_zuoshi.returnPressed.connect(self.budengshizu_baocun.click)
+        self.budengshizu_youshi.returnPressed.connect(self.budengshizu_baocun.click)
 
         self.fs = fs
         self.parent = parent
@@ -1026,6 +1050,7 @@ class Jisuan(QWidget, Ui_jisuan):
         self.jisuan_jisuanyinqing.currentIndexChanged.connect(self.jisuan_jisuanyinqing_f)
         self.jisuan_jisuan_button.clicked.connect(self.jisuan_button_f)
         self.jisuan_input.textChanged.connect(self.setjisuan_yuanshi)
+        self.jisuan_input.returnPressed.connect(self.jisuan_jisuan_button.click)
 
         self.fs = fs
         self.parent = parent
@@ -1088,6 +1113,7 @@ class Huitu_hanshu(QWidget, Ui_huitu_hanshu):
         self.huitu_hanshu_biaodashi_radio.toggled.connect(self.toggle_input_mode)
         self.huitu_hanshu_hanshu_radio.toggled.connect(self.toggle_input_mode)
         self.huitu_hanshu_huizhi.clicked.connect(self.draw_function)
+        self.huitu_hanshu_biaodashi.returnPressed.connect(self.huitu_hanshu_huizhi.click)
 
         self.canvas = None
         self.draw_layout = QVBoxLayout(self.huitu_hanshu_huitu)
@@ -1303,6 +1329,9 @@ class Jiesanjiaoxing(QWidget, Ui_jiesanjiaoxing):
         self.parent = parent
 
         self.jiesanjiaoxing_qiujie.clicked.connect(self.solve_triangle)
+        self.jiesanjiaoxing_tiaojian1.returnPressed.connect(self.jiesanjiaoxing_qiujie.click)
+        self.jiesanjiaoxing_tiaojian2.returnPressed.connect(self.jiesanjiaoxing_qiujie.click)
+        self.jiesanjiaoxing_tiaojian3.returnPressed.connect(self.jiesanjiaoxing_qiujie.click)
 
     def _parse_conditions(self):
         """解析三个条件，返回 (angles_dict, sides_dict, error_msg)"""
@@ -1702,6 +1731,399 @@ class Huitu_lj(QWidget, Ui_huitu_lj):
             QMessageBox.warning(self, "绘制失败", f"绘制时出错：\n{e}")
 
 
+class Pjjisuan(QWidget, Ui_pjjisuan_2):
+    """平面几何计算页面 —— 使用已定义的 pjs 对象进行几何运算"""
+    def __init__(self, parent, fs):
+        super(Pjjisuan, self).__init__(parent)
+        self.setupUi(self)
+        self.fs = fs
+        self.parent = parent
+        self.pjjisuan_fangfa.currentIndexChanged.connect(self._on_method_changed)
+        self.pjjisuan_jisuan.clicked.connect(self._compute)
+        self.pjjisuan_canshu.returnPressed.connect(self._compute)
+        self._on_method_changed(0)
+
+    @property
+    def pjs(self):
+        if not hasattr(self.parent, 'pjs'):
+            self.parent.pjs = {}
+        return self.parent.pjs
+
+    def _on_method_changed(self, idx):
+        hints = {
+            0: "", 1: "点1名,点2名", 2: "点1名,点2名",
+            3: "点1名,点2名,...", 4: "点名,dx,dy",
+            5: "点名,弧度,旋转中心名", 6: "点名,直线名",
+            7: "点1名,点2名", 8: "点1名,点2名",
+            9: "直线1名,直线2名", 10: "点名,直线名",
+            11: "直线1名,直线2名", 12: "直线1名,直线2名",
+            13: "直线1名,直线2名", 14: "圆名",
+            15: "圆名", 16: "圆名", 17: "圆名",
+            18: "圆1名,圆2名", 19: "点名,圆名",
+            20: "三角形名", 21: "三角形名",
+            22: "三角形名", 23: "三角形名",
+            24: "三角形名", 25: "三角形名",
+            26: "三角形名", 27: "三角形名",
+            28: "三角形名", 29: "三角形名",
+            30: "三角形名", 31: "顶点1名,顶点2名,...",
+            32: "顶点1名,顶点2名,...",
+        }
+        hint = hints.get(idx, "")
+        if hint:
+            self.label_2.setText("参数(" + hint + ")：")
+        else:
+            self.label_2.setText("参数输入：")
+
+    def _get_point(self, name):
+        n = name.strip()
+        if n in self.pjs and self.pjs[n][0] == "点":
+            return self.pjs[n][1]
+        raise ValueError(f"未找到点'{n}'")
+
+    def _get_line_points(self, *params):
+        """解析直线为两个点。用法: _get_line_points(line_name) 或 _get_line_points(pt1, pt2)"""
+        if len(params) == 1:
+            n = params[0].strip()
+            if n in self.pjs and self.pjs[n][0] == "直线":
+                return self.pjs[n][1].points[0], self.pjs[n][1].points[1]
+        return tuple(self._get_point(p) for p in params[:2])
+
+    def _get_circle(self, name):
+        n = name.strip()
+        if n in self.pjs and self.pjs[n][0] == "圆":
+            return self.pjs[n][1]
+        raise ValueError(f"未找到圆'{n}'")
+
+    def _get_triangle_points(self, *params):
+        """解析三角形为三个顶点。用法: _get_triangle_points(tri_name) 或 _get_triangle_points(p1,p2,p3)"""
+        if len(params) == 1:
+            n = params[0].strip()
+            if n in self.pjs and self.pjs[n][0] == "三角形":
+                return self.pjs[n][1].vertices
+        return tuple(self._get_point(p) for p in params[:3])
+
+    def _show_result(self, result):
+        latex_str = latex(result)
+        setWebEngineView('', latex_str, self.pjjisuan_result)
+        self.pjjisuan_result_lineedit.setText(str(result))
+
+    def _compute(self):
+        idx = self.pjjisuan_fangfa.currentIndex()
+        if idx == 0:
+            return
+        params_str = self.pjjisuan_canshu.text().strip()
+        if not params_str:
+            return
+        raw = [p.strip() for p in params_str.split(',')]
+
+        try:
+            from planes import (
+                point_distance, midpoint, collinear_check, translate_point,
+                rotate_point, reflect_point, line_equation, line_slope,
+                line_intersection, point_to_line_distance, angle_between_lines,
+                parallel_check, perpendicular_check, circle_area_func,
+                circle_circumference, circle_intersection, circle_tangent_lines,
+                triangle_area, triangle_perimeter, triangle_circumcenter,
+                triangle_circumradius, triangle_incenter, triangle_inradius,
+                triangle_centroid, triangle_orthocenter, triangle_is_right,
+                triangle_is_isosceles, triangle_is_equilateral,
+                polygon_area_func, polygon_perimeter_func,
+            )
+
+            if idx == 1:  # 两点距离
+                result = point_distance(self._get_point(raw[0]), self._get_point(raw[1]))
+            elif idx == 2:  # 中点坐标
+                result = midpoint(self._get_point(raw[0]), self._get_point(raw[1]))
+            elif idx == 3:  # 共线判断
+                pts = [self._get_point(p) for p in raw]
+                result = collinear_check(pts)
+            elif idx == 4:  # 平移点
+                result = translate_point(self._get_point(raw[0]), raw[1], raw[2], self.fs)
+            elif idx == 5:  # 绕定点旋转
+                result = rotate_point(self._get_point(raw[0]), raw[1], self._get_point(raw[2]), self.fs)
+            elif idx == 6:  # 点关于直线反射
+                pt = self._get_point(raw[0])
+                lp = self._get_line_points(*raw[1:])
+                result = reflect_point(pt, lp[0], lp[1])
+            elif idx == 7:  # 直线方程
+                result = line_equation(self._get_point(raw[0]), self._get_point(raw[1]))
+            elif idx == 8:  # 直线斜率
+                result = line_slope(self._get_point(raw[0]), self._get_point(raw[1]))
+            elif idx == 9:  # 两直线交点（2=两直线名, 4=四点名）
+                if len(raw) <= 2:
+                    lp1 = self._get_line_points(raw[0])
+                    lp2 = self._get_line_points(raw[1])
+                else:
+                    lp1 = self._get_line_points(raw[0], raw[1])
+                    lp2 = self._get_line_points(raw[2], raw[3])
+                result = line_intersection(lp1[0], lp1[1], lp2[0], lp2[1])
+            elif idx == 10:  # 点到直线距离
+                pt = self._get_point(raw[0])
+                lp = self._get_line_points(*raw[1:])
+                result = point_to_line_distance(pt, lp[0], lp[1])
+            elif idx == 11:  # 两直线夹角（2=两直线名, 4=四点名）
+                if len(raw) <= 2:
+                    lp1 = self._get_line_points(raw[0])
+                    lp2 = self._get_line_points(raw[1])
+                else:
+                    lp1 = self._get_line_points(raw[0], raw[1])
+                    lp2 = self._get_line_points(raw[2], raw[3])
+                result = angle_between_lines(lp1[0], lp1[1], lp2[0], lp2[1])
+            elif idx == 12:  # 平行判断（2=两直线名, 4=四点名）
+                if len(raw) <= 2:
+                    lp1 = self._get_line_points(raw[0])
+                    lp2 = self._get_line_points(raw[1])
+                else:
+                    lp1 = self._get_line_points(raw[0], raw[1])
+                    lp2 = self._get_line_points(raw[2], raw[3])
+                result = parallel_check(lp1[0], lp1[1], lp2[0], lp2[1])
+            elif idx == 13:  # 垂直判断（2=两直线名, 4=四点名）
+                if len(raw) <= 2:
+                    lp1 = self._get_line_points(raw[0])
+                    lp2 = self._get_line_points(raw[1])
+                else:
+                    lp1 = self._get_line_points(raw[0], raw[1])
+                    lp2 = self._get_line_points(raw[2], raw[3])
+                result = perpendicular_check(lp1[0], lp1[1], lp2[0], lp2[1])
+            elif idx == 14:  # 圆心坐标
+                c = self._get_circle(raw[0])
+                result = (radsimp(c.center.x), radsimp(c.center.y))
+            elif idx == 15:  # 圆半径
+                c = self._get_circle(raw[0])
+                result = radsimp(c.radius)
+            elif idx == 16:  # 圆面积
+                c = self._get_circle(raw[0])
+                result = radsimp(c.area)
+            elif idx == 17:  # 圆周长
+                c = self._get_circle(raw[0])
+                result = radsimp(c.circumference)
+            elif idx == 18:  # 两圆交点
+                c1, c2 = self._get_circle(raw[0]), self._get_circle(raw[1])
+                inter = c1.intersection(c2)
+                result = []
+                for pt in inter:
+                    result.append((radsimp(pt.x), radsimp(pt.y)))
+                result = result if result else "两圆不相交"
+            elif idx == 19:  # 圆切线方程
+                pt = self._get_point(raw[0])
+                c = self._get_circle(raw[1])
+                from sympy import simplify
+                tangents = c.tangent_lines(pt)
+                result = []
+                for line in tangents:
+                    result.append(simplify(line.equation()))
+                result = result if result else "无切线"
+            elif idx == 20:  # 三角形面积
+                v = self._get_triangle_points(*raw)
+                result = triangle_area(*v)
+            elif idx == 21:  # 三角形周长
+                v = self._get_triangle_points(*raw)
+                result = triangle_perimeter(*v)
+            elif idx == 22:  # 三角形外心
+                v = self._get_triangle_points(*raw)
+                result = triangle_circumcenter(*v)
+            elif idx == 23:  # 三角形外接圆半径
+                v = self._get_triangle_points(*raw)
+                result = triangle_circumradius(*v)
+            elif idx == 24:  # 三角形内心
+                v = self._get_triangle_points(*raw)
+                result = triangle_incenter(*v)
+            elif idx == 25:  # 三角形内切圆半径
+                v = self._get_triangle_points(*raw)
+                result = triangle_inradius(*v)
+            elif idx == 26:  # 三角形重心
+                v = self._get_triangle_points(*raw)
+                result = triangle_centroid(*v)
+            elif idx == 27:  # 三角形垂心
+                v = self._get_triangle_points(*raw)
+                result = triangle_orthocenter(*v)
+            elif idx == 28:  # 直角三角形判断
+                v = self._get_triangle_points(*raw)
+                result = triangle_is_right(*v)
+            elif idx == 29:  # 等腰三角形判断
+                v = self._get_triangle_points(*raw)
+                result = triangle_is_isosceles(*v)
+            elif idx == 30:  # 等边三角形判断
+                v = self._get_triangle_points(*raw)
+                result = triangle_is_equilateral(*v)
+            elif idx == 31:  # 多边形面积
+                pts = [self._get_point(p) for p in raw]
+                result = polygon_area_func(pts)
+            elif idx == 32:  # 多边形周长
+                pts = [self._get_point(p) for p in raw]
+                result = polygon_perimeter_func(pts)
+            else:
+                result = "未知操作"
+
+            self._show_result(result)
+        except Exception as e:
+            self.pjjisuan_result.setHtml("")
+            self.pjjisuan_result_lineedit.setText(f"计算错误: {e}")
+
+
+class Ljjisuan(QWidget, Ui_ljjisuan):
+    """立体几何计算页面 —— 使用已定义的 ljs 对象进行三维几何运算"""
+    def __init__(self, parent, fs):
+        super(Ljjisuan, self).__init__(parent)
+        self.setupUi(self)
+        self.fs = fs
+        self.parent = parent
+        self.ljjisuan_fangfa.currentIndexChanged.connect(self._on_method_changed)
+        self.ljjisuan_jisuan.clicked.connect(self._compute)
+        self.ljjisuan_canshu.returnPressed.connect(self._compute)
+        self._on_method_changed(0)
+
+    @property
+    def ljs(self):
+        if not hasattr(self.parent, 'ljs'):
+            self.parent.ljs = {}
+        return self.parent.ljs
+
+    def _on_method_changed(self, idx):
+        hints = {
+            0: "", 1: "点1名,点2名", 2: "点1名,点2名",
+            3: "点名,平面名", 4: "点名,直线名",
+            5: "点名,平面名", 6: "点名,直线名",
+            7: "点1名,点2名,...", 8: "直线名",
+            9: "直线1名,直线2名", 10: "直线1名,直线2名",
+            11: "直线1名,直线2名", 12: "直线1名,直线2名",
+            13: "直线名,平面名", 14: "点1名,点2名,点3名",
+            15: "平面名", 16: "平面1名,平面2名",
+            17: "平面1名,平面2名", 18: "平面1名,平面2名",
+            19: "平面1名,平面2名", 20: "平面名,直线名",
+            21: "点A名,点B名,点C名,点D名", 22: "直线名,平面名",
+        }
+        hint = hints.get(idx, "")
+        if hint:
+            self.label_2.setText("参数(" + hint + ")：")
+        else:
+            self.label_2.setText("参数输入：")
+
+    def _get_point3d(self, name):
+        n = name.strip()
+        if n in self.ljs and self.ljs[n][0] == "点":
+            return self.ljs[n][1]
+        raise ValueError(f"未找到三维点'{n}'")
+
+    def _get_line3d(self, name):
+        n = name.strip()
+        if n in self.ljs and self.ljs[n][0] == "直线":
+            return self.ljs[n][1]
+        # 也尝试由两点名解析
+        raise ValueError(f"未找到三维直线'{n}'")
+
+    def _get_line3d_or_from_points(self, *params):
+        """解析为 Line3D：单个直线名 或 两个点名"""
+        if len(params) == 1:
+            n = params[0].strip()
+            if n in self.ljs and self.ljs[n][0] == "直线":
+                return self.ljs[n][1]
+            raise ValueError(f"未找到三维直线'{n}'")
+        from sympy.geometry import Line3D
+        return Line3D(self._get_point3d(params[0]), self._get_point3d(params[1]))
+
+    def _get_plane(self, name):
+        n = name.strip()
+        if n in self.ljs and self.ljs[n][0] == "平面":
+            return self.ljs[n][1]
+        raise ValueError(f"未找到平面'{n}'")
+
+    def _show_result(self, result):
+        latex_str = latex(result)
+        setWebEngineView('', latex_str, self.ljjisuan_result)
+        self.ljjisuan_result_lineedit.setText(str(result))
+
+    def _compute(self):
+        idx = self.ljjisuan_fangfa.currentIndex()
+        if idx == 0:
+            return
+        params_str = self.ljjisuan_canshu.text().strip()
+        if not params_str:
+            return
+        raw = [p.strip() for p in params_str.split(',')]
+
+        try:
+            from solids import (
+                point3d_distance, point3d_midpoint, point3d_to_plane_distance,
+                point3d_to_line_distance, point3d_projection_on_plane,
+                point3d_projection_on_line, are_coplanar, line3d_direction,
+                line3d_intersection, line3d_angle, line3d_parallel_check,
+                line3d_perpendicular_check, line3d_projection_on_plane,
+                plane_equation_from_points, plane_normal_vector,
+                plane_angle_between, plane_parallel_check,
+                plane_perpendicular_check, plane_intersection,
+                plane_line_intersection, tetrahedron_volume, line_plane_angle,
+            )
+
+            if idx == 1:  # 两点距离
+                result = point3d_distance(self._get_point3d(raw[0]), self._get_point3d(raw[1]))
+            elif idx == 2:  # 中点坐标
+                result = point3d_midpoint(self._get_point3d(raw[0]), self._get_point3d(raw[1]))
+            elif idx == 3:  # 点到平面距离
+                result = point3d_to_plane_distance(self._get_point3d(raw[0]), self._get_plane(raw[1]))
+            elif idx == 4:  # 点到直线距离
+                result = point3d_to_line_distance(self._get_point3d(raw[0]), self._get_line3d_or_from_points(*raw[1:]))
+            elif idx == 5:  # 点在平面投影
+                result = point3d_projection_on_plane(self._get_point3d(raw[0]), self._get_plane(raw[1]))
+            elif idx == 6:  # 点在直线投影
+                result = point3d_projection_on_line(self._get_point3d(raw[0]), self._get_line3d_or_from_points(*raw[1:]))
+            elif idx == 7:  # 共面判断
+                pts = [self._get_point3d(p) for p in raw]
+                result = are_coplanar(pts)
+            elif idx == 8:  # 直线方向向量
+                result = line3d_direction(self._get_line3d_or_from_points(*raw))
+            elif idx == 9:  # 两直线交点
+                result = line3d_intersection(
+                    self._get_line3d_or_from_points(*raw[:len(raw)//2]),
+                    self._get_line3d_or_from_points(*raw[len(raw)//2:]))
+            elif idx == 10:  # 两直线夹角
+                result = line3d_angle(
+                    self._get_line3d_or_from_points(*raw[:len(raw)//2]),
+                    self._get_line3d_or_from_points(*raw[len(raw)//2:]))
+            elif idx == 11:  # 平行判断(线)
+                result = line3d_parallel_check(
+                    self._get_line3d_or_from_points(*raw[:len(raw)//2]),
+                    self._get_line3d_or_from_points(*raw[len(raw)//2:]))
+            elif idx == 12:  # 垂直判断(线)
+                result = line3d_perpendicular_check(
+                    self._get_line3d_or_from_points(*raw[:len(raw)//2]),
+                    self._get_line3d_or_from_points(*raw[len(raw)//2:]))
+            elif idx == 13:  # 直线在平面投影（参数：直线名,平面名 或 两点名,平面名）
+                result = line3d_projection_on_plane(
+                    self._get_line3d_or_from_points(*raw[:-1]),
+                    self._get_plane(raw[-1]))
+            elif idx == 14:  # 三点求平面方程
+                result = plane_equation_from_points(
+                    self._get_point3d(raw[0]), self._get_point3d(raw[1]), self._get_point3d(raw[2]))
+            elif idx == 15:  # 平面法向量
+                result = plane_normal_vector(self._get_plane(raw[0]))
+            elif idx == 16:  # 两平面夹角
+                result = plane_angle_between(self._get_plane(raw[0]), self._get_plane(raw[1]))
+            elif idx == 17:  # 两平面交线
+                result = plane_intersection(self._get_plane(raw[0]), self._get_plane(raw[1]))
+            elif idx == 18:  # 平行判断(面)
+                result = plane_parallel_check(self._get_plane(raw[0]), self._get_plane(raw[1]))
+            elif idx == 19:  # 垂直判断(面)
+                result = plane_perpendicular_check(self._get_plane(raw[0]), self._get_plane(raw[1]))
+            elif idx == 20:  # 平面与直线交点
+                result = plane_line_intersection(self._get_plane(raw[0]), self._get_line3d_or_from_points(*raw[1:]))
+            elif idx == 21:  # 四面体体积
+                result = tetrahedron_volume(
+                    self._get_point3d(raw[0]), self._get_point3d(raw[1]),
+                    self._get_point3d(raw[2]), self._get_point3d(raw[3]))
+            elif idx == 22:  # 直线与平面夹角（参数：直线名,平面名 或 两点名,平面名）
+                result = line_plane_angle(
+                    self._get_line3d_or_from_points(*raw[:-1]),
+                    self._get_plane(raw[-1]))
+            else:
+                result = "未知操作"
+
+            self._show_result(result)
+        except Exception as e:
+            self.ljjisuan_result.setHtml("")
+            self.ljjisuan_result_lineedit.setText(f"计算错误: {e}")
+
+
 #tabs_name = ["首页", "定义", "求导", "积分", "变形", "方程", "方程组", "不等式", "不等式组", "帮助"]
-tabs_list = [Shouye, Dingyi, Qiudao, Jifen, Bianxing, Fangcheng, Fangchengzu, Budengshi, Budengshizu, Jisuan, Help, Dingyixiangliang, Huitu_hanshu, Jiesanjiaoxing, Dingyi_pj, Huitu_pj, Dingyi_lj, Huitu_lj]
-tabs_dict = {"首页":0, "定义":1, "求导":2, "积分":3, "变形":4, "方程":5, "方程组":6, "不等式":7, "不等式组":8, "计算":9, "帮助":10, "定义向量":11, "绘制函数":12, "解三角形":13, "平面几何":14, "平面绘图":15, "立体几何":16, "立体绘图":17}
+tabs_list = [Shouye, Dingyi, Qiudao, Jifen, Bianxing, Fangcheng, Fangchengzu, Budengshi, Budengshizu, Jisuan, Help, Dingyixiangliang, Huitu_hanshu, Jiesanjiaoxing, Dingyi_pj, Huitu_pj, Dingyi_lj, Huitu_lj, Pjjisuan, Ljjisuan]
+tabs_dict = {"首页":0, "定义":1, "求导":2, "积分":3, "变形":4, "方程":5, "方程组":6, "不等式":7, "不等式组":8, "计算":9, "帮助":10, "定义向量":11, "绘制函数":12, "解三角形":13, "平面几何":14, "平面绘图":15, "立体几何":16, "立体绘图":17, "平面计算":18, "立体计算":19}

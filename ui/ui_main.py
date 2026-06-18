@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'mainaBhDxy.ui'
+## Form generated from reading UI file 'mainLmybsX.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.11.1
+## Created by: Qt User Interface Compiler version 6.9.1
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -16,8 +16,8 @@ from PySide6.QtGui import (QAction, QBrush, QColor, QConicalGradient,
     QIcon, QImage, QKeySequence, QLinearGradient,
     QPainter, QPalette, QPixmap, QRadialGradient,
     QTransform)
-from PySide6.QtWidgets import (QApplication, QMainWindow, QMenu, QMenuBar,
-    QSizePolicy, QTabWidget, QWidget)
+from PySide6.QtWidgets import (QApplication, QGridLayout, QMainWindow, QMenu,
+    QMenuBar, QSizePolicy, QTabWidget, QWidget)
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -38,8 +38,6 @@ class Ui_MainWindow(object):
         self.actionopen.setObjectName(u"actionopen")
         self.actionexit = QAction(MainWindow)
         self.actionexit.setObjectName(u"actionexit")
-        self.actionjisuan = QAction(MainWindow)
-        self.actionjisuan.setObjectName(u"actionjisuan")
         self.actionqiudao = QAction(MainWindow)
         self.actionqiudao.setObjectName(u"actionqiudao")
         self.actionjifen = QAction(MainWindow)
@@ -70,18 +68,29 @@ class Ui_MainWindow(object):
         self.actiondingyi_pj.setObjectName(u"actiondingyi_pj")
         self.actiondingyi_lj = QAction(MainWindow)
         self.actiondingyi_lj.setObjectName(u"actiondingyi_lj")
+        self.actionjisuan = QAction(MainWindow)
+        self.actionjisuan.setObjectName(u"actionjisuan")
+        self.actionpjjisuan = QAction(MainWindow)
+        self.actionpjjisuan.setObjectName(u"actionpjjisuan")
+        self.actionljjisuan = QAction(MainWindow)
+        self.actionljjisuan.setObjectName(u"actionljjisuan")
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
+        self.gridLayout = QGridLayout(self.centralwidget)
+        self.gridLayout.setObjectName(u"gridLayout")
+        self.gridLayout.setContentsMargins(0, 0, 0, 0)
         self.tabWidget = QTabWidget(self.centralwidget)
         self.tabWidget.setObjectName(u"tabWidget")
-        self.tabWidget.setGeometry(QRect(-2, -1, 801, 581))
         self.tabWidget.setDocumentMode(True)
         self.tabWidget.setTabsClosable(True)
         self.tabWidget.setMovable(True)
+
+        self.gridLayout.addWidget(self.tabWidget, 0, 0, 1, 1)
+
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QMenuBar(MainWindow)
         self.menubar.setObjectName(u"menubar")
-        self.menubar.setGeometry(QRect(0, 0, 800, 21))
+        self.menubar.setGeometry(QRect(0, 0, 800, 25))
         self.functions = QMenu(self.menubar)
         self.functions.setObjectName(u"functions")
         self.calculus = QMenu(self.functions)
@@ -94,6 +103,8 @@ class Ui_MainWindow(object):
         self.daishushi.setObjectName(u"daishushi")
         self.huitu = QMenu(self.functions)
         self.huitu.setObjectName(u"huitu")
+        self.jisuan = QMenu(self.functions)
+        self.jisuan.setObjectName(u"jisuan")
         self.about = QMenu(self.menubar)
         self.about.setObjectName(u"about")
         self.file = QMenu(self.menubar)
@@ -107,6 +118,7 @@ class Ui_MainWindow(object):
         self.functions.addAction(self.dingyi.menuAction())
         self.functions.addAction(self.calculus.menuAction())
         self.functions.addAction(self.daishushi.menuAction())
+        self.functions.addAction(self.jisuan.menuAction())
         self.functions.addAction(self.solve.menuAction())
         self.functions.addAction(self.huitu.menuAction())
         self.functions.addAction(self.actionjiesanjiaoxing)
@@ -121,10 +133,12 @@ class Ui_MainWindow(object):
         self.solve.addAction(self.actionbudengshi)
         self.solve.addAction(self.actionbudengshizu)
         self.daishushi.addAction(self.actionbianxing)
-        self.daishushi.addAction(self.actionjisuan)
         self.huitu.addAction(self.actionhuitu_hanshu)
         self.huitu.addAction(self.actionhuitu_pingmianjihe)
         self.huitu.addAction(self.actionhuitu_litijihe)
+        self.jisuan.addAction(self.actionjisuan)
+        self.jisuan.addAction(self.actionpjjisuan)
+        self.jisuan.addAction(self.actionljjisuan)
         self.about.addAction(self.actiongithub)
         self.about.addAction(self.actionwebsite)
         self.about.addAction(self.actionhelp)
@@ -149,7 +163,6 @@ class Ui_MainWindow(object):
         self.actionsaveas.setText(QCoreApplication.translate("MainWindow", u"\u4fdd\u5b58\u4e3a", None))
         self.actionopen.setText(QCoreApplication.translate("MainWindow", u"\u6253\u5f00", None))
         self.actionexit.setText(QCoreApplication.translate("MainWindow", u"\u9000\u51fa", None))
-        self.actionjisuan.setText(QCoreApplication.translate("MainWindow", u"\u8ba1\u7b97", None))
         self.actionqiudao.setText(QCoreApplication.translate("MainWindow", u"\u6c42\u5bfc", None))
         self.actionjifen.setText(QCoreApplication.translate("MainWindow", u"\u79ef\u5206", None))
         self.actionfangcheng.setText(QCoreApplication.translate("MainWindow", u"\u65b9\u7a0b", None))
@@ -165,12 +178,16 @@ class Ui_MainWindow(object):
         self.actionjiesanjiaoxing.setText(QCoreApplication.translate("MainWindow", u"\u89e3\u4e09\u89d2\u5f62", None))
         self.actiondingyi_pj.setText(QCoreApplication.translate("MainWindow", u"\u5e73\u9762\u51e0\u4f55", None))
         self.actiondingyi_lj.setText(QCoreApplication.translate("MainWindow", u"\u7acb\u4f53\u51e0\u4f55", None))
+        self.actionjisuan.setText(QCoreApplication.translate("MainWindow", u"\u4ee3\u6570\u5f0f\u8ba1\u7b97", None))
+        self.actionpjjisuan.setText(QCoreApplication.translate("MainWindow", u"\u5e73\u9762\u51e0\u4f55\u8ba1\u7b97", None))
+        self.actionljjisuan.setText(QCoreApplication.translate("MainWindow", u"\u7acb\u4f53\u51e0\u4f55\u8ba1\u7b97", None))
         self.functions.setTitle(QCoreApplication.translate("MainWindow", u"\u529f\u80fd", None))
         self.calculus.setTitle(QCoreApplication.translate("MainWindow", u"\u5fae\u79ef\u5206", None))
         self.dingyi.setTitle(QCoreApplication.translate("MainWindow", u"\u5b9a\u4e49", None))
         self.solve.setTitle(QCoreApplication.translate("MainWindow", u"\u6c42\u89e3", None))
         self.daishushi.setTitle(QCoreApplication.translate("MainWindow", u"\u4ee3\u6570\u5f0f", None))
         self.huitu.setTitle(QCoreApplication.translate("MainWindow", u"\u7ed8\u56fe", None))
+        self.jisuan.setTitle(QCoreApplication.translate("MainWindow", u"\u8ba1\u7b97", None))
         self.about.setTitle(QCoreApplication.translate("MainWindow", u"\u5173\u4e8e", None))
         self.file.setTitle(QCoreApplication.translate("MainWindow", u"\u6587\u4ef6", None))
     # retranslateUi
