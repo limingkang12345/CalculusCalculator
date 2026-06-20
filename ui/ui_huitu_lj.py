@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'huitu_ljRMcTYh.ui'
+## Form generated from reading UI file 'huitu_ljNCJfcq.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.9.1
 ##
@@ -15,26 +15,36 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWidgets import (QApplication, QListWidget, QListWidgetItem, QPushButton,
-    QSizePolicy, QWidget)
+from PySide6.QtWidgets import (QApplication, QGridLayout, QListWidget, QListWidgetItem,
+    QPushButton, QSizePolicy, QWidget)
 
 class Ui_huitu_lj(object):
     def setupUi(self, huitu_lj):
         if not huitu_lj.objectName():
             huitu_lj.setObjectName(u"huitu_lj")
         huitu_lj.resize(801, 551)
+        self.gridLayout = QGridLayout(huitu_lj)
+        self.gridLayout.setObjectName(u"gridLayout")
         self.huitu_pingji = QWidget(huitu_lj)
         self.huitu_pingji.setObjectName(u"huitu_pingji")
-        self.huitu_pingji.setGeometry(QRect(10, 10, 601, 511))
-        self.huitu_lj_button = QPushButton(huitu_lj)
-        self.huitu_lj_button.setObjectName(u"huitu_lj_button")
-        self.huitu_lj_button.setGeometry(QRect(10, 520, 781, 27))
+
+        self.gridLayout.addWidget(self.huitu_pingji, 0, 0, 1, 1)
+
         self.huitu_lj_list = QListWidget(huitu_lj)
         self.huitu_lj_list.setObjectName(u"huitu_lj_list")
-        self.huitu_lj_list.setGeometry(QRect(620, 10, 171, 511))
         self.huitu_lj_list.setWordWrap(False)
         self.huitu_lj_list.setSelectionRectVisible(False)
         self.huitu_lj_list.setSortingEnabled(False)
+
+        self.gridLayout.addWidget(self.huitu_lj_list, 0, 1, 1, 1)
+
+        self.huitu_lj_button = QPushButton(huitu_lj)
+        self.huitu_lj_button.setObjectName(u"huitu_lj_button")
+
+        self.gridLayout.addWidget(self.huitu_lj_button, 1, 0, 1, 2)
+
+        self.gridLayout.setColumnStretch(0, 4)
+        self.gridLayout.setColumnStretch(1, 1)
 
         self.retranslateUi(huitu_lj)
 

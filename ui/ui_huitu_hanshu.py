@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'huitu_hanshutSrWPS.ui'
+## Form generated from reading UI file 'huitu_hanshuMxhPrL.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.9.1
 ##
@@ -15,51 +15,79 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWidgets import (QApplication, QComboBox, QGroupBox, QLabel,
-    QLineEdit, QPushButton, QRadioButton, QSizePolicy,
-    QWidget)
+from PySide6.QtWidgets import (QApplication, QComboBox, QGridLayout, QGroupBox,
+    QLabel, QLineEdit, QPushButton, QRadioButton,
+    QSizePolicy, QWidget)
 
 class Ui_huitu_hanshu(object):
     def setupUi(self, huitu_hanshu):
         if not huitu_hanshu.objectName():
             huitu_hanshu.setObjectName(u"huitu_hanshu")
         huitu_hanshu.resize(801, 551)
+        self.gridLayout = QGridLayout(huitu_hanshu)
+        self.gridLayout.setObjectName(u"gridLayout")
         self.groupBox = QGroupBox(huitu_hanshu)
         self.groupBox.setObjectName(u"groupBox")
-        self.groupBox.setGeometry(QRect(10, 10, 771, 80))
-        self.huitu_hanshu_biaodashi = QLineEdit(self.groupBox)
-        self.huitu_hanshu_biaodashi.setObjectName(u"huitu_hanshu_biaodashi")
-        self.huitu_hanshu_biaodashi.setGeometry(QRect(90, 20, 671, 21))
+        self.gridLayout_2 = QGridLayout(self.groupBox)
+        self.gridLayout_2.setObjectName(u"gridLayout_2")
         self.huitu_hanshu_biaodashi_radio = QRadioButton(self.groupBox)
         self.huitu_hanshu_biaodashi_radio.setObjectName(u"huitu_hanshu_biaodashi_radio")
-        self.huitu_hanshu_biaodashi_radio.setGeometry(QRect(10, 20, 81, 23))
         self.huitu_hanshu_biaodashi_radio.setChecked(True)
+
+        self.gridLayout_2.addWidget(self.huitu_hanshu_biaodashi_radio, 0, 0, 1, 1)
+
+        self.huitu_hanshu_biaodashi = QLineEdit(self.groupBox)
+        self.huitu_hanshu_biaodashi.setObjectName(u"huitu_hanshu_biaodashi")
+
+        self.gridLayout_2.addWidget(self.huitu_hanshu_biaodashi, 0, 1, 1, 6)
+
         self.huitu_hanshu_hanshu_radio = QRadioButton(self.groupBox)
         self.huitu_hanshu_hanshu_radio.setObjectName(u"huitu_hanshu_hanshu_radio")
-        self.huitu_hanshu_hanshu_radio.setGeometry(QRect(10, 50, 114, 23))
+
+        self.gridLayout_2.addWidget(self.huitu_hanshu_hanshu_radio, 1, 0, 1, 2)
+
         self.huitu_hanshu_hanshu = QComboBox(self.groupBox)
         self.huitu_hanshu_hanshu.setObjectName(u"huitu_hanshu_hanshu")
         self.huitu_hanshu_hanshu.setEnabled(False)
-        self.huitu_hanshu_hanshu.setGeometry(QRect(130, 50, 101, 25))
+
+        self.gridLayout_2.addWidget(self.huitu_hanshu_hanshu, 1, 2, 1, 1)
+
         self.label = QLabel(self.groupBox)
         self.label.setObjectName(u"label")
-        self.label.setGeometry(QRect(250, 50, 61, 19))
+
+        self.gridLayout_2.addWidget(self.label, 1, 3, 1, 1)
+
         self.huitu_hanshu_dingyiyu_left = QLineEdit(self.groupBox)
         self.huitu_hanshu_dingyiyu_left.setObjectName(u"huitu_hanshu_dingyiyu_left")
-        self.huitu_hanshu_dingyiyu_left.setGeometry(QRect(310, 50, 201, 21))
-        self.huitu_hanshu_dingyiyu_right = QLineEdit(self.groupBox)
-        self.huitu_hanshu_dingyiyu_right.setObjectName(u"huitu_hanshu_dingyiyu_right")
-        self.huitu_hanshu_dingyiyu_right.setGeometry(QRect(562, 50, 201, 21))
+
+        self.gridLayout_2.addWidget(self.huitu_hanshu_dingyiyu_left, 1, 4, 1, 1)
+
         self.label_2 = QLabel(self.groupBox)
         self.label_2.setObjectName(u"label_2")
-        self.label_2.setGeometry(QRect(510, 50, 51, 20))
         self.label_2.setAlignment(Qt.AlignmentFlag.AlignCenter)
+
+        self.gridLayout_2.addWidget(self.label_2, 1, 5, 1, 1)
+
+        self.huitu_hanshu_dingyiyu_right = QLineEdit(self.groupBox)
+        self.huitu_hanshu_dingyiyu_right.setObjectName(u"huitu_hanshu_dingyiyu_right")
+
+        self.gridLayout_2.addWidget(self.huitu_hanshu_dingyiyu_right, 1, 6, 1, 1)
+
+
+        self.gridLayout.addWidget(self.groupBox, 0, 0, 1, 1)
+
         self.huitu_hanshu_huitu = QWidget(huitu_hanshu)
         self.huitu_hanshu_huitu.setObjectName(u"huitu_hanshu_huitu")
-        self.huitu_hanshu_huitu.setGeometry(QRect(10, 100, 771, 411))
+
+        self.gridLayout.addWidget(self.huitu_hanshu_huitu, 1, 0, 1, 1)
+
         self.huitu_hanshu_huizhi = QPushButton(huitu_hanshu)
         self.huitu_hanshu_huizhi.setObjectName(u"huitu_hanshu_huizhi")
-        self.huitu_hanshu_huizhi.setGeometry(QRect(10, 520, 771, 27))
+
+        self.gridLayout.addWidget(self.huitu_hanshu_huizhi, 2, 0, 1, 1)
+
+        self.gridLayout.setRowStretch(0, 1)
+        self.gridLayout.setRowStretch(1, 5)
 
         self.retranslateUi(huitu_hanshu)
 

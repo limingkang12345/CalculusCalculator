@@ -1,11 +1,23 @@
 ﻿from PySide6.QtWidgets import QMainWindow, QMessageBox
 from PySide6.QtWebEngineWidgets import QWebEngineView
 from PySide6.QtCore import QUrl, QTimer
+from PySide6.QtGui import QColor, QIcon
+from qdarktheme import setup_theme
 
 from ui import *
 from saves import savefile, openfile
 
 import webbrowser, sys
+
+qss_light = """QWidget { color: black; }
+QGroupBox { border: 1px solid gray;}
+QLineEdit { border: 1px solid rgb(64, 64, 64);}
+QListWidget { border: 1px solid rgb(0, 0, 255);}
+QPushButton { border: 1px solid rgb(255, 0, 0);}
+QComboBox { border: 1px solid rgb(0, 0, 255);}"""
+
+qss_dark = """QWidget { color: white; }
+QGroupBox { border: 1px solid gray;}"""
 
 class MainWindow(QMainWindow):
     def __init__(self, parent=None):
@@ -44,6 +56,8 @@ class MainWindow(QMainWindow):
         self.ui.actionhuitu_litijihe.triggered.connect(lambda:self.create_tab(17))
         self.ui.actionpjjisuan.triggered.connect(lambda:self.create_tab(18))
         self.ui.actionljjisuan.triggered.connect(lambda:self.create_tab(19))
+        self.ui.actionlight.triggered.connect(self.light)
+        self.ui.actiondark.triggered.connect(self.dark)
         self.ui.actiongithub.triggered.connect(lambda:webbrowser.open("https://github.com/limingkang12345/CalculusCalculator"))
         self.ui.actionwebsite.triggered.connect(lambda:webbrowser.open("https://limingkang.pythonanywhere.com"))
         
@@ -55,11 +69,35 @@ class MainWindow(QMainWindow):
         # 避免用户首次创建带 QWebEngineView 标签页时窗口闪退
         QTimer.singleShot(0, self._preinit_webengine)
 
+        self.light()
+
     def _preinit_webengine(self):
         # 预初始化 WebEngine 子进程，消除首次创建 WebEngine 标签页时的闪退问题
         self._preinit_view = QWebEngineView()
         self._preinit_view.setUrl(QUrl("about:blank"))
         self._preinit_view.hide()
+
+    def light(self):
+        # 切换浅色主题，并将除Help页面外所有Web浏览框改为白色底色和黑色字体
+        self.theme = "light"
+        setup_theme(theme="light", additional_qss=qss_light)
+        for tab_name, tab in self.tabs.items():
+            if tab_name.startswith("帮助"):
+                continue
+            for view in tab.findChildren(QWebEngineView):
+                view.page().setBackgroundColor(QColor(255, 255, 255))
+        refreshWebEngineViews()
+    
+    def dark(self):
+        # 切换深色主题，并将除Help页面外所有Web浏览框改为黑色底色和白色字体
+        setup_theme(theme="dark", additional_qss=qss_dark)
+        for tab_name, tab in self.tabs.items():
+            if tab_name.startswith("帮助"):
+                continue
+            for view in tab.findChildren(QWebEngineView):
+                view.page().setBackgroundColor(QColor(0, 0, 0))
+        self.theme = "dark"
+        refreshWebEngineViews()
 
     def close_tab(self, index, auto_create = True):
         # 关闭标签页

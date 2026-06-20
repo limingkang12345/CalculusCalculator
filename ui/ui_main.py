@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'mainLmybsX.ui'
+## Form generated from reading UI file 'mainKGrRwr.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.9.1
+## Created by: Qt User Interface Compiler version 6.11.1
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -18,12 +18,18 @@ from PySide6.QtGui import (QAction, QBrush, QColor, QConicalGradient,
     QTransform)
 from PySide6.QtWidgets import (QApplication, QGridLayout, QMainWindow, QMenu,
     QMenuBar, QSizePolicy, QTabWidget, QWidget)
+import resources_rc
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
         MainWindow.resize(800, 600)
+        icon = QIcon()
+        icon.addFile(u":/favicon.ico", QSize(), QIcon.Mode.Normal, QIcon.State.Off)
+        icon.addFile(u":/favicon.ico", QSize(), QIcon.Mode.Normal, QIcon.State.On)
+        MainWindow.setWindowIcon(icon)
+        MainWindow.setToolButtonStyle(Qt.ToolButtonStyle.ToolButtonIconOnly)
         self.actionshouye = QAction(MainWindow)
         self.actionshouye.setObjectName(u"actionshouye")
         self.actionhelp = QAction(MainWindow)
@@ -74,6 +80,10 @@ class Ui_MainWindow(object):
         self.actionpjjisuan.setObjectName(u"actionpjjisuan")
         self.actionljjisuan = QAction(MainWindow)
         self.actionljjisuan.setObjectName(u"actionljjisuan")
+        self.actionlight = QAction(MainWindow)
+        self.actionlight.setObjectName(u"actionlight")
+        self.actiondark = QAction(MainWindow)
+        self.actiondark.setObjectName(u"actiondark")
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
         self.gridLayout = QGridLayout(self.centralwidget)
@@ -109,10 +119,13 @@ class Ui_MainWindow(object):
         self.about.setObjectName(u"about")
         self.file = QMenu(self.menubar)
         self.file.setObjectName(u"file")
+        self.theme = QMenu(self.menubar)
+        self.theme.setObjectName(u"theme")
         MainWindow.setMenuBar(self.menubar)
 
         self.menubar.addAction(self.file.menuAction())
         self.menubar.addAction(self.functions.menuAction())
+        self.menubar.addAction(self.theme.menuAction())
         self.menubar.addAction(self.about.menuAction())
         self.functions.addAction(self.actionshouye)
         self.functions.addAction(self.dingyi.menuAction())
@@ -145,6 +158,8 @@ class Ui_MainWindow(object):
         self.file.addAction(self.actionsaveas)
         self.file.addAction(self.actionopen)
         self.file.addAction(self.actionexit)
+        self.theme.addAction(self.actionlight)
+        self.theme.addAction(self.actiondark)
 
         self.retranslateUi(MainWindow)
 
@@ -181,6 +196,8 @@ class Ui_MainWindow(object):
         self.actionjisuan.setText(QCoreApplication.translate("MainWindow", u"\u4ee3\u6570\u5f0f\u8ba1\u7b97", None))
         self.actionpjjisuan.setText(QCoreApplication.translate("MainWindow", u"\u5e73\u9762\u51e0\u4f55\u8ba1\u7b97", None))
         self.actionljjisuan.setText(QCoreApplication.translate("MainWindow", u"\u7acb\u4f53\u51e0\u4f55\u8ba1\u7b97", None))
+        self.actionlight.setText(QCoreApplication.translate("MainWindow", u"\u6d45\u8272", None))
+        self.actiondark.setText(QCoreApplication.translate("MainWindow", u"\u6df1\u8272", None))
         self.functions.setTitle(QCoreApplication.translate("MainWindow", u"\u529f\u80fd", None))
         self.calculus.setTitle(QCoreApplication.translate("MainWindow", u"\u5fae\u79ef\u5206", None))
         self.dingyi.setTitle(QCoreApplication.translate("MainWindow", u"\u5b9a\u4e49", None))
@@ -190,5 +207,6 @@ class Ui_MainWindow(object):
         self.jisuan.setTitle(QCoreApplication.translate("MainWindow", u"\u8ba1\u7b97", None))
         self.about.setTitle(QCoreApplication.translate("MainWindow", u"\u5173\u4e8e", None))
         self.file.setTitle(QCoreApplication.translate("MainWindow", u"\u6587\u4ef6", None))
+        self.theme.setTitle(QCoreApplication.translate("MainWindow", u"\u754c\u9762\u4e3b\u9898", None))
     # retranslateUi
 

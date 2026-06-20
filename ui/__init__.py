@@ -34,14 +34,42 @@ from PySide6.QtWidgets import QWidget, QVBoxLayout, QMessageBox, QListWidgetItem
 from PySide6.QtWebEngineWidgets import QWebEngineView
 from PySide6.QtCore import QUrl, Qt
 
+# 缓存每个QWebEngineView最近一次渲染的参数，用于主题切换后刷新
+_webengine_cache = {}
+
 def setWebEngineView(n, l, w):
         # 显示表达式
         # n:函数名
         # l:要显示的Latex表达式
         # w:要设置的WebEngineView
-        
-        html = r'<html><head><script src="qrc:///MathJax/es5/tex-svg.js"></script></head><body><div><p style="font-size:34px">\({}{}\)</p></div></body></html>'.format(n, l)
+        text_color = "dark"
+        try:
+            p = w.parentWidget()
+            while p is not None:
+                if hasattr(p, 'theme'):
+                    text_color = "white" if p.theme == "dark" else "black"
+                    break
+                p = p.parentWidget()
+        except:
+            pass
+        html = ('<html><head><style>body{color:%s;}svg{color:%s;}</style>'
+                '<script src="qrc:///MathJax/es5/tex-svg.js"></script></head>'
+                '<body><div><p style="font-size:34px">\\(%s%s\\)</p></div></body></html>'
+                % (text_color, text_color, n, l))
         w.setHtml(html)
+        _webengine_cache[w] = (n, l)
+
+def refreshWebEngineViews():
+        """主题切换后刷新所有已缓存的Web浏览框内容"""
+        for w, (n, l) in list(_webengine_cache.items()):
+            try:
+                setWebEngineView(n, l, w)
+            except:
+                pass
+
+def setWebEngineViewTheme(main_class, parent_class):
+    for view in main_class.findChildren(QWebEngineView):
+        view.page().setBackgroundColor(QColor(0, 0, 0) if parent_class.theme == "dark" else QColor(255, 255, 255))
 
 class Shouye(QWidget, Ui_shouye):
     def __init__(self, parent, fs):
@@ -52,6 +80,7 @@ class Dingyi(QWidget, Ui_dingyi):
     def __init__(self, parent, fs):
         super(Dingyi, self).__init__(parent)
         self.setupUi(self)
+        setWebEngineViewTheme(self, parent)
         
         self.dingyi_hanshuliebiao.itemClicked.connect(self.read_function)
         self.dingyi_baocun.clicked.connect(self.save_function)
@@ -130,6 +159,7 @@ class Dingyixiangliang(QWidget, Ui_dingyixiangliang):
     def __init__(self, parent, fs):
         super(Dingyixiangliang, self).__init__(parent)
         self.setupUi(self)
+        setWebEngineViewTheme(self, parent)
 
         self.dingyixiangliang_xiangliangliebiao.itemClicked.connect(self.read_vector)
         self.dingyixiangliang_baocun.clicked.connect(self.save_vector)
@@ -298,6 +328,7 @@ class Dingyi_pj(QWidget, Ui_dingyi_pj):
     def __init__(self, parent, fs):
         super(Dingyi_pj, self).__init__(parent)
         self.setupUi(self)
+        setWebEngineViewTheme(self, parent)
 
         self.fs = fs
         self.parent = parent
@@ -480,7 +511,7 @@ class Dingyi_pj(QWidget, Ui_dingyi_pj):
                 angle_bisector_line, angle_bisector, triangle_median, triangle_altitude,
                 triangle_midsegment, triangle_incircle, triangle_excircle, segment_from_points
             )
-            from sympy import Point
+            from sympy import Point, Line
 
             if idx == 1:  # create_point: x, y
                 if len(raw_params) < 2:
@@ -698,11 +729,11 @@ class Dingyi_pj(QWidget, Ui_dingyi_pj):
         self.dingyi_pj_shuxing_mingcheng.setText("")
         self.dingyi_pj_shuxing_fangcheng.setText("")
 
-# 该类为AI生成
 class Qiudao(QWidget, Ui_qiudao):
     def __init__(self, parent, fs):
         super(Qiudao, self).__init__(parent)
         self.setupUi(self)
+        setWebEngineViewTheme(self, parent)
         
         self.qiudao_input.textChanged.connect(self.setqiudao_yuanhanshu)
         self.qiudao_input.returnPressed.connect(self.qiudao_qiudao_button.click)
@@ -763,6 +794,7 @@ class Jifen(QWidget, Ui_jifen):
     def __init__(self, parent, fs):
         super(Jifen, self).__init__(parent)
         self.setupUi(self)
+        setWebEngineViewTheme(self, parent)
 
         self.jifen_input.textChanged.connect(self.setjifen_beijihanshu)
         self.jifen_input.returnPressed.connect(self.jifen_jifen_button.click)
@@ -806,6 +838,7 @@ class Bianxing(QWidget, Ui_bianxing):
     def __init__(self, parent, fs):
         super(Bianxing, self).__init__(parent)
         self.setupUi(self)
+        setWebEngineViewTheme(self, parent)
 
         self.bianxing_bianxingfangfa.addItems(["通用化简(simplify)", "展开(expand)", "因式分解(factor)", "主元(collect)", "通分(cancel)", "分离(apart)"])
         self.bianxing_bianxingfangfa.addItems(["三角变换(trigsimp)", "三角展开(expand_trig)", "指数合并(powsimp)", "指数展开(expand_power_exp)"])
@@ -852,6 +885,7 @@ class Fangcheng(QWidget, Ui_fangcheng):
     def __init__(self, parent, fs):
         super(Fangcheng, self).__init__(parent)
         self.setupUi(self)
+        setWebEngineViewTheme(self, parent)
 
         self.fangcheng_zuoshi.textChanged.connect(self.setfangcheng_yuanfangcheng)
         self.fangcheng_youshi.textChanged.connect(self.setfangcheng_yuanfangcheng)
@@ -897,6 +931,7 @@ class Fangchengzu(QWidget, Ui_fangchengzu):
     def __init__(self, parent, fs):
         super(Fangchengzu, self).__init__(parent)
         self.setupUi(self)
+        setWebEngineViewTheme(self, parent)
 
         self.fangchengzu_baocun.clicked.connect(self.save_fangcheng)
         self.fangchengzu_shanchu.clicked.connect(self.delete_fangcheng)
@@ -953,6 +988,7 @@ class Budengshi(QWidget, Ui_budengshi):
     def __init__(self, parent, fs):
         super(Budengshi, self).__init__(parent)
         self.setupUi(self)
+        setWebEngineViewTheme(self, parent)
 
         self.budengshi_budenghao.addItems(["!=", ">", ">=", "<", "<="])
         self.budengshi_budenghao.currentIndexChanged.connect(self.setbudengshi_yuanshi)
@@ -985,6 +1021,7 @@ class Budengshizu(QWidget, Ui_budengshizu):
     def __init__(self, parent, fs):
         super(Budengshizu, self).__init__(parent)
         self.setupUi(self)
+        setWebEngineViewTheme(self, parent)
 
         self.budengshizu_budenghao.addItems(["!=", ">", ">=", "<", "<="])
         self.budengshizu_baocun.clicked.connect(self.save_budengshi)
@@ -1045,6 +1082,7 @@ class Jisuan(QWidget, Ui_jisuan):
     def __init__(self, parent, fs):
         super(Jisuan, self).__init__(parent)
         self.setupUi(self)
+        setWebEngineViewTheme(self, parent)
 
         self.jisuan_jisuanyinqing.addItems(["Python内置引擎", "Mpmath高精度引擎", "Sympy符号引擎", "Latex代码生成引擎"])
         self.jisuan_jisuanyinqing.currentIndexChanged.connect(self.jisuan_jisuanyinqing_f)
@@ -1106,6 +1144,7 @@ class Huitu_hanshu(QWidget, Ui_huitu_hanshu):
     def __init__(self, parent, fs):
         super(Huitu_hanshu, self).__init__(parent)
         self.setupUi(self)
+        setWebEngineViewTheme(self, parent)
 
         self.fs = fs
         self.parent = parent
@@ -1240,6 +1279,7 @@ class Huitu_pj(QWidget, Ui_huitu_pj):
     def __init__(self, parent, fs):
         super(Huitu_pj, self).__init__(parent)
         self.setupUi(self)
+        setWebEngineViewTheme(self, parent)
 
         self.fs = fs
         self.parent = parent
@@ -1324,6 +1364,7 @@ class Jiesanjiaoxing(QWidget, Ui_jiesanjiaoxing):
     def __init__(self, parent, fs):
         super(Jiesanjiaoxing, self).__init__(parent)
         self.setupUi(self)
+        setWebEngineViewTheme(self, parent)
 
         self.fs = fs
         self.parent = parent
@@ -1433,6 +1474,7 @@ class Dingyi_lj(QWidget, Ui_dingyi_lj):
     def __init__(self, parent, fs):
         super(Dingyi_lj, self).__init__(parent)
         self.setupUi(self)
+        setWebEngineViewTheme(self, parent)
 
         self.fs = fs
         self.parent = parent
@@ -1660,6 +1702,7 @@ class Huitu_lj(QWidget, Ui_huitu_lj):
     def __init__(self, parent, fs):
         super(Huitu_lj, self).__init__(parent)
         self.setupUi(self)
+        setWebEngineViewTheme(self, parent)
 
         self.fs = fs
         self.parent = parent
@@ -1736,6 +1779,8 @@ class Pjjisuan(QWidget, Ui_pjjisuan_2):
     def __init__(self, parent, fs):
         super(Pjjisuan, self).__init__(parent)
         self.setupUi(self)
+        setWebEngineViewTheme(self, parent)
+
         self.fs = fs
         self.parent = parent
         self.pjjisuan_fangfa.currentIndexChanged.connect(self._on_method_changed)
@@ -1966,6 +2011,8 @@ class Ljjisuan(QWidget, Ui_ljjisuan):
     def __init__(self, parent, fs):
         super(Ljjisuan, self).__init__(parent)
         self.setupUi(self)
+        setWebEngineViewTheme(self, parent)
+
         self.fs = fs
         self.parent = parent
         self.ljjisuan_fangfa.currentIndexChanged.connect(self._on_method_changed)

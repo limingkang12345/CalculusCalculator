@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'ljjisuanriUTVP.ui'
+## Form generated from reading UI file 'ljjisuancUUnnu.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.9.1
 ##
@@ -16,20 +16,26 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
 from PySide6.QtWebEngineWidgets import QWebEngineView
-from PySide6.QtWidgets import (QApplication, QComboBox, QGroupBox, QLabel,
-    QLineEdit, QPushButton, QSizePolicy, QWidget)
+from PySide6.QtWidgets import (QApplication, QComboBox, QGridLayout, QGroupBox,
+    QLabel, QLineEdit, QPushButton, QSizePolicy,
+    QWidget)
 
 class Ui_ljjisuan(object):
     def setupUi(self, ljjisuan):
         if not ljjisuan.objectName():
             ljjisuan.setObjectName(u"ljjisuan")
         ljjisuan.resize(801, 551)
+        self.gridLayout = QGridLayout(ljjisuan)
+        self.gridLayout.setObjectName(u"gridLayout")
         self.groupBox = QGroupBox(ljjisuan)
         self.groupBox.setObjectName(u"groupBox")
-        self.groupBox.setGeometry(QRect(10, 10, 771, 131))
+        self.gridLayout_2 = QGridLayout(self.groupBox)
+        self.gridLayout_2.setObjectName(u"gridLayout_2")
         self.label = QLabel(self.groupBox)
         self.label.setObjectName(u"label")
-        self.label.setGeometry(QRect(10, 30, 71, 19))
+
+        self.gridLayout_2.addWidget(self.label, 0, 0, 1, 1)
+
         self.ljjisuan_fangfa = QComboBox(self.groupBox)
         self.ljjisuan_fangfa.addItem("")
         self.ljjisuan_fangfa.addItem("")
@@ -55,26 +61,49 @@ class Ui_ljjisuan(object):
         self.ljjisuan_fangfa.addItem("")
         self.ljjisuan_fangfa.addItem("")
         self.ljjisuan_fangfa.setObjectName(u"ljjisuan_fangfa")
-        self.ljjisuan_fangfa.setGeometry(QRect(90, 30, 671, 25))
+
+        self.gridLayout_2.addWidget(self.ljjisuan_fangfa, 0, 1, 1, 1)
+
         self.label_2 = QLabel(self.groupBox)
         self.label_2.setObjectName(u"label_2")
-        self.label_2.setGeometry(QRect(10, 70, 751, 19))
+
+        self.gridLayout_2.addWidget(self.label_2, 1, 0, 1, 2)
+
         self.ljjisuan_canshu = QLineEdit(self.groupBox)
         self.ljjisuan_canshu.setObjectName(u"ljjisuan_canshu")
-        self.ljjisuan_canshu.setGeometry(QRect(10, 100, 751, 25))
+
+        self.gridLayout_2.addWidget(self.ljjisuan_canshu, 2, 0, 1, 2)
+
+        self.gridLayout_2.setColumnStretch(0, 1)
+        self.gridLayout_2.setColumnStretch(1, 6)
+
+        self.gridLayout.addWidget(self.groupBox, 0, 0, 1, 1)
+
         self.groupBox_2 = QGroupBox(ljjisuan)
         self.groupBox_2.setObjectName(u"groupBox_2")
-        self.groupBox_2.setGeometry(QRect(10, 150, 771, 361))
-        self.ljjisuan_result_lineedit = QLineEdit(self.groupBox_2)
-        self.ljjisuan_result_lineedit.setObjectName(u"ljjisuan_result_lineedit")
-        self.ljjisuan_result_lineedit.setGeometry(QRect(10, 330, 751, 25))
+        self.gridLayout_3 = QGridLayout(self.groupBox_2)
+        self.gridLayout_3.setObjectName(u"gridLayout_3")
         self.ljjisuan_result = QWebEngineView(self.groupBox_2)
         self.ljjisuan_result.setObjectName(u"ljjisuan_result")
-        self.ljjisuan_result.setGeometry(QRect(10, 20, 751, 301))
         self.ljjisuan_result.setUrl(QUrl(u"about:blank"))
+
+        self.gridLayout_3.addWidget(self.ljjisuan_result, 0, 0, 1, 1)
+
+        self.ljjisuan_result_lineedit = QLineEdit(self.groupBox_2)
+        self.ljjisuan_result_lineedit.setObjectName(u"ljjisuan_result_lineedit")
+
+        self.gridLayout_3.addWidget(self.ljjisuan_result_lineedit, 1, 0, 1, 1)
+
+
+        self.gridLayout.addWidget(self.groupBox_2, 1, 0, 1, 1)
+
         self.ljjisuan_jisuan = QPushButton(ljjisuan)
         self.ljjisuan_jisuan.setObjectName(u"ljjisuan_jisuan")
-        self.ljjisuan_jisuan.setGeometry(QRect(10, 520, 771, 27))
+
+        self.gridLayout.addWidget(self.ljjisuan_jisuan, 2, 0, 1, 1)
+
+        self.gridLayout.setRowStretch(0, 1)
+        self.gridLayout.setRowStretch(1, 5)
 
         self.retranslateUi(ljjisuan)
 
