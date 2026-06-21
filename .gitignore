@@ -1,0 +1,11 @@
+.vscode
+MathJax
+ui/*.ui
+favicon.ico
+help.html
+resources.qrc
+test.py
+test_output.txt
+*.md
+*.json
+build
