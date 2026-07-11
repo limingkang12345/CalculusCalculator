@@ -1,6 +1,8 @@
 ﻿import re
 from sympy import sympify as sympify_sympy
 from sympy import Symbol, simplify, radsimp
+from latex2sympy2 import latex2sympy
+from PySide6.QtWidgets import QMessageBox
 
 # 该函数为AI生成
 def _preprocess_func_calls(expr_str, fs):
@@ -57,16 +59,24 @@ def _preprocess_func_calls(expr_str, fs):
 
 def sympify(expr, fs, locals = None, is_simplify = False, is_rationalize = False):
     # 用于处理输入的表达式
-    # expr(str):符合Python和Sympy规范的表达式
+    # expr(str):符合Python和Sympy规范的表达式或Latex代码
     # fs(dict):函数字典
     # locals(dict):自变量映射
     # is_simplify(bool):是否自动化简
     # is_rationalize(bool):是否对结果执行分母有理化
     # return:处理后的表达式
 
-    # 预处理函数调用表达式
-    expr = _preprocess_func_calls(expr, fs)
-
+    if expr[0]=="$":
+        try:
+            expr = latex2sympy(expr[1:])
+        except Exception as e:
+            try:
+                expr = _preprocess_func_calls(expr, fs)
+                expr = sympify_sympy(expr)
+            except:
+                return "不规范的表达式输入"
+    else:
+        expr = _preprocess_func_calls(expr, fs)
     origin_expr = sympify_sympy(expr, locals = locals)
     for f in fs.keys():
         if Symbol(f) in origin_expr.free_symbols:

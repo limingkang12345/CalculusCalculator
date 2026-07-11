@@ -1,5 +1,5 @@
-# CalculusCalculator v1.6.0
+# CalculusCalculator v1.6.1
 更新内容
-1. 更新窗口布局，现在所有窗口部件的位置会根据窗口大小变化
-2. 使用PyQtDarkTheme-fork样式库，实现现代化扁平UI
-3. 新增“界面主题”菜单项，支持切换浅色与深色主题
+1. 支持直接输入latex代码，需要在latex代码前添加"$"标识
+2. 帮助页面的静态文档显示组件改为QTextBrowser，以提升性能
+3. 更新帮助文档与README

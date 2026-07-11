@@ -12,7 +12,7 @@
 
 - **项目地址**：[GitHub - limingkang12345/CalculusCalculator](https://github.com/limingkang12345/CalculusCalculator)
 - **网页版**：[https://limingkang.pythonanywhere.com](https://limingkang.pythonanywhere.com)
-- **最新版本**：v1.6.0
+- **最新版本**：v1.6.1
 - **开发语言**：Python 3.8+
 - **核心库**：SymPy（符号计算）、PySide6（GUI 框架）、Matplotlib（几何绘图）
 - **功能概览**：
@@ -33,6 +33,15 @@
   - **几何计算**（v1.5.2）：平面几何 32 种运算（两点距离、中点、共线判断、直线/圆/三角形/多边形属性、向量计算、变换等）、立体几何 22 种运算（三维点/线/面关系、四面体体积、斜二测投影/面积变换等）
   - **回车快捷键**（v1.5.2）：各页面主要文本输入框支持回车键触发对应按钮功能
   - 工程存档/读档（JSON 格式），支持保存所有几何对象
+  - **LaTeX 代码直接输入**（v1.6.1）：在表达式前添加 `$` 标识，可直接输入 LaTeX 代码，系统自动解析为 SymPy 表达式
+
+---
+
+## v1.6.1 更新内容
+
+1. **LaTeX 代码输入支持**：支持直接输入 LaTeX 代码，需在 LaTeX 代码前添加 `$` 标识，系统自动将 LaTeX 转换为对应的 SymPy 表达式
+2. **帮助页面性能优化**：帮助页面的静态文档显示组件由 `QWebEngineView` 改为 `QTextBrowser`，显著提升加载性能
+3. 更新帮助文档与 README
 
 ---
 
@@ -108,6 +117,9 @@
 
 14. **Web 版补充**  
     除了桌面客户端，还提供了在线网页版（基于 PythonAnywhere），方便快速体验。
+
+15. **LaTeX 代码直接输入**（v1.6.1 新增）  
+    在表达式前添加 `$` 标识即可直接输入 LaTeX 代码（如 `$\frac{x}{2}`），系统自动将 LaTeX 解析为 SymPy 表达式进行计算。
 
 ---
 
