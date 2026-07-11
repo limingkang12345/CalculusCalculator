@@ -1,11 +1,13 @@
 .vscode
+__pycache__
 MathJax
 ui/*.ui
 favicon.ico
 help.html
 resources.qrc
-test.py
+test*.py
 test_output.txt
-*.md
+history_*.md
 *.json
 build
+CalculusCalculator.egg-info

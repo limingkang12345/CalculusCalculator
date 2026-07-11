@@ -42,7 +42,7 @@ def setWebEngineView(n, l, w):
         # n:函数名
         # l:要显示的Latex表达式
         # w:要设置的WebEngineView
-        text_color = "dark"
+        text_color = "black"
         try:
             p = w.parentWidget()
             while p is not None:
@@ -119,7 +119,7 @@ class Dingyi(QWidget, Ui_dingyi):
         if self.dingyi_mingcheng.text() not in self.fs.keys():
             self.dingyi_hanshuliebiao.insertItem(0, "{}({})".format(self.dingyi_mingcheng.text(), self.dingyi_zibianliang.text()))
             self.dingyi_hanshuliebiao.setCurrentRow(0)
-        self.fs[self.dingyi_mingcheng.text()] = [self.dingyi_mingcheng.text(), self.dingyi_biaodashi.text(), self.dingyi_dingyiyu.text(), self.dingyi_zibianliang.text()]
+        self.fs[self.dingyi_mingcheng.text()] = [self.dingyi_mingcheng.text(), str(sympify(self.dingyi_biaodashi.text(), self.fs)), self.dingyi_dingyiyu.text(), self.dingyi_zibianliang.text()]
         self.dingyi_hanshushuxing_cbx.setCurrentIndex(0)
         self.update_function_attr(0)
         self.function_value()
@@ -1137,8 +1137,7 @@ class Help(QWidget, Ui_help):
         super(Help, self).__init__(parent)
         self.setupUi(self)
 
-        self.help_path = QUrl("qrc:///help.html")
-        self.webEngineView.setUrl(self.help_path)
+        self.textBrowser.setSource(QUrl(u"qrc:/help.html"))
 
 class Huitu_hanshu(QWidget, Ui_huitu_hanshu):
     def __init__(self, parent, fs):
