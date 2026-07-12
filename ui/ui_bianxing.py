@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'bianxingzuKBjI.ui'
+## Form generated from reading UI file 'bianxingBbTcHh.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.9.1
+## Created by: Qt User Interface Compiler version 6.11.1
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -15,10 +15,9 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWebEngineWidgets import QWebEngineView
-from PySide6.QtWidgets import (QApplication, QComboBox, QGridLayout, QGroupBox,
-    QLabel, QLineEdit, QPushButton, QSizePolicy,
-    QWidget)
+from PySide6.QtWidgets import (QApplication, QComboBox, QGraphicsView, QGridLayout,
+    QGroupBox, QLabel, QLineEdit, QPushButton,
+    QSizePolicy, QWidget)
 
 class Ui_bianxing(object):
     def setupUi(self, bianxing):
@@ -101,9 +100,9 @@ class Ui_bianxing(object):
         self.groupBox_16.setObjectName(u"groupBox_16")
         self.gridLayout_5 = QGridLayout(self.groupBox_16)
         self.gridLayout_5.setObjectName(u"gridLayout_5")
-        self.bianxing_yuanshi = QWebEngineView(self.groupBox_16)
+        self.bianxing_yuanshi = QGraphicsView(self.groupBox_16)
         self.bianxing_yuanshi.setObjectName(u"bianxing_yuanshi")
-        self.bianxing_yuanshi.setUrl(QUrl(u"about:blank"))
+        self.bianxing_yuanshi.setProperty(u"url", QUrl(u"about:blank"))
 
         self.gridLayout_5.addWidget(self.bianxing_yuanshi, 0, 0, 1, 1)
 
@@ -114,9 +113,9 @@ class Ui_bianxing(object):
         self.groupBox_12.setObjectName(u"groupBox_12")
         self.gridLayout_6 = QGridLayout(self.groupBox_12)
         self.gridLayout_6.setObjectName(u"gridLayout_6")
-        self.bianxing_bianxingshi = QWebEngineView(self.groupBox_12)
+        self.bianxing_bianxingshi = QGraphicsView(self.groupBox_12)
         self.bianxing_bianxingshi.setObjectName(u"bianxing_bianxingshi")
-        self.bianxing_bianxingshi.setUrl(QUrl(u"about:blank"))
+        self.bianxing_bianxingshi.setProperty(u"url", QUrl(u"about:blank"))
 
         self.gridLayout_6.addWidget(self.bianxing_bianxingshi, 0, 0, 1, 1)
 

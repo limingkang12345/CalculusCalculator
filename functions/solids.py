@@ -3,7 +3,7 @@ from sympy import (
     symbols, Symbol, Eq, latex, N, oo, Abs, Matrix, expand,
 )
 from sympy.geometry import Point3D, Line3D, Plane, Ray3D, Segment3D
-from sympify import sympify
+from core.sympify import sympify
 
 
 # ============================================================

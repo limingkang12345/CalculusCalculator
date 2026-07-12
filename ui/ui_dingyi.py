@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'dingyiSiFAID.ui'
+## Form generated from reading UI file 'dingyiLaSSTQ.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.9.1
+## Created by: Qt User Interface Compiler version 6.11.1
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -15,10 +15,9 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWebEngineWidgets import QWebEngineView
-from PySide6.QtWidgets import (QApplication, QComboBox, QGridLayout, QGroupBox,
-    QLabel, QLineEdit, QListWidget, QListWidgetItem,
-    QPushButton, QSizePolicy, QWidget)
+from PySide6.QtWidgets import (QApplication, QComboBox, QGraphicsView, QGridLayout,
+    QGroupBox, QLabel, QLineEdit, QListWidget,
+    QListWidgetItem, QPushButton, QSizePolicy, QWidget)
 
 class Ui_dingyi(object):
     def setupUi(self, dingyi):
@@ -121,9 +120,9 @@ class Ui_dingyi(object):
 
         self.gridLayout_3.addWidget(self.dingyi_hanshushuxing_lineedit, 0, 1, 1, 1)
 
-        self.dingyi_hanshushuxing = QWebEngineView(self.groupBox_21)
+        self.dingyi_hanshushuxing = QGraphicsView(self.groupBox_21)
         self.dingyi_hanshushuxing.setObjectName(u"dingyi_hanshushuxing")
-        self.dingyi_hanshushuxing.setUrl(QUrl(u"about:blank"))
+        self.dingyi_hanshushuxing.setProperty(u"url", QUrl(u"about:blank"))
 
         self.gridLayout_3.addWidget(self.dingyi_hanshushuxing, 1, 0, 1, 2)
 
@@ -145,9 +144,9 @@ class Ui_dingyi(object):
 
         self.gridLayout_5.addWidget(self.dingyi_zibianliangzhi, 0, 1, 1, 1)
 
-        self.dingyi_qiuzhi = QWebEngineView(self.groupBox_22)
+        self.dingyi_qiuzhi = QGraphicsView(self.groupBox_22)
         self.dingyi_qiuzhi.setObjectName(u"dingyi_qiuzhi")
-        self.dingyi_qiuzhi.setUrl(QUrl(u"about:blank"))
+        self.dingyi_qiuzhi.setProperty(u"url", QUrl(u"about:blank"))
 
         self.gridLayout_5.addWidget(self.dingyi_qiuzhi, 1, 0, 1, 2)
 

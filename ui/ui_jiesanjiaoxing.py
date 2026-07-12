@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'jiesanjiaoxingzNUrEj.ui'
+## Form generated from reading UI file 'jiesanjiaoxingkAWfyL.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.9.1
+## Created by: Qt User Interface Compiler version 6.11.1
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -15,10 +15,9 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWebEngineWidgets import QWebEngineView
-from PySide6.QtWidgets import (QApplication, QComboBox, QGridLayout, QGroupBox,
-    QLabel, QLineEdit, QPushButton, QSizePolicy,
-    QWidget)
+from PySide6.QtWidgets import (QApplication, QComboBox, QGraphicsView, QGridLayout,
+    QGroupBox, QLabel, QLineEdit, QPushButton,
+    QSizePolicy, QWidget)
 
 class Ui_jiesanjiaoxing(object):
     def setupUi(self, jiesanjiaoxing):
@@ -104,9 +103,9 @@ class Ui_jiesanjiaoxing(object):
         self.groupBox_2.setObjectName(u"groupBox_2")
         self.gridLayout_3 = QGridLayout(self.groupBox_2)
         self.gridLayout_3.setObjectName(u"gridLayout_3")
-        self.jiesanjiaoxing_yuantiaojian = QWebEngineView(self.groupBox_2)
+        self.jiesanjiaoxing_yuantiaojian = QGraphicsView(self.groupBox_2)
         self.jiesanjiaoxing_yuantiaojian.setObjectName(u"jiesanjiaoxing_yuantiaojian")
-        self.jiesanjiaoxing_yuantiaojian.setUrl(QUrl(u"about:blank"))
+        self.jiesanjiaoxing_yuantiaojian.setProperty(u"url", QUrl(u"about:blank"))
 
         self.gridLayout_3.addWidget(self.jiesanjiaoxing_yuantiaojian, 0, 0, 1, 1)
 
@@ -117,9 +116,9 @@ class Ui_jiesanjiaoxing(object):
         self.groupBox_3.setObjectName(u"groupBox_3")
         self.gridLayout_4 = QGridLayout(self.groupBox_3)
         self.gridLayout_4.setObjectName(u"gridLayout_4")
-        self.jiesanjiaoxing_jieguo = QWebEngineView(self.groupBox_3)
+        self.jiesanjiaoxing_jieguo = QGraphicsView(self.groupBox_3)
         self.jiesanjiaoxing_jieguo.setObjectName(u"jiesanjiaoxing_jieguo")
-        self.jiesanjiaoxing_jieguo.setUrl(QUrl(u"about:blank"))
+        self.jiesanjiaoxing_jieguo.setProperty(u"url", QUrl(u"about:blank"))
 
         self.gridLayout_4.addWidget(self.jiesanjiaoxing_jieguo, 0, 0, 1, 1)
 

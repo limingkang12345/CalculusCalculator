@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'pjjisuaneHAdaY.ui'
+## Form generated from reading UI file 'pjjisuanMnYqOP.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.9.1
+## Created by: Qt User Interface Compiler version 6.11.1
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -15,10 +15,9 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWebEngineWidgets import QWebEngineView
-from PySide6.QtWidgets import (QApplication, QComboBox, QGridLayout, QGroupBox,
-    QLabel, QLineEdit, QPushButton, QSizePolicy,
-    QWidget)
+from PySide6.QtWidgets import (QApplication, QComboBox, QGraphicsView, QGridLayout,
+    QGroupBox, QLabel, QLineEdit, QPushButton,
+    QSizePolicy, QWidget)
 
 class Ui_pjjisuan_2(object):
     def setupUi(self, pjjisuan_2):
@@ -93,9 +92,9 @@ class Ui_pjjisuan_2(object):
         self.groupBox_2.setObjectName(u"groupBox_2")
         self.gridLayout_3 = QGridLayout(self.groupBox_2)
         self.gridLayout_3.setObjectName(u"gridLayout_3")
-        self.pjjisuan_result = QWebEngineView(self.groupBox_2)
+        self.pjjisuan_result = QGraphicsView(self.groupBox_2)
         self.pjjisuan_result.setObjectName(u"pjjisuan_result")
-        self.pjjisuan_result.setUrl(QUrl(u"about:blank"))
+        self.pjjisuan_result.setProperty(u"url", QUrl(u"about:blank"))
 
         self.gridLayout_3.addWidget(self.pjjisuan_result, 0, 0, 1, 1)
 

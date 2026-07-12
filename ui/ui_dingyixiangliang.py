@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'dingyixiangliangigKFJc.ui'
+## Form generated from reading UI file 'dingyixiangliangwYAbNN.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.9.1
+## Created by: Qt User Interface Compiler version 6.11.1
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -15,10 +15,10 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWebEngineWidgets import QWebEngineView
-from PySide6.QtWidgets import (QApplication, QComboBox, QFormLayout, QGridLayout,
-    QGroupBox, QLabel, QLineEdit, QListWidget,
-    QListWidgetItem, QPushButton, QSizePolicy, QWidget)
+from PySide6.QtWidgets import (QApplication, QComboBox, QFormLayout, QGraphicsView,
+    QGridLayout, QGroupBox, QLabel, QLineEdit,
+    QListWidget, QListWidgetItem, QPushButton, QSizePolicy,
+    QWidget)
 
 class Ui_dingyixiangliang(object):
     def setupUi(self, dingyixiangliang):
@@ -111,9 +111,9 @@ class Ui_dingyixiangliang(object):
 
         self.gridLayout_4.addWidget(self.dingyixiangliang_xiangliangshuxing_lineedit, 0, 1, 1, 1)
 
-        self.dingyixiangliang_xiangliangshuxing = QWebEngineView(self.groupBox_21)
+        self.dingyixiangliang_xiangliangshuxing = QGraphicsView(self.groupBox_21)
         self.dingyixiangliang_xiangliangshuxing.setObjectName(u"dingyixiangliang_xiangliangshuxing")
-        self.dingyixiangliang_xiangliangshuxing.setUrl(QUrl(u"about:blank"))
+        self.dingyixiangliang_xiangliangshuxing.setProperty(u"url", QUrl(u"about:blank"))
 
         self.gridLayout_4.addWidget(self.dingyixiangliang_xiangliangshuxing, 1, 0, 1, 2)
 
@@ -149,9 +149,9 @@ class Ui_dingyixiangliang(object):
 
         self.gridLayout_5.addWidget(self.dingyixiangliang_jisuanfangfa, 0, 4, 1, 1)
 
-        self.dingyixiangliang_jisuan = QWebEngineView(self.groupBox)
+        self.dingyixiangliang_jisuan = QGraphicsView(self.groupBox)
         self.dingyixiangliang_jisuan.setObjectName(u"dingyixiangliang_jisuan")
-        self.dingyixiangliang_jisuan.setUrl(QUrl(u"about:blank"))
+        self.dingyixiangliang_jisuan.setProperty(u"url", QUrl(u"about:blank"))
 
         self.gridLayout_5.addWidget(self.dingyixiangliang_jisuan, 1, 0, 1, 5)
 

@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'jifenlUBfgi.ui'
+## Form generated from reading UI file 'jifenFEyBMR.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.9.1
+## Created by: Qt User Interface Compiler version 6.11.1
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -15,15 +15,15 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWebEngineWidgets import QWebEngineView
-from PySide6.QtWidgets import (QApplication, QCheckBox, QGridLayout, QGroupBox,
-    QLineEdit, QPushButton, QSizePolicy, QWidget)
+from PySide6.QtWidgets import (QApplication, QCheckBox, QGraphicsView, QGridLayout,
+    QGroupBox, QLineEdit, QPushButton, QSizePolicy,
+    QWidget)
 
 class Ui_jifen(object):
     def setupUi(self, jifen):
         if not jifen.objectName():
             jifen.setObjectName(u"jifen")
-        jifen.resize(801, 551)
+        jifen.resize(801, 595)
         self.gridLayout = QGridLayout(jifen)
         self.gridLayout.setObjectName(u"gridLayout")
         self.groupBox1_2 = QGroupBox(jifen)
@@ -90,9 +90,9 @@ class Ui_jifen(object):
         self.gridLayout_6 = QGridLayout(self.groupBox2_2)
         self.gridLayout_6.setObjectName(u"gridLayout_6")
         self.gridLayout_6.setContentsMargins(-1, 9, -1, 9)
-        self.jifen_beijihanshu = QWebEngineView(self.groupBox2_2)
+        self.jifen_beijihanshu = QGraphicsView(self.groupBox2_2)
         self.jifen_beijihanshu.setObjectName(u"jifen_beijihanshu")
-        self.jifen_beijihanshu.setUrl(QUrl(u"about:blank"))
+        self.jifen_beijihanshu.setProperty(u"url", QUrl(u"about:blank"))
 
         self.gridLayout_6.addWidget(self.jifen_beijihanshu, 0, 0, 1, 1)
 
@@ -104,9 +104,9 @@ class Ui_jifen(object):
         self.gridLayout_7 = QGridLayout(self.groupBox3_2)
         self.gridLayout_7.setObjectName(u"gridLayout_7")
         self.gridLayout_7.setContentsMargins(-1, 9, -1, 9)
-        self.jifen_yuanhanshu = QWebEngineView(self.groupBox3_2)
+        self.jifen_yuanhanshu = QGraphicsView(self.groupBox3_2)
         self.jifen_yuanhanshu.setObjectName(u"jifen_yuanhanshu")
-        self.jifen_yuanhanshu.setUrl(QUrl(u"about:blank"))
+        self.jifen_yuanhanshu.setProperty(u"url", QUrl(u"about:blank"))
 
         self.gridLayout_7.addWidget(self.jifen_yuanhanshu, 0, 0, 1, 1)
 
@@ -123,9 +123,9 @@ class Ui_jifen(object):
         self.gridLayout_8 = QGridLayout(self.groupBox_11)
         self.gridLayout_8.setObjectName(u"gridLayout_8")
         self.gridLayout_8.setContentsMargins(-1, 9, -1, 9)
-        self.jifen_dingjifenzhi = QWebEngineView(self.groupBox_11)
+        self.jifen_dingjifenzhi = QGraphicsView(self.groupBox_11)
         self.jifen_dingjifenzhi.setObjectName(u"jifen_dingjifenzhi")
-        self.jifen_dingjifenzhi.setUrl(QUrl(u"about:blank"))
+        self.jifen_dingjifenzhi.setProperty(u"url", QUrl(u"about:blank"))
 
         self.gridLayout_8.addWidget(self.jifen_dingjifenzhi, 0, 0, 1, 1)
 
