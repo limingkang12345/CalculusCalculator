@@ -3,7 +3,7 @@ from sympy import (
     pi, sqrt, simplify, radsimp, acos, atan2, atan, sin, cos, tan,
     symbols, Symbol, Eq, latex, N, oo, Abs, Matrix, expand,
 )
-from sympify import sympify
+from core.sympify import sympify
 
 
 # ============================================================

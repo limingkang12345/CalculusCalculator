@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'qiudaoiRReQR.ui'
+## Form generated from reading UI file 'qiudaobhVLer.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.9.1
+## Created by: Qt User Interface Compiler version 6.11.1
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -15,15 +15,15 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWebEngineWidgets import QWebEngineView
-from PySide6.QtWidgets import (QApplication, QCheckBox, QGridLayout, QGroupBox,
-    QLineEdit, QPushButton, QSizePolicy, QWidget)
+from PySide6.QtWidgets import (QApplication, QCheckBox, QGraphicsView, QGridLayout,
+    QGroupBox, QLineEdit, QPushButton, QSizePolicy,
+    QWidget)
 
 class Ui_qiudao(object):
     def setupUi(self, qiudao):
         if not qiudao.objectName():
             qiudao.setObjectName(u"qiudao")
-        qiudao.resize(801, 551)
+        qiudao.resize(801, 595)
         self.gridLayout = QGridLayout(qiudao)
         self.gridLayout.setObjectName(u"gridLayout")
         self.groupBox1 = QGroupBox(qiudao)
@@ -107,9 +107,9 @@ class Ui_qiudao(object):
         self.groupBox2.setObjectName(u"groupBox2")
         self.gridLayout_7 = QGridLayout(self.groupBox2)
         self.gridLayout_7.setObjectName(u"gridLayout_7")
-        self.qiudao_yuanhanshu = QWebEngineView(self.groupBox2)
+        self.qiudao_yuanhanshu = QGraphicsView(self.groupBox2)
         self.qiudao_yuanhanshu.setObjectName(u"qiudao_yuanhanshu")
-        self.qiudao_yuanhanshu.setUrl(QUrl(u"about:blank"))
+        self.qiudao_yuanhanshu.setProperty(u"url", QUrl(u"about:blank"))
 
         self.gridLayout_7.addWidget(self.qiudao_yuanhanshu, 0, 0, 1, 1)
 
@@ -120,9 +120,9 @@ class Ui_qiudao(object):
         self.groupBox3.setObjectName(u"groupBox3")
         self.gridLayout_8 = QGridLayout(self.groupBox3)
         self.gridLayout_8.setObjectName(u"gridLayout_8")
-        self.qiudao_daohanshu = QWebEngineView(self.groupBox3)
+        self.qiudao_daohanshu = QGraphicsView(self.groupBox3)
         self.qiudao_daohanshu.setObjectName(u"qiudao_daohanshu")
-        self.qiudao_daohanshu.setUrl(QUrl(u"about:blank"))
+        self.qiudao_daohanshu.setProperty(u"url", QUrl(u"about:blank"))
 
         self.gridLayout_8.addWidget(self.qiudao_daohanshu, 0, 0, 1, 1)
 
@@ -138,9 +138,9 @@ class Ui_qiudao(object):
         self.groupBox_5.setObjectName(u"groupBox_5")
         self.gridLayout_9 = QGridLayout(self.groupBox_5)
         self.gridLayout_9.setObjectName(u"gridLayout_9")
-        self.qiudao_daoshuzhi = QWebEngineView(self.groupBox_5)
+        self.qiudao_daoshuzhi = QGraphicsView(self.groupBox_5)
         self.qiudao_daoshuzhi.setObjectName(u"qiudao_daoshuzhi")
-        self.qiudao_daoshuzhi.setUrl(QUrl(u"about:blank"))
+        self.qiudao_daoshuzhi.setProperty(u"url", QUrl(u"about:blank"))
 
         self.gridLayout_9.addWidget(self.qiudao_daoshuzhi, 0, 0, 1, 1)
 

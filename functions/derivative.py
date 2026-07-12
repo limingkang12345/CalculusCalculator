@@ -1,5 +1,5 @@
 ﻿from sympy import diff, idiff, solve, Eq, radsimp
-from sympify import sympify
+from core.sympify import sympify
 
 
 def derivative(f, v, n, x, fs):

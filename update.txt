@@ -1,5 +1,6 @@
-# CalculusCalculator v1.6.1
+# CalculusCalculator v1.6.2
 更新内容
-1. 支持直接输入latex代码，需要在latex代码前添加"$"标识
-2. 帮助页面的静态文档显示组件改为QTextBrowser，以提升性能
-3. 更新帮助文档与README
+1. 更换数学公式显示组件为QGraphicsView，**大幅减小程序打包体积**
+2. **重构项目结构**，增强项目规范性
+3. 使用lazy_loader，**加快启动速度**
+4. 修复暗色主题下帮助文档内容样式错误的问题

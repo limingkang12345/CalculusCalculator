@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'dingyi_pjNdUUdv.ui'
+## Form generated from reading UI file 'dingyi_pjMIvFId.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.9.1
+## Created by: Qt User Interface Compiler version 6.11.1
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -23,7 +23,7 @@ class Ui_dingyi_pj(object):
     def setupUi(self, dingyi_pj):
         if not dingyi_pj.objectName():
             dingyi_pj.setObjectName(u"dingyi_pj")
-        dingyi_pj.resize(801, 551)
+        dingyi_pj.resize(824, 551)
         self.gridLayout = QGridLayout(dingyi_pj)
         self.gridLayout.setObjectName(u"gridLayout")
         self.groupBox_7 = QGroupBox(dingyi_pj)

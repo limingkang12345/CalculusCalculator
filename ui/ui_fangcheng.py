@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'fangchengqhFxNr.ui'
+## Form generated from reading UI file 'fangchengFaHYoK.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.9.1
+## Created by: Qt User Interface Compiler version 6.11.1
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -15,10 +15,9 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWebEngineWidgets import QWebEngineView
-from PySide6.QtWidgets import (QApplication, QCheckBox, QGridLayout, QGroupBox,
-    QLabel, QLineEdit, QPushButton, QSizePolicy,
-    QWidget)
+from PySide6.QtWidgets import (QApplication, QCheckBox, QGraphicsView, QGridLayout,
+    QGroupBox, QLabel, QLineEdit, QPushButton,
+    QSizePolicy, QWidget)
 
 class Ui_fangcheng(object):
     def setupUi(self, fangcheng):
@@ -89,9 +88,9 @@ class Ui_fangcheng(object):
         self.groupBox_18.setObjectName(u"groupBox_18")
         self.gridLayout_4 = QGridLayout(self.groupBox_18)
         self.gridLayout_4.setObjectName(u"gridLayout_4")
-        self.fangcheng_yuanfangcheng = QWebEngineView(self.groupBox_18)
+        self.fangcheng_yuanfangcheng = QGraphicsView(self.groupBox_18)
         self.fangcheng_yuanfangcheng.setObjectName(u"fangcheng_yuanfangcheng")
-        self.fangcheng_yuanfangcheng.setUrl(QUrl(u"about:blank"))
+        self.fangcheng_yuanfangcheng.setProperty(u"url", QUrl(u"about:blank"))
 
         self.gridLayout_4.addWidget(self.fangcheng_yuanfangcheng, 0, 0, 1, 1)
 
@@ -102,9 +101,9 @@ class Ui_fangcheng(object):
         self.groupBox_17.setObjectName(u"groupBox_17")
         self.gridLayout_5 = QGridLayout(self.groupBox_17)
         self.gridLayout_5.setObjectName(u"gridLayout_5")
-        self.fangcheng_jieji = QWebEngineView(self.groupBox_17)
+        self.fangcheng_jieji = QGraphicsView(self.groupBox_17)
         self.fangcheng_jieji.setObjectName(u"fangcheng_jieji")
-        self.fangcheng_jieji.setUrl(QUrl(u"about:blank"))
+        self.fangcheng_jieji.setProperty(u"url", QUrl(u"about:blank"))
 
         self.gridLayout_5.addWidget(self.fangcheng_jieji, 0, 0, 1, 1)
 

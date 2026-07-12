@@ -1,5 +1,5 @@
 ﻿from sympy import integrate, radsimp
-from sympify import sympify
+from core.sympify import sympify
 
 
 def integral(f, v, fs, a = None, b = None):

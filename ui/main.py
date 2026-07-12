@@ -1,13 +1,17 @@
-﻿from PySide6.QtWidgets import QMainWindow, QMessageBox
-from PySide6.QtWebEngineWidgets import QWebEngineView
-from PySide6.QtCore import QUrl, QTimer
+﻿from PySide6.QtWidgets import QMainWindow, QMessageBox, QGraphicsView
+from PySide6.QtCore import QTimer
 from PySide6.QtGui import QColor, QIcon
 from qdarktheme import setup_theme
 
-from ui import *
-from saves import savefile, openfile
+from ui.ui_main import Ui_MainWindow
+from functions.saves import savefile, openfile
+from core.render import refreshGraphicsView
 
 import webbrowser, sys
+import ui  # 提供 tabs_list, tabs_dict 等延迟加载配置
+
+# tabs_list 和 tabs_dict 由 ui/__init__.py 通过 lazy_loader 延迟加载提供
+# 子模块仅在首次创建对应 tab 时才被导入
 
 qss_light = """QWidget { color: black; }
 QGroupBox { border: 1px solid gray;}
@@ -26,8 +30,7 @@ class MainWindow(QMainWindow):
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
         self.fs, self.tabs, self.eqs, self.rels, self.vs = {}, {}, {}, {}, {}
-        self.tabs_n = [1] * len(tabs_list)
-        self._preinit_view = None
+        self.tabs_n = [1] * len(ui.tabs_list)
 
         self.setup()
 
@@ -65,39 +68,37 @@ class MainWindow(QMainWindow):
 
         self.create_tab(0)
 
-        # 预初始化 QWebEngineView，让 WebEngine 子进程提前启动，
-        # 避免用户首次创建带 QWebEngineView 标签页时窗口闪退
-        QTimer.singleShot(0, self._preinit_webengine)
-
         self.light()
 
-    def _preinit_webengine(self):
-        # 预初始化 WebEngine 子进程，消除首次创建 WebEngine 标签页时的闪退问题
-        self._preinit_view = QWebEngineView()
-        self._preinit_view.setUrl(QUrl("about:blank"))
-        self._preinit_view.hide()
-
     def light(self):
-        # 切换浅色主题，并将除Help页面外所有Web浏览框改为白色底色和黑色字体
+        # 切换浅色主题，并将除Help页面外所有视图改为白色底色
         self.theme = "light"
         setup_theme(theme="light", additional_qss=qss_light)
         for tab_name, tab in self.tabs.items():
             if tab_name.startswith("帮助"):
+                # 帮助文档需按主题重渲染（明暗配色不同）
+                if hasattr(tab, "load_help"):
+                    tab.load_help()
                 continue
-            for view in tab.findChildren(QWebEngineView):
-                view.page().setBackgroundColor(QColor(255, 255, 255))
-        refreshWebEngineViews()
-    
+            for view in tab.findChildren(QGraphicsView):
+                if view.scene() is not None:
+                    view.scene().setBackgroundBrush(QColor(255, 255, 255))
+        refreshGraphicsView()
+
     def dark(self):
-        # 切换深色主题，并将除Help页面外所有Web浏览框改为黑色底色和白色字体
+        # 切换深色主题，并将除Help页面外所有视图改为黑色底色
+        self.theme = "dark"
         setup_theme(theme="dark", additional_qss=qss_dark)
         for tab_name, tab in self.tabs.items():
             if tab_name.startswith("帮助"):
+                # 帮助文档需按主题重渲染（明暗配色不同）
+                if hasattr(tab, "load_help"):
+                    tab.load_help()
                 continue
-            for view in tab.findChildren(QWebEngineView):
-                view.page().setBackgroundColor(QColor(0, 0, 0))
-        self.theme = "dark"
-        refreshWebEngineViews()
+            for view in tab.findChildren(QGraphicsView):
+                if view.scene() is not None:
+                    view.scene().setBackgroundBrush(QColor(0, 0, 0))
+        refreshGraphicsView()
 
     def close_tab(self, index, auto_create = True):
         # 关闭标签页
@@ -117,8 +118,8 @@ class MainWindow(QMainWindow):
         # n(int):标签页序号，默认为0，有传入则使用传入值，否则使用默认值
         # 不传父对象（None），由 addTab 自动设置正确的父对象为 tabWidget 的堆叠窗口
         # 避免标签页先被设为 MainWindow 的子对象后又重新父化，导致原生窗口句柄重建引发闪退
-        new_tab = tabs_list[index](self, self.fs)
-        new_tab_name = list(tabs_dict.keys())[index] + str(n if n else self.tabs_n[index])
+        new_tab = ui.tabs_list[index](self, self.fs)
+        new_tab_name = list(ui.tabs_dict.keys())[index] + str(n if n else self.tabs_n[index])
         self.tabs_n[index] += (0 if n else 1)
         self.ui.tabWidget.setCurrentIndex(self.ui.tabWidget.addTab(new_tab, new_tab_name))
         self.tabs[new_tab_name] = self.ui.tabWidget.currentWidget()
