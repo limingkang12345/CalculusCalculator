@@ -39,12 +39,12 @@ class Jifen(QWidget, Ui_jifen):
             F = integral(self.jifen_input.text(), self.jifen_jifenbianliang.text(), self.fs)
             setGraphicsView('F(x)=', latex(F), self.jifen_yuanhanshu)
             self.jifen_yuanhanshu_lineedit.setText(str(F))
-            F = integral(self.jifen_input.text(), self.jifen_jifenbianliang.text(), self.jifen_xiaxianzhi.text(), self.jifen_shangxianzhi.text(), self.fs)
+            F = integral(self.jifen_input.text(), self.jifen_jifenbianliang.text(), self.fs,\
+                          a = self.jifen_xiaxianzhi.text(), b = self.jifen_shangxianzhi.text())
             setGraphicsView('F(x)=', latex(F), self.jifen_dingjifenzhi)
             self.jifen_dingjifenzhi_lineedit.setText(str(F))
             
         else:
-            self.jifen_dingjifenzhi.setHtml("")
             F = integral(self.jifen_input.text(), self.jifen_jifenbianliang.text(), self.fs)
             setGraphicsView('F(x)=', latex(F), self.jifen_yuanhanshu)
             self.jifen_yuanhanshu_lineedit.setText(str(F))

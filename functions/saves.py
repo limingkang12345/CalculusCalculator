@@ -5,6 +5,7 @@ from core.sympify import sympify
 from core.render import setGraphicsView
 import ui
 import json
+from ui.i18n import current_language
 
 
 def _fix_old_format(obj, cat, val_str, fs):
@@ -50,6 +51,9 @@ def savefile(main_class):
             output["texts"] = item_output
             output["fs"] = main_class.fs
             output["tabs_n"] = main_class.tabs_n
+            output["language"] = current_language()
+            # 记录当前主题（浅色/深色），随项目存档，打开时自动恢复
+            output["theme"] = getattr(main_class, "theme", "light")
             output["eqs"] = list(main_class.eqs.keys())
             output["rels"] = list(main_class.rels.keys())
             output["vs"] = main_class.vs
@@ -77,8 +81,7 @@ def openfile(main_class):
     if filename:
         with open(filename, mode = "r") as file:
             json_data = json.loads(file.read())
-            #try:
-            if 1:
+            try:
                 main_class.fs = json_data["fs"]
                 if len(json_data["tabs_n"]) == len(ui.tabs_list):  main_class.tabs_n = json_data["tabs_n"]
                 else:
@@ -134,5 +137,16 @@ def openfile(main_class):
                                         setGraphicsView('', latex(expr), view)
                                     except:
                                         pass
-            '''except:
-                QMessageBox.warning(main_class, "警告", "提供的配置文件错误")'''
+                # 应用保存的语言选项，恢复界面语言（含菜单与所有标签页）
+                lang = json_data.get("language", "zh_CN")
+                if hasattr(main_class, "change_language"):
+                    main_class.change_language(lang)
+                # 应用保存的主题选项，恢复浅色/深色（含菜单与所有标签页视图背景）
+                theme = json_data.get("theme", "light")
+                if hasattr(main_class, "dark") and hasattr(main_class, "light"):
+                    if theme == "dark":
+                        main_class.dark()
+                    else:
+                        main_class.light()
+            except:
+                QMessageBox.warning(main_class, "警告", "提供的配置文件错误")

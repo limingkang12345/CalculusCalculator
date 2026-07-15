@@ -12,7 +12,7 @@
 
 - **项目地址**：[GitHub - limingkang12345/CalculusCalculator](https://github.com/limingkang12345/CalculusCalculator)
 - **网页版**：[https://limingkang.pythonanywhere.com](https://limingkang.pythonanywhere.com)
-- **最新版本**：v1.6.1
+- **最新版本**：v1.6.3
 - **开发语言**：Python 3.8+
 - **核心库**：SymPy（符号计算）、PySide6（GUI 框架）、Matplotlib（几何绘图）
 - **功能概览**：
@@ -34,6 +34,32 @@
   - **回车快捷键**（v1.5.2）：各页面主要文本输入框支持回车键触发对应按钮功能
   - 工程存档/读档（JSON 格式），支持保存所有几何对象
   - **LaTeX 代码直接输入**（v1.6.1）：在表达式前添加 `$` 标识，可直接输入 LaTeX 代码，系统自动解析为 SymPy 表达式
+
+## v1.6.3 更新内容
+
+1. **设置选项卡**：新增"设置"选项卡，并将主题样式设置项移入设置选项卡
+2. **语言设置**：新增"语言"设置项，支持英语界面
+3. **帮助文档**：新增内置"帮助文档"，提供用户文档与 API 文档
+4. **修复积分**：修复不能进行不定积分和定积分的问题
+5. **资源优化**：去掉 `resources_rc.py` 中打包的 MathJax 库，并缩小 ico 体积
+
+---
+
+## v1.6.2 更新内容
+
+1. **更换公式显示组件**：数学公式显示组件由旧组件更换为 `QGraphicsView`，大幅减小程序打包体积
+2. **重构项目结构**：增强项目规范性
+3. **启动加速**：使用 `lazy_loader`，加快程序启动速度
+4. **修复样式**：修复暗色主题下帮助文档内容样式错误的问题
+
+---
+
+## v1.6 更新内容
+
+1. **窗口布局更新**：所有窗口部件的位置现在会根据窗口大小自适应变化
+2. **现代化 UI**：使用 PyQtDarkTheme-fork 样式库，实现现代化扁平 UI
+3. **界面主题**：新增"界面主题"菜单项，支持切换浅色与深色主题
+4. 额外提供了 Nuitka 编译版本（Compiled）
 
 ---
 
@@ -74,13 +100,51 @@
 
 ---
 
+## v1.4.4 更新内容
+
+1. **计算选项卡**：新增计算选项卡，支持高精度和符号运算及 LaTeX 代码生成
+2. **函数调用**：定义的函数现在可以 `函数名(自变量值)` 形式直接调用，支持嵌套函数输入
+3. **分母有理化**：大部分计算结果现在会自动执行分母有理化
+4. **不等式解集**：不等式组的解现在以集合或区间的形式返回
+5. **存档增强**：方程组和不等式组现在也会被写入存档
+6. **UI 微调**：微调界面以适配新版系统环境
+7. **修复**：修复求解方程组时多解导致报错的问题
+8. 更新帮助文档
+
+---
+
+## v1.4.3 更新内容
+
+1. **存档功能**：新增存档功能，可通过 JSON 保存或读取存档
+2. **性能修复**：修复启动后初次新建选项卡可能引发卡顿的问题
+3. 使用 WinRAR 创建更完整的安装程序，并使用 7z 创建更小的压缩包
+
+---
+
+## v1.4.2 更新内容
+
+- 修复代数式在输入时被自动化简，及在求解问题时不自动化简的问题
+
+---
+
+## v1.4.1 更新内容
+
+1. **重构 UI**：用户可以像操作浏览器一样增减功能标签页
+2. **首页改版**：更换首页样式
+3. **菜单栏**：新增菜单栏，并在"关于"中添加 GitHub 链接与网页版链接
+4. **修复**：修复方程组结果不能正常显示的 bug
+5. **架构变动**：UI 相关内容移至 `ui` 目录下
+6. **体积优化**：缩小打包后程序体积
+
+---
+
 ## 亮点分析
 
 1. **功能全面**  
    覆盖了微积分、代数、方程求解、几何计算中的常见需求，从基础的化简求导到隐函数、微分方程、平面立体几何一应俱全。
 
 2. **可视化界面**  
-   基于 PySide6 构建多标签页界面，每个功能独立窗口，支持公式的 LaTeX 实时渲染（`QWebEngineView` + MathJax）。
+   基于 PySide6 构建多标签页界面，每个功能独立窗口，计算结果以 LaTeX 形式在 `QGraphicsView`（SVG）中实时渲染，帮助文档使用 `QTextBrowser` 显示。
 
 3. **自定义函数**  
    用户可以定义 `f(x)`、`g(t)` 等函数，并在后续计算中通过 `f(3)`、`f(g(2))` 等形式直接调用，极大提升了灵活性和复用性。
@@ -186,49 +250,47 @@ python setup.py build
 
 ```
 CalculusCalculator/
-├── main.py              # 主窗口逻辑
 ├── run.py               # 程序入口
-├── sympify.py           # 表达式安全转换、函数调用预处理
-├── derivative.py        # 显/隐函数求导
-├── integral.py          # 积分计算
-├── functions.py         # 函数性质分析
-├── simplification.py    # 表达式变形（13种方法）
-├── solvers.py           # 方程/不等式/微分方程/解三角形求解
-├── planes.py            # 平面几何计算与构造 API（30+函数）
-├── solids.py            # 立体几何计算与构造 API（29+函数，含斜二测画法）
-├── paint2D.py           # 平面几何绘图渲染模块
-├── paint3D.py           # 立体几何 3D 绘图渲染模块
-├── saves.py             # JSON 存档/读档
 ├── setup.py             # cx_Freeze 打包脚本
 ├── requirements.txt     # Python 依赖列表
 ├── update.txt           # 版本更新日志
-├── ui/
-│   ├── __init__.py      # 各选项卡逻辑实现
-│   ├── ui_main.py       # 主窗口布局
-│   ├── ui_dingyi.py     # 定义页布局
-│   ├── ui_qiudao.py     # 求导页布局
-│   ├── ui_jifen.py      # 积分页布局
-│   ├── ui_bianxing.py   # 变形页布局
-│   ├── ui_fangcheng.py  # 方程页布局
-│   ├── ui_fangchengzu.py  # 方程组页布局
-│   ├── ui_budengshi.py  # 不等式页布局
-│   ├── ui_budengshizu.py  # 不等式组页布局
-│   ├── ui_jisuan.py     # 计算页布局
-│   ├── ui_shouye.py     # 首页布局
-│   ├── ui_help.py       # 帮助页布局
-│   ├── ui_dingyixiangliang.py  # 定义向量页布局
-│   ├── ui_huitu_hanshu.py     # 绘制函数页布局
-│   ├── ui_jiesanjiaoxing.py   # 解三角形页布局
-│   ├── ui_dingyi_pj.py  # 平面几何定义页布局
-│   ├── ui_huitu_pj.py   # 平面几何绘图页布局
-│   ├── ui_dingyi_lj.py  # 立体几何定义页布局
-│   ├── ui_huitu_lj.py   # 立体几何绘图页布局
-│   ├── ui_pjjisuan.py   # 平面几何计算页布局
-│   └── ui_ljjisuan.py   # 立体几何计算页布局
-├── resources_rc.py      # 资源文件（MathJax和帮助文档等）
+├── mkdocs.yml           # 文档站（MkDocs）配置
+├── README.md            # 项目说明
+├── resources_rc.py      # 编译后的资源文件
+├── core/                # 核心模块
+│   ├── sympify.py       # 表达式安全转换、函数调用预处理、LaTeX 解析
+│   └── render.py        # 公式渲染（SVG / QGraphicsView）
+├── functions/           # 各计算功能实现
+│   ├── derivative.py    # 显/隐函数求导
+│   ├── integral.py      # 积分计算
+│   ├── functions.py     # 函数性质分析
+│   ├── simplification.py # 表达式变形（13 种方法）
+│   ├── solvers.py       # 方程/不等式/微分方程/解三角形求解
+│   ├── planes.py        # 平面几何计算与构造 API
+│   ├── solids.py        # 立体几何计算与构造 API（含斜二测画法）
+│   ├── paint2D.py       # 平面几何绘图渲染
+│   ├── paint3D.py       # 立体几何 3D 绘图渲染
+│   └── saves.py         # JSON 存档/读档
+├── ui/                  # 界面层（PySide6）
+│   ├── __init__.py      # 各选项卡逻辑实现汇总
+│   ├── main.py          # 主窗口逻辑
+│   ├── i18n.py          # 语言 / 主题读写与切换
+│   ├── ui_main.py       # 主窗口布局（自动生成）
+│   ├── <功能>.py         # 各功能页逻辑，如 dingyi / qiudao / jifen / bianxing /
+│   │                    #   fangcheng / fangchengzu / budengshi / budengshizu / jisuan /
+│   │                    #   shouye / dingyixiangliang / huitu_hanshu / jiesanjiaoxing /
+│   │                    #   dingyi_pj / huitu_pj / dingyi_lj / huitu_lj / pjjisuan /
+│   │                    #   ljjisuan / help / shezhi 等
+│   └── ui_*.py          # 各功能页布局（自动生成）
+├── i18n/                # 翻译源文件
+│   ├── zh_CN.ts         # 中文翻译源
+│   └── en_US.ts         # 英文翻译源
+└── docs/                # 文档源码（MkDocs 构建）
+    ├── index.md         # 首页
+    ├── about.md         # 关于 / 版本历史
+    ├── guide/           # 用户指南（quickstart / installation / configuration）
+    └── api/             # API 参考（core/、modules/）
 ```
-
----
 
 ## 许可证
 

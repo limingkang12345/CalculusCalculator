@@ -4,7 +4,6 @@ from sympy import Symbol, simplify, radsimp
 from latex2sympy2 import latex2sympy
 from PySide6.QtWidgets import QMessageBox
 
-# 该函数为AI生成
 def _preprocess_func_calls(expr_str, fs):
     """预处理函数调用表达式，将 f(arg) 形式替换为函数体表达式
     例如 fs={"f":["f","x**2","Reals","x"]} 时，"f(3)" 被替换为 "(3**2)"

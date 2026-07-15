@@ -1,0 +1,50 @@
+# 快速开始
+
+本页帮助你在最短时间内运行起 CalculusCalculator（桌面版）。
+
+## 环境要求
+
+- Python 3.8 或更高版本（开发与文档参考 Python 3.13）
+- 推荐使用虚拟环境
+
+## 三步运行
+
+1. 获取项目源码（克隆或下载解压）。
+2. 安装依赖：
+
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+3. 启动程序：
+
+   ```bash
+   python run.py
+   ```
+
+启动后默认打开首页（多标签页界面），通过菜单栏"功能"下的各项即可进入对应计算页面。
+
+## 通过 PYPI 安装（无需下载源码）
+
+如果你不想手动下载源码与安装依赖，也可以直接从 PYPI 安装：
+
+```bash
+pip install CalculusCalculator
+```
+
+安装完成后，在命令行直接输入以下命令即可启动程序：
+
+```bash
+CalculusCalculator
+```
+
+**注意：**PYPI 上的版本可能不会及时更新，若需使用最新功能，建议优先通过源码方式运行。
+
+## 使用网页版
+
+如果不想安装，直接访问 [网页版](https://limingkang.pythonanywhere.com) 即可在线使用，功能与桌面端基本一致。
+
+## 下一步
+
+- 不确定表达式怎么写？阅读 [字符串解析](../../api/core/sympify)。
+- 想切换中英文或深浅色主题？阅读 [配置选项](../configuration)。

@@ -1,0 +1,40 @@
+site_name: CalculusCalculator 帮助文档
+site_url: https://limingkang12345.github.io/CalculusCalculator/
+repo_url: https://github.com/limingkang12345/CalculusCalculator
+theme:
+  name: material
+  language: zh
+  features:
+    - navigation.sections
+    - navigation.top
+    - content.code.copy
+markdown_extensions:
+  - admonition
+  - tables
+  - attr_list
+  - md_in_html
+nav:
+  - 首页: index.md
+  - 用户指南:
+    - 快速开始: guide/quickstart.md
+    - 安装教程: guide/installation.md
+    - 配置选项: guide/configuration.md
+  - API 参考:
+    - 核心模块:
+      - 字符串解析: api/core/sympify.md
+      - 公式渲染: api/core/rendering.md
+    - 功能模块:
+      - 求导: api/modules/derivative.md
+      - 积分: api/modules/integral.md
+      - 函数性质分析: api/modules/function_analysis.md
+      - 表达式变形: api/modules/simplification.md
+      - 方程与不等式: api/modules/solvers.md
+      - 计算选项卡: api/modules/calculation.md
+      - 向量运算: api/modules/vector.md
+      - 解三角形: api/modules/triangle.md
+      - 函数绘图: api/modules/plot.md
+      - 平面几何: api/modules/plane_geometry.md
+      - 立体几何: api/modules/solid_geometry.md
+      - 平面几何计算: api/modules/plane_calc.md
+      - 立体几何计算: api/modules/solid_calc.md
+  - 关于: about.md

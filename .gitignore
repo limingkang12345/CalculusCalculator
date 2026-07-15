@@ -1,6 +1,5 @@
 .vscode
 __pycache__
-MathJax
 ui/*.ui
 favicon.ico
 help.html
@@ -11,3 +10,6 @@ history_*.md
 *.json
 build
 CalculusCalculator.egg-info
+*.qm
+_*.*
+site
