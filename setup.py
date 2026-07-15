@@ -3,7 +3,8 @@ import os
 from cx_Freeze import setup, Executable
 
 # ADD FILES
-files = []
+# 将多语言翻译文件（.qm）随可执行文件一起打包，运行时位于 exe 同级 i18n/ 下
+files = [("i18n", "i18n")]
 
 # TARGET
 target = Executable(
@@ -55,8 +56,8 @@ includes = (
 # SETUP CX FREEZE
 setup(
     name="CalculusCalculator",
-    version="1.6.2",
-    description="微积分计算器v1.6.2",
+    version="1.6.3",
+    description="微积分计算器v1.6.3",
     author="LiMingkang",
     options={
         "build_exe": {
