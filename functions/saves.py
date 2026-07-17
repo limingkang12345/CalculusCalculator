@@ -5,7 +5,7 @@ from core.sympify import sympify
 from core.render import setGraphicsView
 import ui
 import json
-from ui.i18n import current_language
+from core.settings import current_language
 
 
 def _fix_old_format(obj, cat, val_str, fs):

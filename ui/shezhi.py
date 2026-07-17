@@ -1,6 +1,6 @@
 from ui.ui_shezhi import *
 from PySide6.QtWidgets import QWidget
-from ui.i18n import current_language, current_theme
+from core.settings import current_language, current_theme
 
 
 class Shezhi(QWidget, Ui_shezhi):
@@ -32,5 +32,5 @@ class Shezhi(QWidget, Ui_shezhi):
                 self.parent.dark()
             else:
                 self.parent.light()
-        from ui.i18n import save_theme
+        from core.settings import save_theme
         save_theme(theme)

@@ -1,12 +1,14 @@
-﻿from PySide6.QtWidgets import QMainWindow, QMessageBox, QGraphicsView
+﻿from PySide6.QtWidgets import QMainWindow, QMessageBox, QGraphicsView, QLineEdit, QStyle
 from PySide6.QtCore import QTimer, QCoreApplication
-from PySide6.QtGui import QColor, QIcon
+from PySide6.QtGui import QColor, QIcon, QAction
 from qdarktheme import setup_theme
 
 from ui.ui_main import Ui_MainWindow
 from functions.saves import savefile, openfile
 from core.render import refreshGraphicsView
-from ui.i18n import apply_language, save_language, save_theme
+from core.settings import apply_language, save_language, save_theme
+from ui.math_input import open_formula_dialog
+from ui.huancun import open_cache
 
 import webbrowser, sys
 import ui  # 提供 tabs_list, tabs_dict 等延迟加载配置
@@ -32,6 +34,7 @@ class MainWindow(QMainWindow):
         self.ui.setupUi(self)
         self.fs, self.tabs, self.eqs, self.rels, self.vs = {}, {}, {}, {}, {}
         self.tabs_n = [1] * len(ui.tabs_list)
+        self.cache = []
 
         self.setup()
 
@@ -63,13 +66,14 @@ class MainWindow(QMainWindow):
         self.ui.actiongithub.triggered.connect(lambda:webbrowser.open("https://github.com/limingkang12345/CalculusCalculator"))
         self.ui.actionwebsite.triggered.connect(lambda:webbrowser.open("https://limingkang.pythonanywhere.com"))
         self.ui.actionshezhi.triggered.connect(lambda:self.create_tab(20))
+        self.ui.actionhuancun.triggered.connect(lambda:self.create_tab(21))
         
         self.ui.tabWidget.tabCloseRequested.connect(self.close_tab)
 
         self.create_tab(0)
 
         # 按保存的主题应用（默认浅色）；语言已在 run.py 启动时装入
-        from ui.i18n import load_saved_theme
+        from core.settings import load_saved_theme
         if load_saved_theme() == "dark":
             self.dark()
         else:
@@ -147,6 +151,25 @@ class MainWindow(QMainWindow):
                 widget.shezhi_zhongwen.setChecked(True if lang == "zh_CN" else False)
                 widget.shezhi_yingwen.setChecked(True if lang == "en_US" else False)
 
+    def _on_insert_cache(self, lineedit):
+        """存入缓存区：保存文本后，图标短暂变为对勾再恢复。"""
+        text = lineedit.text().strip()
+        if not text:
+            return
+        # 将文本存入缓存列表
+        if text in self.cache:
+            self.cache.remove(text)
+        self.cache.insert(0, text)
+
+        action = getattr(lineedit, 'insert_action', None)
+        if action is None:
+            return
+        # 保存原图标，切换为对勾
+        original_icon = action.icon()
+        action.setIcon(self.style().standardIcon(QStyle.SP_DialogApplyButton))
+        # 延时恢复原图标
+        QTimer.singleShot(800, lambda a=action, o=original_icon: a.setIcon(o))
+
     def close_tab(self, index, auto_create = True):
         # 关闭标签页
         # index(int):要关闭的标签页的索引
@@ -179,3 +202,15 @@ class MainWindow(QMainWindow):
         title = QCoreApplication.translate("MainWindow", base_key) + suffix
         self.ui.tabWidget.setCurrentIndex(self.ui.tabWidget.addTab(new_tab, title))
         self.tabs[new_tab_name] = self.ui.tabWidget.currentWidget()
+        # 为所有文本输入框添加快捷输入和缓存区按钮
+        def get_lambda(lineedit, i):  return lambda: [open_formula_dialog, open_cache, self._on_insert_cache][i](lineedit)
+        for i in new_tab.findChildren(QLineEdit):
+            i.input_action = QAction(QIcon.fromTheme("input-keyboard"), "可视化输入", i)
+            i.input_action.triggered.connect(get_lambda(i, 0))
+            i.addAction(i.input_action, QLineEdit.TrailingPosition)
+            i.cache_action = QAction(QIcon.fromTheme("document-open"), "打开缓存区", i)
+            i.cache_action.triggered.connect(get_lambda(i, 1))
+            i.addAction(i.cache_action, QLineEdit.TrailingPosition)
+            i.insert_action = QAction(QIcon.fromTheme("list-add"), "存入缓存区", i)
+            i.insert_action.triggered.connect(get_lambda(i, 2))
+            i.addAction(i.insert_action, QLineEdit.TrailingPosition)

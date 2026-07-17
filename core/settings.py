@@ -20,7 +20,7 @@ _theme = "light"
 
 def _qm_dir():
     """定位 .qm 所在目录，兼容开发环境与冻结后环境。"""
-    # 开发环境：ui/i18n.py 的上级目录（项目根）下应有 i18n/
+    # 开发环境：core/settings.py 的上级目录（项目根）下应有 i18n/
     here = os.path.dirname(os.path.abspath(__file__))      # .../ui
     pkg_root = os.path.dirname(here)                        # 项目根
     cand = os.path.join(pkg_root, "i18n")

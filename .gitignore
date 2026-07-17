@@ -11,5 +11,4 @@ history_*.md
 build
 CalculusCalculator.egg-info
 *.qm
-_*.*
 site
