@@ -10,5 +10,4 @@ history_*.md
 *.json
 build
 CalculusCalculator.egg-info
-*.qm
 site
