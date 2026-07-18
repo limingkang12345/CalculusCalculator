@@ -4,6 +4,7 @@ from core.sympify import sympify
 from core.render import setGraphicsView, setGraphicsViewTheme
 from sympy import latex
 from PySide6.QtWidgets import QWidget
+from PySide6.QtCore import QCoreApplication
 
 class Bianxing(QWidget, Ui_bianxing):
     def __init__(self, parent, fs):
@@ -11,16 +12,39 @@ class Bianxing(QWidget, Ui_bianxing):
         self.setupUi(self)
         setGraphicsViewTheme(self, parent)
 
-        self.bianxing_bianxingfangfa.addItems(["通用化简(simplify)", "展开(expand)", "因式分解(factor)", "主元(collect)", "通分(cancel)", "分离(apart)"])
-        self.bianxing_bianxingfangfa.addItems(["三角变换(trigsimp)", "三角展开(expand_trig)", "指数合并(powsimp)", "指数展开(expand_power_exp)"])
-        self.bianxing_bianxingfangfa.addItems(["对数展开(expand_log)", "对数合并(logcombine)", "换元"])
+        self._populate_transform_combo()
         self.bianxing_bianxingfangfa.currentIndexChanged.connect(self.bianxing_bianxingfangfa_f)
+
+        self.fs = fs
+        self.parent = parent
+
+    def retranslateUi(self, widget):
+        super().retranslateUi(widget)
+        self._populate_transform_combo()
+
+    def _populate_transform_combo(self):
+        tr = QCoreApplication.translate
+        self.bianxing_bianxingfangfa.clear()
+        self.bianxing_bianxingfangfa.addItems([
+            tr("bianxing", "通用化简(simplify)"),
+            tr("bianxing", "展开(expand)"),
+            tr("bianxing", "因式分解(factor)"),
+            tr("bianxing", "主元(collect)"),
+            tr("bianxing", "通分(cancel)"),
+            tr("bianxing", "分离(apart)"),
+            tr("bianxing", "三角变换(trigsimp)"),
+            tr("bianxing", "三角展开(expand_trig)"),
+            tr("bianxing", "指数合并(powsimp)"),
+            tr("bianxing", "指数展开(expand_power_exp)"),
+            tr("bianxing", "对数展开(expand_log)"),
+            tr("bianxing", "对数合并(logcombine)"),
+            tr("bianxing", "换元"),
+        ])
+        self.bianxing_bianxingfangfa.setCurrentIndex(0)
         self.bianxing_input.textChanged.connect(self.setbianxing_yuanshi)
         self.bianxing_input.returnPressed.connect(self.bianxing_bianxing_button.click)
         self.bianxing_bianxing_button.clicked.connect(self.bianxing_button_f)
 
-        self.fs = fs
-        self.parent = parent
 
     def setbianxing_yuanshi(self):
         # 加载原式

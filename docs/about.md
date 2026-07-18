@@ -5,9 +5,17 @@
 - **项目地址**：[GitHub - limingkang12345/CalculusCalculator](https://github.com/limingkang12345/CalculusCalculator)
 - **网页版**：[https://limingkang.pythonanywhere.com](https://limingkang.pythonanywhere.com)
 - **PYPI**：[https://pypi.org/project/CalculusCalculator/](https://pypi.org/project/CalculusCalculator/)
-- **核心库**：SymPy（符号计算）、PySide6（GUI）、Matplotlib（绘图）、PyQtDarkTheme-fork（主题）、latex2sympy2（LaTeX 解析）
+- **核心库**：SymPy（符号计算）、PySide6（GUI）、Matplotlib（绘图）、PyQtDarkTheme-fork（主题）、latex2sympy2（LaTeX 解析）、pyqt5-math-widget（可视化公式输入）
 
 ## 版本历史
+
+### v1.6.4
+- **表达式缓存**：新增"缓存区"功能（菜单"文件 → 缓存区"），支持标签页管理缓存表达式；输入框旁三个快捷按钮：可视化输入、打开缓存区弹窗、存入缓存区
+- **可视化公式输入**：基于 pyqt5-math-widget（已内置于 `math_input/` 目录），支持结构化选择和编辑数学符号
+- **存档设置**：设置页新增"存档设置（保存时）"列表，可勾选/取消函数列表、方程列表等，精细控制存档数据范围
+- **菜单调整**："解三角形"移至"求解"菜单子项，"变形"移至"计算"菜单子项
+- **项目结构优化**：`core/` 目录添加 `__init__.py`；`ui/i18n.py` 重构为 `core/settings.py`
+- **代码清理**：移除浅色/深色样式切换的残留 QAction
 
 ### v1.6.3
 - 新增"设置"选项卡，并将主题样式设置项移入设置选项卡

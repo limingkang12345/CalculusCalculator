@@ -29,9 +29,9 @@ nav:
       - 函数性质分析: api/modules/function_analysis.md
       - 表达式变形: api/modules/simplification.md
       - 方程与不等式: api/modules/solvers.md
+      - 解三角形: api/modules/triangle.md
       - 计算选项卡: api/modules/calculation.md
       - 向量运算: api/modules/vector.md
-      - 解三角形: api/modules/triangle.md
       - 函数绘图: api/modules/plot.md
       - 平面几何: api/modules/plane_geometry.md
       - 立体几何: api/modules/solid_geometry.md

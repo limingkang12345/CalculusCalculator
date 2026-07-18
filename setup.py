@@ -51,20 +51,21 @@ includes = (
     + func_modules
     + core_modules
     + ["lazy_loader", "resources_rc"]
+    + collect_modules("math_input")
 )
 
 # SETUP CX FREEZE
 setup(
     name="CalculusCalculator",
-    version="1.6.3",
-    description="微积分计算器v1.6.3",
+    version="1.6.4",
+    description="微积分计算器v1.6.4",
     author="LiMingkang",
     options={
         "build_exe": {
             "include_files": files,
             "includes": includes,
             # ui / core 是常规包，functions 为命名空间包；packages 仅对前者有效
-            "packages": ["ui", "core", "lazy_loader"],
+            "packages": ["ui", "core", "math_input", "lazy_loader"],
         }
     },
     executables=[target],
