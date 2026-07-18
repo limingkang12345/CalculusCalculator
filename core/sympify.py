@@ -1,6 +1,7 @@
 ﻿import re
 from sympy import sympify as sympify_sympy
 from sympy import Symbol, simplify, radsimp
+from sympy.core.sympify import SympifyError
 from latex2sympy2 import latex2sympy
 from PySide6.QtWidgets import QMessageBox
 
@@ -65,6 +66,7 @@ def sympify(expr, fs, locals = None, is_simplify = False, is_rationalize = False
     # is_rationalize(bool):是否对结果执行分母有理化
     # return:处理后的表达式
 
+    if expr == "":  return Symbol("", latex="")
     if expr[0]=="$":
         try:
             expr = latex2sympy(expr[1:])
@@ -76,10 +78,14 @@ def sympify(expr, fs, locals = None, is_simplify = False, is_rationalize = False
                 return "不规范的表达式输入"
     else:
         expr = _preprocess_func_calls(expr, fs)
-    origin_expr = sympify_sympy(expr, locals = locals)
+    try:
+        origin_expr = sympify_sympy(expr, locals = locals)
+    except SympifyError:
+        return "不规范的表达式输入"
     for f in fs.keys():
         if Symbol(f) in origin_expr.free_symbols:
-            origin_expr = origin_expr.subs(f, sympify_sympy(fs[f][1], locals = locals))
+            try:  origin_expr = origin_expr.subs(f, sympify_sympy(fs[f][1], locals = locals))
+            except SympifyError:  return "错误的函数定义"
     result = sympify_sympy(simplify(origin_expr), locals = locals) if is_simplify else sympify_sympy(origin_expr, locals = locals)
     if is_rationalize:
         result = radsimp(result)
