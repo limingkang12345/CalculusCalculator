@@ -1,8 +1,8 @@
-from PySide6.QtWidgets import QFileDialog, QLineEdit, QMessageBox, QGraphicsView
+from PySide6.QtWidgets import QFileDialog, QLineEdit, QMessageBox, QGraphicsView, QComboBox
 from PySide6.QtCore import Qt
 from sympy import latex, Line, Circle, Point
 from core.sympify import sympify
-from core.render import setGraphicsView
+from core.render import setGraphicsView, _svg_cache
 import ui
 import json
 from core.settings import current_language
@@ -42,35 +42,92 @@ def savefile(main_class):
     filename = QFileDialog.getSaveFileName(main_class, "Save File", "Project", "JSON Files (*.json)")[0]
     output = {}
     if filename:
+        # 读取存档过滤设置（若从未设置，默认全部保存）
+        filters = getattr(main_class, 'save_filters', None)
+
+        def _save(key):
+            """检查 key 对应的存档项是否应保存。filters 为 None 时全存。"""
+            if filters is None:
+                return True
+            return filters.get(key, True)
+
         with open(filename, mode = "w") as file:
-            item_output = {}
-            for i in main_class.tabs.items():
-                item_output[i[0]] = {}
-                for lineedit in i[1].findChildren(QLineEdit, options = Qt.FindChildrenRecursively):
-                    item_output[i[0]][lineedit.objectName()] = lineedit.text()
-            output["texts"] = item_output
-            output["fs"] = main_class.fs
-            output["tabs_n"] = main_class.tabs_n
-            output["language"] = current_language()
-            # 记录当前主题（浅色/深色），随项目存档，打开时自动恢复
-            output["theme"] = getattr(main_class, "theme", "light")
-            output["eqs"] = list(main_class.eqs.keys())
-            output["rels"] = list(main_class.rels.keys())
-            output["vs"] = main_class.vs
-            # 平面几何对象数据
-            if hasattr(main_class, 'pjs'):
+            # ---- 文本框文本 ----
+            if _save("texts"):
+                item_output = {}
+                for i in main_class.tabs.items():
+                    item_output[i[0]] = {}
+                    for lineedit in i[1].findChildren(QLineEdit, options=Qt.FindChildrenRecursively):
+                        item_output[i[0]][lineedit.objectName()] = lineedit.text()
+                output["texts"] = item_output
+
+            # ---- QGraphicsView 公式渲染参数 ----
+            if _save("views"):
+                item_views = {}
+                for tab_name, tab_widget in main_class.tabs.items():
+                    views = {}
+                    for view in tab_widget.findChildren(QGraphicsView, options=Qt.FindChildrenRecursively):
+                        name = view.objectName()
+                        if name and view in _svg_cache:
+                            n, l, _ = _svg_cache[view]
+                            views[name] = [n, l]
+                    item_views[tab_name] = views
+                output["views"] = item_views
+
+            # ---- QComboBox 选中项索引 ----
+            if _save("combos"):
+                item_combos = {}
+                for tab_name, tab_widget in main_class.tabs.items():
+                    combos = {}
+                    for combo in tab_widget.findChildren(QComboBox, options=Qt.FindChildrenRecursively):
+                        name = combo.objectName()
+                        if name and combo.count() > 0:
+                            combos[name] = combo.currentIndex()
+                    item_combos[tab_name] = combos
+                output["combos"] = item_combos
+
+            # ---- 函数列表（fs） ----
+            if _save("fs"):
+                output["fs"] = main_class.fs
+
+            # ---- 框架与设置选项（tabs_n, 语言, 主题） ----
+            if _save("save_settings"):
+                output["tabs_n"] = main_class.tabs_n
+                output["language"] = current_language()
+                output["theme"] = getattr(main_class, "theme", "light")
+
+            # ---- 方程列表（方程组） ----
+            if _save("eqs"):
+                output["eqs"] = list(main_class.eqs.keys())
+
+            # ---- 不等式列表（不等式组） ----
+            if _save("rels"):
+                output["rels"] = list(main_class.rels.keys())
+
+            # ---- 向量列表 ----
+            if _save("vs"):
+                output["vs"] = main_class.vs
+
+            # ---- 所有缓存区内容 ----
+            if _save("cache") and hasattr(main_class, 'cache'):
+                output["cache"] = [item for item in main_class.cache]
+
+            # ---- 平面几何对象数据 ----
+            if _save("pjs") and hasattr(main_class, 'pjs'):
                 pjs_save = {}
                 for k, v in main_class.pjs.items():
                     cat = v[0]
                     pjs_save[k] = [cat, repr(v[1])]
                 output["pjs"] = pjs_save
-            # 立体几何对象数据
-            if hasattr(main_class, 'ljs'):
+
+            # ---- 立体几何对象数据 ----
+            if _save("ljs") and hasattr(main_class, 'ljs'):
                 ljs_save = {}
                 for k, v in main_class.ljs.items():
                     cat = v[0]
                     ljs_save[k] = [cat, repr(v[1])]
                 output["ljs"] = ljs_save
+
             file.write(json.dumps(output))
 
 def openfile(main_class):
@@ -82,15 +139,28 @@ def openfile(main_class):
         with open(filename, mode = "r") as file:
             json_data = json.loads(file.read())
             try:
-                main_class.fs = json_data["fs"]
-                if len(json_data["tabs_n"]) == len(ui.tabs_list):  main_class.tabs_n = json_data["tabs_n"]
-                else:
-                    tabs_n = json_data['tabs_n']
-                    tabs_n.extend((len(ui.tabs_list) - len(json_data["tabs_n"])) * [1])
-                    main_class.tabs_n = tabs_n
-                main_class.eqs = {i:sympify(i, main_class.fs) for i in json_data["eqs"]}
-                main_class.rels = {i:sympify(i, main_class.fs) for i in json_data["rels"]}
-                main_class.vs = json_data["vs"]
+                # ---- 框架与设置 ----
+                main_class.fs = json_data.get("fs", {})
+                if "tabs_n" in json_data:
+                    if len(json_data["tabs_n"]) == len(ui.tabs_list):
+                        main_class.tabs_n = json_data["tabs_n"]
+                    else:
+                        tabs_n = json_data['tabs_n']
+                        tabs_n.extend((len(ui.tabs_list) - len(json_data["tabs_n"])) * [1])
+                        main_class.tabs_n = tabs_n
+
+                # ---- 函数列表 ----
+                main_class.eqs = {i: sympify(i, main_class.fs) for i in json_data.get("eqs", [])}
+                # ---- 方程/不等式列表 ----
+                main_class.rels = {i: sympify(i, main_class.fs) for i in json_data.get("rels", [])}
+                # ---- 向量列表 ----
+                main_class.vs = json_data.get("vs", {})
+
+                # ---- 所有缓存区内容 ----
+                if "cache" in json_data:
+                    main_class.cache = list(json_data["cache"])
+
+                # ---- 平面几何对象数据 ----
                 if "pjs" in json_data:
                     main_class.pjs = {}
                     for k, v in json_data["pjs"].items():
@@ -102,6 +172,8 @@ def openfile(main_class):
                         if obj is not None:
                             obj = _fix_old_format(obj, cat, val_str, main_class.fs)
                         main_class.pjs[k] = (cat, obj)
+
+                # ---- 立体几何对象数据 ----
                 if "ljs" in json_data:
                     main_class.ljs = {}
                     for k, v in json_data["ljs"].items():
@@ -113,9 +185,10 @@ def openfile(main_class):
                         if obj is not None:
                             obj = _fix_old_format_3d(obj, cat, val_str, main_class.fs)
                         main_class.ljs[k] = (cat, obj)
+
                 for i in range(main_class.ui.tabWidget.count() - 1, -1, -1):
                     main_class.close_tab(i, auto_create = False)
-                for tab_name in json_data["texts"].keys():
+                for tab_name in json_data.get("texts", {}).keys():
                     name_str = ''.join([c for c in tab_name if not c.isdigit()])
                     n_str = ''.join([c for c in tab_name if c.isdigit()])
                     main_class.create_tab(ui.tabs_dict[name_str], n = int(n_str) if n_str else 0)
@@ -137,16 +210,39 @@ def openfile(main_class):
                                         setGraphicsView('', latex(expr), view)
                                     except:
                                         pass
-                # 应用保存的语言选项，恢复界面语言（含菜单与所有标签页）
-                lang = json_data.get("language", "zh_CN")
-                if hasattr(main_class, "change_language"):
-                    main_class.change_language(lang)
-                # 应用保存的主题选项，恢复浅色/深色（含菜单与所有标签页视图背景）
-                theme = json_data.get("theme", "light")
-                if hasattr(main_class, "dark") and hasattr(main_class, "light"):
-                    if theme == "dark":
-                        main_class.dark()
-                    else:
-                        main_class.light()
+                        # 恢复所有 QGraphicsView 的公式内容（包括非 _lineedit 驱动的视图）
+                        saved_views = json_data.get("views", {})
+                        if tab_name in saved_views:
+                            for view in tab_widget.findChildren(QGraphicsView, options=Qt.FindChildrenRecursively):
+                                name = view.objectName()
+                                if name and name in saved_views[tab_name]:
+                                    n, l = saved_views[tab_name][name]
+                                    if l:
+                                        try:
+                                            setGraphicsView(n, l, view)
+                                        except:
+                                            pass
+                        # 恢复所有 QComboBox 的选中项
+                        saved_combos = json_data.get("combos", {})
+                        if tab_name in saved_combos:
+                            for combo in tab_widget.findChildren(QComboBox, options=Qt.FindChildrenRecursively):
+                                name = combo.objectName()
+                                if name and name in saved_combos[tab_name]:
+                                    idx = saved_combos[tab_name][name]
+                                    if 0 <= idx < combo.count():
+                                        combo.setCurrentIndex(idx)
+                # 仅当存档中显式包含语言/主题设置时才恢复，
+                # 避免用户未勾选"所有设置选项"时当前设置被默认值覆盖
+                if "language" in json_data:
+                    lang = json_data["language"]
+                    if hasattr(main_class, "change_language"):
+                        main_class.change_language(lang)
+                if "theme" in json_data:
+                    theme = json_data["theme"]
+                    if hasattr(main_class, "dark") and hasattr(main_class, "light"):
+                        if theme == "dark":
+                            main_class.dark()
+                        else:
+                            main_class.light()
             except:
                 QMessageBox.warning(main_class, "警告", "提供的配置文件错误")
