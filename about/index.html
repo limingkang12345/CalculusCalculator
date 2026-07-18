@@ -744,6 +744,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../api/modules/triangle/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    解三角形
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../api/modules/calculation/" class="md-nav__link">
         
   
@@ -780,34 +808,6 @@
     
   
     向量运算
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../api/modules/triangle/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    解三角形
   
 
     
@@ -1066,6 +1066,17 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#v164" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        v1.6.4
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#v163" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1282,6 +1293,17 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#v164" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        v1.6.4
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#v163" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1466,9 +1488,18 @@
 <li><strong>项目地址</strong>：<a href="https://github.com/limingkang12345/CalculusCalculator">GitHub - limingkang12345/CalculusCalculator</a></li>
 <li><strong>网页版</strong>：<a href="https://limingkang.pythonanywhere.com">https://limingkang.pythonanywhere.com</a></li>
 <li><strong>PYPI</strong>：<a href="https://pypi.org/project/CalculusCalculator/">https://pypi.org/project/CalculusCalculator/</a></li>
-<li><strong>核心库</strong>：SymPy（符号计算）、PySide6（GUI）、Matplotlib（绘图）、PyQtDarkTheme-fork（主题）、latex2sympy2（LaTeX 解析）</li>
+<li><strong>核心库</strong>：SymPy（符号计算）、PySide6（GUI）、Matplotlib（绘图）、PyQtDarkTheme-fork（主题）、latex2sympy2（LaTeX 解析）、pyqt5-math-widget（可视化公式输入）</li>
 </ul>
 <h2 id="_3">版本历史</h2>
+<h3 id="v164">v1.6.4</h3>
+<ul>
+<li><strong>表达式缓存</strong>：新增"缓存区"功能（菜单"文件 → 缓存区"），支持标签页管理缓存表达式；输入框旁三个快捷按钮：可视化输入、打开缓存区弹窗、存入缓存区</li>
+<li><strong>可视化公式输入</strong>：基于 pyqt5-math-widget（已内置于 <code>math_input/</code> 目录），支持结构化选择和编辑数学符号</li>
+<li><strong>存档设置</strong>：设置页新增"存档设置（保存时）"列表，可勾选/取消函数列表、方程列表等，精细控制存档数据范围</li>
+<li><strong>菜单调整</strong>："解三角形"移至"求解"菜单子项，"变形"移至"计算"菜单子项</li>
+<li><strong>项目结构优化</strong>：<code>core/</code> 目录添加 <code>__init__.py</code>；<code>ui/i18n.py</code> 重构为 <code>core/settings.py</code></li>
+<li><strong>代码清理</strong>：移除浅色/深色样式切换的残留 QAction</li>
+</ul>
 <h3 id="v163">v1.6.3</h3>
 <ul>
 <li>新增"设置"选项卡，并将主题样式设置项移入设置选项卡</li>
