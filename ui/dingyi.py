@@ -4,6 +4,7 @@ from core.sympify import sympify
 from core.render import setGraphicsView, setGraphicsViewTheme
 from sympy import latex, symbols, radsimp
 from PySide6.QtWidgets import QWidget
+from PySide6.QtCore import QCoreApplication
 
 class Dingyi(QWidget, Ui_dingyi):
     def __init__(self, parent, fs):
@@ -18,7 +19,7 @@ class Dingyi(QWidget, Ui_dingyi):
         self.dingyi_biaodashi.returnPressed.connect(self.dingyi_baocun.click)
         self.dingyi_dingyiyu.returnPressed.connect(self.dingyi_baocun.click)
         self.dingyi_zibianliang.returnPressed.connect(self.dingyi_baocun.click)
-        self.dingyi_hanshushuxing_cbx.addItems(["表达式&定义域", "值域", "单调递增区间", "单调递减区间", "奇偶性", "周期", "最大值", "最小值"])
+        self._populate_attr_combo()
         self.dingyi_hanshushuxing_cbx.setCurrentIndex(0)
         self.dingyi_hanshushuxing_cbx.currentIndexChanged.connect(self.update_function_attr)
         self.dingyi_zibianliangzhi.textChanged.connect(self.function_value)
@@ -26,6 +27,23 @@ class Dingyi(QWidget, Ui_dingyi):
         self.fs = fs
         self.parent = parent
         self.dingyi_hanshuliebiao.insertItems(0, list("{}({})".format(self.fs[i][0], self.fs[i][3]) for i in self.fs.keys()))
+
+    def retranslateUi(self, widget):
+        super().retranslateUi(widget)
+        self._populate_attr_combo()
+
+    def _populate_attr_combo(self):
+        self.dingyi_hanshushuxing_cbx.clear()
+        self.dingyi_hanshushuxing_cbx.addItems([
+            QCoreApplication.translate("dingyi", "表达式&定义域"),
+            QCoreApplication.translate("dingyi", "值域"),
+            QCoreApplication.translate("dingyi", "单调递增区间"),
+            QCoreApplication.translate("dingyi", "单调递减区间"),
+            QCoreApplication.translate("dingyi", "奇偶性"),
+            QCoreApplication.translate("dingyi", "周期"),
+            QCoreApplication.translate("dingyi", "最大值"),
+            QCoreApplication.translate("dingyi", "最小值"),
+        ])
     
     def read_function(self, item):
         # 读取函数信息，显示在文本框中

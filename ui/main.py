@@ -150,6 +150,15 @@ class MainWindow(QMainWindow):
             if hasattr(widget, "on_apply"):
                 widget.shezhi_zhongwen.setChecked(True if lang == "zh_CN" else False)
                 widget.shezhi_yingwen.setChecked(True if lang == "en_US" else False)
+        # 更新所有文本框的快捷按钮文本（可视化输入/打开缓存区/存入缓存区）
+        for tab_widget in self.tabs.values():
+            for le in tab_widget.findChildren(QLineEdit):
+                for attr, key in [("input_action", "可视化输入"),
+                                  ("cache_action", "打开缓存区"),
+                                  ("insert_action", "存入缓存区")]:
+                    action = getattr(le, attr, None)
+                    if action is not None:
+                        action.setText(QCoreApplication.translate("MainWindow", key))
 
     def _on_insert_cache(self, lineedit):
         """存入缓存区：保存文本后，图标短暂变为对勾再恢复。"""
@@ -205,12 +214,12 @@ class MainWindow(QMainWindow):
         # 为所有文本输入框添加快捷输入和缓存区按钮
         def get_lambda(lineedit, i):  return lambda: [open_formula_dialog, open_cache, self._on_insert_cache][i](lineedit)
         for i in new_tab.findChildren(QLineEdit):
-            i.input_action = QAction(QIcon.fromTheme("input-keyboard"), "可视化输入", i)
+            i.input_action = QAction(QIcon.fromTheme("input-keyboard"), QCoreApplication.translate("MainWindow", "可视化输入"), i)
             i.input_action.triggered.connect(get_lambda(i, 0))
             i.addAction(i.input_action, QLineEdit.TrailingPosition)
-            i.cache_action = QAction(QIcon.fromTheme("document-open"), "打开缓存区", i)
+            i.cache_action = QAction(QIcon.fromTheme("document-open"), QCoreApplication.translate("MainWindow", "打开缓存区"), i)
             i.cache_action.triggered.connect(get_lambda(i, 1))
             i.addAction(i.cache_action, QLineEdit.TrailingPosition)
-            i.insert_action = QAction(QIcon.fromTheme("list-add"), "存入缓存区", i)
+            i.insert_action = QAction(QIcon.fromTheme("list-add"), QCoreApplication.translate("MainWindow", "存入缓存区"), i)
             i.insert_action.triggered.connect(get_lambda(i, 2))
             i.addAction(i.insert_action, QLineEdit.TrailingPosition)

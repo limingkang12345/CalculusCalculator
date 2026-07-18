@@ -1,4 +1,5 @@
 from PySide6.QtWidgets import QDialog
+from PySide6.QtCore import QCoreApplication
 
 from math_input import MathDialog
 
@@ -8,7 +9,7 @@ def open_formula_dialog(parent):
     # 创建公式对话框
     dlg = MathDialog(
         parent=parent,
-        title="插入公式",
+        title=QCoreApplication.translate("MainWindow", "插入公式"),
         initial_text = latex(sympify(parent.text(), {})),
         toolbar_groups=["struct", "greek", "edit", "operators", "functions"],
         show_output=True,

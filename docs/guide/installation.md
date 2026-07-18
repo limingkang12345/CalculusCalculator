@@ -13,6 +13,9 @@
 | latex2sympy2 | >=1.9.1 | LaTeX 解析 |
 | lazy_loader | >=0.4 | 模块延迟加载 |
 
+!!! note "关于可视化公式输入"
+    `pyqt5-math-widget` 已内置于 `math_input/` 目录中，**无需额外安装**，不需要将其加入 `requirements.txt`。
+
 ## 安装步骤
 
 ```bash

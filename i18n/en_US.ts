@@ -180,6 +180,60 @@
         <source>设置</source>
         <translation>Settings</translation>
     </message>
+    <message>
+        <location filename="../ui/main.ui"/>
+        <source>缓存区</source>
+        <translation>Cache</translation>
+    </message>
+    <message>
+        <location filename="../ui/main.ui"/>
+        <source>公式输入</source>
+        <translation>Formula Input</translation>
+    </message>
+    <message>
+        <source>定义向量</source>
+        <translation>Define Vector</translation>
+    </message>
+    <message>
+        <source>绘制函数</source>
+        <translation>Plot Function</translation>
+    </message>
+    <message>
+        <source>平面绘图</source>
+        <translation>Plane Plot</translation>
+    </message>
+    <message>
+        <source>立体绘图</source>
+        <translation>Solid Plot</translation>
+    </message>
+    <message>
+        <source>平面计算</source>
+        <translation>Plane Calculation</translation>
+    </message>
+    <message>
+        <source>立体计算</source>
+        <translation>Solid Calculation</translation>
+    </message>
+    <message>
+        <source>可视化输入</source>
+        <translation>Visual Input</translation>
+    </message>
+    <message>
+        <source>打开缓存区</source>
+        <translation>Open Cache</translation>
+    </message>
+    <message>
+        <source>存入缓存区</source>
+        <translation>Save to Cache</translation>
+    </message>
+    <message>
+        <source>插入公式</source>
+        <translation>Insert Formula</translation>
+    </message>
+    <message>
+        <source>代数式变形</source>
+        <translation>Algebraic Transform</translation>
+    </message>
 </context>
 <context>
     <name>bianxing</name>
@@ -253,6 +307,58 @@
         <location filename="../ui/bianxing.ui" line="163" />
         <source>变形</source>
         <translation>Transform</translation>
+    </message>
+    <message>
+        <source>通用化简(simplify)</source>
+        <translation>Simplify</translation>
+    </message>
+    <message>
+        <source>展开(expand)</source>
+        <translation>Expand</translation>
+    </message>
+    <message>
+        <source>因式分解(factor)</source>
+        <translation>Factor</translation>
+    </message>
+    <message>
+        <source>主元(collect)</source>
+        <translation>Collect</translation>
+    </message>
+    <message>
+        <source>通分(cancel)</source>
+        <translation>Cancel</translation>
+    </message>
+    <message>
+        <source>分离(apart)</source>
+        <translation>Apart</translation>
+    </message>
+    <message>
+        <source>三角变换(trigsimp)</source>
+        <translation>Trig. Simplify</translation>
+    </message>
+    <message>
+        <source>三角展开(expand_trig)</source>
+        <translation>Expand Trig.</translation>
+    </message>
+    <message>
+        <source>指数合并(powsimp)</source>
+        <translation>Power Simplify</translation>
+    </message>
+    <message>
+        <source>指数展开(expand_power_exp)</source>
+        <translation>Expand Power</translation>
+    </message>
+    <message>
+        <source>对数展开(expand_log)</source>
+        <translation>Expand Log</translation>
+    </message>
+    <message>
+        <source>对数合并(logcombine)</source>
+        <translation>Log Combine</translation>
+    </message>
+    <message>
+        <source>换元</source>
+        <translation>Substitution</translation>
     </message>
 </context>
 <context>
@@ -465,6 +571,38 @@
         <location filename="../ui/dingyi.ui" line="171" />
         <source>0</source>
         <translation>0</translation>
+    </message>
+    <message>
+        <source>表达式&amp;定义域</source>
+        <translation>Expression &amp; Domain</translation>
+    </message>
+    <message>
+        <source>值域</source>
+        <translation>Range</translation>
+    </message>
+    <message>
+        <source>单调递增区间</source>
+        <translation>Increasing Intervals</translation>
+    </message>
+    <message>
+        <source>单调递减区间</source>
+        <translation>Decreasing Intervals</translation>
+    </message>
+    <message>
+        <source>奇偶性</source>
+        <translation>Parity</translation>
+    </message>
+    <message>
+        <source>周期</source>
+        <translation>Period</translation>
+    </message>
+    <message>
+        <source>最大值</source>
+        <translation>Maximum</translation>
+    </message>
+    <message>
+        <source>最小值</source>
+        <translation>Minimum</translation>
     </message>
 </context>
 <context>
@@ -876,6 +1014,38 @@
         <location filename="../ui/dingyixiangliang.ui" line="185" />
         <source>计算</source>
         <translation>Compute</translation>
+    </message>
+    <message>
+        <source>表达式</source>
+        <translation>Expression</translation>
+    </message>
+    <message>
+        <source>模</source>
+        <translation>Magnitude</translation>
+    </message>
+    <message>
+        <source>方向角</source>
+        <translation>Direction Angle</translation>
+    </message>
+    <message>
+        <source>单位向量</source>
+        <translation>Unit Vector</translation>
+    </message>
+    <message>
+        <source>加法</source>
+        <translation>Addition</translation>
+    </message>
+    <message>
+        <source>减法</source>
+        <translation>Subtraction</translation>
+    </message>
+    <message>
+        <source>点积</source>
+        <translation>Dot Product</translation>
+    </message>
+    <message>
+        <source>夹角</source>
+        <translation>Angle</translation>
     </message>
 </context>
 <context>
@@ -1308,6 +1478,22 @@
         <location filename="../ui/jisuan.ui" line="126" />
         <source>计算</source>
         <translation>Compute</translation>
+    </message>
+    <message>
+        <source>Python内置引擎</source>
+        <translation>Python Built-in Engine</translation>
+    </message>
+    <message>
+        <source>Mpmath高精度引擎</source>
+        <translation>Mpmath High Precision</translation>
+    </message>
+    <message>
+        <source>Sympy符号引擎</source>
+        <translation>SymPy Symbolic</translation>
+    </message>
+    <message>
+        <source>Latex代码生成引擎</source>
+        <translation>LaTeX Code Generator</translation>
     </message>
 </context>
 <context>
@@ -1788,6 +1974,66 @@
         <source>应用</source>
         <translation>Apply</translation>
     </message>
+    <message>
+        <location filename="../ui/shezhi.ui"/>
+        <source>存档设置（保存时）</source>
+        <translation>Archive Settings (When Saving)</translation>
+    </message>
+    <message>
+        <location filename="../ui/shezhi.ui"/>
+        <source>函数列表</source>
+        <translation>Function List</translation>
+    </message>
+    <message>
+        <location filename="../ui/shezhi.ui"/>
+        <source>方程列表（方程组）</source>
+        <translation>Equation List (System)</translation>
+    </message>
+    <message>
+        <location filename="../ui/shezhi.ui"/>
+        <source>不等式列表（不等式组）</source>
+        <translation>Inequality List (System)</translation>
+    </message>
+    <message>
+        <location filename="../ui/shezhi.ui"/>
+        <source>向量列表</source>
+        <translation>Vector List</translation>
+    </message>
+    <message>
+        <location filename="../ui/shezhi.ui"/>
+        <source>所有缓存区内容</source>
+        <translation>All Cache Content</translation>
+    </message>
+    <message>
+        <location filename="../ui/shezhi.ui"/>
+        <source>平面几何对象列表</source>
+        <translation>Plane Geometry Object List</translation>
+    </message>
+    <message>
+        <location filename="../ui/shezhi.ui"/>
+        <source>立体几何对象列表</source>
+        <translation>Solid Geometry Object List</translation>
+    </message>
+    <message>
+        <location filename="../ui/shezhi.ui"/>
+        <source>所有文本框文本</source>
+        <translation>All Text Field Content</translation>
+    </message>
+    <message>
+        <location filename="../ui/shezhi.ui"/>
+        <source>所有选择框选项</source>
+        <translation>All Dropdown Selections</translation>
+    </message>
+    <message>
+        <location filename="../ui/shezhi.ui"/>
+        <source>所有表达式显示框内容</source>
+        <translation>All Formula Display Content</translation>
+    </message>
+    <message>
+        <location filename="../ui/shezhi.ui"/>
+        <source>所有设置选项</source>
+        <translation>All Settings Options</translation>
+    </message>
 </context>
 <context>
     <name>shouye</name>
@@ -1800,6 +2046,18 @@
         <location filename="../ui/shouye.ui" line="40" />
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-size:50pt; font-weight:700; color:#000000; font-family:'Times New Roman',Times,serif;"&gt;CalculusCalculator&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=" font-size:18pt; font-family:'Times New Roman',Times,serif;; color:#000000"&gt;Author: Li Mingkang&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=" font-size:18pt; font-family:'Times New Roman',Times,serif;; color:#000000"&gt;Contributor: CuberAHZ&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-size:50pt; font-weight:700; color:#000000; font-family:'Times New Roman',Times,serif;"&gt;CalculusCalculator&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=" font-size:18pt; font-family:'Times New Roman',Times,serif;; color:#000000"&gt;Author: Li Mingkang&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=" font-size:18pt; font-family:'Times New Roman',Times,serif;; color:#000000"&gt;Contributor: CuberAHZ&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+</context>
+<context>
+    <name>huancun</name>
+    <message>
+        <location filename="../ui/huancun.ui"/>
+        <source>缓存区（双击选择）</source>
+        <translation>Cache (Double-click to Select)</translation>
+    </message>
+    <message>
+        <source>[暂无缓存项]</source>
+        <translation>[No Cache Items]</translation>
     </message>
 </context>
 </TS>

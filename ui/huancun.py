@@ -1,6 +1,11 @@
 from ui.ui_huancun import *
 from PySide6.QtWidgets import QWidget, QDialog, QVBoxLayout, QDialogButtonBox, QApplication
+from PySide6.QtCore import QCoreApplication
 from PySide6.QtGui import QAction, QIcon
+
+
+_PLACEHOLDER = lambda: QCoreApplication.translate("huancun", "[暂无缓存项]")
+_CACHE_TITLE = lambda: QCoreApplication.translate("huancun", "缓存区（双击选择）")
 
 
 def _find_main_window(widget):
@@ -26,14 +31,14 @@ def open_cache(parent):
     cache_items = main.cache if main else []
 
     dialog = QDialog(parent)
-    dialog.setWindowTitle("缓存区（双击选择）")
+    dialog.setWindowTitle(_CACHE_TITLE())
     dialog.resize(500, 400)
 
     layout = QVBoxLayout(dialog)
 
     # 复用 Huancun 控件，其内部已包含 QListWidget（huancunqu）及布局
     cache_widget = Huancun(dialog, main.fs if main else {})
-    # 禁用 groupBox 标题避免在对话框中重复显示"缓存区（双击选择）"
+    # 禁用 groupBox 标题避免在对话框中重复显示缓存区标题
     cache_widget.groupBox.setTitle("")
     layout.addWidget(cache_widget)
 
@@ -74,10 +79,10 @@ class Huancun(QWidget, Ui_huancun):
         if main and main.cache:
             self.huancunqu.addItems(main.cache)
         else:
-            self.huancunqu.addItem("[暂无缓存项]")
+            self.huancunqu.addItem(_PLACEHOLDER())
 
     def _on_item_double_clicked(self, item):
         """双击缓存项回调：将文本复制到剪贴板（标签页模式）。"""
         text = item.text()
-        if text and text != "[暂无缓存项]":
+        if text and text != _PLACEHOLDER():
             QApplication.clipboard().setText(text)

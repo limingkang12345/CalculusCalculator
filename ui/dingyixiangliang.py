@@ -3,6 +3,7 @@ from core.sympify import sympify
 from core.render import setGraphicsView, setGraphicsViewTheme
 from sympy import latex, simplify
 from PySide6.QtWidgets import QWidget
+from PySide6.QtCore import QCoreApplication
 
 class Dingyixiangliang(QWidget, Ui_dingyixiangliang):
     def __init__(self, parent, fs):
@@ -16,22 +17,48 @@ class Dingyixiangliang(QWidget, Ui_dingyixiangliang):
         self.dingyixiangliang_mingcheng.returnPressed.connect(self.dingyixiangliang_baocun.click)
         self.dingyixiangliang_x.returnPressed.connect(self.dingyixiangliang_baocun.click)
         self.dingyixiangliang_y.returnPressed.connect(self.dingyixiangliang_baocun.click)
-        self.dingyixiangliang_xiangliangshuxing_cbx.addItems(["表达式", "模", "方向角", "单位向量"])
+        self._populate_vector_combos()
         self.dingyixiangliang_xiangliangshuxing_cbx.setCurrentIndex(0)
         self.dingyixiangliang_xiangliangshuxing_cbx.currentIndexChanged.connect(self.update_vector_attr)
-        self.dingyixiangliang_jisuanfangfa.addItems(["加法", "减法", "点积", "夹角"])
         self.dingyixiangliang_jisuanfangfa.setCurrentIndex(0)
         self.dingyixiangliang_jisuan_button.clicked.connect(self.compute_vector)
 
         self.fs = fs
         self.parent = parent
-
         if not hasattr(self.parent, 'vs'):
             self.parent.vs = {}
         self.vs = self.parent.vs
-
         self.update_vector_list()
         self.update_vector_combos()
+
+    def retranslateUi(self, widget):
+        super().retranslateUi(widget)
+        self._populate_vector_combos()
+
+    def _populate_vector_combos(self):
+        tr = QCoreApplication.translate
+        # 向量属性（保持当前选中索引）
+        idx_attr = self.dingyixiangliang_xiangliangshuxing_cbx.currentIndex()
+        self.dingyixiangliang_xiangliangshuxing_cbx.clear()
+        self.dingyixiangliang_xiangliangshuxing_cbx.addItems([
+            tr("dingyixiangliang", "表达式"),
+            tr("dingyixiangliang", "模"),
+            tr("dingyixiangliang", "方向角"),
+            tr("dingyixiangliang", "单位向量"),
+        ])
+        if 0 <= idx_attr < self.dingyixiangliang_xiangliangshuxing_cbx.count():
+            self.dingyixiangliang_xiangliangshuxing_cbx.setCurrentIndex(idx_attr)
+        # 计算方法
+        idx_func = self.dingyixiangliang_jisuanfangfa.currentIndex()
+        self.dingyixiangliang_jisuanfangfa.clear()
+        self.dingyixiangliang_jisuanfangfa.addItems([
+            tr("dingyixiangliang", "加法"),
+            tr("dingyixiangliang", "减法"),
+            tr("dingyixiangliang", "点积"),
+            tr("dingyixiangliang", "夹角"),
+        ])
+        if 0 <= idx_func < self.dingyixiangliang_jisuanfangfa.count():
+            self.dingyixiangliang_jisuanfangfa.setCurrentIndex(idx_func)
 
     def update_vector_list(self):
         # 刷新向量列表

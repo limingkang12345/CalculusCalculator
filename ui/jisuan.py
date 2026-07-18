@@ -3,6 +3,7 @@ from core.sympify import sympify
 from core.render import setGraphicsView, setGraphicsViewTheme
 from sympy import latex, radsimp
 from PySide6.QtWidgets import QWidget
+from PySide6.QtCore import QCoreApplication
 
 class Jisuan(QWidget, Ui_jisuan):
     def __init__(self, parent, fs):
@@ -10,16 +11,29 @@ class Jisuan(QWidget, Ui_jisuan):
         self.setupUi(self)
         setGraphicsViewTheme(self, parent)
 
-        self.jisuan_jisuanyinqing.addItems(["Python内置引擎", "Mpmath高精度引擎", "Sympy符号引擎", "Latex代码生成引擎"])
+        self._populate_engine_combo()
         self.jisuan_jisuanyinqing.currentIndexChanged.connect(self.jisuan_jisuanyinqing_f)
         self.jisuan_jisuan_button.clicked.connect(self.jisuan_button_f)
         self.jisuan_input.textChanged.connect(self.setjisuan_yuanshi)
         self.jisuan_input.returnPressed.connect(self.jisuan_jisuan_button.click)
-
         self.fs = fs
         self.parent = parent
-
         self.jisuan_jisuanyinqing_f()
+
+    def retranslateUi(self, widget):
+        super().retranslateUi(widget)
+        self._populate_engine_combo()
+
+    def _populate_engine_combo(self):
+        tr = QCoreApplication.translate
+        self.jisuan_jisuanyinqing.clear()
+        self.jisuan_jisuanyinqing.addItems([
+            tr("jisuan", "Python内置引擎"),
+            tr("jisuan", "Mpmath高精度引擎"),
+            tr("jisuan", "Sympy符号引擎"),
+            tr("jisuan", "Latex代码生成引擎"),
+        ])
+        self.jisuan_jisuanyinqing.setCurrentIndex(0)
     
     def setjisuan_yuanshi(self):
         # 加载原式
