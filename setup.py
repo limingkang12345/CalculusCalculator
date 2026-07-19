@@ -57,8 +57,8 @@ includes = (
 # SETUP CX FREEZE
 setup(
     name="CalculusCalculator",
-    version="1.6.4",
-    description="微积分计算器v1.6.4",
+    version="1.6.5",
+    description="微积分计算器v1.6.5",
     author="LiMingkang",
     options={
         "build_exe": {
