@@ -2,8 +2,8 @@
 
 **CalculusCalculator** 是一个基于 SymPy 和 PySide6 的图形化微积分计算工具，支持求导、积分、函数性质分析、表达式变形、方程（组）与不等式（组）求解、微分方程求解、符号计算、向量运算、解三角形、函数绘图、**平面/立体几何定义、计算与绘图**等功能，并提供了**表达式缓存**、**可视化公式输入**、存档/读档及 Web 版本。
 
-[![Python](https://img.shields.io/badge/Python-3.8%2B-blue)](https://www.python.org/)
-[![PySide6](https://img.shields.io/badge/PySide6-6.9.1-green)](https://pypi.org/project/PySide6/)
+[![Python](https://img.shields.io/badge/Python-3.10%2B-blue)](https://www.python.org/)
+[![PySide6](https://img.shields.io/badge/PySide6-6.11.1-green)](https://pypi.org/project/PySide6/)
 [![SymPy](https://img.shields.io/badge/SymPy-1.14.0-orange)](https://www.sympy.org/)
 
 ---
@@ -11,9 +11,10 @@
 ## 基本信息
 
 - **项目地址**：[GitHub - limingkang12345/CalculusCalculator](https://github.com/limingkang12345/CalculusCalculator)
+- **项目文档**: [CalculusCalculator帮助文档](https://limingkang12345.github.io/CalculusCalculator/)
 - **网页版**：[https://limingkang.pythonanywhere.com](https://limingkang.pythonanywhere.com)
-- **最新版本**：v1.6.4
-- **开发语言**：Python 3.8+
+- **最新版本**：v1.6.5
+- **开发语言**：Python 3.10+
 - **核心库**：SymPy（符号计算）、PySide6（GUI 框架）、Matplotlib（几何绘图）
 - **功能概览**：
   - 显函数 / 隐函数求导（支持代入求值）
@@ -38,6 +39,19 @@
   - 工程存档/读档（JSON 格式），支持保存所有几何对象
   - **LaTeX 代码直接输入**（v1.6.1）：在表达式前添加 `$` 标识，可直接输入 LaTeX 代码，系统自动解析为 SymPy 表达式
 
+---
+
+## v1.6.5 更新内容
+
+#### 此版本为CalculusCalculator-v1最终版
+更新内容
+1. 更改依赖库latex2sympy2为latex2sympy2_extended，确保了对Python3.13+版本的支持
+2. 制作Linux预编译二进制版本
+3. 更新requirements.txt，确保本次版本能够长期支持
+CalculusCalculator-v2的制作将于2026年8月启动，愿未来再会！
+
+---
+
 ## v1.6.4 更新内容
 
 1. **表达式缓存**：新增"缓存区"功能，通过菜单栏"文件 → 缓存区"打开标签页管理缓存表达式；输入框旁的三个快捷按钮分别支持可视化输入、打开缓存区弹窗、存入缓存区
@@ -46,6 +60,8 @@
 4. **菜单调整**："解三角形"移至"求解"菜单子项，"变形"移至"计算"菜单子项
 5. **项目结构优化**：`core/` 目录添加 `__init__.py`；`ui/i18n.py` 重构为 `core/settings.py`
 6. **代码清理**：移除浅色/深色样式切换的残留 QAction
+
+---
 
 ## v1.6.3 更新内容
 
@@ -150,6 +166,14 @@
 
 ---
 
+## v1.4.0 更新内容
+
+1. 新增方程组与不等式组两个选项卡，支持解多元方程组和一元不等式组
+2. 更新帮助文档
+3. 为应用添加图标
+
+---
+
 ## 亮点分析
 
 1. **功能全面**  
@@ -171,7 +195,7 @@
    可以将当前所有标签页的输入、自定义函数列表、标签页序号、几何对象等保存为 JSON 文件，下次打开时自动恢复现场。
 
 7. **跨平台打包**  
-   提供了 `cx_Freeze` 的打包配置（`setup.py`），可以生成 Windows 可执行文件，便于分发。
+   提供了 `cx_Freeze` 的打包配置（`setup.py`），可以生成 Windows 和 Linux 可执行文件，便于分发。
 
 8. **向量运算**（v1.5.0 新增）  
    支持定义二维向量，查看向量的模、方向角、单位向量等属性，并可进行向量加法、减法、点积、夹角计算。
@@ -209,7 +233,7 @@
 
 ### 环境准备
 
-- Python 3.8 或更高版本
+- Python 3.10 或更高版本
 - 推荐使用虚拟环境
 
 ### 安装依赖
@@ -220,10 +244,12 @@ pip install -r requirements.txt
 
 `requirements.txt` 内容：
 
-- PySide6==6.9.1
-- sympy==1.14.0
-- numpy
-- matplotlib
+- PySide6>=6.8.0.2
+- sympy>=1.10.0
+- matplotlib>=3.10.0
+- - PyQtDarkTheme-fork>=2.3.2
+- latex2sympy2_extended>=1.0.0
+- lazy_loader>=0.4
 
 ### 运行桌面版
 
@@ -323,6 +349,7 @@ CalculusCalculator/
 LiMingkang
 
 - GitHub: [limingkang12345](https://github.com/limingkang12345)
+- 官方文档: [CalculusCalculator帮助文档](https://limingkang12345.github.io/CalculusCalculator/)
 - 网页版: [https://limingkang.pythonanywhere.com](https://limingkang.pythonanywhere.com)
 - PYPI: [https://pypi.org/project/CalculusCalculator/](https://pypi.org/project/CalculusCalculator/)
 

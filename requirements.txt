@@ -1,6 +1,6 @@
-PySide6>=6.9.1
-sympy>=1.14.0
-matplotlib>=3.10.9
-PyQtDarkTheme-fork>=2.3.6
-latex2sympy2>=1.9.1
+PySide6>=6.8.0.2
+sympy>=1.10.0
+matplotlib>=3.10.0
+PyQtDarkTheme-fork>=2.3.2
+latex2sympy2_extended>=1.0.0
 lazy_loader>=0.4
