@@ -1066,6 +1066,28 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#v165" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        v1.6.5
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#calculuscalculator-v1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        此版本为CalculusCalculator-v1最终版
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#v164" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1293,6 +1315,28 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#v165" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        v1.6.5
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#calculuscalculator-v1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        此版本为CalculusCalculator-v1最终版
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#v164" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1491,14 +1535,22 @@
 <li><strong>核心库</strong>：SymPy（符号计算）、PySide6（GUI）、Matplotlib（绘图）、PyQtDarkTheme-fork（主题）、latex2sympy2（LaTeX 解析）、pyqt5-math-widget（可视化公式输入）</li>
 </ul>
 <h2 id="_3">版本历史</h2>
+<h3 id="v165">v1.6.5</h3>
+<h3 id="calculuscalculator-v1">此版本为CalculusCalculator-v1最终版</h3>
+<ul>
+<li>更改依赖库latex2sympy2为latex2sympy2_extended，确保了对Python3.13+版本的支持</li>
+<li>制作Linux预编译二进制版本</li>
+<li>更新requirements.txt，确保本次版本能够长期支持</li>
+<li>CalculusCalculator-v2的制作将于2026年8月启动，愿未来再会！</li>
+</ul>
 <h3 id="v164">v1.6.4</h3>
 <ul>
-<li><strong>表达式缓存</strong>：新增"缓存区"功能（菜单"文件 → 缓存区"），支持标签页管理缓存表达式；输入框旁三个快捷按钮：可视化输入、打开缓存区弹窗、存入缓存区</li>
-<li><strong>可视化公式输入</strong>：基于 pyqt5-math-widget（已内置于 <code>math_input/</code> 目录），支持结构化选择和编辑数学符号</li>
-<li><strong>存档设置</strong>：设置页新增"存档设置（保存时）"列表，可勾选/取消函数列表、方程列表等，精细控制存档数据范围</li>
-<li><strong>菜单调整</strong>："解三角形"移至"求解"菜单子项，"变形"移至"计算"菜单子项</li>
-<li><strong>项目结构优化</strong>：<code>core/</code> 目录添加 <code>__init__.py</code>；<code>ui/i18n.py</code> 重构为 <code>core/settings.py</code></li>
-<li><strong>代码清理</strong>：移除浅色/深色样式切换的残留 QAction</li>
+<li>表达式缓存：新增"缓存区"功能（菜单"文件 → 缓存区"），支持标签页管理缓存表达式；输入框旁三个快捷按钮：可视化输入、打开缓存区弹窗、存入缓存区</li>
+<li>可视化公式输入：基于 pyqt5-math-widget（已内置于 <code>math_input/</code> 目录），支持结构化选择和编辑数学符号</li>
+<li>存档设置：设置页新增"存档设置（保存时）"列表，可勾选/取消函数列表、方程列表等，精细控制存档数据范围</li>
+<li>菜单调整："解三角形"移至"求解"菜单子项，"变形"移至"计算"菜单子项</li>
+<li>项目结构优化：<code>core/</code> 目录添加 <code>__init__.py</code>；<code>ui/i18n.py</code> 重构为 <code>core/settings.py</code></li>
+<li>代码清理：移除浅色/深色样式切换的残留 QAction</li>
 </ul>
 <h3 id="v163">v1.6.3</h3>
 <ul>
@@ -1568,7 +1620,6 @@
 <ul>
 <li>极复杂的符号表达式下 SymPy 计算可能较慢或占用较多内存。</li>
 <li>表达式解析依赖 SymPy 的 <code>sympify</code>，需基本符合 Python/SymPy 语法。</li>
-<li>cx_Freeze 打包体积较大（约 100+ MB）。</li>
 <li>网页版受 PythonAnywhere 资源限制，难以处理超大计算任务。</li>
 </ul>
 <h2 id="_5">许可证</h2>
