@@ -2,7 +2,7 @@
 from sympy import sympify as sympify_sympy
 from sympy import Symbol, simplify, radsimp
 from sympy.core.sympify import SympifyError
-from latex2sympy2 import latex2sympy
+from latex2sympy2_extended import latex2sympy
 from PySide6.QtWidgets import QMessageBox
 
 def _preprocess_func_calls(expr_str, fs):
