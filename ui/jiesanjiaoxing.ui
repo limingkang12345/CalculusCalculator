@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>jiesanjiaoxing</class>
+ <widget class="QWidget" name="jiesanjiaoxing">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>801</width>
+    <height>551</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="0" column="0">
+    <widget class="QGroupBox" name="groupBox">
+     <property name="title">
+      <string>条件输入</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_2">
+      <item row="0" column="0">
+       <widget class="QLabel" name="label">
+        <property name="text">
+         <string>条件1：</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QComboBox" name="jiesanjiaoxing_tiaojian1_cbx">
+        <item>
+         <property name="text">
+          <string>未选择</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>角A</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>角B</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>角C</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>边a</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>边b</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>边c</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item row="0" column="2">
+       <widget class="QLineEdit" name="jiesanjiaoxing_tiaojian1"/>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="label_2">
+        <property name="text">
+         <string>条件2：</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QComboBox" name="jiesanjiaoxing_tiaojian2_cbx">
+        <item>
+         <property name="text">
+          <string>未选择</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>角A</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>角B</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>角C</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>边a</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>边b</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>边c</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item row="1" column="2">
+       <widget class="QLineEdit" name="jiesanjiaoxing_tiaojian2"/>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="label_3">
+        <property name="text">
+         <string>条件3：</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QComboBox" name="jiesanjiaoxing_tiaojian3_cbx">
+        <item>
+         <property name="text">
+          <string>未选择</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>角A</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>角B</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>角C</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>边a</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>边b</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>边c</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item row="2" column="2">
+       <widget class="QLineEdit" name="jiesanjiaoxing_tiaojian3"/>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="1" column="0">
+    <widget class="QGroupBox" name="groupBox_2">
+     <property name="title">
+      <string>原条件</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_3">
+      <item row="0" column="0">
+       <widget class="QGraphicsView" name="jiesanjiaoxing_yuantiaojian">
+        <property name="url" stdset="0">
+         <url>
+          <string>about:blank</string>
+         </url>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="2" column="0">
+    <widget class="QGroupBox" name="groupBox_3">
+     <property name="title">
+      <string>结果</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_4">
+      <item row="0" column="0">
+       <widget class="QGraphicsView" name="jiesanjiaoxing_jieguo">
+        <property name="url" stdset="0">
+         <url>
+          <string>about:blank</string>
+         </url>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLineEdit" name="jiesanjiaoxing_jieguo_lineedit"/>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="3" column="0">
+    <widget class="QPushButton" name="jiesanjiaoxing_qiujie">
+     <property name="text">
+      <string>求解</string>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

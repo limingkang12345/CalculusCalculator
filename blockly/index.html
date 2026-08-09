@@ -1,0 +1,1238 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blockly</title>
+
+    <base href="./">
+    <script src="blockly_compressed.js"></script>
+    <script>
+      // 根据 URL 参数（?lang=...&theme=...）解析语言与主题。
+      window._blocklyLang = 'zh';
+      window._blocklyTheme = 'light';
+      (function() {
+        var params = {};
+        var q = location.search.replace(/^\?/, '').split('&');
+        for (var i = 0; i < q.length; i++) {
+          var kv = q[i].split('=');
+          if (kv[0]) params[kv[0]] = decodeURIComponent(kv[1] || '');
+        }
+        if (params.lang === 'en_US') window._blocklyLang = 'en';
+        if (params.theme === 'dark') window._blocklyTheme = 'dark';
+      })();
+      // 在 blocks.js 等脚本之前同步加载对应 Blockly 语言包（inject 时 Msg 需就绪）。
+      document.write('<script src="' + (window._blocklyLang === 'en' ? 'msg/en.js' : 'msg/zh-hans.js') + '"><\/script>');
+    </script>
+    <script src="python_compressed.js"></script>
+    <script src="blocks_compressed.js"></script>
+    <script src="blocks.js"></script>
+    <script src="qwebchannel.js"></script>
+    <!-- Blockly 暗色主题（@blockly/theme-dark，注册为 Blockly.Themes["dark"]） -->
+    <script src="theme-dark/dist/index.js"></script>
+
+    <!-- MathJax：用于将输出表达式渲染为 LaTeX -->
+    <script>
+      MathJax = {
+        tex: { inlineMath: [['\\(', '\\)']], displayMath: [['\\[', '\\]']] },
+        svg: { fontCache: 'global' },
+        startup: { typeset: false }
+      };
+    </script>
+    <script src="../mathjax/es5/tex-svg.js"></script>
+
+    <style>
+      :root {
+        --bg: #f6f7f9;
+        --panel-bg: #ffffff;
+        --panel-bg-2: #fbfbfb;
+        --text: #222222;
+        --text-2: #333333;
+        --text-muted: #666666;
+        --border: #d0d0d0;
+        --border-2: #e0e0e0;
+        --border-3: #cccccc;
+        --input-bg: #ffffff;
+        --header-bg: #f0f4f8;
+        --divider: #d8d8d8;
+        --accent: #5c81a6;
+        --accent-hover: #4a6f92;
+        --btn-text: #ffffff;
+        --hover-bg: #e8f0fa;
+        --hover-text: #2c5f8a;
+      }
+
+      /* 暗色主题：跟随主窗口主题（设置页"应用"时切换） */
+      body.dark {
+        --bg: #1e1e1e;
+        --panel-bg: #2d2d2d;
+        --panel-bg-2: #262626;
+        --text: #e0e0e0;
+        --text-2: #cccccc;
+        --text-muted: #999999;
+        --border: #555555;
+        --border-2: #3d3d3d;
+        --border-3: #555555;
+        --input-bg: #3c3c3c;
+        --header-bg: #333333;
+        --divider: #555555;
+        --accent: #6d9dc3;
+        --accent-hover: #82a9c8;
+        --btn-text: #ffffff;
+        --hover-bg: #3a4a5c;
+        --hover-text: #c9dcee;
+      }
+
+      html, body {
+        height: 100%;
+        margin: 0;
+        overflow: hidden;
+        font-family: Arial, sans-serif;
+        background: var(--bg);
+        color: var(--text);
+      }
+
+      /* Blockly 工作区容器在暗色下补一层深色背景，
+         避免 SVG 重排/拖拽间隙露出白色，与 Blockly 主题背景保持一致。 */
+      body.dark #blocklyDiv {
+        background: #1e1e1e;
+      }
+
+      #pageContainer {
+        display: flex;
+        height: 100vh;
+        width: 100vw;
+      }
+
+      #blocklyPanel {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+      }
+
+      #blocklyDiv {
+        flex: 1;
+        min-height: 0;
+      }
+
+      #resultPanel {
+        width: 360px;
+        background: var(--bg);
+        border-left: 1px solid var(--border);
+        display: flex;
+        flex-direction: column;
+        flex-shrink: 0;
+      }
+
+      /* 可拖拽分隔条：调整积木区与结果面板宽度 */
+      #divider {
+        width: 6px;
+        cursor: col-resize;
+        background: var(--divider);
+        flex-shrink: 0;
+        user-select: none;
+      }
+
+      #divider:hover,
+      #divider.dragging {
+        background: var(--accent);
+      }
+
+      #resultPanel header {
+        padding: 12px 16px;
+        border-bottom: 1px solid var(--border);
+        background: var(--panel-bg);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      #resultPanel header h2 {
+        margin: 0;
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--text);
+      }
+
+      #previewButton,
+      #runButton {
+        padding: 6px 12px;
+        border: 1px solid var(--accent);
+        background: var(--accent);
+        color: var(--btn-text);
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 13px;
+        white-space: nowrap;
+      }
+
+      #previewButton:hover,
+      #runButton:hover {
+        background: var(--accent-hover);
+      }
+
+      .header-actions {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+      }
+
+      /* Python 代码预览 */
+      #codePreview {
+        display: flex;
+        flex-direction: column;
+        max-height: 40%;
+        border-bottom: 1px solid var(--border-2);
+        background: var(--panel-bg-2);
+      }
+      #codePreview[hidden] { display: none; }
+      .code-preview-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+        padding: 8px 12px;
+        font-size: 13px;
+        color: var(--text-2);
+        border-bottom: 1px solid var(--border-2);
+      }
+      .code-preview-actions {
+        display: flex;
+        gap: 6px;
+      }
+      .code-preview-actions button {
+        padding: 4px 10px;
+        border: 1px solid var(--border-3);
+        border-radius: 4px;
+        background: var(--input-bg);
+        color: var(--text);
+        font-size: 12px;
+        cursor: pointer;
+      }
+      .code-preview-actions button:hover {
+        border-color: var(--accent);
+        color: var(--hover-text);
+      }
+      #codePreviewText {
+        margin: 0;
+        padding: 12px;
+        overflow: auto;
+        white-space: pre;
+        font-family: 'Consolas', 'Menlo', monospace;
+        font-size: 12px;
+        line-height: 1.5;
+        color: var(--text);
+        background: var(--input-bg);
+      }
+
+      #ioPanel {
+        padding: 12px 16px;
+        border-bottom: 1px solid var(--border-2);
+        background: var(--panel-bg-2);
+      }
+
+      #inputListHeader {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+        margin-bottom: 8px;
+        font-size: 13px;
+        color: var(--text-2);
+      }
+
+      #saveInputsBtn {
+        padding: 6px 10px;
+        border-radius: 4px;
+        background: var(--accent);
+        color: var(--btn-text);
+        border: none;
+        cursor: pointer;
+      }
+
+      #inputsList {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        font-size: 15px;
+        color: var(--text-2);
+      }
+
+      .input-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .input-item .input-name {
+        flex: 0 0 96px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        color: var(--text-2);
+      }
+
+      .input-item .input-value {
+        flex: 1;
+        padding: 6px;
+        border: 1px solid var(--border-3);
+        border-radius: 4px;
+        background: var(--input-bg);
+        color: var(--text);
+        font-size: 15px;
+        box-sizing: border-box;
+      }
+
+      .input-item .input-actions {
+        display: flex;
+        gap: 4px;
+        flex-shrink: 0;
+      }
+
+      .input-action-btn {
+        width: 26px;
+        height: 26px;
+        padding: 0;
+        border: 1px solid var(--border-3);
+        border-radius: 4px;
+        background: var(--input-bg);
+        color: var(--text-2);
+        font-size: 13px;
+        line-height: 1;
+        cursor: pointer;
+      }
+
+      .input-action-btn:hover {
+        background: var(--hover-bg);
+        border-color: var(--accent);
+        color: var(--hover-text);
+      }
+
+      .input-action-btn.done {
+        background: #4caf50;
+        color: #fff;
+        border-color: #4caf50;
+      }
+
+      #resultContent {
+        flex: 1;
+        padding: 12px 16px;
+        overflow: auto;
+        background: var(--panel-bg);
+        font-size: 13px;
+        color: var(--text);
+      }
+
+      #resultMessage {
+        white-space: pre-wrap;
+        word-break: break-word;
+        margin-bottom: 12px;
+      }
+
+      .data-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 16px;
+      }
+
+      .data-table th,
+      .data-table td {
+        text-align: left;
+        padding: 8px 10px;
+        border: 1px solid var(--border-2);
+        font-size: 16px;
+        color: var(--text);
+      }
+
+      .data-table thead th {
+        background: var(--header-bg);
+      }
+
+      /* 表格内的 MathJax（LaTeX）公式字号跟随单元格放大 */
+      .data-table td mjx-container,
+      .data-table td .MJX-TEX {
+        font-size: 1.15em;
+      }
+
+      .hint {
+        color: var(--text-muted);
+      }
+      .input-item {
+          overflow: visible;        /* 确保溢出不被裁剪 */
+          flex-wrap: nowrap;        /* 强制一行显示 */
+      }
+
+      .input-value {
+          flex: 1 1 0;             /* 允许收缩到更小 */
+          min-width: 40px;         /* 保证可操作的最小宽度 */
+      }
+
+      .input-actions {
+          flex-shrink: 0;
+          white-space: nowrap;     /* 防止按钮换行 */
+      }
+    /* 加载遮罩：积木编辑器初始化期间覆盖整个页面 */
+    #loadingOverlay {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: #ffffff;
+      color: #333333;
+      font-family: 'Microsoft YaHei', sans-serif;
+      transition: opacity 0.35s ease;
+    }
+    #loadingOverlay.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+    #loadingOverlay .spinner {
+      width: 42px;
+      height: 42px;
+      margin-bottom: 16px;
+      border: 4px solid rgba(0, 120, 240, 0.25);
+      border-top-color: rgba(0, 120, 240, 1);
+      border-radius: 50%;
+      animation: blockly-spin 0.9s linear infinite;
+    }
+    #loadingOverlay .loading-text {
+      font-size: 15px;
+    }
+    @keyframes blockly-spin {
+      to { transform: rotate(360deg); }
+    }
+    /* 深色模式下遮罩与 spinner 配色 */
+    body.dark #loadingOverlay {
+      background: #1e1e1e;
+      color: #e6e6e6;
+    }
+    body.dark #loadingOverlay .spinner {
+      border-color: rgba(140, 82, 220, 0.3);
+      border-top-color: rgba(140, 82, 220, 1);
+    }
+    </style>
+</head>
+<body>
+  <!-- 加载遮罩：覆盖页面直到 Blockly 工作区与 WebChannel 初始化完成 -->
+  <div id="loadingOverlay">
+    <div class="spinner"></div>
+    <div class="loading-text" data-i18n="loadingBlockly"></div>
+  </div>
+  <div id="pageContainer">
+    <section id="blocklyPanel">
+      <div id="blocklyDiv"></div>
+    </section>
+    <div id="divider"></div>
+    <aside id="resultPanel">
+      <header>
+        <h2 data-i18n="resultTitle"></h2>
+        <div class="header-actions">
+          <button id="previewButton" type="button" data-i18n="previewBtn"></button>
+          <button id="runButton" type="button" data-i18n="runBtn"></button>
+        </div>
+      </header>
+      <section id="codePreview" hidden>
+        <div class="code-preview-header">
+          <span data-i18n="codePreviewTitle"></span>
+          <div class="code-preview-actions">
+            <button id="copyCodeBtn" type="button" data-i18n="copyBtn"></button>
+            <button id="closePreviewBtn" type="button" data-i18n="closePreview"></button>
+          </div>
+        </div>
+        <pre id="codePreviewText"></pre>
+      </section>
+      <section id="ioPanel">
+        <div id="inputListHeader">
+          <span data-i18n="inputHeader"></span>
+          <button id="saveInputsBtn" data-i18n="saveBtn"></button>
+        </div>
+        <div id="inputsList"></div>
+      </section>
+      <div id="resultContent">
+        <div id="resultMessage"></div>
+        <div id="outputsArea"><span id="resultPlaceholder" class="hint" data-i18n="resultPlaceholder"></span></div>
+      </div>
+    </aside>
+  </div>
+
+  <script>
+    'use strict';
+
+    // -------------------------------------------------------------------------
+    // 获取（必要时兜底创建）Blockly 暗色主题对象。
+    // 不依赖外部 theme-dark 包是否成功注册到 Blockly.Themes['dark']：
+    // 优先复用已注册的暗色主题，否则用内置配置自行定义，保证一定能拿到
+    // 一个可用主题，避免工作区背景停留在白色（经典主题）。
+    // -------------------------------------------------------------------------
+    function getDarkTheme() {
+      if (!(window.Blockly && Blockly.Theme)) return null;
+      var classic = (Blockly.Themes && Blockly.Themes.Classic) ? Blockly.Themes.Classic : undefined;
+      if (Blockly.Themes && Blockly.Themes['dark']) {
+        return Blockly.Themes['dark'];
+      }
+      try {
+        return Blockly.Theme.defineTheme('dark', {
+          name: 'dark',
+          base: classic,
+          componentStyles: {
+            workspaceBackgroundColour: '#1e1e1e',
+            toolboxBackgroundColour: '#333333',
+            toolboxForegroundColour: '#ffffff',
+            flyoutBackgroundColour: '#252526',
+            flyoutForegroundColour: '#cccccc',
+            flyoutOpacity: 1,
+            scrollbarColour: '#797979',
+            insertionMarkerColour: '#ffffff',
+            insertionMarkerOpacity: 0.3,
+            scrollbarOpacity: 0.4,
+            cursorColour: '#d0d0d0'
+          }
+        });
+      } catch (e) {
+        console.warn('创建 Blockly 暗色主题失败', e);
+        return null;
+      }
+    }
+
+    // -------------------------------------------------------------------------
+    // 界面文案 i18n（zh / en），按 head 中解析出的语言（window._blocklyLang）
+    // -------------------------------------------------------------------------
+    var UI_STRINGS = {
+      zh: {
+        resultTitle: '运行结果',
+        runBtn: '运行Python代码',
+        previewBtn: '预览Python代码',
+        copyBtn: '复制',
+        copied: '已复制',
+        codePreviewTitle: '生成的 Python 代码',
+        closePreview: '关闭预览',
+        previewPlaceholder: '点击"预览Python代码"查看当前积木生成的 Python 代码。',
+        emptyCode: '（当前工作区为空，未生成代码）',
+        inputHeader: '输入名称对应值（名称来自左侧积木）',
+        saveBtn: '保存输入',
+        resultPlaceholder: '点击“运行Python代码”执行 Blockly 生成的代码，结果会显示在这里。',
+        inputPlaceholder: '值（字符串或数字）',
+        noInputHint: '当前暂无输入，请在左侧添加“输入”积木后在此填写值。',
+        noOutputHint: '当前暂无输出。',
+        btnFormula: '打开公式编辑器',
+        btnCache: '打开缓存区',
+        btnSaveCache: '存入缓存区',
+        noFunc: '(未定义函数)',
+        error: '错误',
+        nameCol: '名称',
+        valueCol: '值',
+        loadingBlockly: '积木编辑器加载中…'
+      },
+      en: {
+        resultTitle: 'Run Result',
+        runBtn: 'Run Python Code',
+        previewBtn: 'Preview Python Code',
+        copyBtn: 'Copy',
+        copied: 'Copied',
+        codePreviewTitle: 'Generated Python Code',
+        closePreview: 'Close Preview',
+        previewPlaceholder: 'Click "Preview Python Code" to see the Python code generated from the current blocks.',
+        emptyCode: '(The workspace is empty; no code was generated)',
+        inputHeader: 'Input values by name (from blocks on the left)',
+        saveBtn: 'Save Inputs',
+        resultPlaceholder: 'Click "Run Python Code" to execute the Blockly-generated code. Results will appear here.',
+        inputPlaceholder: 'Value (string or number)',
+        noInputHint: 'No inputs yet. Add an "Input" block on the left, then fill in values here.',
+        noOutputHint: 'No outputs yet.',
+        btnFormula: 'Open formula editor',
+        btnCache: 'Open cache',
+        btnSaveCache: 'Save to cache',
+        noFunc: '(no function defined)',
+        error: 'Error',
+        nameCol: 'Name',
+        valueCol: 'Value',
+        loadingBlockly: 'Loading Blockly editor…'
+      }
+    };
+
+    function i18n(key) {
+      var table = UI_STRINGS[window._blocklyLang] || UI_STRINGS.zh;
+      return table[key] !== undefined ? table[key] : (UI_STRINGS.zh[key] || key);
+    }
+
+    // 将 [data-i18n] 元素替换为对应语言的文案。
+    function applyUiLanguage() {
+      Array.prototype.forEach.call(document.querySelectorAll('[data-i18n]'), function(el) {
+        el.textContent = i18n(el.getAttribute('data-i18n'));
+      });
+    }
+
+    // 隐藏加载遮罩（初始化完成后调用）。
+    function hideOverlay() {
+      var o = document.getElementById('loadingOverlay');
+      if (o) o.classList.add('hidden');
+    }
+    // 兜底：若脚本异常未显式隐藏，页面完全加载后也强制隐藏。
+    window.addEventListener('load', hideOverlay);
+
+    // -------------------------------------------------------------------------
+    // 数据状态（闭包变量，取代原先的 window 全局）
+    // -------------------------------------------------------------------------
+    var blocklyInputs = {};
+    var blocklyOutputs = {};
+
+    // -------------------------------------------------------------------------
+    // 结果区渲染
+    // -------------------------------------------------------------------------
+    function showResultMessage(text) {
+      var el = document.getElementById('resultMessage');
+      el.textContent = text;
+    }
+
+    function escapeHtml(s) {
+      return String(s)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+    }
+
+    // 判断字符串是否形如 LaTeX（含反斜杠、幂/下标或花括号）。
+    function isLatexLike(s) {
+      return /[\\^{}]/.test(s);
+    }
+
+    // renderLatex=true 时，值列中的 LaTeX 字符串交给 MathJax 渲染。
+    function renderDataTable(containerId, emptyHint, entries, renderLatex) {
+      var container = document.getElementById(containerId);
+      if (!entries || Object.keys(entries).length === 0) {
+        container.innerHTML = '<div class="hint">' + escapeHtml(emptyHint) + '</div>';
+        return;
+      }
+      var html = '<table class="data-table"><thead><tr>';
+      html += '<th>' + i18n('nameCol') + '</th><th>' + i18n('valueCol') + '</th></tr></thead><tbody>';
+      Object.keys(entries).forEach(function(name) {
+        var value = entries[name];
+        var display = (typeof value === 'string') ? value : JSON.stringify(value);
+        html += '<tr><td>' + escapeHtml(name) + '</td><td>';
+        if (renderLatex && isLatexLike(display)) {
+          html += '\\(' + escapeHtml(display) + '\\)';
+        } else {
+          html += escapeHtml(display);
+        }
+        html += '</td></tr>';
+      });
+      html += '</tbody></table>';
+      container.innerHTML = html;
+      if (renderLatex && window.MathJax && window.MathJax.typesetPromise) {
+        MathJax.typesetPromise([container]).catch(function() {});
+      }
+    }
+
+    // 渲染输入列表：每个名称对应一行，行内嵌可编辑的输入框。
+    function renderInputs() {
+      var container = document.getElementById('inputsList');
+      var names = Object.keys(blocklyInputs);
+
+      if (names.length === 0) {
+        container.innerHTML = '<div class="hint">' + i18n('noInputHint') + '</div>';
+        return;
+      }
+
+      container.innerHTML = '';
+      names.forEach(function(name) {
+        var item = document.createElement('div');
+        item.className = 'input-item';
+
+        var label = document.createElement('span');
+        label.className = 'input-name';
+        label.textContent = name;
+        label.title = name;
+
+        var input = document.createElement('input');
+        input.className = 'input-value';
+        input.dataset.name = name;
+        input.placeholder = i18n('inputPlaceholder');
+        var v = blocklyInputs[name];
+        input.value = (typeof v === 'string') ? v : JSON.stringify(v);
+
+        var actions = document.createElement('span');
+        actions.className = 'input-actions';
+
+        // 公式编辑器（复用 MathLive；结果经 formulaResult 信号回传）
+        var btnFormula = makeInputActionButton('∑', i18n('btnFormula'));
+        btnFormula.addEventListener('click', function() {
+          if (window.pyBridge && window.pyBridge.openFormulaDialog) {
+            window._blocklyFormulaInput = input;
+            window.pyBridge.openFormulaDialog(input.value);
+          }
+        });
+        actions.appendChild(btnFormula);
+
+        // 打开缓存区（与原生文本框共用 main.cache；结果经 cachePicked 信号回传）
+        var btnCache = makeInputActionButton('▤', i18n('btnCache'));
+        btnCache.addEventListener('click', function() {
+          if (window.pyBridge && window.pyBridge.openCacheDialog) {
+            window._blocklyCacheInput = input;
+            window.pyBridge.openCacheDialog();
+          }
+        });
+        actions.appendChild(btnCache);
+
+        // 存入缓存区
+        var btnSaveCache = makeInputActionButton('＋', i18n('btnSaveCache'));
+        btnSaveCache.addEventListener('click', function() {
+          if (window.pyBridge && window.pyBridge.saveToCache) {
+            window.pyBridge.saveToCache(input.value);
+            btnSaveCache.classList.add('done');
+            var self = btnSaveCache;
+            setTimeout(function() { self.classList.remove('done'); }, 600);
+          }
+        });
+        actions.appendChild(btnSaveCache);
+
+        item.appendChild(label);
+        item.appendChild(input);
+        item.appendChild(actions);
+        container.appendChild(item);
+      });
+    }
+
+    // 创建输入行的小图标按钮（公式/缓存区/存入缓存）。
+    function makeInputActionButton(label, title) {
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'input-action-btn';
+      btn.textContent = label;
+      btn.title = title;
+      return btn;
+    }
+
+    // 将字符串解析为数字/对象，无法解析时保留原字符串（与原保存逻辑一致）。
+    function parseInputValue(raw) {
+      if (raw === '') return '';
+      try {
+        return JSON.parse(raw);
+      } catch (e) {
+        return raw;
+      }
+    }
+
+    function renderOutputs() {
+      // 输出区启用 LaTeX 渲染（数学表达式自动排版）。
+      renderDataTable('outputsArea', i18n('noOutputHint'), blocklyOutputs, true);
+    }
+
+    // -------------------------------------------------------------------------
+    // 输入数据管理
+    // -------------------------------------------------------------------------
+    function getInputValues() {
+      return blocklyInputs;
+    }
+
+    function setInputValues(inputs) {
+      blocklyInputs = inputs || {};
+      // 同步给自定义生成器（blocks.js）以便"清空积木字段时回退到右侧输入列表"。
+      window._blocklyInputs = blocklyInputs;
+      renderInputs();
+      if (window.pyBridge && window.pyBridge.setInputs) {
+        window.pyBridge.setInputs(JSON.stringify(blocklyInputs));
+      }
+    }
+
+    // 从工作区中收集所有 io_input 积木的名称，并同步输入表。
+    function syncWorkspaceInputs() {
+      var blockNames = {};
+      workspace.getAllBlocks(false).forEach(function(block) {
+        if (block.type === 'io_input') {
+          var name = block.getFieldValue && block.getFieldValue('NAME');
+          if (name) blockNames[name] = true;
+        }
+      });
+
+      var newInputs = {};
+      Object.keys(blockNames).forEach(function(name) {
+        // 保留同名旧值，否则初始化为空字符串。
+        newInputs[name] = (name in blocklyInputs) ? blocklyInputs[name] : '';
+      });
+      setInputValues(newInputs);
+    }
+
+    // -------------------------------------------------------------------------
+    // 输出数据管理（供 Python 通过 window.addOutput 调用）
+    // -------------------------------------------------------------------------
+    window.addOutput = function(name, value) {
+      blocklyOutputs[name] = value;
+      renderOutputs();
+    };
+
+    // Python 回调：显示执行结果 / 错误信息文本。
+    window.displayPythonResult = function(text) {
+      showResultMessage(text);
+    };
+
+    // Python 回调：覆盖设置输入。
+    window.setInputsFromPython = function(jsonText) {
+      try {
+        setInputValues(JSON.parse(jsonText));
+      } catch (e) {
+        console.error('解析输入数据失败', e);
+      }
+    };
+
+    // 从 Python 端同步已定义函数的名称列表（供"调用函数"积木的下拉框使用）。
+    window.refreshFunctionList = function() {
+      if (window.pyBridge && window.pyBridge.getFunctions) {
+        window.pyBridge.getFunctions(function(names) {
+          window._blocklyFunctions = names || [];
+        });
+      }
+    };
+
+    // 收集工作区中所有"定义函数"积木的函数名（NAME 字段）。
+    // 兼容两种 NAME 形式：
+    //  1) 旧式：NAME 为连接到 value 输入的 shadow 积木（读其 TEXT 字段）；
+    //  2) 新式：NAME 为内联 FieldTextInput 字段（直接读 NAME 字段值）。
+    function collectFunctionNames() {
+      var names = [];
+      workspace.getAllBlocks(false).forEach(function(block) {
+        if (block.type === 'define_func') {
+          var name = '';
+          var input = block.getInput('NAME');
+          if (input && input.connection && input.connection.targetBlock()) {
+            // 旧式：NAME 为连接的 shadow 表达式积木
+            name = input.connection.targetBlock().getFieldValue('TEXT') || '';
+          } else {
+            // 新式：NAME 为内联文本框字段
+            name = block.getFieldValue('NAME') || '';
+          }
+          name = String(name).trim();
+          if (name && names.indexOf(name) === -1) names.push(name);
+        }
+      });
+      return names;
+    }
+
+    // 将"定义函数"积木中的函数名同步到积木编辑器的独立 fs，
+    // 完成后刷新"调用函数"积木的下拉选项。
+    function syncFunctionNames() {
+      var names = collectFunctionNames();
+      if (window.pyBridge && window.pyBridge.setFunctionNames) {
+        window.pyBridge.setFunctionNames(JSON.stringify(names), function() {
+          window.refreshFunctionList();
+        });
+      }
+    }
+
+    // -------------------------------------------------------------------------
+    // 积木编辑器状态序列化（随存档 JSON 保存/恢复）
+    // -------------------------------------------------------------------------
+    // 序列化工作区 + 输入表格：优先 Blockly JSON 格式，不可用则回退 XML，
+    // 统一以 JSON 字符串返回（外层 JSON 包含 format 与 inputs）。
+    function serializeWorkspace() {
+      var wsData = null;
+      var wsFormat = 'xml';
+      try {
+        if (Blockly.serialization && Blockly.serialization.workspaces &&
+            Blockly.serialization.workspaces.save) {
+          wsData = Blockly.serialization.workspaces.save(workspace);
+          wsFormat = 'json';
+        }
+      } catch (e) { /* fallback to xml */ }
+      if (wsData === null) {
+        wsData = Blockly.Xml.domToText(Blockly.Xml.workspaceToDom(workspace));
+        wsFormat = 'xml';
+      }
+      return JSON.stringify({
+        workspace: { format: wsFormat, data: wsData },
+        inputs: blocklyInputs
+      });
+    }
+
+    function deserializeWorkspace(text) {
+      var obj = JSON.parse(text);
+      if (obj && obj.workspace) {
+        var ws = obj.workspace;
+        if (ws.format === 'json' && Blockly.serialization &&
+            Blockly.serialization.workspaces && Blockly.serialization.workspaces.load) {
+          Blockly.serialization.workspaces.load(ws.data, workspace);
+        } else {
+          var dom = Blockly.Xml.textToDom(ws.data);
+          Blockly.Xml.domToWorkspace(dom, workspace);
+        }
+      }
+      if (obj && obj.inputs) {
+        setInputValues(obj.inputs);
+      }
+    }
+
+    // Python 端在打开存档时调用，恢复工作区与输入表格。
+    window.loadBlocklyState = function(text) {
+      try {
+        deserializeWorkspace(text);
+      } catch (e) {
+        console.error('恢复积木编辑器状态失败', e);
+      }
+    };
+
+    // 将最新状态同步到 Python 端（供存档写入），节流避免频繁触发。
+    var stateSyncPending = false;
+    function syncStateNow() {
+      stateSyncPending = false;
+      if (window.pyBridge && window.pyBridge.setState) {
+        window.pyBridge.setState(serializeWorkspace());
+      }
+    }
+    function scheduleStateSync() {
+      if (!stateSyncPending) {
+        stateSyncPending = true;
+        setTimeout(syncStateNow, 300);
+      }
+    }
+
+    // -------------------------------------------------------------------------
+    // 保存输入：读取列表中所有内嵌输入框的值并更新到输入数据。
+    // -------------------------------------------------------------------------
+    function saveInputs() {
+      var inputs = getInputValues();
+      var changed = false;
+
+      document.querySelectorAll('#inputsList .input-item').forEach(function(item) {
+        var input = item.querySelector('.input-value');
+        if (!input) return;
+        inputs[input.dataset.name] = parseInputValue(input.value);
+        changed = true;
+      });
+
+      if (!changed) {
+        return;
+      }
+      setInputValues(inputs);
+      localStorage.setItem('blocklyInputs', JSON.stringify(inputs));
+      // 输入表格变化同样同步到 Python 端，随存档保存
+      syncStateNow();
+    }
+
+    // -------------------------------------------------------------------------
+    // 执行代码
+    // -------------------------------------------------------------------------
+    function waitForCustomPythonGenerators(callback) {
+      if (window._blocklyCustomPythonGeneratorsReady) {
+        callback();
+        return;
+      }
+      setTimeout(function() { waitForCustomPythonGenerators(callback); }, 50);
+    }
+
+    function sendCodeToPython() {
+      // 运行前先保存输入列表中的值，并刷新已定义函数列表，确保最新输入/函数生效。
+      saveInputs();
+      window.refreshFunctionList();
+      waitForCustomPythonGenerators(function() {
+        if (!Blockly.Python) {
+          showResultMessage('错误：Blockly Python 生成器尚未准备好。');
+          return;
+        }
+        // 每次执行前清空上一轮输出，避免已删除或改名的输出残留。
+        blocklyOutputs = {};
+        renderOutputs();
+
+        var code = Blockly.Python.workspaceToCode(workspace);
+        if (window.pyBridge && window.pyBridge.executePython) {
+          window.pyBridge.executePython(code);
+        } else {
+          console.error('pyBridge 未就绪');
+          showResultMessage('错误：pyBridge 未就绪，请检查 QWebChannel 是否正常加载。');
+        }
+      });
+    }
+
+    // 预览代码开头附加的辅助函数定义（使预览代码自成一体，便于阅读与复制）。
+    // 与 io_input / io_output 积木生成器的实际调用（get_input / py_output）保持一致。
+    var PY_PREVIEW_HELPERS = [
+      'def get_input(input_name):',
+      '  return input(f"{input_name}: ")',
+      'def py_output(out_name, value):',
+      '  print(f"{out_name}: {value}")',
+      ''
+    ].join('\n');
+
+    // 预览当前积木生成的 Python 代码（不执行，仅在结果面板中展示）。
+    function previewCode() {
+      saveInputs();
+      window.refreshFunctionList();
+      waitForCustomPythonGenerators(function() {
+        var panel = document.getElementById('codePreview');
+        var codeEl = document.getElementById('codePreviewText');
+        if (!Blockly.Python) {
+          codeEl.textContent = i18n('error') + ': Blockly Python generator not ready.';
+          panel.hidden = false;
+          return;
+        }
+        var code = Blockly.Python.workspaceToCode(workspace);
+        codeEl.textContent = (code ? PY_PREVIEW_HELPERS + code : i18n('emptyCode'));
+        // 复位复制按钮文案。
+        var copyBtn = document.getElementById('copyCodeBtn');
+        copyBtn.textContent = i18n('copyBtn');
+        copyBtn.dataset.copied = '';
+        panel.hidden = false;
+      });
+    }
+
+    // 关闭代码预览面板。
+    function closeCodePreview() {
+      document.getElementById('codePreview').hidden = true;
+    }
+
+    // 工具箱分类名 i18n（随 window._blocklyLang 切换）
+    var CAT = window._blocklyLang === 'en' ? {
+      calculus: 'Calculus Calculator', control: 'Control', logic: 'Logic',
+      math: 'Math', text: 'Text', lists: 'Lists', io: 'Input/Output',
+      variables: 'Variables', functions: 'Functions'
+    } : {
+      calculus: '微积分计算器', control: '控制', logic: '逻辑',
+      math: '数学', text: '文本', lists: '列表', io: '输入输出',
+      variables: '变量', functions: '函数'
+    };
+
+    // -------------------------------------------------------------------------
+    // 初始化
+    // -------------------------------------------------------------------------
+    var workspace = Blockly.inject('blocklyDiv', {
+      // 当前版本 Blockly 需要 XML 字符串形式的工具箱。
+      toolbox: `
+        <xml xmlns="https://developers.google.com/blockly/xml">
+          <category name="${CAT.calculus}" colour="#7A4FA3">
+            <block type="expr_input"></block>
+            <block type="define_func"></block>
+            <block type="call_func"></block>
+            <block type="calc_function_attr"></block>
+            <block type="calc_derivative"></block>
+            <block type="calc_integral"></block>
+            <block type="expr_simplify"></block>
+            <block type="expr_calc"></block>
+            <block type="solve_equation"></block>
+            <block type="solve_equations"></block>
+            <block type="solve_inequality"></block>
+            <block type="solve_inequality_system"></block>
+            <block type="solve_triangle"></block>
+          </category>
+          <category name="${CAT.control}" colour="#5C81A6">
+            <block type="controls_if"></block>
+            <block type="controls_ifelse"></block>
+            <block type="controls_repeat_ext"></block>
+            <block type="controls_whileUntil"></block>
+            <block type="controls_for"></block>
+            <block type="controls_forEach"></block>
+            <block type="controls_flow_statements"></block>
+          </category>
+          <category name="${CAT.logic}" colour="#5CA65C">
+            <block type="logic_compare"></block>
+            <block type="logic_operation"></block>
+            <block type="logic_negate"></block>
+            <block type="logic_boolean"></block>
+            <block type="logic_ternary"></block>
+            <block type="logic_null"></block>
+          </category>
+          <category name="${CAT.math}" colour="#5C68A6">
+            <block type="math_number"></block>
+            <block type="math_arithmetic"></block>
+            <block type="math_single"></block>
+            <block type="math_trig"></block>
+            <block type="math_constant"></block>
+            <block type="math_number_property"></block>
+            <block type="math_round"></block>
+            <block type="math_on_list"></block>
+            <block type="math_modulo"></block>
+            <block type="math_constrain"></block>
+            <block type="math_random_int"></block>
+            <block type="math_random_float"></block>
+          </category>
+          <category name="${CAT.text}" colour="#5CA699">
+            <block type="text"></block>
+            <block type="text_join"></block>
+            <block type="text_append"></block>
+            <block type="text_length"></block>
+            <block type="text_isEmpty"></block>
+            <block type="text_indexOf"></block>
+            <block type="text_charAt"></block>
+            <block type="text_getSubstring"></block>
+            <block type="text_changeCase"></block>
+            <block type="text_trim"></block>
+            <block type="text_print"></block>
+            <block type="text_prompt_ext"></block>
+          </category>
+          <category name="${CAT.lists}" colour="#A65C81">
+            <block type="lists_create_with"></block>
+            <block type="lists_repeat"></block>
+            <block type="lists_length"></block>
+            <block type="lists_isEmpty"></block>
+            <block type="lists_indexOf"></block>
+            <block type="lists_getIndex"></block>
+            <block type="lists_setIndex"></block>
+            <block type="lists_getSublist"></block>
+            <block type="lists_sort"></block>
+            <block type="lists_split"></block>
+          </category>
+          <category name="${CAT.io}" colour="#D65C5C">
+            <block type="io_input"></block>
+            <block type="io_output"></block>
+          </category>
+          <category name="${CAT.variables}" colour="#A65C81" custom="VARIABLE"></category>
+          <category name="${CAT.functions}" colour="#9A5CA6" custom="PROCEDURE"></category>
+        </xml>
+      `,
+      // 根据 URL 主题参数选择 Blockly 主题（暗色库已由 head 加载）
+      theme: (window._blocklyTheme === 'dark')
+        ? getDarkTheme()
+        : Blockly.Themes.Classic
+    });
+
+    // 切换 Blockly 页面浅色/暗色主题（Python 端在设置页"应用"时调用）
+    window.applyBlocklyTheme = function(theme) {
+      var dark = (theme === 'dark');
+      window._blocklyTheme = dark ? 'dark' : 'light';
+      document.body.classList.toggle('dark', dark);
+      if (typeof workspace !== 'undefined' && workspace && workspace.setTheme) {
+        var t = dark ? getDarkTheme() : Blockly.Themes.Classic;
+        if (t) {
+          workspace.setTheme(t);
+          if (workspace.refreshTheme) workspace.refreshTheme();
+        }
+      }
+    };
+
+    // 应用初始主题（设置 body.dark 类；Blockly 主题已在 inject 时指定）
+    applyBlocklyTheme(window._blocklyTheme);
+
+    // 初始化 WebChannel
+    new QWebChannel(qt.webChannelTransport, function(channel) {
+      window.pyBridge = channel.objects.pyBridge;
+      if (window.pyBridge && window.pyBridge.pythonResult) {
+        window.pyBridge.pythonResult.connect(displayPythonResult);
+      }
+      // 公式编辑器 / 缓存区对话框结果回填
+      if (window.pyBridge && window.pyBridge.formulaResult) {
+        window.pyBridge.formulaResult.connect(function(text) {
+          var target = window._blocklyFormulaInput;
+          if (target && text) target.value = String(text);
+        });
+      }
+      if (window.pyBridge && window.pyBridge.cachePicked) {
+        window.pyBridge.cachePicked.connect(function(text) {
+          var target = window._blocklyCacheInput;
+          if (target && text) target.value = String(text);
+        });
+      }
+      // 初始化时同步已定义函数列表
+      window.refreshFunctionList();
+    });
+
+    document.getElementById('saveInputsBtn').addEventListener('click', saveInputs);
+
+    document.getElementById('runButton').addEventListener('click', sendCodeToPython);
+    document.getElementById('previewButton').addEventListener('click', previewCode);
+    document.getElementById('closePreviewBtn').addEventListener('click', closeCodePreview);
+    document.getElementById('copyCodeBtn').addEventListener('click', function() {
+      var codeEl = document.getElementById('codePreviewText');
+      var text = codeEl.textContent || '';
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(function() {
+          var btn = document.getElementById('copyCodeBtn');
+          btn.textContent = i18n('copied');
+        }, function() { /* fall through to legacy copy */ });
+        return;
+      }
+      // 兜底：使用临时 textarea 复制。
+      try {
+        var ta = document.createElement('textarea');
+        ta.value = text;
+        ta.style.position = 'fixed';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        document.body.removeChild(ta);
+        var btn = document.getElementById('copyCodeBtn');
+        btn.textContent = i18n('copied');
+      } catch (e) { /* ignore */ }
+    });
+
+    // 分隔条拖拽：自由调整积木区与结果面板的宽度。
+    // Blockly 工作区不会自动响应容器尺寸变化，拖拽时需显式触发重排。
+    (function() {
+      var divider = document.getElementById('divider');
+      var resultPanel = document.getElementById('resultPanel');
+      var pageContainer = document.getElementById('pageContainer');
+      var dragging = false;
+      var resizePending = false;
+
+      function resizeBlockly() {
+        resizePending = false;
+        if (typeof Blockly !== 'undefined' && workspace) {
+          if (Blockly.svgResize) {
+            Blockly.svgResize(workspace);
+          } else if (workspace.resize) {
+            workspace.resize();
+          }
+        }
+      }
+
+      divider.addEventListener('mousedown', function(e) {
+        dragging = true;
+        e.preventDefault();
+        divider.classList.add('dragging');
+        document.body.style.cursor = 'col-resize';
+        document.body.style.userSelect = 'none';
+      });
+      document.addEventListener('mousemove', function(e) {
+        if (!dragging) return;
+        var rect = pageContainer.getBoundingClientRect();
+        var maxW = Math.max(200, rect.width - 240);
+        var w = Math.max(200, Math.min(maxW, rect.right - e.clientX));
+        resultPanel.style.width = w + 'px';
+        // 节流调用 Blockly 重排，让左侧积木编辑区跟随容器尺寸变化
+        if (!resizePending) {
+          resizePending = true;
+          requestAnimationFrame(resizeBlockly);
+        }
+      });
+      document.addEventListener('mouseup', function() {
+        dragging = false;
+        divider.classList.remove('dragging');
+        document.body.style.cursor = '';
+        document.body.style.userSelect = '';
+        resizeBlockly();
+      });
+    })();
+
+    // 工作区变化时同步输入表、函数名，并将工作区状态同步到 Python（随存档保存）。
+    workspace.addChangeListener(function(event) {
+      var t = event.type;
+      if (t === Blockly.Events.CREATE || t === Blockly.Events.DELETE ||
+          t === Blockly.Events.CHANGE || t === Blockly.Events.MOVE) {
+        syncWorkspaceInputs();
+        syncFunctionNames();
+        scheduleStateSync();
+      }
+    });
+
+    // 恢复本地保存的输入
+    var savedInputs = {};
+    try {
+      savedInputs = JSON.parse(localStorage.getItem('blocklyInputs') || '{}');
+    } catch (e) {
+      savedInputs = {};
+    }
+    setInputValues(savedInputs);
+
+    // 应用界面文案（按语言参数）
+    applyUiLanguage();
+    // 初始化时同步"定义函数"积木的函数名
+    syncFunctionNames();
+
+    // 初始化完成，隐藏加载遮罩
+    hideOverlay();
+
+    console.log('✅ Blockly 工作区已成功加载，当前语言：中文');
+  </script>
+</body>
+</html>

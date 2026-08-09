@@ -4,7 +4,7 @@ from cx_Freeze import setup, Executable
 
 # ADD FILES
 # 将多语言翻译文件（.qm）随可执行文件一起打包，运行时位于 exe 同级 i18n/ 下
-files = [("i18n", "i18n")]
+files = [("i18n", "i18n"), ("mathjax", "lib/mathjax"), ("blockly", "lib/blockly")]
 
 # TARGET
 target = Executable(
@@ -50,15 +50,15 @@ includes = (
     ui_modules
     + func_modules
     + core_modules
-    + ["lazy_loader", "resources_rc"]
+    + ["lazy_loader"]
     + collect_modules("math_input")
 )
 
 # SETUP CX FREEZE
 setup(
     name="CalculusCalculator",
-    version="1.6.5",
-    description="微积分计算器v1.6.5",
+    version="2.0.0",
+    description="微积分计算器v2.0.0",
     author="LiMingkang",
     options={
         "build_exe": {

@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>dingyi_lj</class>
+ <widget class="QWidget" name="dingyi_lj">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>801</width>
+    <height>551</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout" rowstretch="1,3" columnstretch="1,1,1,1,1">
+   <item row="0" column="0" colspan="5">
+    <widget class="QGroupBox" name="groupBox">
+     <property name="title">
+      <string>创建对象</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_2" columnstretch="1,5">
+      <item row="0" column="0">
+       <widget class="QLabel" name="label">
+        <property name="text">
+         <string>创建对象方法：</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QComboBox" name="dingyi_lj_fangfa">
+        <item>
+         <property name="text">
+          <string>未选择</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>通过坐标创建点[参数：x坐标,y坐标,z坐标]</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>通过两点创建直线[参数：点1名称,点2名称]</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>过一点作已知平面的平行平面[参数：平面名称,点名称]</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>过一点作已知直线的垂直平面[参数：直线名称,点名称]</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>过一点作已知直线的平行线[参数：点名称,直线名称]</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>过一点作已知直线的垂线[参数：点名称,直线名称]</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>过一点作已知平面的垂线[参数：点名称,平面名称]</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>过一直线和线外一点作平面[参数：直线名称,点名称]</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>过两相交/平行直线作平面[参数：直线1名称,直线2名称]</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>点到平面的垂足[参数：点名称,平面名称]</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>点到直线的垂足[参数：点名称,直线名称]</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>通过两点构造三维线段[参数：点1名称,点2名称]</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="label_3">
+        <property name="text">
+         <string>对象名称：</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QLineEdit" name="dingyi_lj_mingcheng"/>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="label_2">
+        <property name="text">
+         <string>参数(直接输入，以英文半角逗号分隔)：</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QLineEdit" name="dingyi_lj_canshu"/>
+      </item>
+      <item row="3" column="0" colspan="2">
+       <widget class="QPushButton" name="dingyi_lj_baocun">
+        <property name="text">
+         <string>保存</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="1" column="0">
+    <widget class="QGroupBox" name="groupBox_2">
+     <property name="title">
+      <string>点</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_3">
+      <item row="0" column="0">
+       <widget class="QListWidget" name="dingyi_lj_dian"/>
+      </item>
+      <item row="1" column="0">
+       <widget class="QPushButton" name="dingyi_lj_dian_read">
+        <property name="text">
+         <string>读取选中项</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QPushButton" name="dingyi_lj_dian_delete">
+        <property name="text">
+         <string>删除选中项</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="1" column="1">
+    <widget class="QGroupBox" name="groupBox_3">
+     <property name="title">
+      <string>直线</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_4">
+      <item row="0" column="0">
+       <widget class="QListWidget" name="dingyi_lj_zhixian"/>
+      </item>
+      <item row="1" column="0">
+       <widget class="QPushButton" name="dingyi_lj_zhixian_read">
+        <property name="text">
+         <string>读取选中项</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QPushButton" name="dingyi_lj_zhixian_delete">
+        <property name="text">
+         <string>删除选中项</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="1" column="2">
+    <widget class="QGroupBox" name="groupBox_4">
+     <property name="title">
+      <string>平面</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_5">
+      <item row="0" column="0">
+       <widget class="QListWidget" name="dingyi_lj_pingmian"/>
+      </item>
+      <item row="1" column="0">
+       <widget class="QPushButton" name="dingyi_lj_pingmian_read">
+        <property name="text">
+         <string>读取选中项</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QPushButton" name="dingyi_lj_pingmian_delete">
+        <property name="text">
+         <string>删除选中项</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="1" column="3">
+    <widget class="QGroupBox" name="groupBox_5">
+     <property name="title">
+      <string>线段</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_6">
+      <item row="0" column="0">
+       <widget class="QListWidget" name="dingyi_lj_xianduan"/>
+      </item>
+      <item row="1" column="0">
+       <widget class="QPushButton" name="dingyi_lj_xianduan_read">
+        <property name="text">
+         <string>读取选中项</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QPushButton" name="dingyi_lj_xianduan_delete">
+        <property name="text">
+         <string>删除选中项</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="1" column="4">
+    <widget class="QGroupBox" name="groupBox_7">
+     <property name="title">
+      <string>对象属性</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_7" rowstretch="1,1,1,1">
+      <item row="0" column="0">
+       <widget class="QLabel" name="label_4">
+        <property name="text">
+         <string>对象名称：</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLineEdit" name="dingyi_lj_shuxing_mingcheng"/>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="label_5">
+        <property name="text">
+         <string>对象方程：</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0">
+       <widget class="QLineEdit" name="dingyi_lj_shuxing_fangcheng"/>
+      </item>
+     </layout>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

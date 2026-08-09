@@ -237,7 +237,7 @@ def _plot_polygon(ax, poly, style, label_text=None):
 
 def draw2d(objects, figsize=(8.0, 6.0), dpi=100,
            show_axis=True, show_grid=True, auto_scale=True,
-           xlim=None, ylim=None, margin=0.15):
+           xlim=None, ylim=None, margin=0.15, theme='light'):
     """将 sympy 平面几何对象列表绘制为 matplotlib Figure
 
     Parameters
@@ -275,6 +275,10 @@ def draw2d(objects, figsize=(8.0, 6.0), dpi=100,
     fig = Figure(figsize=figsize, dpi=dpi)
     ax = fig.add_subplot(111)
 
+    # 按主题设置 Figure / 坐标轴配色（含 2D 边框、刻度颜色）
+    from core.render import applyPlotTheme
+    _bg, fg, grid_c, axis_c = applyPlotTheme(fig, ax, theme)
+
     # 自动计算坐标范围
     if auto_scale and xlim is None and ylim is None:
         bbox = _compute_bbox(objects)
@@ -285,41 +289,42 @@ def draw2d(objects, figsize=(8.0, 6.0), dpi=100,
             xlim = (xmin - dx, xmax + dx)
             ylim = (ymin - dy, ymax + dy)
 
-    # 绘制每个对象
-    for obj, user_style in objects:
-        style = _merge_style(obj, user_style)
-        label_text = style.pop('label', None)
+    # 绘制每个对象（rc_context 让标注/文字颜色跟随主题前景色）
+    with _mpl.rc_context({'text.color': fg, 'axes.labelcolor': fg}):
+        for obj, user_style in objects:
+            style = _merge_style(obj, user_style)
+            label_text = style.pop('label', None)
 
-        if isinstance(obj, Point):
-            _plot_point(ax, obj, style, label_text)
+            if isinstance(obj, Point):
+                _plot_point(ax, obj, style, label_text)
 
-        elif isinstance(obj, Line):
-            _plot_line(ax, obj, style, xlim, ylim, label_text)
+            elif isinstance(obj, Line):
+                _plot_line(ax, obj, style, xlim, ylim, label_text)
 
-        elif isinstance(obj, Segment):
-            _plot_segment(ax, obj, style, label_text)
+            elif isinstance(obj, Segment):
+                _plot_segment(ax, obj, style, label_text)
 
-        elif isinstance(obj, Ray):
-            _plot_ray(ax, obj, style, xlim, ylim, label_text)
+            elif isinstance(obj, Ray):
+                _plot_ray(ax, obj, style, xlim, ylim, label_text)
 
-        elif isinstance(obj, Circle):
-            _plot_circle(ax, obj, style, label_text)
+            elif isinstance(obj, Circle):
+                _plot_circle(ax, obj, style, label_text)
 
-        elif isinstance(obj, Triangle):
-            _plot_triangle(ax, obj, style, label_text)
+            elif isinstance(obj, Triangle):
+                _plot_triangle(ax, obj, style, label_text)
 
-        elif isinstance(obj, Polygon):
-            _plot_polygon(ax, obj, style, label_text)
+            elif isinstance(obj, Polygon):
+                _plot_polygon(ax, obj, style, label_text)
 
     # 坐标轴与网格
     if xlim:
         ax.set_xlim(*xlim)
     if ylim:
         ax.set_ylim(*ylim)
-    ax.axhline(y=0, color='black', linewidth=0.5)
-    ax.axvline(x=0, color='black', linewidth=0.5)
+    ax.axhline(y=0, color=axis_c, linewidth=0.5)
+    ax.axvline(x=0, color=axis_c, linewidth=0.5)
     if show_grid:
-        ax.grid(True, linestyle='--', alpha=0.6)
+        ax.grid(True, linestyle='--', alpha=0.6, color=grid_c)
     if not show_axis:
         ax.set_axis_off()
     ax.set_aspect('equal')

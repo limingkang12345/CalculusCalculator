@@ -234,6 +234,18 @@
         <source>代数式变形</source>
         <translation>代数式变形</translation>
     </message>
+    <message>
+        <source>积木模式</source>
+        <translation>积木模式</translation>
+    </message>
+    <message>
+        <source>编辑器</source>
+        <translation>编辑器</translation>
+    </message>
+    <message>
+        <source>积木编辑器</source>
+        <translation>积木编辑器</translation>
+    </message>
 </context>
 <context>
     <name>bianxing</name>
@@ -2016,6 +2028,11 @@
     </message>
     <message>
         <location filename="../ui/shezhi.ui"/>
+        <source>积木编辑区工程</source>
+        <translation>积木编辑区工程</translation>
+    </message>
+    <message>
+        <location filename="../ui/shezhi.ui"/>
         <source>所有文本框文本</source>
         <translation>所有文本框文本</translation>
     </message>
@@ -2033,6 +2050,11 @@
         <location filename="../ui/shezhi.ui"/>
         <source>所有设置选项</source>
         <translation>所有设置选项</translation>
+    </message>
+    <message>
+        <location filename="../ui/shezhi.ui"/>
+        <source>清除设置文件</source>
+        <translation>清除设置文件</translation>
     </message>
 </context>
 <context>
@@ -2058,6 +2080,21 @@
     <message>
         <source>[暂无缓存项]</source>
         <translation>[暂无缓存项]</translation>
+    </message>
+</context>
+<context>
+    <name>Boot</name>
+    <message>
+        <source>正在加载语言设置…</source>
+        <translation>正在加载语言设置…</translation>
+    </message>
+    <message>
+        <source>正在初始化浏览器内核…</source>
+        <translation>正在初始化浏览器内核…</translation>
+    </message>
+    <message>
+        <source>正在创建主窗口…</source>
+        <translation>正在创建主窗口…</translation>
     </message>
 </context>
 </TS>

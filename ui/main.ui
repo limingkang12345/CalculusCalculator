@@ -1,0 +1,308 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1440</width>
+    <height>880</height>
+   </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>1024</width>
+    <height>640</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string>CalculusCalculator</string>
+  </property>
+  <property name="windowIcon">
+   <iconset>
+    <normaloff>../favicon.ico</normaloff>../favicon.ico</iconset>
+  </property>
+  <property name="toolButtonStyle">
+   <enum>Qt::ToolButtonStyle::ToolButtonIconOnly</enum>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QGridLayout" name="gridLayout">
+    <property name="leftMargin">
+     <number>0</number>
+    </property>
+    <property name="topMargin">
+     <number>0</number>
+    </property>
+    <property name="rightMargin">
+     <number>0</number>
+    </property>
+    <property name="bottomMargin">
+     <number>0</number>
+    </property>
+    <item row="0" column="0">
+     <widget class="QTabWidget" name="tabWidget">
+      <property name="currentIndex">
+       <number>-1</number>
+      </property>
+      <property name="documentMode">
+       <bool>true</bool>
+      </property>
+      <property name="tabsClosable">
+       <bool>true</bool>
+      </property>
+      <property name="movable">
+       <bool>true</bool>
+      </property>
+      <property name="usesScrollButtons">
+       <bool>true</bool>
+      </property>
+      <property name="elideMode">
+       <enum>Qt::TextElideMode::ElideRight</enum>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>1440</width>
+     <height>25</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="functions">
+    <property name="title">
+     <string>功能</string>
+    </property>
+    <widget class="QMenu" name="calculus">
+     <property name="title">
+      <string>微积分</string>
+     </property>
+     <addaction name="actionqiudao"/>
+     <addaction name="actionjifen"/>
+    </widget>
+    <widget class="QMenu" name="dingyi">
+     <property name="title">
+      <string>定义</string>
+     </property>
+     <addaction name="actiondingyi"/>
+     <addaction name="actiondingyixiangliang"/>
+     <addaction name="actiondingyi_pj"/>
+     <addaction name="actiondingyi_lj"/>
+    </widget>
+    <widget class="QMenu" name="solve">
+     <property name="title">
+      <string>求解</string>
+     </property>
+     <addaction name="actionjiesanjiaoxing"/>
+     <addaction name="actionfangcheng"/>
+     <addaction name="actionfangchengzu"/>
+     <addaction name="actionbudengshi"/>
+     <addaction name="actionbudengshizu"/>
+    </widget>
+    <widget class="QMenu" name="huitu">
+     <property name="title">
+      <string>绘图</string>
+     </property>
+     <addaction name="actionhuitu_hanshu"/>
+     <addaction name="actionhuitu_pingmianjihe"/>
+     <addaction name="actionhuitu_litijihe"/>
+    </widget>
+    <widget class="QMenu" name="jisuan">
+     <property name="title">
+      <string>计算</string>
+     </property>
+     <addaction name="actionbianxing"/>
+     <addaction name="actionjisuan"/>
+     <addaction name="actionpjjisuan"/>
+     <addaction name="actionljjisuan"/>
+    </widget>
+    <addaction name="actionshouye"/>
+    <addaction name="dingyi"/>
+    <addaction name="calculus"/>
+    <addaction name="jisuan"/>
+    <addaction name="solve"/>
+    <addaction name="huitu"/>
+   </widget>
+   <widget class="QMenu" name="about">
+    <property name="title">
+     <string>关于</string>
+    </property>
+    <addaction name="actiongithub"/>
+    <addaction name="actionwebsite"/>
+    <addaction name="actionyindao"/>
+    <addaction name="actionhelp"/>
+   </widget>
+   <widget class="QMenu" name="file">
+    <property name="title">
+     <string>文件</string>
+    </property>
+    <addaction name="actionsaveas"/>
+    <addaction name="actionopen"/>
+    <addaction name="actionhuancun"/>
+    <addaction name="actionshezhi"/>
+    <addaction name="actionexit"/>
+   </widget>
+   <widget class="QMenu" name="blockly">
+    <property name="title">
+     <string>积木模式</string>
+    </property>
+    <addaction name="actionblockly"/>
+   </widget>
+   <addaction name="file"/>
+   <addaction name="functions"/>
+   <addaction name="blockly"/>
+   <addaction name="about"/>
+  </widget>
+  <action name="actionshouye">
+   <property name="text">
+    <string>首页</string>
+   </property>
+  </action>
+  <action name="actionhelp">
+   <property name="text">
+    <string>帮助</string>
+   </property>
+  </action>
+  <action name="actiongithub">
+   <property name="text">
+    <string>Github链接</string>
+   </property>
+  </action>
+  <action name="actionwebsite">
+   <property name="text">
+    <string>网页版</string>
+   </property>
+  </action>
+  <action name="actionsaveas">
+   <property name="text">
+    <string>保存为</string>
+   </property>
+  </action>
+  <action name="actionopen">
+   <property name="text">
+    <string>打开</string>
+   </property>
+  </action>
+  <action name="actionexit">
+   <property name="text">
+    <string>退出</string>
+   </property>
+  </action>
+  <action name="actionqiudao">
+   <property name="text">
+    <string>求导</string>
+   </property>
+  </action>
+  <action name="actionjifen">
+   <property name="text">
+    <string>积分</string>
+   </property>
+  </action>
+  <action name="actionfangcheng">
+   <property name="text">
+    <string>方程</string>
+   </property>
+  </action>
+  <action name="actionfangchengzu">
+   <property name="text">
+    <string>方程组</string>
+   </property>
+  </action>
+  <action name="actionbudengshi">
+   <property name="text">
+    <string>不等式</string>
+   </property>
+  </action>
+  <action name="actionbudengshizu">
+   <property name="text">
+    <string>不等式组</string>
+   </property>
+  </action>
+  <action name="actionbianxing">
+   <property name="text">
+    <string>代数式变形</string>
+   </property>
+  </action>
+  <action name="actiondingyi">
+   <property name="text">
+    <string>函数</string>
+   </property>
+  </action>
+  <action name="actiondingyixiangliang">
+   <property name="text">
+    <string>向量</string>
+   </property>
+  </action>
+  <action name="actionhuitu_hanshu">
+   <property name="text">
+    <string>函数</string>
+   </property>
+  </action>
+  <action name="actionhuitu_pingmianjihe">
+   <property name="text">
+    <string>平面几何</string>
+   </property>
+  </action>
+  <action name="actionhuitu_litijihe">
+   <property name="text">
+    <string>立体几何</string>
+   </property>
+  </action>
+  <action name="actionjiesanjiaoxing">
+   <property name="text">
+    <string>解三角形</string>
+   </property>
+  </action>
+  <action name="actiondingyi_pj">
+   <property name="text">
+    <string>平面几何</string>
+   </property>
+  </action>
+  <action name="actiondingyi_lj">
+   <property name="text">
+    <string>立体几何</string>
+   </property>
+  </action>
+  <action name="actionjisuan">
+   <property name="text">
+    <string>代数式计算</string>
+   </property>
+  </action>
+  <action name="actionpjjisuan">
+   <property name="text">
+    <string>平面几何计算</string>
+   </property>
+  </action>
+  <action name="actionljjisuan">
+   <property name="text">
+    <string>立体几何计算</string>
+   </property>
+  </action>
+  <action name="actionshezhi">
+   <property name="text">
+    <string>设置</string>
+   </property>
+  </action>
+  <action name="actionhuancun">
+   <property name="text">
+    <string>缓存区</string>
+   </property>
+  </action>
+  <action name="actionblockly">
+   <property name="text">
+    <string>编辑器</string>
+   </property>
+  </action>
+  <action name="actionyindao">
+   <property name="text">
+    <string>引导教学</string>
+   </property>
+  </action>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

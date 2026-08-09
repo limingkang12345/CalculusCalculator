@@ -248,7 +248,7 @@ def _plot_plane(ax, plane, style, xlim=None, ylim=None, zlim=None, label_text=No
 def draw3d(objects, figsize=(8.0, 6.0), dpi=100,
            show_axis=True, show_grid=True, auto_scale=True,
            xlim=None, ylim=None, zlim=None, margin=0.15,
-           elev=25, azim=-60):
+           elev=25, azim=-60, theme='light'):
     """将 sympy 三维几何对象列表绘制为 3D matplotlib Figure
 
     Parameters
@@ -282,6 +282,15 @@ def draw3d(objects, figsize=(8.0, 6.0), dpi=100,
     fig = Figure(figsize=figsize, dpi=dpi)
     ax = fig.add_subplot(111, projection='3d')
 
+    # 按主题设置 Figure / 3D 坐标轴配色（面板、刻度）
+    from core.render import applyPlotTheme
+    _bg, fg, grid_c, axis_c = applyPlotTheme(fig, ax, theme)
+    try:
+        for aname in ('xaxis', 'yaxis', 'zaxis'):
+            getattr(ax, aname)._axinfo['grid']['color'] = grid_c
+    except Exception:
+        pass
+
     # 自动计算坐标范围
     if auto_scale and xlim is None and ylim is None:
         bbox = _compute_bbox3d(objects)
@@ -294,25 +303,27 @@ def draw3d(objects, figsize=(8.0, 6.0), dpi=100,
             ylim = (ymin - dy, ymax + dy)
             zlim = (zmin - dz, zmax + dz)
 
-    # 绘制每个对象
-    for obj, user_style in objects:
-        style = _merge_style(obj, user_style)
-        label_text = style.pop('label', None)
+    # 绘制每个对象（rc_context 让标注/文字颜色跟随主题前景色）
+    import matplotlib as _mpl
+    with _mpl.rc_context({'text.color': fg, 'axes.labelcolor': fg}):
+        for obj, user_style in objects:
+            style = _merge_style(obj, user_style)
+            label_text = style.pop('label', None)
 
-        if isinstance(obj, Point3D):
-            _plot_point3d(ax, obj, style, label_text)
+            if isinstance(obj, Point3D):
+                _plot_point3d(ax, obj, style, label_text)
 
-        elif isinstance(obj, Line3D):
-            _plot_line3d(ax, obj, style, xlim, ylim, zlim, label_text)
+            elif isinstance(obj, Line3D):
+                _plot_line3d(ax, obj, style, xlim, ylim, zlim, label_text)
 
-        elif isinstance(obj, Segment3D):
-            _plot_segment3d(ax, obj, style, label_text)
+            elif isinstance(obj, Segment3D):
+                _plot_segment3d(ax, obj, style, label_text)
 
-        elif isinstance(obj, Ray3D):
-            _plot_ray3d(ax, obj, style, xlim, ylim, zlim, label_text)
+            elif isinstance(obj, Ray3D):
+                _plot_ray3d(ax, obj, style, xlim, ylim, zlim, label_text)
 
-        elif isinstance(obj, Plane):
-            _plot_plane(ax, obj, style, xlim, ylim, zlim, label_text)
+            elif isinstance(obj, Plane):
+                _plot_plane(ax, obj, style, xlim, ylim, zlim, label_text)
 
     # 坐标轴与网格
     if xlim:
@@ -322,12 +333,12 @@ def draw3d(objects, figsize=(8.0, 6.0), dpi=100,
     if zlim:
         ax.set_zlim(*zlim)
 
-    ax.set_xlabel('X')
-    ax.set_ylabel('Y')
-    ax.set_zlabel('Z')
+    ax.set_xlabel('X', color=fg)
+    ax.set_ylabel('Y', color=fg)
+    ax.set_zlabel('Z', color=fg)
 
     if show_grid:
-        ax.grid(True, linestyle='--', alpha=0.6)
+        ax.grid(True, linestyle='--', alpha=0.6, color=grid_c)
     if not show_axis:
         ax.set_axis_off()
 

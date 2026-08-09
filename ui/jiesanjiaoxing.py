@@ -1,7 +1,7 @@
 from ui.ui_jiesanjiaoxing import *
 from functions.solvers import solve_sanjiaoxing
 from core.sympify import sympify
-from core.render import setGraphicsView, setGraphicsViewTheme
+from core.render import setGraphicsView, setGraphicsViewTheme, clearGraphicsView
 from sympy import latex
 from PySide6.QtWidgets import QWidget
 
@@ -56,8 +56,8 @@ class Jiesanjiaoxing(QWidget, Ui_jiesanjiaoxing):
     def solve_triangle(self):
         """求解三角形"""
         # 清空上次结果
-        self.jiesanjiaoxing_yuantiaojian.setHtml("")
-        self.jiesanjiaoxing_jieguo.setHtml("")
+        clearGraphicsView(self.jiesanjiaoxing_yuantiaojian)
+        clearGraphicsView(self.jiesanjiaoxing_jieguo)
         self.jiesanjiaoxing_jieguo_lineedit.setText("")
 
         angles, sides, error = self._parse_conditions()

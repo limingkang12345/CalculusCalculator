@@ -1,6 +1,6 @@
 from ui.ui_huitu_hanshu import *
 from core.sympify import sympify
-from core.render import setGraphicsView, setGraphicsViewTheme
+from core.render import setGraphicsView, setGraphicsViewTheme, applyPlotTheme
 from sympy import Symbol
 from PySide6.QtWidgets import QWidget, QVBoxLayout
 
@@ -24,6 +24,14 @@ class Huitu_hanshu(QWidget, Ui_huitu_hanshu):
 
         self.update_function_list()
 
+    def set_theme(self, theme):
+        # 主题切换后按新配色重绘上次的图表（无绘图时为空操作）
+        if getattr(self, '_redraw', None) is not None:
+            try:
+                self._redraw()
+            except Exception:
+                pass
+
     def toggle_input_mode(self):
         # 切换输入模式：表达式 / 选择函数
         is_expression = self.huitu_hanshu_biaodashi_radio.isChecked()
@@ -37,11 +45,15 @@ class Huitu_hanshu(QWidget, Ui_huitu_hanshu):
             self.huitu_hanshu_hanshu.addItem("{}({})".format(name, self.fs[name][3]))
 
     def draw_function(self):
-        # 销毁之前画的函数图像对象
+        # 销毁之前画的函数图像对象与导航工具栏
         if self.canvas is not None:
             self.draw_layout.removeWidget(self.canvas)
             self.canvas.deleteLater()
             self.canvas = None
+        if getattr(self, 'toolbar', None) is not None:
+            self.draw_layout.removeWidget(self.toolbar)
+            self.toolbar.deleteLater()
+            self.toolbar = None
 
         import numpy as np
         from matplotlib.backends.backend_qtagg import FigureCanvasQTAgg as FigureCanvas
@@ -100,6 +112,8 @@ class Huitu_hanshu(QWidget, Ui_huitu_hanshu):
             # 构建 matplotlib 图形
             fig = Figure(figsize=(7.7, 3.9), dpi=100)
             ax = fig.add_subplot(111)
+            _bg, _fg, grid_c, axis_c = applyPlotTheme(
+                fig, ax, getattr(self.parent, 'theme', 'light'))
 
             # 在 NaN/Inf 处断开曲线
             mask = np.isfinite(y_vals)
@@ -120,9 +134,9 @@ class Huitu_hanshu(QWidget, Ui_huitu_hanshu):
                         color='#1f77b4', linewidth=1.5)
 
             # 坐标轴和网格
-            ax.axhline(y=0, color='black', linewidth=0.5)
-            ax.axvline(x=0, color='black', linewidth=0.5)
-            ax.grid(True, linestyle='--', alpha=0.6)
+            ax.axhline(y=0, color=axis_c, linewidth=0.5)
+            ax.axvline(x=0, color=axis_c, linewidth=0.5)
+            ax.grid(True, linestyle='--', alpha=0.6, color=grid_c)
             ax.set_xlim(float(left), float(right))
 
             # 自动缩放 y 轴到可见范围
@@ -135,6 +149,10 @@ class Huitu_hanshu(QWidget, Ui_huitu_hanshu):
 
             self.fig = fig
             self.canvas = FigureCanvas(self.fig)
+            # 原生 matplotlib 导航工具栏（Home/平移/缩放/保存）+ 滚轮缩放
+            from core.render import attach_plot_toolbar
+            self.toolbar = attach_plot_toolbar(self.draw_layout, self.canvas, self, wheel_zoom=True)
             self.draw_layout.addWidget(self.canvas)
+            self._redraw = self.draw_function
         except Exception:
             pass

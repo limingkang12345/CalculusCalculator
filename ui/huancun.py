@@ -1,6 +1,6 @@
-from ui.ui_huancun import *
+from ui.ui_huancun import Ui_huancun
 from PySide6.QtWidgets import QWidget, QDialog, QVBoxLayout, QDialogButtonBox, QApplication
-from PySide6.QtCore import QCoreApplication
+from PySide6.QtCore import QCoreApplication, Qt
 from PySide6.QtGui import QAction, QIcon
 
 
@@ -80,6 +80,21 @@ class Huancun(QWidget, Ui_huancun):
             self.huancunqu.addItems(main.cache)
         else:
             self.huancunqu.addItem(_PLACEHOLDER())
+
+    def retranslateUi(self, *args):
+        """语言切换时刷新：先调用基类翻译（groupBox 标题等），
+        再实时更新代码中生成的“暂无缓存项”占位项文本。"""
+        Ui_huancun.retranslateUi(self, self)
+        # 占位项文本在代码中生成，retranslateUi 不会自动刷新；
+        # 缓存为空时列表仅含该占位项，按旧译文找到后替换为新译文。
+        old = _PLACEHOLDER()
+        items = self.huancunqu.findItems(old, Qt.MatchExactly)
+        if items:
+            for it in items:
+                it.setText(_PLACEHOLDER())
+        elif self.huancunqu.count() == 0:
+            # 兜底：未找到旧占位项（如初始即为空）时整体重建
+            self.refresh_cache_list()
 
     def _on_item_double_clicked(self, item):
         """双击缓存项回调：将文本复制到剪贴板（标签页模式）。"""

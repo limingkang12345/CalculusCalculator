@@ -31,6 +31,14 @@ class Huitu_pj(QWidget, Ui_huitu_pj):
             self._refresh_object_list()
             self._pjs_hash = None
 
+    def set_theme(self, theme):
+        # 主题切换后按新配色重绘上次的图表（无绘图时为空操作）
+        if getattr(self, '_redraw', None) is not None:
+            try:
+                self._redraw()
+            except Exception:
+                pass
+
     def _refresh_object_list(self):
         """根据 pjs 刷新对象列表（全选 + 复选框），Qt 自动处理点击切换"""
         self.huitu_pj_list.clear()
@@ -47,11 +55,15 @@ class Huitu_pj(QWidget, Ui_huitu_pj):
 
     def _draw(self):
         """仅绘制列表中选中的对象"""
-        # 销毁之前画的canvas
+        # 销毁之前画的canvas与导航工具栏
         if self.canvas is not None:
             self.draw_layout.removeWidget(self.canvas)
             self.canvas.deleteLater()
             self.canvas = None
+        if getattr(self, 'toolbar', None) is not None:
+            self.draw_layout.removeWidget(self.toolbar)
+            self.toolbar.deleteLater()
+            self.toolbar = None
 
         # 获取已定义的对象
         if not hasattr(self.parent, 'pjs') or not self.parent.pjs:
@@ -81,9 +93,14 @@ class Huitu_pj(QWidget, Ui_huitu_pj):
             return
 
         try:
-            fig = draw2d(objects, figsize=(6.0, 5.1), dpi=100)
+            fig = draw2d(objects, figsize=(6.0, 5.1), dpi=100,
+                         theme=getattr(self.parent, 'theme', 'light'))
             self.fig = fig
             self.canvas = FigureCanvas(self.fig)
+            # 原生 matplotlib 导航工具栏（Home/平移/缩放/保存）+ 滚轮缩放
+            from core.render import attach_plot_toolbar
+            self.toolbar = attach_plot_toolbar(self.draw_layout, self.canvas, self, wheel_zoom=True)
             self.draw_layout.addWidget(self.canvas)
+            self._redraw = self._draw
         except Exception as e:
             QMessageBox.warning(self, "绘制失败", f"绘制时出错：\n{e}")

@@ -4,3 +4,4 @@ matplotlib>=3.10.0
 PyQtDarkTheme-fork>=2.3.2
 latex2sympy2_extended>=1.0.0
 lazy_loader>=0.4
+

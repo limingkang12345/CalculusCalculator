@@ -31,6 +31,14 @@ class Huitu_lj(QWidget, Ui_huitu_lj):
             self._refresh_object_list()
             self._ljs_hash = None
 
+    def set_theme(self, theme):
+        # 主题切换后按新配色重绘上次的图表（无绘图时为空操作）
+        if getattr(self, '_redraw', None) is not None:
+            try:
+                self._redraw()
+            except Exception:
+                pass
+
     def _refresh_object_list(self):
         self.huitu_lj_list.clear()
         if not hasattr(self.parent, 'ljs') or not self.parent.ljs:
@@ -49,6 +57,10 @@ class Huitu_lj(QWidget, Ui_huitu_lj):
             self.draw_layout.removeWidget(self.canvas)
             self.canvas.deleteLater()
             self.canvas = None
+        if getattr(self, 'toolbar', None) is not None:
+            self.draw_layout.removeWidget(self.toolbar)
+            self.toolbar.deleteLater()
+            self.toolbar = None
 
         if not hasattr(self.parent, 'ljs') or not self.parent.ljs:
             return
@@ -72,9 +84,14 @@ class Huitu_lj(QWidget, Ui_huitu_lj):
         if not objects: return
 
         try:
-            fig = draw3d(objects, figsize=(6.0, 5.1), dpi=100)
+            fig = draw3d(objects, figsize=(6.0, 5.1), dpi=100,
+                         theme=getattr(self.parent, 'theme', 'light'))
             self.fig = fig
             self.canvas = FigureCanvas(self.fig)
+            # 原生 matplotlib 导航工具栏；3D 轴自身支持鼠标拖拽旋转视图
+            from core.render import attach_plot_toolbar
+            self.toolbar = attach_plot_toolbar(self.draw_layout, self.canvas, self, wheel_zoom=False)
             self.draw_layout.addWidget(self.canvas)
+            self._redraw = self._draw
         except Exception as e:
             QMessageBox.warning(self, "绘制失败", f"绘制时出错：\n{e}")

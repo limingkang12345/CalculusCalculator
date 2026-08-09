@@ -1,9 +1,21 @@
 from ui.ui_help import *
-import resources_rc
+import os
 import re
 from PySide6.QtWidgets import QWidget, QApplication
-from PySide6.QtCore import QUrl, QFile, QIODevice, QTextStream
+from PySide6.QtCore import QUrl
 from PySide6.QtGui import QPalette
+from core.settings import current_language
+
+
+def _help_filename():
+    """根据当前界面语言返回对应的帮助文档文件名。
+
+    en / en_US 等以 en 开头的语言代码使用英文版 help_en.html，其余使用中文版 help.html。
+    """
+    lang = current_language() or ""
+    if lang.lower().startswith("en"):
+        return "help_en.html"
+    return "help.html"
 
 # 暗色主题样式。
 # 注意：Qt 富文本引擎对 <style> 中的“类型选择器”（如 th / code）支持不稳定，
@@ -54,14 +66,14 @@ class Help(QWidget, Ui_help):
         return False
 
     def load_help(self):
-        """读取 qrc 中的 help.html，注入主题 class 与适配样式后显示。"""
-        file = QFile(u":/help.html")
-        if not file.open(QIODevice.ReadOnly | QIODevice.Text):
-            # 资源读取失败时回退到原始 setSource 行为
-            self.textBrowser.setSource(QUrl(u"qrc:/help.html"))
+        """根据当前界面语言读取对应的帮助文档（help.html / help_en.html），注入主题 class 与适配样式后显示。"""
+        help_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', _help_filename()))
+        try:
+            with open(help_path, 'r', encoding='utf-8') as fp:
+                html = fp.read()
+        except Exception:
+            self.textBrowser.setSource(QUrl.fromLocalFile(help_path))
             return
-        html = QTextStream(file).readAll()
-        file.close()
 
         dark = self._is_dark()
 

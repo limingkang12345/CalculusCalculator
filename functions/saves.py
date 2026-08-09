@@ -1,6 +1,6 @@
 from PySide6.QtWidgets import QFileDialog, QLineEdit, QMessageBox, QGraphicsView, QComboBox
 from PySide6.QtCore import Qt
-from sympy import latex, Line, Circle, Point
+from sympy import latex
 from core.sympify import sympify
 from core.render import setGraphicsView, _svg_cache
 import ui
@@ -39,7 +39,12 @@ def _fix_old_format_3d(obj, cat, val_str, fs):
 def savefile(main_class):
     # 保存项目
     # main_class(class):主窗口类
-    filename = QFileDialog.getSaveFileName(main_class, "Save File", "Project", "JSON Files (*.json)")[0]
+    # 默认使用 .cca（CalculusCalculator 缩写）后缀，仍可显式保存为 .json 以保持兼容
+    filename, selected_filter = QFileDialog.getSaveFileName(
+        main_class, "Save File", "Project",
+        "CalculusCalculator 存档 (*.cca);;JSON 文件 (*.json)")
+    if filename and not filename.lower().endswith(('.cca', '.json')):
+        filename += '.cca' if 'cca' in selected_filter else '.json'
     output = {}
     if filename:
         # 读取存档过滤设置（若从未设置，默认全部保存）
@@ -128,17 +133,38 @@ def savefile(main_class):
                     ljs_save[k] = [cat, repr(v[1])]
                 output["ljs"] = ljs_save
 
+            # ---- 积木编辑器内容（工作区序列化结果） ----
+            if _save("blockly"):
+                blockly_states = {}
+                for tab_name, tab_widget in main_class.tabs.items():
+                    if hasattr(tab_widget, 'state') and hasattr(tab_widget, 'restore_state'):
+                        st = tab_widget.state
+                        if st:
+                            blockly_states[tab_name] = st
+                if blockly_states:
+                    output["blockly"] = blockly_states
+
             file.write(json.dumps(output))
 
 def openfile(main_class):
-    # 打开项目
+    # 打开项目（对话框选择 .cca 或 .json 存档）
     # main_class(class):主窗口类
-    filename = QFileDialog.getOpenFileName(main_class, "Open File", "", "JSON Files (*.json)")[0]
+    filename = QFileDialog.getOpenFileName(
+        main_class, "Open File", "",
+        "CalculusCalculator 存档 (*.cca);;JSON 文件 (*.json)")[0]
 
     if filename:
-        with open(filename, mode = "r") as file:
-            json_data = json.loads(file.read())
-            try:
+        load_from_path(main_class, filename)
+
+
+def load_from_path(main_class, filename):
+    """从指定路径加载存档（.cca / .json，内容均为 JSON 格式）。
+
+    供文件对话框（openfile）与启动时命令行参数（run.py）共用。
+    """
+    with open(filename, mode = "r", encoding = "utf-8") as file:
+        json_data = json.loads(file.read())
+        try:
                 # ---- 框架与设置 ----
                 main_class.fs = json_data.get("fs", {})
                 if "tabs_n" in json_data:
@@ -231,6 +257,22 @@ def openfile(main_class):
                                     idx = saved_combos[tab_name][name]
                                     if 0 <= idx < combo.count():
                                         combo.setCurrentIndex(idx)
+                # ---- 积木编辑器内容恢复 ----
+                saved_blockly = json_data.get("blockly", {})
+                if saved_blockly:
+                    for tab_name, state_str in saved_blockly.items():
+                        tab_widget = main_class.tabs.get(tab_name)
+                        if tab_widget is None:
+                            # 存档中未记录该 tab 时按名称重建
+                            name_str = ''.join([c for c in tab_name if not c.isdigit()])
+                            n_str = ''.join([c for c in tab_name if c.isdigit()])
+                            idx = ui.tabs_dict.get(name_str)
+                            if idx is not None:
+                                main_class.create_tab(idx, n=int(n_str) if n_str else 0)
+                                tab_widget = main_class.tabs.get(tab_name)
+                        if tab_widget is not None and hasattr(tab_widget, 'restore_state'):
+                            tab_widget.restore_state(state_str)
+
                 # 仅当存档中显式包含语言/主题设置时才恢复，
                 # 避免用户未勾选"所有设置选项"时当前设置被默认值覆盖
                 if "language" in json_data:
@@ -244,5 +286,5 @@ def openfile(main_class):
                             main_class.dark()
                         else:
                             main_class.light()
-            except:
-                QMessageBox.warning(main_class, "警告", "提供的配置文件错误")
+        except:
+            QMessageBox.warning(main_class, "警告", "提供的配置文件错误")

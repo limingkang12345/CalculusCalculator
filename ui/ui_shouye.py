@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'shouyehUzEWo.ui'
+## Form generated from reading UI file 'shouyeboFPZG.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.11.1
 ##
@@ -15,8 +15,8 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWidgets import (QApplication, QGridLayout, QLabel, QSizePolicy,
-    QWidget)
+from PySide6.QtWebEngineWidgets import QWebEngineView
+from PySide6.QtWidgets import (QApplication, QGridLayout, QSizePolicy, QWidget)
 
 class Ui_shouye(object):
     def setupUi(self, shouye):
@@ -29,12 +29,10 @@ class Ui_shouye(object):
         self.gridLayout_2.setContentsMargins(0, 0, 0, 0)
         self.gridLayout = QGridLayout()
         self.gridLayout.setObjectName(u"gridLayout")
-        self.shouye_welcome = QLabel(shouye)
-        self.shouye_welcome.setObjectName(u"shouye_welcome")
-        self.shouye_welcome.setStyleSheet(u"background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1, stop:0 rgba(0, 120, 240, 255), stop:1 rgba(255, 255, 255, 255));")
-        self.shouye_welcome.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.webEngineView = QWebEngineView(shouye)
+        self.webEngineView.setObjectName(u"webEngineView")
 
-        self.gridLayout.addWidget(self.shouye_welcome, 0, 0, 1, 1)
+        self.gridLayout.addWidget(self.webEngineView, 0, 0, 1, 1)
 
 
         self.gridLayout_2.addLayout(self.gridLayout, 0, 0, 1, 1)
@@ -47,6 +45,5 @@ class Ui_shouye(object):
 
     def retranslateUi(self, shouye):
         shouye.setWindowTitle(QCoreApplication.translate("shouye", u"Form", None))
-        self.shouye_welcome.setText(QCoreApplication.translate("shouye", u"<html><head/><body><p><span style=\" font-size:50pt; font-weight:700; color:#000000; font-family:'Times New Roman',Times,serif;\">CalculusCalculator</span></p><p><span style=\" font-size:18pt; font-family:'Times New Roman',Times,serif;; color:#000000\">Author: Li Mingkang</span></p><p><span style=\" font-size:18pt; font-family:'Times New Roman',Times,serif;; color:#000000\">Contributor: CuberAHZ</span></p></body></html>", None))
     # retranslateUi
 

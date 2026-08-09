@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>CalculusCalculator v2.0.0 Help</title>
+<style>
+body { font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif; font-size: 14px; line-height: 1.8; margin: 50px; }
+h1 { font-size: 22px; font-weight: bold; text-align: center; margin-bottom: 5px; }
+h2 { font-size: 18px; margin-top: 25px; margin-bottom: 10px; border-left: 4px solid #0078d4; padding-left: 10px; }
+h3 { font-size: 16px; margin-top: 20px; margin-bottom: 8px; }
+p { margin: 6px 0; }
+ul, ol { margin: 6px 0; padding-left: 30px; }
+li { margin-bottom: 5px; }
+table { width: 100%; border-collapse: collapse; margin: 10px 0; }
+th, td { border: 1px solid #000; padding: 6px 10px; text-align: center; }
+th { background-color: #e8e8e8; }
+code { background-color: #f0f0f0; padding: 1px 6px; border-radius: 3px; font-family: Consolas, "Courier New", monospace; font-size: 13px; }
+.note { background-color: #fff3cd; border-left: 4px solid #ffc107; padding: 10px 15px; margin: 10px 0; }
+.right { text-align: right; }
+</style>
+</head>
+<body>
+
+<h1>CalculusCalculator v2.0.0 Help</h1>
+<p style="text-align:center; color:#666;">The following are common standards for all text box inputs</p>
+
+<h2>0. Direct LaTeX Code Input</h2>
+<p>In addition to the standard Python/SymPy syntax below, this version supports <b>entering LaTeX code directly</b>. Prefix the LaTeX code with a half-width dollar sign <code>$</code> as a marker, and the system will automatically convert the LaTeX expression into a SymPy expression for computation.</p>
+
+<p><b>Usage:</b></p>
+<table>
+<tr><th>#</th><th>Meaning</th><th>LaTeX input</th><th>Equivalent SymPy input</th></tr>
+<tr><td>1</td><td>x over 2</td><td><code>$\frac{x}{2}</code></td><td><code>x/2</code></td></tr>
+<tr><td>2</td><td>x squared</td><td><code>$x^{2}</code></td><td><code>x**2</code></td></tr>
+<tr><td>3</td><td>square root of x</td><td><code>$\sqrt{x}</code></td><td><code>sqrt(x)</code></td></tr>
+<tr><td>4</td><td>sin(x)</td><td><code>$\sin{x}</code></td><td><code>sin(x)</code></td></tr>
+<tr><td>5</td><td>natural log ln(x)</td><td><code>$\ln{x}</code></td><td><code>log(x)</code></td></tr>
+<tr><td>6</td><td>pi</td><td><code>$\pi</code></td><td><code>pi</code></td></tr>
+<tr><td>7</td><td>infinity ∞</td><td><code>$\infty</code></td><td><code>oo</code></td></tr>
+</table>
+
+<div class="note">
+<b>Note:</b> It must start with <code>$</code>, and it must be a half-width dollar sign. If it does not start with <code>$</code>, the system will parse the expression using the original SymPy/Python syntax rules. LaTeX parsing supports common mathematical symbols and structures; complex expressions may also mix LaTeX and SymPy syntax.
+</div>
+
+<h2>1. Mathematical Symbol Input Standard</h2>
+<ol>
+<li>Add/sub/mul/div: <code>+</code> <code>-</code> <code>*</code> <code>/</code></li>
+<li>Power: <code>**</code> (e.g. <code>x**2</code> means x squared)</li>
+<li>Square root: <code>sqrt()</code></li>
+<li>Absolute value: <code>abs()</code></li>
+<li>General logarithm log_a(x): <code>log(x, a)</code></li>
+<li>Natural logarithm ln(x): <code>log(x)</code></li>
+<li>Trigonometric functions: <code>sin()</code> <code>cos()</code> <code>tan()</code> <code>cot()</code> <code>sec()</code> <code>csc()</code></li>
+<li>Inverse trigonometric functions: <code>asin()</code> <code>acos()</code> <code>atan()</code> <code>acot()</code> etc.</li>
+<li>Hyperbolic functions: <code>sinh()</code> <code>cosh()</code> <code>tanh()</code> etc.</li>
+<li>Euler's number: <code>e</code></li>
+<li>Pi: <code>pi</code></li>
+<li>Positive / negative infinity: <code>oo</code> / <code>-oo</code></li>
+<li>Parentheses: round parentheses <code>()</code> are sufficient</li>
+<li>Imaginary unit: <code>I</code></li>
+</ol>
+
+<p><b>Examples:</b></p>
+<table>
+<tr><th>#</th><th>Meaning</th><th>Expression to enter</th></tr>
+<tr><td>1</td><td>2x</td><td><code>2*x</code></td></tr>
+<tr><td>2</td><td>x squared</td><td><code>x**2</code></td></tr>
+<tr><td>3</td><td>arithmetic square root of x</td><td><code>sqrt(x)</code></td></tr>
+<tr><td>4</td><td>log base 2 of x</td><td><code>log(x,2)</code></td></tr>
+<tr><td>5</td><td>natural log ln(x)</td><td><code>log(x)</code></td></tr>
+<tr><td>6</td><td>sine of x</td><td><code>sin(x)</code></td></tr>
+</table>
+
+<h2>2. Set / Interval Input Standard</h2>
+<ol>
+<li><b>Roster method</b>: <code>FiniteSet(1,2,3)</code></li>
+<li><b>Set-builder method</b>: <code>ImageSet(Lambda(x, f(x)), Domain)</code></li>
+<li><b>Built-in sets:</b>
+<ul>
+<li>Real numbers: <code>Reals</code></li>
+<li>Complex numbers: <code>Complexes</code></li>
+<li>Natural numbers: <code>Naturals</code></li>
+<li>Non-negative integers: <code>Naturals0</code></li>
+<li>Integers: <code>Integers</code></li>
+<li>Rational numbers: <code>Rationals</code></li>
+<li>Empty set: <code>EmptySet</code></li>
+</ul>
+</li>
+<li><b>Intervals:</b>
+<ul>
+<li>Closed interval [x,y]: <code>Interval(x,y)</code></li>
+<li>Left-open right-closed (x,y]: <code>Interval.Lopen(x,y)</code></li>
+<li>Left-closed right-open [x,y): <code>Interval.Ropen(x,y)</code></li>
+<li>Open interval (x,y): <code>Interval.open(x,y)</code></li>
+</ul>
+</li>
+<li><b>Union</b>: <code>Union(A,B)</code></li>
+<li><b>Intersection</b>: <code>Intersection(A,B)</code></li>
+<li><b>Complement / difference</b>: <code>Complement(A,B)</code>, where A is the universal set</li>
+</ol>
+
+<p><b>Examples:</b></p>
+<table>
+<tr><th>#</th><th>Meaning</th><th>Expression to enter</th></tr>
+<tr><td>1</td><td>set {1,2}</td><td><code>FiniteSet(1,2)</code></td></tr>
+<tr><td>2</td><td>interval [1,2]</td><td><code>Interval(1,2)</code></td></tr>
+<tr><td>3</td><td>interval [1,2)</td><td><code>Interval.Ropen(1,2)</code></td></tr>
+<tr><td>4</td><td>interval (1,2)</td><td><code>Interval.open(1,2)</code></td></tr>
+<tr><td>5</td><td>union {0}∪[1,2]</td><td><code>Union(FiniteSet(0),Interval(1,2))</code></td></tr>
+<tr><td>6</td><td>intersection {1,2}∩{2,3}</td><td><code>Intersection(FiniteSet(1,2),FiniteSet(2,3))</code></td></tr>
+<tr><td>7</td><td>complement R \ [-1,1]</td><td><code>Complement(Reals,Interval(-1,1))</code></td></tr>
+</table>
+
+<h3>FiniteSet use cases</h3>
+<ul>
+<li>In the <b>function domain</b> input on the "Define" page, use <code>FiniteSet(1,2,3)</code> to restrict the domain to the discrete set {1,2,3}</li>
+<li>In the <b>principal variable range</b> input on the "Equation" page, use <code>FiniteSet(0,1)</code> to solve only for roots within that set</li>
+<li>Combine with set operations: <code>Union(Interval(0,1), FiniteSet(2))</code> represents the union of interval [0,1] and point 2</li>
+</ul>
+
+<h3>ImageSet use cases</h3>
+<ul>
+<li>Define a mapped set: <code>ImageSet(Lambda(x, x**2), Interval(0, 5))</code> represents {x² | x∈[0,5]}</li>
+<li>Periodic solutions with trig functions: the solution set of sin(x)=0 can be written as <code>ImageSet(Lambda(n, n*pi), Integers)</code>, where n is an integer</li>
+<li>Describe a complex range in the <b>domain</b> on the "Define" page: <code>ImageSet(Lambda(x, 2*x+1), Integers)</code> represents the set of all odd integers</li>
+</ul>
+
+<h2>3. Function Input Standard</h2>
+<p>For a function already defined on the "Define" page, you can use it directly in most other input boxes:</p>
+<ul>
+<li><b>As a symbol in operations</b>: e.g. if g(x)=x**2 is defined, entering <code>g+1/g</code> yields x**2 + 1/x**2</li>
+<li><b>As a function call with arguments</b>: e.g. if f(x)=x**2 is defined, entering <code>f(3)</code> computes 3**2 = 9 automatically; nested calls such as <code>f(g(2))</code> are supported</li>
+</ul>
+
+<h2>4. Denominator Rationalization</h2>
+<p>In modules such as derivative, integral, equation solving, and expression simplification, if the denominator of a result contains a radical, the system automatically rationalizes the denominator, simplifying the result into its simplest form where both numerator and denominator are integral or radical expressions.</p>
+
+<div class="note">
+<b>Example:</b> When computing 1/sqrt(2), the result is automatically displayed as sqrt(2)/2 instead of 1/sqrt(2).
+</div>
+
+<h2>5. Compute Tab</h2>
+<p>Three computation engines are supported:</p>
+<ol>
+<li><b>Python built-in engine</b>: uses Python's built-in eval to quickly compute numeric expressions; results are shown as plain text</li>
+<li><b>Mpmath high-precision engine</b>: customizable decimal precision, suitable for high-precision numeric computation; results are shown as plain text</li>
+<li><b>Sympy symbolic engine</b>: performs symbolic computation based on Sympy; results are displayed <b>both as LaTeX code and as plain text</b>.</li>
+<li><b>Latex code generation engine</b>: generates the corresponding <b>Latex code</b> directly from the input Python expression</li>
+</ol>
+
+<h2>6. Vector Features</h2>
+<p>On the "Define Vector" page, you can define 2D vectors and perform vector operations.</p>
+
+<h3>Define a vector</h3>
+<ol>
+<li><b>Vector name</b>: defaults to <code>v</code>, customizable</li>
+<li><b>Vector x/y coordinates</b>: enter the x and y components separately, supporting SymPy expressions (e.g. <code>sqrt(3)</code>, <code>pi/2</code>)</li>
+<li>Click <b>Save</b> to add the vector to the list, or <b>Delete</b> to remove the selected vector</li>
+</ol>
+
+<h3>Vector properties</h3>
+<ul>
+<li><b>Expression</b>: displays the vector in coordinate form</li>
+<li><b>Magnitude</b>: the length of the vector, i.e. sqrt(x² + y²)</li>
+<li><b>Direction angle</b>: the angle between the vector and the positive x-axis</li>
+<li><b>Unit vector</b>: a vector with the same direction and magnitude 1</li>
+</ul>
+
+<h3>Vector operations</h3>
+<ol>
+<li>Select two defined vectors from the dropdown</li>
+<li>Select the operation type: <b>addition</b>, <b>subtraction</b>, <b>dot product</b>, <b>angle</b></li>
+<li>Click <b>Compute</b>; the result is displayed both as rendered LaTeX and as plain text</li>
+</ol>
+
+<div class="note">
+<b>Example:</b> Define v1 = (1, 0), v2 = (0, 1); the addition yields (1, 1), the dot product is 0, and the angle is π/2.
+</div>
+
+<h2>7. Triangle Solving</h2>
+<p>On the "Solve Triangle" page, enter the known conditions of a triangle to solve for the remaining unknowns.</p>
+
+<h3>Condition input</h3>
+<ol>
+<li>Three condition boxes, each with a type selectable from the dropdown: <b>angle A</b>, <b>angle B</b>, <b>angle C</b>, <b>side a</b>, <b>side b</b>, <b>side c</b></li>
+<li>Fill in the values in the corresponding input boxes, supporting SymPy expressions (e.g. <code>pi/3</code>, <code>sqrt(2)</code>)</li>
+<li>Exactly 3 valid conditions must be filled in</li>
+</ol>
+
+<h3>Supported cases</h3>
+<table>
+<tr><th>Case</th><th>Known conditions</th><th>Note</th></tr>
+<tr><td>ASA</td><td>two angles and the included side</td><td>unique solution</td></tr>
+<tr><td>AAS</td><td>two angles and a non-included side</td><td>unique solution</td></tr>
+<tr><td>SAS</td><td>two sides and the included angle</td><td>unique solution</td></tr>
+<tr><td>SSA</td><td>two sides and an angle opposite one of them</td><td>may have two, one, or no solution</td></tr>
+<tr><td>SSS</td><td>three sides</td><td>unique solution</td></tr>
+</table>
+
+<div class="note">
+<b>Example:</b> condition1=angleA=pi/3, condition2=angleB=pi/4, condition3=sidec=5, solve for angleC, sidea, sideb.<br>
+If multiple solutions exist (e.g. SSA), the system labels them "Solution 1", "Solution 2" respectively.
+</div>
+
+<h2>8. Function Plotting</h2>
+<p>On the "Plot Function" page, you can plot function graphs.</p>
+
+<h3>Usage</h3>
+<ol>
+<li><b>Expression mode</b>: enter the function expression directly (e.g. <code>x**2</code>, <code>sin(x)</code>)</li>
+<li><b>Select function mode</b>: choose a function defined on the "Define" page from the dropdown</li>
+<li>Set the left/right endpoints of the <b>domain</b> (default [-10, 10]), supporting SymPy expressions</li>
+<li>Click the <b>Plot</b> button to generate the graph</li>
+</ol>
+
+<h3>Features</h3>
+<ul>
+<li>Rendered with Matplotlib, with clearly labeled axes</li>
+<li>Automatically handles discontinuities (e.g. <code>1/x</code> breaks at x=0)</li>
+<li>The y-axis auto-scales to the visible range</li>
+</ul>
+
+<div class="note">
+<b>Example:</b> Enter <code>sin(x)</code>, set the domain to [0, 2*pi], and click Plot to see a complete sine wave.
+</div>
+
+<h2>9. Plane Geometry</h2>
+<p>On the "Plane Geometry" page, define points, lines, segments, circles, triangles, and polygons, then visualize them on the "Plane Plot" page.</p>
+
+<h3>Define objects</h3>
+<ol>
+<li>Select a <b>creation method</b> from the dropdown (19 in total)</li>
+<li>Enter the <b>object name</b></li>
+<li>Enter the <b>parameters</b> (separated by half-width English commas)</li>
+<li>Press Enter or click the <b>Save</b> button to create the object</li>
+</ol>
+
+<h3>Supported creation methods</h3>
+<table>
+<tr><th>Category</th><th>Method</th><th>Parameters</th></tr>
+<tr><td>Basic</td><td>point by coordinates</td><td>x, y</td></tr>
+<tr><td>Basic</td><td>line through two points</td><td>point1, point2</td></tr>
+<tr><td>Basic</td><td>circle by center and radius</td><td>center, radius</td></tr>
+<tr><td>Basic</td><td>circle through three points (circumcircle)</td><td>point1, point2, point3</td></tr>
+<tr><td>Basic</td><td>triangle through three points</td><td>point1, point2, point3</td></tr>
+<tr><td>Basic</td><td>polygon by vertex list</td><td>point1, point2, ...</td></tr>
+<tr><td>Circle</td><td>circle with diameter endpoints</td><td>point1, point2</td></tr>
+<tr><td>Circle</td><td>circle by center and a point on it</td><td>center, pointOnCircle</td></tr>
+<tr><td>Line</td><td>perpendicular bisector of a segment</td><td>segmentName</td></tr>
+<tr><td>Line</td><td>parallel through a point</td><td>pointName, segmentName</td></tr>
+<tr><td>Line</td><td>perpendicular through a point</td><td>pointName, segmentName</td></tr>
+<tr><td>Line</td><td>angle bisector of two lines</td><td>line1, line2</td></tr>
+<tr><td>Line</td><td>angle bisector (three points)</td><td>point1, point2(vertex), point3</td></tr>
+<tr><td>Triangle</td><td>median of a triangle</td><td>triangleName, vertexIndex(0/1/2)</td></tr>
+<tr><td>Triangle</td><td>altitude of a triangle</td><td>triangleName, vertexIndex(0/1/2)</td></tr>
+<tr><td>Triangle</td><td>midline of a triangle</td><td>triangleName</td></tr>
+<tr><td>Triangle</td><td>incircle of a triangle</td><td>triangleName</td></tr>
+<tr><td>Triangle</td><td>excircle of a triangle</td><td>triangleName, vertexIndex(0/1/2)</td></tr>
+<tr><td>Segment</td><td>segment through two points</td><td>point1, point2</td></tr>
+</table>
+
+<h3>Plotting</h3>
+<p>Switch to the "Plane Plot" page; all defined objects are checked by default. Uncheck the ones you don't need, then click <b>Plot or Update</b> to generate the Matplotlib image.</p>
+
+<h2>10. Solid Geometry</h2>
+<p>On the "Solid Geometry" page, define 3D points, lines, planes, and segments, then visualize them in 3D on the "Solid Plot" page.</p>
+
+<h3>Supported methods</h3>
+<table>
+<tr><th>Method</th><th>Parameters</th></tr>
+<tr><td>point by coordinates</td><td>x, y, z</td></tr>
+<tr><td>line through two points</td><td>point1, point2</td></tr>
+<tr><td>parallel plane through a point</td><td>planeName, pointName</td></tr>
+<tr><td>perpendicular plane to a line through a point</td><td>lineName, pointName</td></tr>
+<tr><td>parallel line to a line through a point</td><td>lineName, pointName</td></tr>
+<tr><td>perpendicular to a line through a point</td><td>pointName, lineName</td></tr>
+<tr><td>perpendicular to a plane through a point</td><td>planeName, pointName</td></tr>
+<tr><td>plane through a line and an external point</td><td>lineName, pointName</td></tr>
+<tr><td>plane through two intersecting/parallel lines</td><td>line1Name, line2Name</td></tr>
+<tr><td>foot of perpendicular from point to plane</td><td>pointName, planeName</td></tr>
+<tr><td>foot of perpendicular from point to line</td><td>pointName, lineName</td></tr>
+<tr><td>3D segment through two points</td><td>point1, point2</td></tr>
+</table>
+
+<h3>Plotting</h3>
+<p>Switch to the "Solid Plot" page, filter objects via checkboxes, then click <b>Plot or Update</b> to generate a 3D rotatable Matplotlib image (with transparent planes and colored lines).</p>
+
+<h2>11. Plane Geometry Calculation</h2>
+<p>On the "Plane Compute" page, use defined points, lines, circles, triangles, polygons, etc. for geometric computation. Parameters are separated by <b>half-width English commas</b>, and defined objects are referenced by name.</p>
+
+<h3>Supported operations (32 in total)</h3>
+<table>
+<tr><th>Category</th><th>Operation</th><th>Parameter example</th></tr>
+<tr><td>Point</td><td>distance between two points</td><td>A, B</td></tr>
+<tr><td>Point</td><td>midpoint coordinates</td><td>A, B</td></tr>
+<tr><td>Point</td><td>collinearity check</td><td>A, B, C</td></tr>
+<tr><td>Point</td><td>translate point</td><td>A, 1, 2</td></tr>
+<tr><td>Point</td><td>rotate point about a fixed point</td><td>A, pi/2, O</td></tr>
+<tr><td>Point</td><td>reflect point across a line</td><td>A, L1</td></tr>
+<tr><td>Line</td><td>line equation</td><td>A, B</td></tr>
+<tr><td>Line</td><td>line slope</td><td>A, B</td></tr>
+<tr><td>Line</td><td>intersection of two lines</td><td>L1, L2</td></tr>
+<tr><td>Line</td><td>distance from point to line</td><td>A, L1</td></tr>
+<tr><td>Line</td><td>angle between two lines</td><td>L1, L2</td></tr>
+<tr><td>Line</td><td>parallel / perpendicular check</td><td>L1, L2</td></tr>
+<tr><td>Circle</td><td>center / radius / area / perimeter</td><td>C1</td></tr>
+<tr><td>Circle</td><td>intersection of two circles</td><td>C1, C2</td></tr>
+<tr><td>Circle</td><td>tangent line equation</td><td>A, C1</td></tr>
+<tr><td>Triangle</td><td>area / perimeter / circumcenter / incenter / centroid / orthocenter</td><td>T1</td></tr>
+<tr><td>Triangle</td><td>circumradius / inradius</td><td>T1</td></tr>
+<tr><td>Triangle</td><td>right/isosceles/equilateral check</td><td>T1</td></tr>
+<tr><td>Polygon</td><td>area / perimeter</td><td>A, B, C, D</td></tr>
+<tr><td>Transform</td><td>translate / rotate / reflect</td><td>see Point operations</td></tr>
+<tr><td>Vector</td><td>vector between points / magnitude / dot product / angle</td><td>A, B</td></tr>
+</table>
+
+<div class="note">
+<b>Example:</b> First define points A(0,0), B(3,0), C(0,4) on the "Plane Geometry" page; on "Plane Compute" select "Triangle Area" with parameters <code>A,B,C</code>; the result is 6.
+</div>
+
+<h2>12. Solid Geometry Calculation</h2>
+<p>On the "Solid Compute" page, use defined 3D points, lines, planes, etc. for spatial geometric computation.</p>
+
+<h3>Supported operations (22 in total)</h3>
+<table>
+<tr><th>Category</th><th>Operation</th><th>Parameter example</th></tr>
+<tr><td>Point</td><td>distance / midpoint between two points</td><td>A, B</td></tr>
+<tr><td>Point</td><td>distance from point to plane</td><td>A, P1</td></tr>
+<tr><td>Point</td><td>distance from point to line</td><td>A, L1</td></tr>
+<tr><td>Point</td><td>project point onto plane / line</td><td>A, P1 or A, L1</td></tr>
+<tr><td>Point</td><td>coplanarity check</td><td>A, B, C, D</td></tr>
+<tr><td>Line</td><td>direction vector / intersection / angle</td><td>L1, L2</td></tr>
+<tr><td>Line</td><td>parallel / perpendicular check</td><td>L1, L2</td></tr>
+<tr><td>Line</td><td>projection of line onto plane</td><td>L1, P1</td></tr>
+<tr><td>Plane</td><td>plane equation from three points</td><td>A, B, C</td></tr>
+<tr><td>Plane</td><td>plane normal vector</td><td>P1</td></tr>
+<tr><td>Plane</td><td>angle / intersection line / parallel-perpendicular of two planes</td><td>P1, P2</td></tr>
+<tr><td>Line-Plane</td><td>intersection of plane and line</td><td>P1, L1</td></tr>
+<tr><td>Line-Plane</td><td>angle between line and plane</td><td>L1, P1</td></tr>
+<tr><td>Volume</td><td>tetrahedron volume</td><td>A, B, C, D</td></tr>
+<tr><td>Vector(3D)</td><td>vector / magnitude / dot / cross / angle between points</td><td>A, B</td></tr>
+<tr><td>Oblique projection</td><td>projection / inverse / area ratio</td><td>A or 1,2,0</td></tr>
+</table>
+
+<div class="note">
+<b>Example:</b> First define points A(0,0,0), B(1,0,0), C(0,1,0), D(0,0,1) on the "Solid Geometry" page; on "Solid Compute" select "Tetrahedron Volume" with parameters <code>A,B,C,D</code>; the result is 1/6.
+</div>
+
+<h2>13. Enter Shortcut and Menu Adjustment</h2>
+<ol>
+<li><b>Enter shortcut</b>: pressing <b>Enter</b> in the main text input box of each page automatically triggers the corresponding function button (e.g. "Derivative", "Integral", "Compute", "Save"), without manually clicking.</li>
+<li><b>Menu bar adjustment</b>: a "Compute" item is added to the menu bar, containing "Plane Compute", "Solid Compute", and the original "Compute" (general computation), for clearer categorization.</li>
+<li><b>Help page optimization</b>: the help page now auto-adjusts its layout with the window instead of being a fixed size.</li>
+</ol>
+
+<h2>14. Differential Equation Input Standard</h2>
+<p>Differential equation input does <b>not</b> follow the function input standard above, because the solution is unknown before solving. The system <b>excludes all defined functions</b> when parsing the expression to avoid interference, and the function to solve for is fixed as f(x).</p>
+<p>In the input, use <code>f(x).diff(x,n)</code> to denote the <b>n-th derivative with respect to x</b>. The 1 can be omitted, so <code>f(x).diff(x)</code> denotes the first derivative.</p>
+<p><b>Example:</b> check "Differential Equation", enter <code>f(x).diff(x,1)</code> on the left and <code>f(x)+1</code> on the right, completing the input of f'(x)=f(x)+1; click Solve to get f(x)=C1*exp(x)-1.</p>
+
+<h2>15. Settings, Language and Theme</h2>
+<p>Open the settings page via the menu bar "Features → Settings" to configure the following:</p>
+<ol>
+<li><b>Interface language</b>: Chinese / English. Takes effect immediately and is persisted; restored automatically on next launch.</li>
+<li><b>Interface theme</b>: Light / Dark. Takes effect immediately and is persisted; restored automatically on next launch.</li>
+<li><b>English help</b>: the help page switches automatically with the interface language; selecting English loads the English help (see <code>help_en.html</code> in this page's English version).</li>
+</ol>
+<p>Both settings are saved as JSON under the Qt standard configuration directory (typical path <code>AppData/Local/CalculusCalculator/CalculusCalculator/settings.json</code>), with content such as <code>{"language": "zh_CN", "theme": "dark"}</code>.</p>
+
+<p>Via the menu bar "File → Save / Open" you can save the current workspace (including theme and language) as a project file, which restores the saved theme and language when opened.</p>
+
+<h2>16. Expression Cache</h2>
+<p>Temporarily store and manage commonly used expressions via the "Cache" feature, in two ways:</p>
+
+<h3>Cache tab</h3>
+<ol>
+<li>Open the cache tab via the menu bar "File → Cache" to display all cached expressions</li>
+<li><b>Double-click</b> any cached item in the list to copy its text to the clipboard</li>
+<li>The cache list in the tab syncs in real time with the main window's cache data</li>
+</ol>
+
+<h3>Input box quick buttons</h3>
+<p>Each text input box has three icon quick buttons on its right:</p>
+<table>
+<tr><th>Icon</th><th>Function</th><th>Description</th></tr>
+<tr><td>keyboard</td><td><b>Visual input</b></td><td>open the formula editor dialog to insert math symbols and structures graphically</td></tr>
+<tr><td>open</td><td><b>Open cache</b></td><td>pop up the cache dialog; double-click a cached item to fill the current input box</td></tr>
+<tr><td>plus</td><td><b>Store to cache</b></td><td>store the current input box text into the cache (duplicates move to front; icon briefly becomes a checkmark)</td></tr>
+</table>
+
+<h2>17. Visual Formula Input</h2>
+<p>A visual math formula input panel based on pyqt5-math-widget (bundled in the <code>math_input/</code> directory). Since v2.0.0, the formula editor's <b>underlying engine has been replaced with MathLive</b>, offering a smoother input experience and more accurate symbol rendering.</p>
+
+<h3>Usage</h3>
+<ol>
+<li>Click the <b>keyboard icon</b> button on the right of any input box, or open the formula dialog via the menu "Edit → Formula Input"</li>
+<li>In the dialog, use the toolbar to select math structures (fractions, roots, sub/superscripts, Greek letters, etc.), operators, or functions</li>
+<li>After editing, click <b>OK</b>; the formula is automatically converted to a SymPy expression and filled into the input box</li>
+</ol>
+
+<h3>Toolbar groups</h3>
+<ul>
+<li><b>Structure</b>: fraction, root, power, absolute value, parentheses, etc.</li>
+<li><b>Greek letters</b>: common Greek letters α~ω</li>
+<li><b>Edit</b>: undo, redo, cut, etc.</li>
+<li><b>Operators</b>: +, -, ×, ÷, =, ≠, etc.</li>
+<li><b>Functions</b>: sin, cos, log, lim, etc.</li>
+</ul>
+
+<h2>18. Save Settings</h2>
+<p>On the "Save Settings (when saving)" area of the settings page, you can fine-tune which types of information are saved via checkboxes:</p>
+
+<table>
+<tr><th>Option</th><th>Description</th></tr>
+<tr><td>Function list</td><td>custom function definitions (fs dict)</td></tr>
+<tr><td>Equation list (systems)</td><td>list of all entered equation expressions</td></tr>
+<tr><td>Inequality list (systems)</td><td>list of all entered inequality expressions</td></tr>
+<tr><td>Vector list</td><td>all defined vectors</td></tr>
+<tr><td>All cache contents</td><td>all expressions cached in the cache area</td></tr>
+<tr><td>Plane geometry object list</td><td>points, lines, circles, triangles, etc. defined in plane geometry</td></tr>
+<tr><td>Solid geometry object list</td><td>points, lines, planes, etc. defined in solid geometry</td></tr>
+<tr><td>All text box texts</td><td>text content in all input boxes</td></tr>
+<tr><td>All selection box options</td><td>current selection of all dropdown boxes</td></tr>
+<tr><td>All expression display contents</td><td>contents of all formula rendering views</td></tr>
+<tr><td>All settings options</td><td>tab index, language, theme, and other framework settings</td></tr>
+</table>
+
+<div class="note">
+<b>Tip:</b> All list items are checked by default. If you uncheck an item, that type of data will <b>not</b> be saved; when loading, if the save does not contain that type of data, the <b>current state is kept unchanged</b>.
+</div>
+
+<h2>19. Menu Adjustment</h2>
+<ol>
+<li>The "<b>Solve Triangle</b>" feature moved from its standalone location to a sub-item of the "<b>Solve</b>" menu</li>
+<li>The "<b>Transform</b>" feature moved to a sub-item of the "<b>Compute</b>" menu</li>
+<li>A "<b>Cache</b>" sub-item is added under the "File" menu bar, clicking it opens the cache tab</li>
+<li>Project structure optimization: added <code>__init__.py</code> to the <code>core/</code> directory; refactored <code>ui/i18n.py</code> into <code>core/settings.py</code></li>
+</ol>
+
+<h2>20. Blockly Feature (new in v2.0.0)</h2>
+<p>A new "Blockly" feature lets you build a <b>visual computation flow</b> by dragging and snapping blocks together, completing complex computations without writing code. Open the block editor on the "Blockly" page. Currently supported:</p>
+<ul>
+<li><b>Sympy / Latex expression input</b>: blocks can directly take SymPy expressions, or use a leading <code>$</code> for LaTeX input (see "0. Direct LaTeX Code Input").</li>
+<li><b>Run the flow directly in the editor</b>: click Run to execute the block-built flow in order, showing intermediate results in real time.</li>
+<li><b>Automatic output formula rendering</b>: results are automatically rendered as clear, good-looking math formulas in LaTeX.</li>
+<li><b>Define function / function analysis</b>: define functions via blocks and analyze their domain, monotonicity, parity, etc.</li>
+<li><b>Derivative / integral</b>: use the corresponding blocks to differentiate or integrate a function.</li>
+<li><b>Equation(s) / inequality(ies) / triangle solving</b>: use solving blocks to handle equations, inequalities, and triangles.</li>
+<li><b>Project save / load</b>: Blockly projects can be saved and loaded, controlled by the "Save Settings" item in "Settings" (see "18. Save Settings").</li>
+</ul>
+
+<h2>21. Splash Screen and Startup Optimization (new in v2.0.0)</h2>
+<p>A new <b>splash screen</b> shows progress and hints while the program loads resources, avoiding a blank wait during startup. Combined with the existing lazy-loading (<code>lazy_loader</code>) mechanism, the overall <b>startup speed is optimized</b>.</p>
+
+<h2>Additional Resources</h2>
+<p>The above content fully references the language specifications of Python 3.12 and SymPy 1.14.</p>
+<p>If you have questions, please refer to:</p>
+<ol>
+<li><b>Python official docs</b>: <a href="https://docs.python.org/3.12/" target="_blank">https://docs.python.org/3.12/</a></li>
+<li><b>SymPy official docs</b>: <a href="https://docs.sympy.org/latest/index.html" target="_blank">https://docs.sympy.org/latest/index.html</a></li>
+<li><b>Mpmath official docs</b>: <a href="https://mpmath.readthedocs.io/en/latest/" target="_blank">https://mpmath.readthedocs.io/en/latest/</a></li>
+</ol>
+
+<h2>Version History</h2>
+<table>
+<tr><th>Version</th><th>Release date</th><th>Core updates</th></tr>
+
+<tr><td>v2.0.0</td><td>2026-08-14</td><td>New Blockly feature (visual computation flow); formula editor backend upgraded to MathLive; new splash screen and optimized startup; English help documentation added</td></tr>
+</table>
+
+<p>Thank you for using it!</p>
+<p class="right">LiMingkang</p>
+<p class="right">2026/8/14</p>
+
+</body>
+</html>

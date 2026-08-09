@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'shezhiKXUvqH.ui'
+## Form generated from reading UI file 'shezhiQYERQV.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.11.1
 ##
@@ -45,15 +45,19 @@ class Ui_shezhi(object):
 
         self.groupBox = QGroupBox(shezhi)
         self.groupBox.setObjectName(u"groupBox")
+        self.groupBox.setCheckable(False)
         self.horizontalLayout = QHBoxLayout(self.groupBox)
         self.horizontalLayout.setObjectName(u"horizontalLayout")
         self.shezhi_qianse = QRadioButton(self.groupBox)
         self.shezhi_qianse.setObjectName(u"shezhi_qianse")
+        self.shezhi_qianse.setCheckable(True)
 
         self.horizontalLayout.addWidget(self.shezhi_qianse)
 
         self.shezhi_shense = QRadioButton(self.groupBox)
         self.shezhi_shense.setObjectName(u"shezhi_shense")
+        self.shezhi_shense.setCheckable(True)
+        self.shezhi_shense.setChecked(False)
 
         self.horizontalLayout.addWidget(self.shezhi_shense)
 
@@ -87,6 +91,8 @@ class Ui_shezhi(object):
         __qlistwidgetitem9.setCheckState(Qt.Checked)
         __qlistwidgetitem10 = QListWidgetItem(self.shezhi_cundang)
         __qlistwidgetitem10.setCheckState(Qt.Checked)
+        __qlistwidgetitem11 = QListWidgetItem(self.shezhi_cundang)
+        __qlistwidgetitem11.setCheckState(Qt.Checked)
         self.shezhi_cundang.setObjectName(u"shezhi_cundang")
         self.shezhi_cundang.setSelectionRectVisible(False)
 
@@ -99,6 +105,12 @@ class Ui_shezhi(object):
         self.shezhi_yingyong.setObjectName(u"shezhi_yingyong")
 
         self.verticalLayout.addWidget(self.shezhi_yingyong)
+
+        self.shezhi_qingchu = QPushButton(shezhi)
+        self.shezhi_qingchu.setObjectName(u"shezhi_qingchu")
+        self.shezhi_qingchu.setStyleSheet(u"color: rgb(255, 0, 0);")
+
+        self.verticalLayout.addWidget(self.shezhi_qingchu)
 
 
         self.retranslateUi(shezhi)
@@ -133,15 +145,18 @@ class Ui_shezhi(object):
         ___qlistwidgetitem6 = self.shezhi_cundang.item(6)
         ___qlistwidgetitem6.setText(QCoreApplication.translate("shezhi", u"\u7acb\u4f53\u51e0\u4f55\u5bf9\u8c61\u5217\u8868", None))
         ___qlistwidgetitem7 = self.shezhi_cundang.item(7)
-        ___qlistwidgetitem7.setText(QCoreApplication.translate("shezhi", u"\u6240\u6709\u6587\u672c\u6846\u6587\u672c", None))
+        ___qlistwidgetitem7.setText(QCoreApplication.translate("shezhi", u"\u79ef\u6728\u7f16\u8f91\u533a\u5de5\u7a0b", None))
         ___qlistwidgetitem8 = self.shezhi_cundang.item(8)
-        ___qlistwidgetitem8.setText(QCoreApplication.translate("shezhi", u"\u6240\u6709\u9009\u62e9\u6846\u9009\u9879", None))
+        ___qlistwidgetitem8.setText(QCoreApplication.translate("shezhi", u"\u6240\u6709\u6587\u672c\u6846\u6587\u672c", None))
         ___qlistwidgetitem9 = self.shezhi_cundang.item(9)
-        ___qlistwidgetitem9.setText(QCoreApplication.translate("shezhi", u"\u6240\u6709\u8868\u8fbe\u5f0f\u663e\u793a\u6846\u5185\u5bb9", None))
+        ___qlistwidgetitem9.setText(QCoreApplication.translate("shezhi", u"\u6240\u6709\u9009\u62e9\u6846\u9009\u9879", None))
         ___qlistwidgetitem10 = self.shezhi_cundang.item(10)
-        ___qlistwidgetitem10.setText(QCoreApplication.translate("shezhi", u"\u6240\u6709\u8bbe\u7f6e\u9009\u9879", None))
+        ___qlistwidgetitem10.setText(QCoreApplication.translate("shezhi", u"\u6240\u6709\u8868\u8fbe\u5f0f\u663e\u793a\u6846\u5185\u5bb9", None))
+        ___qlistwidgetitem11 = self.shezhi_cundang.item(11)
+        ___qlistwidgetitem11.setText(QCoreApplication.translate("shezhi", u"\u6240\u6709\u8bbe\u7f6e\u9009\u9879", None))
         self.shezhi_cundang.setSortingEnabled(__sortingEnabled)
 
         self.shezhi_yingyong.setText(QCoreApplication.translate("shezhi", u"\u5e94\u7528", None))
+        self.shezhi_qingchu.setText(QCoreApplication.translate("shezhi", u"\u6e05\u9664\u8bbe\u7f6e\u6587\u4ef6", None))
     # retranslateUi
 
