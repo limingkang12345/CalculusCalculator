@@ -4,7 +4,8 @@ from cx_Freeze import setup, Executable
 
 # ADD FILES
 # 将多语言翻译文件（.qm）随可执行文件一起打包，运行时位于 exe 同级 i18n/ 下
-files = [("i18n", "i18n"), ("mathjax", "lib/mathjax"), ("blockly", "lib/blockly")]
+files = [("i18n", "i18n"), ("mathjax", "lib/mathjax"), ("blockly", "lib/blockly"), \
+         ("help.html", "help.html"), ("help_en.html", "help_en.html")]
 
 # TARGET
 target = Executable(
