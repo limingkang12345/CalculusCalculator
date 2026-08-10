@@ -200,7 +200,8 @@
         display: flex;
         gap: 6px;
       }
-      .code-preview-actions button {
+      .code-preview-actions button,
+      .code-preview-actions select {
         padding: 4px 10px;
         border: 1px solid var(--border-3);
         border-radius: 4px;
@@ -209,7 +210,8 @@
         font-size: 12px;
         cursor: pointer;
       }
-      .code-preview-actions button:hover {
+      .code-preview-actions button:hover,
+      .code-preview-actions select:hover {
         border-color: var(--accent);
         color: var(--hover-text);
       }
@@ -438,6 +440,10 @@
         <div class="code-preview-header">
           <span data-i18n="codePreviewTitle"></span>
           <div class="code-preview-actions">
+            <select id="codeModeSelect" data-i18n-title="codeModeTitle">
+              <option value="native"></option>
+              <option value="library"></option>
+            </select>
             <button id="copyCodeBtn" type="button" data-i18n="copyBtn"></button>
             <button id="closePreviewBtn" type="button" data-i18n="closePreview"></button>
           </div>
@@ -524,7 +530,10 @@
         error: '错误',
         nameCol: '名称',
         valueCol: '值',
-        loadingBlockly: '积木编辑器加载中…'
+        loadingBlockly: '积木编辑器加载中…',
+        codeModeTitle: '选择预览代码类型',
+        codeModeNative: 'SymPy 原生代码',
+        codeModeLibrary: 'CalculusCalculator 代码'
       },
       en: {
         resultTitle: 'Run Result',
@@ -549,7 +558,10 @@
         error: 'Error',
         nameCol: 'Name',
         valueCol: 'Value',
-        loadingBlockly: 'Loading Blockly editor…'
+        loadingBlockly: 'Loading Blockly editor…',
+        codeModeTitle: 'Choose preview code type',
+        codeModeNative: 'Native SymPy code',
+        codeModeLibrary: 'CalculusCalculator code'
       }
     };
 
@@ -558,10 +570,15 @@
       return table[key] !== undefined ? table[key] : (UI_STRINGS.zh[key] || key);
     }
 
-    // 将 [data-i18n] 元素替换为对应语言的文案。
+    // 将 [data-i18n] 元素替换为对应语言的文案；
+    // [data-i18n-title] 仅替换元素的 title 属性。
     function applyUiLanguage() {
       Array.prototype.forEach.call(document.querySelectorAll('[data-i18n]'), function(el) {
         el.textContent = i18n(el.getAttribute('data-i18n'));
+      });
+      Array.prototype.forEach.call(
+          document.querySelectorAll('[data-i18n-title]'), function(el) {
+        el.title = i18n(el.getAttribute('data-i18n-title'));
       });
     }
 
@@ -596,8 +613,21 @@
     }
 
     // 判断字符串是否形如 LaTeX（含反斜杠、幂/下标或花括号）。
+    // 仅作为兼容旧数据的兜底判断；新输出由 Python 端显式标注 latex 标记。
     function isLatexLike(s) {
       return /[\\^{}]/.test(s);
+    }
+
+    // 将单个输出条目规整为 {text, latex}：
+    //  - Python 端新格式：{text: "…", latex: true/false}（可靠标记）
+    //  - 旧格式/字符串：按启发式 isLatexLike 兜底判断。
+    function normalizeOutputEntry(entry) {
+      if (entry !== null && typeof entry === 'object' &&
+          !Array.isArray(entry) && 'text' in entry) {
+        return { text: String(entry.text), latex: !!entry.latex };
+      }
+      var text = (typeof entry === 'string') ? entry : JSON.stringify(entry);
+      return { text: String(text), latex: isLatexLike(text) };
     }
 
     // renderLatex=true 时，值列中的 LaTeX 字符串交给 MathJax 渲染。
@@ -610,13 +640,12 @@
       var html = '<table class="data-table"><thead><tr>';
       html += '<th>' + i18n('nameCol') + '</th><th>' + i18n('valueCol') + '</th></tr></thead><tbody>';
       Object.keys(entries).forEach(function(name) {
-        var value = entries[name];
-        var display = (typeof value === 'string') ? value : JSON.stringify(value);
+        var entry = normalizeOutputEntry(entries[name]);
         html += '<tr><td>' + escapeHtml(name) + '</td><td>';
-        if (renderLatex && isLatexLike(display)) {
-          html += '\\(' + escapeHtml(display) + '\\)';
+        if (renderLatex && entry.latex && entry.text) {
+          html += '\\(' + escapeHtml(entry.text) + '\\)';
         } else {
-          html += escapeHtml(display);
+          html += escapeHtml(entry.text);
         }
         html += '</td></tr>';
       });
@@ -935,7 +964,8 @@
         blocklyOutputs = {};
         renderOutputs();
 
-        var code = Blockly.Python.workspaceToCode(workspace);
+        // 运行按钮始终执行"CalculusCalculator 库代码"（与 PythonBridge 环境匹配）。
+        var code = window._blocklyGenerateLibraryCode(workspace);
         if (window.pyBridge && window.pyBridge.executePython) {
           window.pyBridge.executePython(code);
         } else {
@@ -945,8 +975,9 @@
       });
     }
 
-    // 预览代码开头附加的辅助函数定义（使预览代码自成一体，便于阅读与复制）。
+    // "库代码"预览模式开头附加的辅助函数定义（使预览代码自成一体，便于阅读与复制）。
     // 与 io_input / io_output 积木生成器的实际调用（get_input / py_output）保持一致。
+    // "原生 SymPy"预览模式的辅助函数见 blocks.js 中的 NATIVE_PRELUDE。
     var PY_PREVIEW_HELPERS = [
       'def get_input(input_name):',
       '  return input(f"{input_name}: ")',
@@ -956,6 +987,7 @@
     ].join('\n');
 
     // 预览当前积木生成的 Python 代码（不执行，仅在结果面板中展示）。
+    // 按下拉框选择展示"原生 SymPy 代码"（默认）或"CalculusCalculator 库代码"。
     function previewCode() {
       saveInputs();
       window.refreshFunctionList();
@@ -967,8 +999,18 @@
           panel.hidden = false;
           return;
         }
-        var code = Blockly.Python.workspaceToCode(workspace);
-        codeEl.textContent = (code ? PY_PREVIEW_HELPERS + code : i18n('emptyCode'));
+        var mode = document.getElementById('codeModeSelect').value;
+        var code;
+        if (mode === 'native') {
+          // 原生 SymPy 代码：仅依赖 SymPy，可复制到解释器直接运行。
+          code = window._blocklyGenerateNativeCode(workspace);
+          codeEl.textContent = (code ? window._blocklyNativePrelude() + code
+                                     : i18n('emptyCode'));
+        } else {
+          // 库代码：调用 CalculusCalculator 内部函数（运行按钮实际执行的代码）。
+          code = window._blocklyGenerateLibraryCode(workspace);
+          codeEl.textContent = (code ? PY_PREVIEW_HELPERS + code : i18n('emptyCode'));
+        }
         // 复位复制按钮文案。
         var copyBtn = document.getElementById('copyCodeBtn');
         copyBtn.textContent = i18n('copyBtn');
@@ -1130,30 +1172,66 @@
 
     document.getElementById('runButton').addEventListener('click', sendCodeToPython);
     document.getElementById('previewButton').addEventListener('click', previewCode);
+    // 切换预览代码类型下拉框后立即重新生成预览（仅在预览面板已打开时生效，
+    // 面板未打开时仍由"预览代码"按钮触发）。
+    document.getElementById('codeModeSelect').addEventListener('change', function() {
+      var panel = document.getElementById('codePreview');
+      if (panel && !panel.hidden) {
+        previewCode();
+      }
+    });
     document.getElementById('closePreviewBtn').addEventListener('click', closeCodePreview);
     document.getElementById('copyCodeBtn').addEventListener('click', function() {
+      var btn = document.getElementById('copyCodeBtn');
       var codeEl = document.getElementById('codePreviewText');
       var text = codeEl.textContent || '';
-      if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(text).then(function() {
-          var btn = document.getElementById('copyCodeBtn');
-          btn.textContent = i18n('copied');
-        }, function() { /* fall through to legacy copy */ });
-        return;
-      }
-      // 兜底：使用临时 textarea 复制。
-      try {
-        var ta = document.createElement('textarea');
-        ta.value = text;
-        ta.style.position = 'fixed';
-        ta.style.opacity = '0';
-        document.body.appendChild(ta);
-        ta.select();
-        document.execCommand('copy');
-        document.body.removeChild(ta);
-        var btn = document.getElementById('copyCodeBtn');
+
+      // 复制成功后短暂将按钮文本改为"已复制"，随后恢复为"复制"。
+      function markCopied() {
+        if (!btn || btn.dataset.copied === '1') return;
+        btn.dataset.copied = '1';
         btn.textContent = i18n('copied');
-      } catch (e) { /* ignore */ }
+        setTimeout(function() {
+          btn.textContent = i18n('copyBtn');
+          btn.dataset.copied = '';
+        }, 1500);
+      }
+
+      // 兜底方案：临时 textarea + execCommand('copy')。
+      // 在 QtWebEngine（非安全上下文）下，Clipboard API 常因权限被拒，
+      // 此方案是最可靠的方式。
+      function legacyCopy() {
+        try {
+          var ta = document.createElement('textarea');
+          ta.value = text;
+          ta.style.position = 'fixed';
+          ta.style.opacity = '0';
+          document.body.appendChild(ta);
+          ta.select();
+          document.execCommand('copy');
+          document.body.removeChild(ta);
+          markCopied();
+        } catch (e) {
+          // 复制失败：保持原样，不做额外提示。
+        }
+      }
+
+      // 优先使用 PythonBridge 暴露的系统剪贴板（QtWebEngine 中最可靠，
+      // 绕过浏览器剪贴板 API 的权限/用户手势限制）；
+      // 否则在安全上下文下尝试 Clipboard API，失败再回退到 execCommand。
+      if (window.pyBridge && typeof window.pyBridge.copyText === 'function') {
+        try {
+          window.pyBridge.copyText(text);
+          markCopied();
+          return;
+        } catch (e) { /* 回退到浏览器方案 */ }
+      }
+      if (navigator.clipboard && navigator.clipboard.writeText &&
+          window.isSecureContext) {
+        navigator.clipboard.writeText(text).then(markCopied, legacyCopy);
+      } else {
+        legacyCopy();
+      }
     });
 
     // 分隔条拖拽：自由调整积木区与结果面板的宽度。
@@ -1226,6 +1304,15 @@
 
     // 应用界面文案（按语言参数）
     applyUiLanguage();
+    // 填充预览代码类型下拉框（默认展示"原生 SymPy 代码"，可切换为库代码）。
+    (function() {
+      var modeSelect = document.getElementById('codeModeSelect');
+      if (modeSelect) {
+        modeSelect.options[0].textContent = i18n('codeModeNative');
+        modeSelect.options[1].textContent = i18n('codeModeLibrary');
+        modeSelect.value = 'native';
+      }
+    })();
     // 初始化时同步"定义函数"积木的函数名
     syncFunctionNames();
 

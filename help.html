@@ -444,6 +444,7 @@ code { background-color: #f0f0f0; padding: 1px 6px; border-radius: 3px; font-fam
 <li><b>Sympy / Latex 表达式输入</b>：积木中可直接输入 SymPy 表达式，或以前导 <code>$</code> 输入 LaTeX 代码（参见"〇、LaTeX 代码直接输入"）。</li>
 <li><b>编辑器内直接执行流程</b>：点击运行，按顺序执行积木搭建的流程，并实时显示中间结果。</li>
 <li><b>输出公式自动渲染</b>：计算结果以 LaTeX 形式自动渲染为清晰美观的数学公式。</li>
+<li><b>代码预览双模式</b>：点击"预览代码"，可通过下拉框切换展示<b>原生 SymPy 代码</b>（仅依赖 SymPy，复制后可在装有 SymPy 的解释器中直接运行）与<b>CalculusCalculator 库代码</b>（运行按钮实际执行的代码）；默认展示原生 SymPy 代码。</li>
 <li><b>定义函数 / 函数性质分析</b>：通过积木定义函数，并分析其定义域、单调性、奇偶性等性质。</li>
 <li><b>求导 / 积分</b>：使用对应积木对函数求导或积分。</li>
 <li><b>解方程(组) / 不等式(组) / 解三角形</b>：使用求解积木处理方程、不等式及三角形问题。</li>
@@ -466,7 +467,7 @@ code { background-color: #f0f0f0; padding: 1px 6px; border-radius: 3px; font-fam
 <table>
 <tr><th>版本</th><th>发布日期</th><th>核心更新</th></tr>
 
-<tr><td>v2.0.0</td><td>2026-08-14</td><td>新增积木化功能（可视化计算流程）；公式编辑器后端升级为 MathLive；新增启动界面并优化启动速度；帮助文档新增英文支持</td></tr>
+<tr><td>v2.0.0</td><td>2026-08-14</td><td>新增积木化功能（可视化计算流程）；公式编辑器后端升级为 MathLive；新增启动界面并优化启动速度；帮助文档新增英文支持；积木化新增"代码预览双模式"（原生 SymPy 代码 / 库代码）；修复输出 LaTeX 渲染误判问题；修复 sympify 传入 SymPy 对象时的下标访问错误</td></tr>
 </table>
 
 <p>感谢您的使用！</p>

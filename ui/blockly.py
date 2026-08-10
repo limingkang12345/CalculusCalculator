@@ -5,8 +5,8 @@ import sys
 
 from PySide6.QtCore import QCoreApplication, QObject, QUrl, Signal, Slot
 from PySide6.QtWebChannel import QWebChannel
-from PySide6.QtWidgets import (QDialog, QDialogButtonBox, QListWidget,
-                               QVBoxLayout, QWidget)
+from PySide6.QtWidgets import (QApplication, QDialog, QDialogButtonBox,
+                               QListWidget, QVBoxLayout, QWidget)
 
 from ui.ui_blockly import Ui_blockly
 
@@ -42,6 +42,16 @@ class PythonBridge(QObject):
             except Exception:
                 pass
         return None
+
+    @Slot(str)
+    def copyText(self, text):
+        """将文本写入系统剪贴板。
+
+        供积木编辑器"复制代码"按钮使用：QtWebEngine 中浏览器的
+        Clipboard API / execCommand('copy') 常因权限或用户手势限制而失效，
+        直接通过 QClipboard 写入系统剪贴板最可靠。
+        """
+        QApplication.clipboard().setText(text or '')
 
     # ------------------------------------------------------------------ #
     # 缓存区与公式编辑器（与原生文本框共用 main.cache）
@@ -181,22 +191,30 @@ class PythonBridge(QObject):
 
     def py_output(self, name, value):
         # 将输出以结构化参数回传页面，由页面的 addOutput(name, value) 渲染。
-        # 使用 str() 序列化值，避免 repr 对字符串值附加多余引号。
-        formatted = self._format_value(value)
+        # 携带 {text, latex} 标记：text 为显示文本，latex 表示该文本是否为
+        # 可靠的 LaTeX 公式（由 _format_value 判定），避免 JS 端启发式误判
+        # （例如把含 "^" 的普通文本误当作 LaTeX 渲染）。
+        text, is_latex = self._format_value(value)
+        payload = json.dumps({'text': text, 'latex': is_latex})
         if not self._runJavaScript(
-            'window.addOutput({}, {});'.format(json.dumps(name), json.dumps(formatted))
+            'window.addOutput({}, {});'.format(json.dumps(name), payload)
         ):
             # 页面不可用时的回退：以纯文本形式展示。
             self._runJavaScript(
-                'displayPythonResult({});'.format(json.dumps('输出 {}: {}'.format(name, formatted)))
+                'displayPythonResult({});'.format(json.dumps('输出 {}: {}'.format(name, text)))
             )
         return value
 
     @staticmethod
     def _format_value(value):
-        """将任意值转为适合在 JS 端显示的字符串；sympy 对象/数学表达式输出为 LaTeX。"""
+        """将任意值转为 (显示文本, 是否为 LaTeX) 的二元组。
+
+        - sympy 对象 / 可解析为数学表达式的字符串 → (latex_str, True)
+        - 纯文本 / 无法解析的字符串 → (原样文本, False)
+        - 容器（dict/list/tuple/set）→ 递归拼接，任一成员为 LaTeX 则整体标记为 LaTeX
+        """
         if value is None:
-            return ''
+            return ('', False)
         try:
             from sympy import latex as _latex, sympify as _sympify
         except Exception:
@@ -204,25 +222,28 @@ class PythonBridge(QObject):
             _sympify = None
         # 递归处理容器（方程组/三角形解等）。
         if isinstance(value, dict):
-            return r',\ '.join('{}={}'.format(k, PythonBridge._format_value(v))
-                               for k, v in value.items())
+            items = [(k, PythonBridge._format_value(v)) for k, v in value.items()]
+            parts = ['{}={}'.format(k, t) for k, (t, _) in items]
+            return (r',\ '.join(parts), any(f for _, f in items))
         if isinstance(value, (list, tuple, set)):
-            return r'\ \ \ '.join(PythonBridge._format_value(v) for v in value)
-        # 字符串：尝试 sympify+latex 转为 LaTeX；纯文本/非数学字符串原样返回。
+            items = [PythonBridge._format_value(v) for v in value]
+            parts = [t for t, _ in items]
+            return (r'\ \ \ '.join(parts), any(f for _, f in items))
+        # 字符串：尝试 sympify+latex 转为 LaTeX；纯文本/非数学字符串原样返回（非 LaTeX）。
         if isinstance(value, str):
             if _sympify is not None and _latex is not None and value.strip():
                 try:
-                    return _latex(_sympify(value))
+                    return (_latex(_sympify(value)), True)
                 except Exception:
                     pass
-            return value
+            return (value, False)
         # int/float/sympy 等其他数学对象 → LaTeX。
         if _latex is not None:
             try:
-                return _latex(value)
+                return (_latex(value), True)
             except Exception:
                 pass
-        return str(value)
+        return (str(value), False)
 
     # ------------------------------------------------------------------ #
     # 供 Blockly 积木调用的辅助函数（写入 eval/exec 环境）。

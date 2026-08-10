@@ -444,6 +444,7 @@ If multiple solutions exist (e.g. SSA), the system labels them "Solution 1", "So
 <li><b>Sympy / Latex expression input</b>: blocks can directly take SymPy expressions, or use a leading <code>$</code> for LaTeX input (see "0. Direct LaTeX Code Input").</li>
 <li><b>Run the flow directly in the editor</b>: click Run to execute the block-built flow in order, showing intermediate results in real time.</li>
 <li><b>Automatic output formula rendering</b>: results are automatically rendered as clear, good-looking math formulas in LaTeX.</li>
+<li><b>Dual-mode code preview</b>: click "Preview code" and use the dropdown to switch between <b>native SymPy code</b> (self-contained, only requires SymPy - copy and run directly in any interpreter with SymPy installed) and <b>CalculusCalculator library code</b> (the code actually executed by the Run button); native SymPy code is shown by default.</li>
 <li><b>Define function / function analysis</b>: define functions via blocks and analyze their domain, monotonicity, parity, etc.</li>
 <li><b>Derivative / integral</b>: use the corresponding blocks to differentiate or integrate a function.</li>
 <li><b>Equation(s) / inequality(ies) / triangle solving</b>: use solving blocks to handle equations, inequalities, and triangles.</li>
@@ -466,7 +467,7 @@ If multiple solutions exist (e.g. SSA), the system labels them "Solution 1", "So
 <table>
 <tr><th>Version</th><th>Release date</th><th>Core updates</th></tr>
 
-<tr><td>v2.0.0</td><td>2026-08-14</td><td>New Blockly feature (visual computation flow); formula editor backend upgraded to MathLive; new splash screen and optimized startup; English help documentation added</td></tr>
+<tr><td>v2.0.0</td><td>2026-08-14</td><td>New Blockly feature (visual computation flow); formula editor backend upgraded to MathLive; new splash screen and optimized startup; English help documentation added; Blockly added dual-mode code preview (native SymPy code / library code); fixed LaTeX output rendering misdetection; fixed subscript access error when sympify receives a SymPy object</td></tr>
 </table>
 
 <p>Thank you for using it!</p>
