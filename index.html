@@ -16,6 +16,10 @@
       
       
         
+          <link rel="alternate" href="/CalculusCalculator/" hreflang="zh">
+        
+          <link rel="alternate" href="/CalculusCalculator/en/" hreflang="en">
+        
       
       
       <link rel="icon" href="assets/images/favicon.png">
@@ -28,6 +32,9 @@
     
     
       <link rel="stylesheet" href="assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="assets/stylesheets/palette.ab4e12ef.min.css">
       
       
 
@@ -55,7 +62,14 @@
   </head>
   
   
-    <body dir="ltr">
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
   
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
@@ -107,9 +121,47 @@
       </div>
     </div>
     
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-hidden="true"  type="radio" name="__palette" id="__palette_0">
+    
+  
+</form>
+      
+    
     
       <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
     
+    
+      <div class="md-header__option">
+  <div class="md-select">
+    
+    <button class="md-header__button md-icon" aria-label="选择当前语言">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m12.87 15.07-2.54-2.51.03-.03A17.5 17.5 0 0 0 14.07 6H17V4h-7V2H8v2H1v2h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2zm-2.62 7 1.62-4.33L19.12 17z"/></svg>
+    </button>
+    <div class="md-select__inner">
+      <ul class="md-select__list">
+        
+          <li class="md-select__item">
+            <a href="/CalculusCalculator/" hreflang="zh" class="md-select__link">
+              中文
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="/CalculusCalculator/en/" hreflang="en" class="md-select__link">
+              English
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</div>
     
     
       
@@ -294,7 +346,7 @@
   <a href="#_2" class="md-nav__link">
     <span class="md-ellipsis">
       
-        快速导航
+        文档结构
       
     </span>
   </a>
@@ -303,6 +355,17 @@
       
         <li class="md-nav__item">
   <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        快速导航
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
     <span class="md-ellipsis">
       
         许可证
@@ -350,7 +413,7 @@
   <span class="md-ellipsis">
     
   
-    用户指南
+    用户文档
   
 
     
@@ -366,7 +429,7 @@
             <span class="md-nav__icon md-icon"></span>
             
   
-    用户指南
+    用户文档
   
 
           </label>
@@ -456,6 +519,34 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="guide/features/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    功能详解
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -493,7 +584,7 @@
   <span class="md-ellipsis">
     
   
-    API 参考
+    开发者文档
   
 
     
@@ -506,6 +597,177 @@
         
         <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    开发者文档
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="dev/architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    架构与项目结构
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="dev/extending/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    新增功能选项卡
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="dev/i18n/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    国际化
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="dev/build_docs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    文档与构建
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API 参考
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -532,10 +794,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_1" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_1" >
         
           
-          <label class="md-nav__link" for="__nav_3_1" id="__nav_3_1_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_4_1" id="__nav_4_1_label" tabindex="0">
             
   
   
@@ -553,8 +815,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_1_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_3_1">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_1">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -620,6 +882,34 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="api/core/settings/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    设置与主题
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -645,10 +935,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_2" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_2" >
         
           
-          <label class="md-nav__link" for="__nav_3_2" id="__nav_3_2_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_4_2" id="__nav_4_2_label" tabindex="0">
             
   
   
@@ -666,8 +956,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_2_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_3_2">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_2">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1124,7 +1414,7 @@
   <a href="#_2" class="md-nav__link">
     <span class="md-ellipsis">
       
-        快速导航
+        文档结构
       
     </span>
   </a>
@@ -1133,6 +1423,17 @@
       
         <li class="md-nav__item">
   <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        快速导航
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
     <span class="md-ellipsis">
       
         许可证
@@ -1163,7 +1464,7 @@
 
 
 <h1 id="calculuscalculator">CalculusCalculator 微积分计算器</h1>
-<p><strong>CalculusCalculator</strong> 是一个基于 SymPy 与 PySide6 的图形化微积分计算工具，覆盖求导、积分、函数性质分析、表达式变形、方程（组）与不等式（组）求解、微分方程、符号计算、向量运算、解三角形、函数绘图，以及平面 / 立体几何的定义、计算与绘图，并提供工程存档 / 读档、内置帮助文档、浅色 / 深色主题与中英文界面。</p>
+<p><strong>CalculusCalculator</strong> 是一个基于 SymPy 与 PySide6 的图形化微积分计算工具，覆盖求导、积分、函数性质分析、表达式变形、方程（组）与不等式（组）求解、微分方程、符号计算、向量运算、解三角形、函数绘图，以及平面 / 立体几何的定义、计算与绘图，并提供工程存档 / 读档、内置帮助文档、浅色 / 深色主题与中英文界面。v2.0.0 新增"积木编辑器"，可通过拼接积木完成可视化计算流程。</p>
 <p><a href="https://github.com/limingkang12345/CalculusCalculator">在 GitHub 上查看</a> · <a href="https://limingkang.pythonanywhere.com">网页版</a></p>
 <h2 id="_1">核心特性</h2>
 <ul>
@@ -1174,22 +1475,28 @@
 <li><strong>多引擎计算</strong>：Python 内置 / Mpmath 高精度 / SymPy 符号三种引擎，支持 LaTeX 输出。</li>
 <li><strong>几何计算</strong>：平面 32 种、立体 22 种运算，配合 Matplotlib 2D/3D 绘图。</li>
 <li><strong>存档与恢复</strong>：所有标签页输入、自定义函数、几何对象保存为 JSON，下次自动恢复。</li>
-<li><strong>存档精细控制</strong>（v1.6.4）：设置页可按类别选择性存档，避免不必要的数据写入项目文件。</li>
-<li><strong>表达式缓存</strong>（v1.6.4）：缓存区暂存常用表达式，支持弹窗选择与标签页管理。</li>
-<li><strong>可视化公式输入</strong>（v1.6.4）：基于 pyqt5-math-widget 的图形化公式面板。</li>
+<li><strong>可视化公式输入</strong>：基于 MathLive 的图形化公式面板；v2.0.0 新增积木化计算流程编辑。</li>
 <li><strong>设置与多语言</strong>：内置"设置"选项卡，支持中文 / 英文界面与浅色 / 深色主题。</li>
-<li><strong>内置帮助文档</strong>：提供用户文档与 API 文档（本站点即其源码）。</li>
+<li><strong>内置帮助文档</strong>：提供用户文档、开发者文档与 API 文档（本站点即其源码）。</li>
 </ul>
-<h2 id="_2">快速导航</h2>
+<h2 id="_2">文档结构</h2>
+<p>本文档分为三类，便于不同读者快速定位：</p>
+<ul>
+<li><strong>用户文档</strong>：安装、配置与各项功能用法（见<a href="guide/features/">《功能详解》</a>）。</li>
+<li><strong>开发者文档</strong>：架构、如何新增功能、国际化与文档构建（见<a href="dev/architecture/">《架构与项目结构》</a>）。</li>
+<li><strong>API 参考</strong>：<code>core/</code> 与 <code>functions/</code> 各模块的对外函数（见<a href="api/core/sympify/">《字符串解析》</a>）。</li>
+</ul>
+<h2 id="_3">快速导航</h2>
 <ul>
 <li>想马上用起来？看 <a href="guide/quickstart/">快速开始</a>。</li>
 <li>需要安装 / 打包？看 <a href="guide/installation/">安装教程</a>。</li>
 <li>调整语言、主题或存档？看 <a href="guide/configuration/">配置选项</a>。</li>
+<li>查阅各功能用法？看 <a href="guide/features/">功能详解</a>。</li>
 <li>不确定输入语法？看 <a href="api/core/sympify/">字符串解析</a>。</li>
-<li>查阅各功能用法？看 <a href="api/modules/derivative/">功能模块</a>。</li>
+<li>想参与开发 / 构建文档？看 <a href="dev/build_docs/">开发者文档</a>。</li>
 </ul>
-<h2 id="_3">许可证</h2>
-<p>本项目采用 MIT 许可证。作者 LiMingkang。</p>
+<h2 id="_4">许可证</h2>
+<p>本项目采用 GPL-v3 许可证。作者 LiMingkang。</p>
 
 
 

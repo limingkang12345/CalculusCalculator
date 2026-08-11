@@ -18,6 +18,10 @@
       
       
         
+          <link rel="alternate" href="./" hreflang="zh">
+        
+          <link rel="alternate" href="../../../en/api/modules/plane_calc/" hreflang="en">
+        
       
       
       <link rel="icon" href="../../../assets/images/favicon.png">
@@ -30,6 +34,9 @@
     
     
       <link rel="stylesheet" href="../../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
       
       
 
@@ -57,7 +64,14 @@
   </head>
   
   
-    <body dir="ltr">
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
   
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
@@ -66,7 +80,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#v152" class="md-skip">
+        <a href="#functionsplanespy" class="md-skip">
           跳转至
         </a>
       
@@ -109,9 +123,47 @@
       </div>
     </div>
     
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-hidden="true"  type="radio" name="__palette" id="__palette_0">
+    
+  
+</form>
+      
+    
     
       <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
     
+    
+      <div class="md-header__option">
+  <div class="md-select">
+    
+    <button class="md-header__button md-icon" aria-label="选择当前语言">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m12.87 15.07-2.54-2.51.03-.03A17.5 17.5 0 0 0 14.07 6H17V4h-7V2H8v2H1v2h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2zm-2.62 7 1.62-4.33L19.12 17z"/></svg>
+    </button>
+    <div class="md-select__inner">
+      <ul class="md-select__list">
+        
+          <li class="md-select__item">
+            <a href="./" hreflang="zh" class="md-select__link">
+              中文
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="../../../en/api/modules/plane_calc/" hreflang="en" class="md-select__link">
+              English
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</div>
     
     
       
@@ -272,7 +324,7 @@
   <span class="md-ellipsis">
     
   
-    用户指南
+    用户文档
   
 
     
@@ -288,7 +340,7 @@
             <span class="md-nav__icon md-icon"></span>
             
   
-    用户指南
+    用户文档
   
 
           </label>
@@ -378,6 +430,205 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../guide/features/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    功能详解
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    开发者文档
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    开发者文档
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dev/architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    架构与项目结构
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dev/extending/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    新增功能选项卡
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dev/i18n/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    国际化
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dev/build_docs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    文档与构建
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -407,10 +658,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
         
           
-          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
             
   
   
@@ -428,8 +679,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_3">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -456,10 +707,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_1" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_1" >
         
           
-          <label class="md-nav__link" for="__nav_3_1" id="__nav_3_1_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_4_1" id="__nav_4_1_label" tabindex="0">
             
   
   
@@ -477,8 +728,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_1_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_3_1">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_1">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -544,6 +795,34 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../core/settings/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    设置与主题
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -571,10 +850,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_2" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_2" checked>
         
           
-          <label class="md-nav__link" for="__nav_3_2" id="__nav_3_2_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_4_2" id="__nav_4_2_label" tabindex="0">
             
   
   
@@ -592,8 +871,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_2_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_3_2">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_2">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -978,10 +1257,21 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#32" class="md-nav__link">
+  <a href="#get_planes_result" class="md-nav__link">
     <span class="md-ellipsis">
       
-        支持的操作（共 32 种）
+        get_planes_result — 统一调度（字符串接口）
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#planes_operation_list" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        操作列表 planes_operation_list
       
     </span>
   </a>
@@ -992,10 +1282,104 @@
   <a href="#_1" class="md-nav__link">
     <span class="md-ellipsis">
       
-        提示
+        几何对象构造（定义页使用）
       
     </span>
   </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        底层辅助函数
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="底层辅助函数">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        点运算
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        直线运算
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        圆运算
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-point" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        三角形运算（均接收 3 个 Point）
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        多边形运算
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        几何构造（由已有对象生成新对象）
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        向量运算
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -1105,10 +1489,21 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#32" class="md-nav__link">
+  <a href="#get_planes_result" class="md-nav__link">
     <span class="md-ellipsis">
       
-        支持的操作（共 32 种）
+        get_planes_result — 统一调度（字符串接口）
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#planes_operation_list" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        操作列表 planes_operation_list
       
     </span>
   </a>
@@ -1119,10 +1514,104 @@
   <a href="#_1" class="md-nav__link">
     <span class="md-ellipsis">
       
-        提示
+        几何对象构造（定义页使用）
       
     </span>
   </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        底层辅助函数
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="底层辅助函数">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        点运算
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        直线运算
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        圆运算
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-point" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        三角形运算（均接收 3 个 Point）
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        多边形运算
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        几何构造（由已有对象生成新对象）
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        向量运算
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -1146,135 +1635,320 @@
   
 
 
-<h1 id="v152">平面几何计算（v1.5.2）</h1>
-<p>在"平面计算"页面，使用已定义的点、直线、圆、三角形、多边形等对象进行几何运算。
-参数以<strong>英文半角逗号</strong>分隔，通过对象名称引用已定义对象。</p>
-<h2 id="32">支持的操作（共 32 种）</h2>
+<h1 id="functionsplanespy">平面几何计算（functions/planes.py）</h1>
+<p><code>functions/planes.py</code> 提供平面几何计算（点、线、圆、三角形、多边形、向量及几何变换）与平面几何对象的<strong>构造</strong>（定义页面使用）。对外主接口为 <code>get_planes_result</code>，参数以<strong>字符串</strong>传入；除此之外还导出一批<strong>底层辅助函数</strong>，它们直接接收 sympy 几何对象（如 <code>Point</code>、<code>Line</code>、<code>Circle</code>、<code>Triangle</code>、<code>Polygon</code>），返回 <code>radsimp</code> 化简后的表达式或坐标元组。</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>若只想按字符串调用，请用 <code>get_planes_result</code>；下列辅助函数适用于需要编程组合几何对象的场景。UI 的「平面几何」定义页与「平面几何计算」页分别使用本模块的构造 / 计算函数。</p>
+</div>
+<h2 id="get_planes_result">get_planes_result — 统一调度（字符串接口）</h2>
+<p><strong>作用</strong>：根据 <code>op_index</code> 调用对应的底层几何计算，参数为字符串，内部自动解析。</p>
+<pre><code class="language-python">def get_planes_result(op_index, params, fs):
+    ...
+</code></pre>
 <table>
 <thead>
 <tr>
-<th>类别</th>
-<th>操作</th>
-<th>参数示例</th>
+<th>参数</th>
+<th>类型</th>
+<th>含义</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>点运算</td>
-<td>两点距离</td>
-<td>A, B</td>
+<td><code>op_index</code></td>
+<td><code>int</code></td>
+<td>操作编号，对应 <code>planes_operation_list</code>（0–29）</td>
 </tr>
 <tr>
-<td>点运算</td>
-<td>中点坐标</td>
-<td>A, B</td>
+<td><code>params</code></td>
+<td><code>list[str]</code></td>
+<td>参数列表：点用 <code>"x,y"</code>，多个点用 <code>";"</code> 分隔；向量分量等按项填写</td>
 </tr>
 <tr>
-<td>点运算</td>
-<td>多点共线判断</td>
-<td>A, B, C</td>
-</tr>
-<tr>
-<td>点运算</td>
-<td>平移点</td>
-<td>A, 1, 2</td>
-</tr>
-<tr>
-<td>点运算</td>
-<td>绕定点旋转点</td>
-<td>A, pi/2, O</td>
-</tr>
-<tr>
-<td>点运算</td>
-<td>点关于直线反射</td>
-<td>A, L1</td>
-</tr>
-<tr>
-<td>直线运算</td>
-<td>直线方程</td>
-<td>A, B</td>
-</tr>
-<tr>
-<td>直线运算</td>
-<td>直线斜率</td>
-<td>A, B</td>
-</tr>
-<tr>
-<td>直线运算</td>
-<td>两直线交点</td>
-<td>L1, L2</td>
-</tr>
-<tr>
-<td>直线运算</td>
-<td>点到直线距离</td>
-<td>A, L1</td>
-</tr>
-<tr>
-<td>直线运算</td>
-<td>两直线夹角</td>
-<td>L1, L2</td>
-</tr>
-<tr>
-<td>直线运算</td>
-<td>平行判断 / 垂直判断</td>
-<td>L1, L2</td>
-</tr>
-<tr>
-<td>圆运算</td>
-<td>圆心坐标 / 半径 / 面积 / 周长</td>
-<td>C1</td>
-</tr>
-<tr>
-<td>圆运算</td>
-<td>两圆交点</td>
-<td>C1, C2</td>
-</tr>
-<tr>
-<td>圆运算</td>
-<td>圆切线方程</td>
-<td>A, C1</td>
-</tr>
-<tr>
-<td>三角形运算</td>
-<td>面积 / 周长 / 外心 / 内心 / 重心 / 垂心</td>
-<td>T1</td>
-</tr>
-<tr>
-<td>三角形运算</td>
-<td>外接圆半径 / 内切圆半径</td>
-<td>T1</td>
-</tr>
-<tr>
-<td>三角形运算</td>
-<td>直角/等腰/等边判断</td>
-<td>T1</td>
-</tr>
-<tr>
-<td>多边形运算</td>
-<td>面积 / 周长</td>
-<td>A, B, C, D</td>
-</tr>
-<tr>
-<td>变换</td>
-<td>平移 / 旋转 / 反射</td>
-<td>见点运算</td>
-</tr>
-<tr>
-<td>向量运算</td>
-<td>两点向量 / 向量模 / 点积 / 夹角</td>
-<td>A, B</td>
+<td><code>fs</code></td>
+<td><code>dict</code></td>
+<td>函数字典</td>
 </tr>
 </tbody>
 </table>
+<p><strong>返回</strong>：计算结果（sympy 表达式 / 坐标元组 / 字符串）；参数非法时返回 <code>"计算错误: ..."</code>。</p>
+<h2 id="planes_operation_list">操作列表 planes_operation_list</h2>
+<p><code>planes_operation_list</code> 是长度为 30 的字符串列表，索引与 <code>op_index</code> 一一对应：</p>
+<table>
+<thead>
+<tr>
+<th>索引</th>
+<th>操作</th>
+<th>索引</th>
+<th>操作</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>两点距离</td>
+<td>15</td>
+<td>三角形周长</td>
+</tr>
+<tr>
+<td>1</td>
+<td>中点坐标</td>
+<td>16</td>
+<td>三角形外心</td>
+</tr>
+<tr>
+<td>2</td>
+<td>共线判断</td>
+<td>17</td>
+<td>三角形内心</td>
+</tr>
+<tr>
+<td>3</td>
+<td>直线方程</td>
+<td>18</td>
+<td>三角形重心</td>
+</tr>
+<tr>
+<td>4</td>
+<td>直线斜率</td>
+<td>19</td>
+<td>三角形垂心</td>
+</tr>
+<tr>
+<td>5</td>
+<td>直线交点</td>
+<td>20</td>
+<td>三角形分析</td>
+</tr>
+<tr>
+<td>6</td>
+<td>点到直线距离</td>
+<td>21</td>
+<td>多边形面积</td>
+</tr>
+<tr>
+<td>7</td>
+<td>两直线夹角</td>
+<td>22</td>
+<td>多边形周长</td>
+</tr>
+<tr>
+<td>8</td>
+<td>平行判断</td>
+<td>23</td>
+<td>平移变换</td>
+</tr>
+<tr>
+<td>9</td>
+<td>垂直判断</td>
+<td>24</td>
+<td>旋转变换</td>
+</tr>
+<tr>
+<td>10</td>
+<td>圆的面积</td>
+<td>25</td>
+<td>反射变换</td>
+</tr>
+<tr>
+<td>11</td>
+<td>圆的周长</td>
+<td>26</td>
+<td>两点向量</td>
+</tr>
+<tr>
+<td>12</td>
+<td>两圆交点</td>
+<td>27</td>
+<td>向量模</td>
+</tr>
+<tr>
+<td>13</td>
+<td>圆切线方程</td>
+<td>28</td>
+<td>向量点积</td>
+</tr>
+<tr>
+<td>14</td>
+<td>三角形面积</td>
+<td>29</td>
+<td>向量夹角</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>UI「平面几何计算」页还额外提供外接圆半径、内切圆半径、直角 / 等腰 / 等边三角形判断等 32 种运算，其内部调用下方对应的底层函数。</p>
+</div>
+<h2 id="_1">几何对象构造（定义页使用）</h2>
+<pre><code class="language-python">create_point(x: str, y: str, fs: dict) -&gt; Point
+</code></pre>
+<p><strong>作用</strong>：由坐标字符串构造点，返回 <code>Point</code>。</p>
+<pre><code class="language-python">create_line(pt1: Point, pt2: Point) -&gt; Line
+</code></pre>
+<p><strong>作用</strong>：过两点构造直线。</p>
+<pre><code class="language-python">create_circle(center: Point, radius: str, fs: dict) -&gt; Circle
+</code></pre>
+<p><strong>作用</strong>：由圆心与半径字符串构造圆。</p>
+<pre><code class="language-python">create_circle_three_points(p1: Point, p2: Point, p3: Point) -&gt; Circle
+</code></pre>
+<p><strong>作用</strong>：过三点构造圆（外接圆）。</p>
+<pre><code class="language-python">create_triangle(p1: Point, p2: Point, p3: Point) -&gt; Triangle
+</code></pre>
+<p><strong>作用</strong>：过三点构造三角形。</p>
+<pre><code class="language-python">create_polygon(points: list[Point]) -&gt; Polygon
+</code></pre>
+<p><strong>作用</strong>：由顶点列表构造多边形。</p>
+<h2 id="_2">底层辅助函数</h2>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>以下函数接收 sympy 几何对象（来自 <code>sympy.geometry</code>），<code>radsimp</code> 化简后返回表达式或坐标元组。</p>
+</div>
+<h3 id="_3">点运算</h3>
+<pre><code class="language-python">point_distance(pt1: Point, pt2: Point) -&gt; Expr
+</code></pre>
+<p><strong>作用</strong>：求两点间距离。</p>
+<pre><code class="language-python">midpoint(pt1: Point, pt2: Point) -&gt; tuple[Expr, Expr]
+</code></pre>
+<p><strong>作用</strong>：求两点中点坐标，返回 <code>(x, y)</code>。</p>
+<pre><code class="language-python">collinear_check(points: list[Point]) -&gt; bool
+</code></pre>
+<p><strong>作用</strong>：判断多点是否共线。</p>
+<pre><code class="language-python">translate_point(pt: Point, dx: str, dy: str, fs: dict) -&gt; tuple[Expr, Expr]
+</code></pre>
+<p><strong>作用</strong>：将点按向量 <code>(dx, dy)</code> 平移；<code>dx</code>/<code>dy</code> 为字符串表达式，返回 <code>(x', y')</code>。</p>
+<pre><code class="language-python">rotate_point(pt: Point, angle: str, center: Point, fs: dict) -&gt; tuple[Expr, Expr]
+</code></pre>
+<p><strong>作用</strong>：将点绕 <code>center</code>（旋转中心）旋转 <code>angle</code> 弧度；<code>angle</code> 为字符串表达式，返回 <code>(x', y')</code>。</p>
+<pre><code class="language-python">reflect_point(pt: Point, line_pt1: Point, line_pt2: Point) -&gt; tuple[Expr, Expr]
+</code></pre>
+<p><strong>作用</strong>：求 <code>pt</code> 关于过 <code>line_pt1</code>、<code>line_pt2</code> 的直线的对称点，返回 <code>(x', y')</code>。</p>
+<h3 id="_4">直线运算</h3>
+<pre><code class="language-python">line_equation(pt1: Point, pt2: Point) -&gt; Expr
+</code></pre>
+<p><strong>作用</strong>：求过两点的直线方程（默认 <code>x</code> 为变量）。</p>
+<pre><code class="language-python">line_slope(pt1: Point, pt2: Point) -&gt; Expr
+</code></pre>
+<p><strong>作用</strong>：求过两点的直线斜率（垂直线返回 <code>oo</code>）。</p>
+<pre><code class="language-python">line_intersection(p1: Point, p2: Point, q1: Point, q2: Point) -&gt; tuple[Expr, Expr] | str
+</code></pre>
+<p><strong>作用</strong>：求两直线交点；平行返回 <code>"两直线平行"</code>，重合返回 <code>"两直线重合"</code>；否则返回 <code>(x, y)</code>。</p>
+<pre><code class="language-python">point_to_line_distance(pt: Point, line_pt1: Point, line_pt2: Point) -&gt; Expr
+</code></pre>
+<p><strong>作用</strong>：求点到直线的距离。</p>
+<pre><code class="language-python">angle_between_lines(p1: Point, p2: Point, q1: Point, q2: Point) -&gt; Expr
+</code></pre>
+<p><strong>作用</strong>：求两直线的夹角（锐角，弧度）。</p>
+<pre><code class="language-python">parallel_check(p1: Point, p2: Point, q1: Point, q2: Point) -&gt; bool
+</code></pre>
+<p><strong>作用</strong>：判断两直线是否平行。</p>
+<pre><code class="language-python">perpendicular_check(p1: Point, p2: Point, q1: Point, q2: Point) -&gt; bool
+</code></pre>
+<p><strong>作用</strong>：判断两直线是否垂直。</p>
+<h3 id="_5">圆运算</h3>
+<pre><code class="language-python">circle_center(center: Point, radius: str, fs: dict) -&gt; tuple[Expr, Expr]
+</code></pre>
+<p><strong>作用</strong>：求圆（由圆心与半径确定）的圆心坐标 <code>(x, y)</code>。</p>
+<pre><code class="language-python">circle_radius(center: Point, radius: str, fs: dict) -&gt; Expr
+</code></pre>
+<p><strong>作用</strong>：求圆半径。</p>
+<pre><code class="language-python">circle_area_func(center: Point, radius: str, fs: dict) -&gt; Expr
+</code></pre>
+<p><strong>作用</strong>：求圆面积 <code>π·r²</code>。</p>
+<pre><code class="language-python">circle_circumference(center: Point, radius: str, fs: dict) -&gt; Expr
+</code></pre>
+<p><strong>作用</strong>：求圆周长 <code>2π·r</code>。</p>
+<pre><code class="language-python">circle_intersection(center1: Point, radius1: str, center2: Point, radius2: str, fs: dict) -&gt; list[tuple[Expr, Expr]] | str
+</code></pre>
+<p><strong>作用</strong>：求两圆交点；无交点返回 <code>"两圆不相交"</code>；否则返回交点坐标列表。</p>
+<pre><code class="language-python">circle_tangent_lines(center: Point, radius: str, point: Point, fs: dict) -&gt; list[Expr] | str
+</code></pre>
+<p><strong>作用</strong>：求圆外一点到圆的切线方程；无切线返回 <code>"无切线"</code>。</p>
+<h3 id="3-point">三角形运算（均接收 3 个 <code>Point</code>）</h3>
+<pre><code class="language-python">triangle_area(p1, p2, p3) -&gt; Expr              # 面积
+triangle_perimeter(p1, p2, p3) -&gt; Expr         # 周长
+triangle_circumcenter(p1, p2, p3) -&gt; tuple[Expr, Expr]   # 外心
+triangle_circumradius(p1, p2, p3) -&gt; Expr      # 外接圆半径
+triangle_incenter(p1, p2, p3) -&gt; tuple[Expr, Expr]       # 内心
+triangle_inradius(p1, p2, p3) -&gt; Expr          # 内切圆半径
+triangle_centroid(p1, p2, p3) -&gt; tuple[Expr, Expr]       # 重心
+triangle_orthocenter(p1, p2, p3) -&gt; tuple[Expr, Expr]    # 垂心
+triangle_is_right(p1, p2, p3) -&gt; bool          # 直角三角形判断
+triangle_is_isosceles(p1, p2, p3) -&gt; bool      # 等腰三角形判断
+triangle_is_equilateral(p1, p2, p3) -&gt; bool    # 等边三角形判断
+triangle_analysis(p1, p2, p3) -&gt; dict          # 综合分析（面积/周长/四心/三类判断等）
+</code></pre>
+<h3 id="_6">多边形运算</h3>
+<pre><code class="language-python">polygon_area_func(points: list[Point]) -&gt; Expr
+</code></pre>
+<p><strong>作用</strong>：求多边形面积（<code>points</code> 为顶点列表）。</p>
+<pre><code class="language-python">polygon_perimeter_func(points: list[Point]) -&gt; Expr
+</code></pre>
+<p><strong>作用</strong>：求多边形周长。</p>
+<h3 id="_7">几何构造（由已有对象生成新对象）</h3>
+<pre><code class="language-python">circle_with_diameter(p1: Point, p2: Point) -&gt; Circle
+</code></pre>
+<p><strong>作用</strong>：以两点为直径端点构造圆。</p>
+<pre><code class="language-python">circle_by_center_and_point(center: Point, pt: Point) -&gt; Circle
+</code></pre>
+<p><strong>作用</strong>：以圆心和圆上一点构造圆。</p>
+<pre><code class="language-python">perpendicular_bisector(p1: Point, p2: Point) -&gt; Line
+</code></pre>
+<p><strong>作用</strong>：求线段（<code>p1</code>–<code>p2</code>）的中垂线。</p>
+<pre><code class="language-python">line_parallel_through_point(line: Line, pt: Point) -&gt; Line
+</code></pre>
+<p><strong>作用</strong>：过一点作已知直线的平行线。</p>
+<pre><code class="language-python">line_perpendicular_through_point(line: Line, pt: Point) -&gt; Line
+</code></pre>
+<p><strong>作用</strong>：过一点作已知直线的垂线。</p>
+<pre><code class="language-python">angle_bisector_line(l1: Line, l2: Line) -&gt; Line | str
+</code></pre>
+<p><strong>作用</strong>：求两相交直线的角平分线；平行返回 <code>"两直线平行，无角平分线"</code>，重合返回 <code>"两直线重合"</code>。</p>
+<pre><code class="language-python">angle_bisector(p1: Point, p2: Point, p3: Point) -&gt; Line
+</code></pre>
+<p><strong>作用</strong>：求角 <code>p1-p2-p3</code> 的角平分线（<code>p2</code> 为顶点）。</p>
+<pre><code class="language-python">triangle_median(tri: Triangle, vertex_label: int) -&gt; Segment
+</code></pre>
+<p><strong>作用</strong>：求三角形中线（顶点到对边中点）；<code>vertex_label</code> 为顶点索引（0/1/2）。</p>
+<pre><code class="language-python">triangle_altitude(tri: Triangle, vertex_label: int) -&gt; Line
+</code></pre>
+<p><strong>作用</strong>：求三角形高线（过顶点作对边垂线）。</p>
+<pre><code class="language-python">triangle_midsegment(tri: Triangle) -&gt; Segment
+</code></pre>
+<p><strong>作用</strong>：求三角形中位线（连接两边中点的线段）。</p>
+<pre><code class="language-python">triangle_incircle(tri: Triangle) -&gt; Circle
+</code></pre>
+<p><strong>作用</strong>：求三角形内切圆。</p>
+<pre><code class="language-python">triangle_excircle(tri: Triangle, vertex_label: int) -&gt; Circle
+</code></pre>
+<p><strong>作用</strong>：求三角形旁切圆（与某边及另外两边延长线相切）。</p>
+<pre><code class="language-python">segment_from_points(p1: Point, p2: Point) -&gt; Segment
+</code></pre>
+<p><strong>作用</strong>：过两点构造线段。</p>
+<h3 id="_8">向量运算</h3>
+<pre><code class="language-python">vector_from_points(pt1: Point, pt2: Point) -&gt; tuple[Expr, Expr]
+</code></pre>
+<p><strong>作用</strong>：求由 <code>pt1</code> 指向 <code>pt2</code> 的向量 <code>(dx, dy)</code>。</p>
+<pre><code class="language-python">vector_length(dx: str, dy: str, fs: dict) -&gt; Expr
+</code></pre>
+<p><strong>作用</strong>：求向量模长；<code>dx</code>/<code>dy</code> 为分量字符串。</p>
+<pre><code class="language-python">vector_dot(v1_dx: str, v1_dy: str, v2_dx: str, v2_dy: str, fs: dict) -&gt; Expr
+</code></pre>
+<p><strong>作用</strong>：求两向量点积。</p>
+<pre><code class="language-python">vector_angle(v1_dx: str, v1_dy: str, v2_dx: str, v2_dy: str, fs: dict) -&gt; Expr
+</code></pre>
+<p><strong>作用</strong>：求两向量夹角（弧度）。</p>
+<pre><code class="language-python">area_by_coordinates(x1, y1, x2, y2, x3, y3, fs) -&gt; Expr
+</code></pre>
+<p><strong>作用</strong>：由三个顶点的坐标字符串（行列式法）求三角形面积。</p>
 <div class="admonition example">
 <p class="admonition-title">Example</p>
-<p>先在"平面几何"定义点 A(0,0)、B(3,0)、C(0,4)，
-在"平面计算"选择"三角形面积"，参数输入 <code>A,B,C</code>，计算结果为 6。</p>
+<p><code>python
+from functions.planes import get_planes_result
+get_planes_result(0, ["0,0", "3,4"], {})         # 两点距离 -&gt; 5
+get_planes_result(14, ["0,0", "1,0", "0,1"], {})  # 三角形面积 -&gt; 1/2</code></p>
 </div>
-<h2 id="_1">提示</h2>
-<ul>
-<li>参数输入遵循 <a href="../../core/sympify/">字符串解析</a> 的输入标准。</li>
-</ul>
 
 
 

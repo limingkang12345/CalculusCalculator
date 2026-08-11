@@ -1,83 +1,395 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
     <url>
-         <loc>https://limingkang12345.github.io/CalculusCalculator/</loc>
-         <lastmod>2026-07-19</lastmod>
+        <loc>https://limingkang12345.github.io/CalculusCalculator/</loc>
+        <lastmod>2026-08-11</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://limingkang12345.github.io/CalculusCalculator/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://limingkang12345.github.io/CalculusCalculator/en/"/>
     </url>
     <url>
-         <loc>https://limingkang12345.github.io/CalculusCalculator/about/</loc>
-         <lastmod>2026-07-19</lastmod>
+        <loc>https://limingkang12345.github.io/CalculusCalculator/about/</loc>
+        <lastmod>2026-08-11</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://limingkang12345.github.io/CalculusCalculator/about/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://limingkang12345.github.io/CalculusCalculator/en/about/"/>
     </url>
     <url>
-         <loc>https://limingkang12345.github.io/CalculusCalculator/api/core/rendering/</loc>
-         <lastmod>2026-07-19</lastmod>
+        <loc>https://limingkang12345.github.io/CalculusCalculator/api/core/rendering/</loc>
+        <lastmod>2026-08-11</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://limingkang12345.github.io/CalculusCalculator/api/core/rendering/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://limingkang12345.github.io/CalculusCalculator/en/api/core/rendering/"/>
     </url>
     <url>
-         <loc>https://limingkang12345.github.io/CalculusCalculator/api/core/sympify/</loc>
-         <lastmod>2026-07-19</lastmod>
+        <loc>https://limingkang12345.github.io/CalculusCalculator/api/core/settings/</loc>
+        <lastmod>2026-08-11</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://limingkang12345.github.io/CalculusCalculator/api/core/settings/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://limingkang12345.github.io/CalculusCalculator/en/api/core/settings/"/>
     </url>
     <url>
-         <loc>https://limingkang12345.github.io/CalculusCalculator/api/modules/calculation/</loc>
-         <lastmod>2026-07-19</lastmod>
+        <loc>https://limingkang12345.github.io/CalculusCalculator/api/core/sympify/</loc>
+        <lastmod>2026-08-11</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://limingkang12345.github.io/CalculusCalculator/api/core/sympify/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://limingkang12345.github.io/CalculusCalculator/en/api/core/sympify/"/>
     </url>
     <url>
-         <loc>https://limingkang12345.github.io/CalculusCalculator/api/modules/derivative/</loc>
-         <lastmod>2026-07-19</lastmod>
+        <loc>https://limingkang12345.github.io/CalculusCalculator/api/modules/calculation/</loc>
+        <lastmod>2026-08-11</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://limingkang12345.github.io/CalculusCalculator/api/modules/calculation/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://limingkang12345.github.io/CalculusCalculator/en/api/modules/calculation/"/>
     </url>
     <url>
-         <loc>https://limingkang12345.github.io/CalculusCalculator/api/modules/function_analysis/</loc>
-         <lastmod>2026-07-19</lastmod>
+        <loc>https://limingkang12345.github.io/CalculusCalculator/api/modules/derivative/</loc>
+        <lastmod>2026-08-11</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://limingkang12345.github.io/CalculusCalculator/api/modules/derivative/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://limingkang12345.github.io/CalculusCalculator/en/api/modules/derivative/"/>
     </url>
     <url>
-         <loc>https://limingkang12345.github.io/CalculusCalculator/api/modules/integral/</loc>
-         <lastmod>2026-07-19</lastmod>
+        <loc>https://limingkang12345.github.io/CalculusCalculator/api/modules/function_analysis/</loc>
+        <lastmod>2026-08-11</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://limingkang12345.github.io/CalculusCalculator/api/modules/function_analysis/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://limingkang12345.github.io/CalculusCalculator/en/api/modules/function_analysis/"/>
     </url>
     <url>
-         <loc>https://limingkang12345.github.io/CalculusCalculator/api/modules/plane_calc/</loc>
-         <lastmod>2026-07-19</lastmod>
+        <loc>https://limingkang12345.github.io/CalculusCalculator/api/modules/integral/</loc>
+        <lastmod>2026-08-11</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://limingkang12345.github.io/CalculusCalculator/api/modules/integral/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://limingkang12345.github.io/CalculusCalculator/en/api/modules/integral/"/>
     </url>
     <url>
-         <loc>https://limingkang12345.github.io/CalculusCalculator/api/modules/plane_geometry/</loc>
-         <lastmod>2026-07-19</lastmod>
+        <loc>https://limingkang12345.github.io/CalculusCalculator/api/modules/plane_calc/</loc>
+        <lastmod>2026-08-11</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://limingkang12345.github.io/CalculusCalculator/api/modules/plane_calc/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://limingkang12345.github.io/CalculusCalculator/en/api/modules/plane_calc/"/>
     </url>
     <url>
-         <loc>https://limingkang12345.github.io/CalculusCalculator/api/modules/plot/</loc>
-         <lastmod>2026-07-19</lastmod>
+        <loc>https://limingkang12345.github.io/CalculusCalculator/api/modules/plane_geometry/</loc>
+        <lastmod>2026-08-11</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://limingkang12345.github.io/CalculusCalculator/api/modules/plane_geometry/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://limingkang12345.github.io/CalculusCalculator/en/api/modules/plane_geometry/"/>
     </url>
     <url>
-         <loc>https://limingkang12345.github.io/CalculusCalculator/api/modules/simplification/</loc>
-         <lastmod>2026-07-19</lastmod>
+        <loc>https://limingkang12345.github.io/CalculusCalculator/api/modules/plot/</loc>
+        <lastmod>2026-08-11</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://limingkang12345.github.io/CalculusCalculator/api/modules/plot/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://limingkang12345.github.io/CalculusCalculator/en/api/modules/plot/"/>
     </url>
     <url>
-         <loc>https://limingkang12345.github.io/CalculusCalculator/api/modules/solid_calc/</loc>
-         <lastmod>2026-07-19</lastmod>
+        <loc>https://limingkang12345.github.io/CalculusCalculator/api/modules/plotting/</loc>
+        <lastmod>2026-08-11</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://limingkang12345.github.io/CalculusCalculator/api/modules/plotting/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://limingkang12345.github.io/CalculusCalculator/en/api/modules/plotting/"/>
     </url>
     <url>
-         <loc>https://limingkang12345.github.io/CalculusCalculator/api/modules/solid_geometry/</loc>
-         <lastmod>2026-07-19</lastmod>
+        <loc>https://limingkang12345.github.io/CalculusCalculator/api/modules/saves/</loc>
+        <lastmod>2026-08-11</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://limingkang12345.github.io/CalculusCalculator/api/modules/saves/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://limingkang12345.github.io/CalculusCalculator/en/api/modules/saves/"/>
     </url>
     <url>
-         <loc>https://limingkang12345.github.io/CalculusCalculator/api/modules/solvers/</loc>
-         <lastmod>2026-07-19</lastmod>
+        <loc>https://limingkang12345.github.io/CalculusCalculator/api/modules/simplification/</loc>
+        <lastmod>2026-08-11</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://limingkang12345.github.io/CalculusCalculator/api/modules/simplification/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://limingkang12345.github.io/CalculusCalculator/en/api/modules/simplification/"/>
     </url>
     <url>
-         <loc>https://limingkang12345.github.io/CalculusCalculator/api/modules/triangle/</loc>
-         <lastmod>2026-07-19</lastmod>
+        <loc>https://limingkang12345.github.io/CalculusCalculator/api/modules/solid_calc/</loc>
+        <lastmod>2026-08-11</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://limingkang12345.github.io/CalculusCalculator/api/modules/solid_calc/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://limingkang12345.github.io/CalculusCalculator/en/api/modules/solid_calc/"/>
     </url>
     <url>
-         <loc>https://limingkang12345.github.io/CalculusCalculator/api/modules/vector/</loc>
-         <lastmod>2026-07-19</lastmod>
+        <loc>https://limingkang12345.github.io/CalculusCalculator/api/modules/solid_geometry/</loc>
+        <lastmod>2026-08-11</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://limingkang12345.github.io/CalculusCalculator/api/modules/solid_geometry/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://limingkang12345.github.io/CalculusCalculator/en/api/modules/solid_geometry/"/>
     </url>
     <url>
-         <loc>https://limingkang12345.github.io/CalculusCalculator/guide/configuration/</loc>
-         <lastmod>2026-07-19</lastmod>
+        <loc>https://limingkang12345.github.io/CalculusCalculator/api/modules/solvers/</loc>
+        <lastmod>2026-08-11</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://limingkang12345.github.io/CalculusCalculator/api/modules/solvers/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://limingkang12345.github.io/CalculusCalculator/en/api/modules/solvers/"/>
     </url>
     <url>
-         <loc>https://limingkang12345.github.io/CalculusCalculator/guide/installation/</loc>
-         <lastmod>2026-07-19</lastmod>
+        <loc>https://limingkang12345.github.io/CalculusCalculator/api/modules/triangle/</loc>
+        <lastmod>2026-08-11</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://limingkang12345.github.io/CalculusCalculator/api/modules/triangle/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://limingkang12345.github.io/CalculusCalculator/en/api/modules/triangle/"/>
     </url>
     <url>
-         <loc>https://limingkang12345.github.io/CalculusCalculator/guide/quickstart/</loc>
-         <lastmod>2026-07-19</lastmod>
+        <loc>https://limingkang12345.github.io/CalculusCalculator/api/modules/vector/</loc>
+        <lastmod>2026-08-11</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://limingkang12345.github.io/CalculusCalculator/api/modules/vector/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://limingkang12345.github.io/CalculusCalculator/en/api/modules/vector/"/>
+    </url>
+    <url>
+        <loc>https://limingkang12345.github.io/CalculusCalculator/dev/architecture/</loc>
+        <lastmod>2026-08-11</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://limingkang12345.github.io/CalculusCalculator/dev/architecture/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://limingkang12345.github.io/CalculusCalculator/en/dev/architecture/"/>
+    </url>
+    <url>
+        <loc>https://limingkang12345.github.io/CalculusCalculator/dev/build_docs/</loc>
+        <lastmod>2026-08-11</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://limingkang12345.github.io/CalculusCalculator/dev/build_docs/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://limingkang12345.github.io/CalculusCalculator/en/dev/build_docs/"/>
+    </url>
+    <url>
+        <loc>https://limingkang12345.github.io/CalculusCalculator/dev/extending/</loc>
+        <lastmod>2026-08-11</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://limingkang12345.github.io/CalculusCalculator/dev/extending/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://limingkang12345.github.io/CalculusCalculator/en/dev/extending/"/>
+    </url>
+    <url>
+        <loc>https://limingkang12345.github.io/CalculusCalculator/dev/i18n/</loc>
+        <lastmod>2026-08-11</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://limingkang12345.github.io/CalculusCalculator/dev/i18n/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://limingkang12345.github.io/CalculusCalculator/en/dev/i18n/"/>
+    </url>
+    <url>
+        <loc>https://limingkang12345.github.io/CalculusCalculator/guide/configuration/</loc>
+        <lastmod>2026-08-11</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://limingkang12345.github.io/CalculusCalculator/guide/configuration/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://limingkang12345.github.io/CalculusCalculator/en/guide/configuration/"/>
+    </url>
+    <url>
+        <loc>https://limingkang12345.github.io/CalculusCalculator/guide/features/</loc>
+        <lastmod>2026-08-11</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://limingkang12345.github.io/CalculusCalculator/guide/features/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://limingkang12345.github.io/CalculusCalculator/en/guide/features/"/>
+    </url>
+    <url>
+        <loc>https://limingkang12345.github.io/CalculusCalculator/guide/installation/</loc>
+        <lastmod>2026-08-11</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://limingkang12345.github.io/CalculusCalculator/guide/installation/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://limingkang12345.github.io/CalculusCalculator/en/guide/installation/"/>
+    </url>
+    <url>
+        <loc>https://limingkang12345.github.io/CalculusCalculator/guide/quickstart/</loc>
+        <lastmod>2026-08-11</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://limingkang12345.github.io/CalculusCalculator/guide/quickstart/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://limingkang12345.github.io/CalculusCalculator/en/guide/quickstart/"/>
+    </url>
+    <url>
+        <loc>https://limingkang12345.github.io/CalculusCalculator/en/</loc>
+        <lastmod>2026-08-11</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://limingkang12345.github.io/CalculusCalculator/en/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://limingkang12345.github.io/CalculusCalculator/"/>
+    </url>
+    <url>
+        <loc>https://limingkang12345.github.io/CalculusCalculator/en/about/</loc>
+        <lastmod>2026-08-11</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://limingkang12345.github.io/CalculusCalculator/en/about/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://limingkang12345.github.io/CalculusCalculator/about/"/>
+    </url>
+    <url>
+        <loc>https://limingkang12345.github.io/CalculusCalculator/en/api/core/rendering/</loc>
+        <lastmod>2026-08-11</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://limingkang12345.github.io/CalculusCalculator/en/api/core/rendering/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://limingkang12345.github.io/CalculusCalculator/api/core/rendering/"/>
+    </url>
+    <url>
+        <loc>https://limingkang12345.github.io/CalculusCalculator/en/api/core/settings/</loc>
+        <lastmod>2026-08-11</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://limingkang12345.github.io/CalculusCalculator/en/api/core/settings/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://limingkang12345.github.io/CalculusCalculator/api/core/settings/"/>
+    </url>
+    <url>
+        <loc>https://limingkang12345.github.io/CalculusCalculator/en/api/core/sympify/</loc>
+        <lastmod>2026-08-11</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://limingkang12345.github.io/CalculusCalculator/en/api/core/sympify/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://limingkang12345.github.io/CalculusCalculator/api/core/sympify/"/>
+    </url>
+    <url>
+        <loc>https://limingkang12345.github.io/CalculusCalculator/en/api/modules/calculation/</loc>
+        <lastmod>2026-08-11</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://limingkang12345.github.io/CalculusCalculator/en/api/modules/calculation/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://limingkang12345.github.io/CalculusCalculator/api/modules/calculation/"/>
+    </url>
+    <url>
+        <loc>https://limingkang12345.github.io/CalculusCalculator/en/api/modules/derivative/</loc>
+        <lastmod>2026-08-11</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://limingkang12345.github.io/CalculusCalculator/en/api/modules/derivative/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://limingkang12345.github.io/CalculusCalculator/api/modules/derivative/"/>
+    </url>
+    <url>
+        <loc>https://limingkang12345.github.io/CalculusCalculator/en/api/modules/function_analysis/</loc>
+        <lastmod>2026-08-11</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://limingkang12345.github.io/CalculusCalculator/en/api/modules/function_analysis/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://limingkang12345.github.io/CalculusCalculator/api/modules/function_analysis/"/>
+    </url>
+    <url>
+        <loc>https://limingkang12345.github.io/CalculusCalculator/en/api/modules/integral/</loc>
+        <lastmod>2026-08-11</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://limingkang12345.github.io/CalculusCalculator/en/api/modules/integral/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://limingkang12345.github.io/CalculusCalculator/api/modules/integral/"/>
+    </url>
+    <url>
+        <loc>https://limingkang12345.github.io/CalculusCalculator/en/api/modules/plane_calc/</loc>
+        <lastmod>2026-08-11</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://limingkang12345.github.io/CalculusCalculator/en/api/modules/plane_calc/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://limingkang12345.github.io/CalculusCalculator/api/modules/plane_calc/"/>
+    </url>
+    <url>
+        <loc>https://limingkang12345.github.io/CalculusCalculator/en/api/modules/plane_geometry/</loc>
+        <lastmod>2026-08-11</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://limingkang12345.github.io/CalculusCalculator/en/api/modules/plane_geometry/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://limingkang12345.github.io/CalculusCalculator/api/modules/plane_geometry/"/>
+    </url>
+    <url>
+        <loc>https://limingkang12345.github.io/CalculusCalculator/en/api/modules/plot/</loc>
+        <lastmod>2026-08-11</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://limingkang12345.github.io/CalculusCalculator/en/api/modules/plot/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://limingkang12345.github.io/CalculusCalculator/api/modules/plot/"/>
+    </url>
+    <url>
+        <loc>https://limingkang12345.github.io/CalculusCalculator/en/api/modules/simplification/</loc>
+        <lastmod>2026-08-11</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://limingkang12345.github.io/CalculusCalculator/en/api/modules/simplification/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://limingkang12345.github.io/CalculusCalculator/api/modules/simplification/"/>
+    </url>
+    <url>
+        <loc>https://limingkang12345.github.io/CalculusCalculator/en/api/modules/solid_calc/</loc>
+        <lastmod>2026-08-11</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://limingkang12345.github.io/CalculusCalculator/en/api/modules/solid_calc/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://limingkang12345.github.io/CalculusCalculator/api/modules/solid_calc/"/>
+    </url>
+    <url>
+        <loc>https://limingkang12345.github.io/CalculusCalculator/en/api/modules/solid_geometry/</loc>
+        <lastmod>2026-08-11</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://limingkang12345.github.io/CalculusCalculator/en/api/modules/solid_geometry/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://limingkang12345.github.io/CalculusCalculator/api/modules/solid_geometry/"/>
+    </url>
+    <url>
+        <loc>https://limingkang12345.github.io/CalculusCalculator/en/api/modules/solvers/</loc>
+        <lastmod>2026-08-11</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://limingkang12345.github.io/CalculusCalculator/en/api/modules/solvers/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://limingkang12345.github.io/CalculusCalculator/api/modules/solvers/"/>
+    </url>
+    <url>
+        <loc>https://limingkang12345.github.io/CalculusCalculator/en/api/modules/triangle/</loc>
+        <lastmod>2026-08-11</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://limingkang12345.github.io/CalculusCalculator/en/api/modules/triangle/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://limingkang12345.github.io/CalculusCalculator/api/modules/triangle/"/>
+    </url>
+    <url>
+        <loc>https://limingkang12345.github.io/CalculusCalculator/en/api/modules/vector/</loc>
+        <lastmod>2026-08-11</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://limingkang12345.github.io/CalculusCalculator/en/api/modules/vector/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://limingkang12345.github.io/CalculusCalculator/api/modules/vector/"/>
+    </url>
+    <url>
+        <loc>https://limingkang12345.github.io/CalculusCalculator/en/dev/architecture/</loc>
+        <lastmod>2026-08-11</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://limingkang12345.github.io/CalculusCalculator/en/dev/architecture/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://limingkang12345.github.io/CalculusCalculator/dev/architecture/"/>
+    </url>
+    <url>
+        <loc>https://limingkang12345.github.io/CalculusCalculator/en/dev/build_docs/</loc>
+        <lastmod>2026-08-11</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://limingkang12345.github.io/CalculusCalculator/en/dev/build_docs/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://limingkang12345.github.io/CalculusCalculator/dev/build_docs/"/>
+    </url>
+    <url>
+        <loc>https://limingkang12345.github.io/CalculusCalculator/en/dev/extending/</loc>
+        <lastmod>2026-08-11</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://limingkang12345.github.io/CalculusCalculator/en/dev/extending/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://limingkang12345.github.io/CalculusCalculator/dev/extending/"/>
+    </url>
+    <url>
+        <loc>https://limingkang12345.github.io/CalculusCalculator/en/dev/i18n/</loc>
+        <lastmod>2026-08-11</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://limingkang12345.github.io/CalculusCalculator/en/dev/i18n/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://limingkang12345.github.io/CalculusCalculator/dev/i18n/"/>
+    </url>
+    <url>
+        <loc>https://limingkang12345.github.io/CalculusCalculator/en/guide/configuration/</loc>
+        <lastmod>2026-08-11</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://limingkang12345.github.io/CalculusCalculator/en/guide/configuration/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://limingkang12345.github.io/CalculusCalculator/guide/configuration/"/>
+    </url>
+    <url>
+        <loc>https://limingkang12345.github.io/CalculusCalculator/en/guide/features/</loc>
+        <lastmod>2026-08-11</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://limingkang12345.github.io/CalculusCalculator/en/guide/features/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://limingkang12345.github.io/CalculusCalculator/guide/features/"/>
+    </url>
+    <url>
+        <loc>https://limingkang12345.github.io/CalculusCalculator/en/guide/installation/</loc>
+        <lastmod>2026-08-11</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://limingkang12345.github.io/CalculusCalculator/en/guide/installation/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://limingkang12345.github.io/CalculusCalculator/guide/installation/"/>
+    </url>
+    <url>
+        <loc>https://limingkang12345.github.io/CalculusCalculator/en/guide/quickstart/</loc>
+        <lastmod>2026-08-11</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://limingkang12345.github.io/CalculusCalculator/en/guide/quickstart/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://limingkang12345.github.io/CalculusCalculator/guide/quickstart/"/>
+    </url>
+    <url>
+        <loc>https://limingkang12345.github.io/CalculusCalculator/en/api/modules/plotting/</loc>
+        <lastmod>2026-08-11</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://limingkang12345.github.io/CalculusCalculator/en/api/modules/plotting/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://limingkang12345.github.io/CalculusCalculator/api/modules/plotting/"/>
+    </url>
+    <url>
+        <loc>https://limingkang12345.github.io/CalculusCalculator/en/api/modules/saves/</loc>
+        <lastmod>2026-08-11</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://limingkang12345.github.io/CalculusCalculator/en/api/modules/saves/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://limingkang12345.github.io/CalculusCalculator/api/modules/saves/"/>
     </url>
 </urlset>
