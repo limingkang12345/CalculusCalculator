@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>ljjisuan</class>
+ <widget class="QWidget" name="ljjisuan">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>801</width>
+    <height>551</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout" rowstretch="1,5,0">
+   <item row="0" column="0">
+    <widget class="QGroupBox" name="groupBox">
+     <property name="title">
+      <string>立体几何计算</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_2" columnstretch="1,6">
+      <item row="0" column="0">
+       <widget class="QLabel" name="label">
+        <property name="text">
+         <string>计算方法：</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QComboBox" name="ljjisuan_fangfa">
+        <item>
+         <property name="text">
+          <string>未选择</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>两点间距离[参数：点1名称,点2名称]</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>中点坐标[参数：点1名称,点2名称]</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>点到平面距离[参数：点名称,平面名称]</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>点到直线距离[参数：点名称,直线名称]</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>点在平面的投影坐标[参数：点名称,平面名称]</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>点在直线的投影坐标[参数：点名称,直线名称]</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>判断多点是否共面[参数：点1名称,点2名称,...,点n名称]</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>直线方向向量[参数：直线名称(或直线上两点)]</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>两直线交点[参数：直线1名称(或直线上两点),直线2名称(或直线上两点)]</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>两直线夹角[参数：直线1名称(或直线上两点),直线2名称(或直线上两点)]</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>判断两直线是否平行[参数：直线1名称(或直线上两点),直线2名称(或直线上两点)]</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>判断两直线是否垂直[参数：直线1名称(或直线上两点),直线2名称(或直线上两点)]</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>直线在平面上的投影[参数：直线名称(或直线上两点),平面名称]</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>经过三点的平面方程 Ax+By+Cz+D=0[参数：点1名称,点2名称,点3名称]</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>平面法向量[参数：平面名称]</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>两平面夹角[参数：平面1名称,平面2名称]</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>两平面交线[参数：平面1名称,平面2名称]</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>判断两平面是否平行[参数：平面1名称,平面2名称]</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>判断两平面是否垂直[参数：平面1名称,平面2名称]</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>平面与直线交点[参数：平面名称,直线名称]</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>四面体体积[参数：四顶点名称]</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>直线与平面的夹角[参数：直线名称,平面名称]</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item row="1" column="0" colspan="2">
+       <widget class="QLabel" name="label_2">
+        <property name="text">
+         <string>参数输入(参数之间只用逗号间隔)：</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0" colspan="2">
+       <widget class="QLineEdit" name="ljjisuan_canshu"/>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="1" column="0">
+    <widget class="QGroupBox" name="groupBox_2">
+     <property name="title">
+      <string>计算结果</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_3">
+      <item row="0" column="0">
+       <widget class="QGraphicsView" name="ljjisuan_result">
+        <property name="url" stdset="0">
+         <url>
+          <string>about:blank</string>
+         </url>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLineEdit" name="ljjisuan_result_lineedit"/>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="2" column="0">
+    <widget class="QPushButton" name="ljjisuan_jisuan">
+     <property name="text">
+      <string>计算</string>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

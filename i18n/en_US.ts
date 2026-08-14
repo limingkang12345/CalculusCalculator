@@ -234,6 +234,22 @@
         <source>代数式变形</source>
         <translation>Algebraic Transform</translation>
     </message>
+    <message>
+        <source>积木模式</source>
+        <translation>Blockly Mode</translation>
+    </message>
+    <message>
+        <source>编辑器</source>
+        <translation>Editor</translation>
+    </message>
+    <message>
+        <source>积木编辑器</source>
+        <translation>Blockly Editor</translation>
+    </message>
+    <message>
+        <source>引导教学</source>
+        <translation>Guide</translation>
+    </message>
 </context>
 <context>
     <name>bianxing</name>
@@ -2016,6 +2032,11 @@
     </message>
     <message>
         <location filename="../ui/shezhi.ui"/>
+        <source>积木编辑区工程</source>
+        <translation>Blockly Editor Project</translation>
+    </message>
+    <message>
+        <location filename="../ui/shezhi.ui"/>
         <source>所有文本框文本</source>
         <translation>All Text Field Content</translation>
     </message>
@@ -2033,6 +2054,11 @@
         <location filename="../ui/shezhi.ui"/>
         <source>所有设置选项</source>
         <translation>All Settings Options</translation>
+    </message>
+    <message>
+        <location filename="../ui/shezhi.ui"/>
+        <source>清除设置文件</source>
+        <translation>Clear All Settings</translation>
     </message>
 </context>
 <context>
@@ -2058,6 +2084,41 @@
     <message>
         <source>[暂无缓存项]</source>
         <translation>[No Cache Items]</translation>
+    </message>
+</context>
+<context>
+    <name>Boot</name>
+    <message>
+        <source>正在加载语言设置…</source>
+        <translation>Loading language settings…</translation>
+    </message>
+    <message>
+        <source>正在写入版本信息…</source>
+        <translation>Writing version info…</translation>
+    </message>
+    <message>
+        <source>正在应用界面主题…</source>
+        <translation>Applying interface theme…</translation>
+    </message>
+    <message>
+        <source>正在初始化浏览器内核…</source>
+        <translation>Initializing browser engine…</translation>
+    </message>
+    <message>
+        <source>正在导入计算功能模块…</source>
+        <translation>Loading calculation modules…</translation>
+    </message>
+    <message>
+        <source>正在创建主窗口…</source>
+        <translation>Creating main window…</translation>
+    </message>
+    <message>
+        <source>正在加载启动存档…</source>
+        <translation>Loading startup archive…</translation>
+    </message>
+    <message>
+        <source>正在完成启动…</source>
+        <translation>Finishing startup…</translation>
     </message>
 </context>
 </TS>

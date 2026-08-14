@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>pjjisuan_2</class>
+ <widget class="QWidget" name="pjjisuan_2">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>801</width>
+    <height>551</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout" rowstretch="1,5,0">
+   <item row="0" column="0">
+    <widget class="QGroupBox" name="groupBox">
+     <property name="title">
+      <string>平面几何计算</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_2" columnstretch="1,6">
+      <item row="0" column="0">
+       <widget class="QLabel" name="label">
+        <property name="text">
+         <string>计算方法：</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QComboBox" name="pjjisuan_fangfa">
+        <item>
+         <property name="text">
+          <string>未选择</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>两点间距离[参数：点1名称,点2名称]</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>中点坐标[参数：点1名称,点2名称]</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>判断多点是否共线[参数：点1名称,点2名称,...,点n名称]</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>平移点[参数：点名称,x坐标增量,y坐标增量]</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>绕定点旋转点[参数：旋转点名称,旋转弧度,旋转中心名称]</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>点关于直线反射[参数：点名称,直线名称(或直线上两点)]</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>经过两点的直线方程 Ax+By+C=0[参数：点1名称,点2名称]</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>直线斜率[参数：点1名称,点2名称]</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>两直线交点[参数：直线1名称(或直线上两点),直线2名称(或直线上两点)]</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>点到直线距离[参数：点名称,直线名称]</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>两直线夹角[参数：直线1名称(或直线上两点),直线2名称(或直线上两点)]</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>判断两直线是否平行[参数：直线1名称(或直线上两点),直线2名称(或直线上两点)]</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>判断两直线是否垂直[参数：直线1名称(或直线上两点),直线2名称(或直线上两点)]</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>求圆心坐标[参数：圆名称]</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>求圆半径[参数：圆名称]</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>求圆面积[参数：圆名称]</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>求圆周长[参数：圆名称]</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>两圆交点[参数：圆1名称,圆2名称]</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>圆外一点到圆的切线方程[参数：点名称,圆名称]</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>三角形面积[参数：三角形名称(或三顶点名称)]</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>三角形周长[参数：三角形名称(或三顶点名称)]</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>三角形外接圆圆心[参数：三角形名称(或三顶点名称)]</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>三角形外接圆半径[参数：三角形名称(或三顶点名称)]</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>三角形内接圆圆心[参数：三角形名称(或三顶点名称)]</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>三角形内切圆半径[参数：三角形名称(或三顶点名称)]</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>三角形重心[参数：三角形名称(或三顶点名称)]</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>三角形垂心[参数：三角形名称(或三顶点名称)]</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>是否为直角三角形[参数：三角形名称(或三顶点名称)]</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>是否为等腰三角形[参数：三角形名称(或三顶点名称)]</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>是否为等边三角形[参数：三角形名称(或三顶点名称)]</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>多边形面积[参数：顶点1名称,顶点2名称,...,顶点n名称]</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>多边形周长[参数：顶点1名称,顶点2名称,...,顶点n名称]</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item row="1" column="0" colspan="2">
+       <widget class="QLabel" name="label_2">
+        <property name="text">
+         <string>参数输入(参数之间只用逗号间隔)：</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0" colspan="2">
+       <widget class="QLineEdit" name="pjjisuan_canshu"/>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="1" column="0">
+    <widget class="QGroupBox" name="groupBox_2">
+     <property name="title">
+      <string>计算结果</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_3">
+      <item row="0" column="0">
+       <widget class="QGraphicsView" name="pjjisuan_result">
+        <property name="url" stdset="0">
+         <url>
+          <string>about:blank</string>
+         </url>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLineEdit" name="pjjisuan_result_lineedit"/>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="2" column="0">
+    <widget class="QPushButton" name="pjjisuan_jisuan">
+     <property name="text">
+      <string>计算</string>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

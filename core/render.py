@@ -9,6 +9,8 @@ from PySide6.QtCore import QByteArray, Qt
 from io import BytesIO
 import matplotlib.pyplot as plt
 from sympy import latex
+import os
+os.environ['MPLBACKEND'] = 'Agg'   # 强制使用 Agg 后端，避免动态加载其他后端
 
 # 缓存每个 QGraphicsView 的渲染参数及必需对象，用于主题切换后刷新
 # value: (func_name, latex_str, QSvgRenderer)
@@ -76,13 +78,13 @@ def setGraphicsView(n, l, g):
     """
     # 确定当前主题颜色
     text_color = "black"
-    bg_color = "white"
+    bg_color = "#F8F9FA"
     p = g.parentWidget()
     while p is not None:
         if hasattr(p, 'theme'):
             if p.theme == "dark":
                 text_color = "white"
-                bg_color = "black"
+                bg_color = "#202124"
             break
         p = p.parentWidget()
 
@@ -146,6 +148,54 @@ def setGraphicsView(n, l, g):
     _svg_cache[g] = (n, l, renderer)
 
 
+def clearGraphicsView(g):
+    """清空指定的 QGraphicsView 并移除其渲染缓存。
+
+    QGraphicsView 没有 setHtml 方法，清空渲染结果应新建一个空场景，
+    避免调用 setHtml 抛出 AttributeError。
+    """
+    old_scene = g.scene()
+    if old_scene is not None:
+        old_scene.clear()
+    g.setScene(QGraphicsScene())
+    _svg_cache.pop(g, None)
+
+
+def applyPlotTheme(fig, ax, theme='light'):
+    """将 matplotlib Figure/Axes 适配为浅色 / 深色主题配色。
+
+    参数:
+        fig: matplotlib.figure.Figure
+        ax: matplotlib Axes（2D 或 3D）
+        theme: 'light' 或 'dark'
+    返回:
+        (bg, fg, grid_color, axis_color)，供调用方继续设置网格、坐标轴线等。
+    """
+    dark = theme == 'dark'
+    if dark:
+        bg, fg, grid_c, axis_c = '#202124', '#e8eaed', '#5f6368', '#9aa0a6'
+    else:
+        bg, fg, grid_c, axis_c = 'white', 'black', '#cccccc', 'black'
+
+    fig.patch.set_facecolor(bg)
+    ax.set_facecolor(bg)
+    ax.tick_params(colors=fg)
+    try:
+        for spine in ax.spines.values():
+            spine.set_color(axis_c)
+    except Exception:
+        # 3D 轴没有 spines，改为设置三个坐标轴面板的颜色
+        for aname in ('xaxis', 'yaxis', 'zaxis'):
+            axi = getattr(ax, aname, None)
+            if axi is not None:
+                try:
+                    axi.pane.set_facecolor(bg)
+                    axi.pane.set_edgecolor(axis_c)
+                except Exception:
+                    pass
+    return bg, fg, grid_c, axis_c
+
+
 def refreshGraphicsView():
     """主题切换后刷新所有已缓存的图形视图内容"""
     for w, (n, l, _) in list(_svg_cache.items()):
@@ -162,3 +212,52 @@ def setGraphicsViewTheme(main_class, parent_class):
             view.scene().setBackgroundBrush(
                 QColor(32, 33, 36) if parent_class.theme == "dark"
                 else QColor(255, 255, 255))
+
+
+def _wheel_zoom_handler(canvas):
+    """构造 2D 滚轮缩放事件处理函数（围绕鼠标所在位置缩放）。
+
+    3D 轴跳过：mpl 的 Axes3D 已自带旋转/缩放/平移交互。
+    """
+    from mpl_toolkits.mplot3d import Axes3D
+
+    def on_scroll(event):
+        if event.inaxes is None or event.button not in ("up", "down"):
+            return
+        ax = event.inaxes
+        if isinstance(ax, Axes3D):
+            return
+        xdata, ydata = event.xdata, event.ydata
+        if xdata is None or ydata is None:
+            return
+        scale = 1.3 if event.button == "up" else 1 / 1.3
+        xlim, ylim = ax.get_xlim(), ax.get_ylim()
+        ax.set_xlim(xdata - (xdata - xlim[0]) * scale,
+                    xdata + (xlim[1] - xdata) * scale)
+        ax.set_ylim(ydata - (ydata - ylim[0]) * scale,
+                    ydata + (ylim[1] - ydata) * scale)
+        canvas.draw_idle()
+
+    return on_scroll
+
+
+def attach_plot_toolbar(layout, canvas, parent, wheel_zoom=False):
+    """为嵌入的 matplotlib 画布添加原生导航工具栏，并可选启用滚轮缩放。
+
+    工具栏提供与原生 matplotlib 窗口一致的交互：
+    Home（复位）、后退/前进、平移、缩放框、子图配置、保存图片。
+
+    参数:
+        layout: 目标 QVBoxLayout（工具栏插入到画布上方）
+        canvas: FigureCanvasQTAgg 实例
+        parent: 工具栏的父控件（通常为所在页面）
+        wheel_zoom: 是否启用 2D 滚轮缩放（围绕鼠标位置）
+    返回:
+        NavigationToolbar2QT 实例（调用方需持有引用并在重建时清理）
+    """
+    from matplotlib.backends.backend_qtagg import NavigationToolbar2QT
+    toolbar = NavigationToolbar2QT(canvas, parent)
+    layout.addWidget(toolbar)
+    if wheel_zoom:
+        canvas.mpl_connect("scroll_event", _wheel_zoom_handler(canvas))
+    return toolbar

@@ -15,7 +15,7 @@ _submodules = [
     "fangcheng", "fangchengzu", "budengshi", "budengshizu",
     "jisuan", "help", "dingyixiangliang", "huitu_hanshu",
     "jiesanjiaoxing", "dingyi_pj", "huitu_pj", "dingyi_lj",
-    "huitu_lj", "pjjisuan", "ljjisuan", "shezhi", "huancun"
+    "huitu_lj", "pjjisuan", "ljjisuan", "shezhi", "huancun", "blockly"
 ]
 __getattr__, __dir__, __all__ = lazy_loader.attach(__name__, _submodules)
 
@@ -46,7 +46,8 @@ _tab_registry = [
     ("pjjisuan",         "Pjjisuan"),
     ("ljjisuan",         "Ljjisuan"),
     ("shezhi",           "Shezhi"),
-    ("huancun",          "Huancun")
+    ("huancun",          "Huancun"),
+    ("blockly",          "Blockly")
 ]
 
 # Tab name -> index mapping
@@ -56,7 +57,7 @@ tabs_dict = {
     "不等式组": 8, "计算": 9,   "帮助": 10,    "定义向量": 11,
     "绘制函数": 12, "解三角形": 13, "平面几何": 14, "平面绘图": 15,
     "立体几何": 16, "立体绘图": 17, "平面计算": 18, "立体计算": 19,
-    "设置": 20, "缓存区": 21
+    "设置": 20, "缓存区": 21, "积木编辑器": 22
 }
 
 # Cache to avoid repeated getattr after first import

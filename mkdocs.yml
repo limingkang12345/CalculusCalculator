@@ -8,21 +8,77 @@ theme:
     - navigation.sections
     - navigation.top
     - content.code.copy
+  palette:
+    - scheme: default
+      primary: indigo
 markdown_extensions:
   - admonition
   - tables
   - attr_list
   - md_in_html
+plugins:
+  - search
+  # 多语言支持：docs/zh/ 与 docs/en/ 两个语言目录
+  - i18n:
+      docs_structure: folder
+      fallback_to_default: true
+      languages:
+        - locale: zh
+          name: 中文
+          build: true
+          default: true
+        - locale: en
+          name: English
+          build: true
+          nav_translations:
+            首页: Home
+            用户文档: User Guide
+            快速开始: Quick Start
+            安装教程: Installation
+            配置选项: Configuration
+            功能详解: Features
+            开发者文档: Developer Guide
+            架构与项目结构: Architecture
+            新增功能选项卡: Adding a Feature Tab
+            国际化: Internationalization
+            文档与构建: Documentation & Building
+            API 参考: API Reference
+            核心模块: Core Modules
+            字符串解析: String Parsing
+            公式渲染: Formula Rendering
+            设置与主题: Settings & Theme
+            功能模块: Feature Modules
+            求导: Derivative
+            积分: Integral
+            函数性质分析: Function Analysis
+            表达式变形: Expression Simplification
+            方程与不等式: Equations and Inequalities
+            解三角形: Triangle Solving
+            计算选项卡: Calculation Tabs
+            向量运算: Vector Operations
+            函数绘图: Function Plotting
+            平面几何: Plane Geometry
+            立体几何: Solid Geometry
+            平面几何计算: Plane Geometry Calculation
+            立体几何计算: Solid Geometry Calculation
+            关于: About
 nav:
   - 首页: index.md
-  - 用户指南:
+  - 用户文档:
     - 快速开始: guide/quickstart.md
     - 安装教程: guide/installation.md
     - 配置选项: guide/configuration.md
+    - 功能详解: guide/features.md
+  - 开发者文档:
+    - 架构与项目结构: dev/architecture.md
+    - 新增功能选项卡: dev/extending.md
+    - 国际化: dev/i18n.md
+    - 文档与构建: dev/build_docs.md
   - API 参考:
     - 核心模块:
       - 字符串解析: api/core/sympify.md
       - 公式渲染: api/core/rendering.md
+      - 设置与主题: api/core/settings.md
     - 功能模块:
       - 求导: api/modules/derivative.md
       - 积分: api/modules/integral.md

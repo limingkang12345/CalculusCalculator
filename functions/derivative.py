@@ -7,11 +7,12 @@ def derivative(f, v, n, x, fs):
     # f(str):原函数(显函数)表达式
     # v(str):自变量表达式
     # n(str):求导次数
-    # x(str):自变量的值
+    # x(str):自变量的值（None 或空字符串表示不代入具体值）
     # fs(dict):函数列表
     # return:返回导函数表达式
 
-    if x is None:
+    # 空字符串或 None 都视为"不代入具体值"，避免把变量替换成空符号。
+    if not x:
         return radsimp(diff(sympify(f, fs), sympify(v, fs), int(n)))
     else:
         return radsimp(diff(sympify(f, fs), sympify(v, fs), int(n)).subs(sympify(v, fs), sympify(x, fs)))
@@ -22,11 +23,12 @@ def yinhanshu_derivative(f, v1, v2, n, x, fs):
     # v1(str):自变量表达式
     # v2(str):因变量表达式
     # n(str):求导次数
-    # x(str):自变量的值
+    # x(str):自变量的值（None 或空字符串表示不代入具体值）
     # fs(dict):函数列表
     # return:返回导函数表达式
 
-    if x is None:
+    # 空字符串或 None 都视为"不代入具体值"，避免把变量替换成空符号。
+    if not x:
         return radsimp(idiff(sympify(f, fs), sympify(v2, fs), sympify(v1, fs), int(n)))
     else:
         return radsimp(idiff(sympify(f, fs), sympify(v2, fs), sympify(v1, fs), int(n)).subs(sympify(v1, fs), sympify(x, fs)).subs(sympify(v2, fs), \

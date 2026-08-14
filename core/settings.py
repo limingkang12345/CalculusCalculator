@@ -17,6 +17,9 @@ _current = "zh_CN"
 # 当前主题：'light' / 'dark'，默认浅色
 _theme = "light"
 
+# 应用版本号（单源）。首次运行时也会写入设置文件，便于检查更新与排查问题。
+APP_VERSION = "2.0.0"
+
 
 def _qm_dir():
     """定位 .qm 所在目录，兼容开发环境与冻结后环境。"""
@@ -147,7 +150,7 @@ def current_theme():
 
 
 def load_saved_theme():
-    """从持久化文件读取上次选择的主题，默认 'light'。"""
+    """从持久化文件读取上次选择的主题，默认 'light'（浅色）。"""
     return _read_settings().get("theme", "light")
 
 
@@ -158,6 +161,58 @@ def save_theme(theme):
     data = _read_settings()
     data["theme"] = _theme
     _write_settings(data)
+
+
+def load_initialized():
+    """读取“是否已初始化（看过引导）”标记，默认 False。
+
+    没有设置文件、文件损坏或该键缺失时均视为未完成初始化，应显示引导。
+    """
+    return _read_settings().get("hasInitialized", False)
+
+
+def save_initialized(val=True):
+    """将“是否已初始化”标记写入持久化文件（合并不覆盖其它项）。"""
+    data = _read_settings()
+    data["hasInitialized"] = bool(val)
+    _write_settings(data)
+
+
+def load_saved_version():
+    """从持久化文件读取上次写入的应用版本号；无则返回 None。"""
+    return _read_settings().get("version")
+
+
+def save_version(version=APP_VERSION):
+    """将应用版本号写入持久化设置文件（合并不覆盖其它项）。
+
+    在每次启动时调用，便于记录“最近一次运行的版本”，
+    可用于检查是否升级或排查配置兼容性问题。
+    仅在版本号发生变化时才写盘：正常启动（版本未变）直接返回，
+    避免每次启动都重写设置文件而拖慢启动速度。
+    """
+    if not version:
+        return
+    data = _read_settings()
+    if data.get("version") == str(version):
+        return
+    data["version"] = str(version)
+    _write_settings(data)
+
+
+def clear_settings_file():
+    """删除持久化的设置文件（如果存在）。
+
+    仅负责删除文件本身；内存中的当前语言/主题不受影响，
+    由调用方（如设置页）决定删除后是否恢复默认值或刷新界面。
+    删除失败时静默忽略（如文件不存在或无权限）。
+    """
+    p = _settings_path()
+    try:
+        if os.path.exists(p):
+            os.remove(p)
+    except Exception:
+        pass
 
 
 # 模块加载时按已保存的设置同步当前主题，使 current_theme() 反映持久化值

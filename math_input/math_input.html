@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>MathLive 公式输入</title>
+    <link rel="stylesheet" href="mathlive/dist/mathlive-static.css">
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            margin: 0;
+            padding: 10px;
+            background: #fafafa;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        #status {
+            display: none; /* 隐藏状态，节省空间 */
+        }
+        math-field {
+            display: block;
+            width: 100%;
+            min-height: 50px;
+            padding: 8px 12px;
+            font-size: 24px;
+            border: 2px solid #3498db;
+            border-radius: 8px;
+            background: #fff;
+            flex-shrink: 0;
+        }
+        .toolbar {
+            margin-top: 8px;
+            display: flex;
+            gap: 10px;
+            flex-shrink: 0;
+        }
+        button {
+            padding: 6px 16px;
+            border: none;
+            border-radius: 4px;
+            background: #3498db;
+            color: #fff;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .output {
+            margin-top: 10px;
+            padding: 8px 12px;
+            background: #ecf0f1;
+            border-radius: 6px;
+            font-family: monospace;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+        /* 让键盘区域占据剩余空间 */
+        .keyboard-container {
+            flex: 1;
+            min-height: 0;
+            margin-top: 8px;
+            position: relative;
+        }
+        /* math-virtual-keyboard 是 MathLive 创建的 shadow DOM 元素，这里不需要额外样式 */
+    </style>
+</head>
+<body>
+    <div id="status" class="ok">⏳ 加载中...</div>
+
+    <math-field
+        id="mf"
+        virtual-keyboard-mode="always"
+        locale="zh-CN"
+        placeholder="在此输入公式，例如 x^2 + y^2 = 1"
+        style="min-height: 50px;"
+    ></math-field>
+
+    <div class="toolbar">
+        <button id="clearBtn">🗑️ 清空</button>
+    </div>
+    <div class="output">
+        <strong>LaTeX：</strong> <span id="latexDisplay">（空）</span>
+    </div>
+
+    <!-- 键盘会自动显示在 math-field 下方，无需额外容器 -->
+
+    <script src="mathlive/dist/mathlive.min.js"></script>
+    <script>
+        // 设置全局语言
+        if (typeof MathfieldElement !== 'undefined' && MathfieldElement.locale !== undefined) {
+            MathfieldElement.locale = 'zh-CN';
+        }
+
+        // 页面加载完成后，确保键盘可见
+        window.addEventListener('load', function() {
+            const mf = document.getElementById('mf');
+            const latexDisplay = document.getElementById('latexDisplay');
+
+            // 强制显示键盘（尽管 virtual-keyboard-mode="always" 应自动显示）
+            const keyboard = window.mathVirtualKeyboard;
+            if (keyboard && keyboard.show) {
+                keyboard.show();
+            }
+
+            // 实时显示 LaTeX
+            mf.addEventListener('input', function() {
+                latexDisplay.textContent = mf.value || '（空）';
+            });
+            if (mf.value) latexDisplay.textContent = mf.value;
+
+            // 清空
+            document.getElementById('clearBtn').addEventListener('click', function() {
+                mf.value = '';
+                latexDisplay.textContent = '（空）';
+            });
+
+            console.log('✅ MathLive 初始化完成（键盘始终显示）');
+        });
+    </script>
+</body>
+</html>

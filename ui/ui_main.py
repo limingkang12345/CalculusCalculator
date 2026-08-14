@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'mainswKJOo.ui'
+## Form generated from reading UI file 'mainzUdjTv.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.11.1
 ##
@@ -18,16 +18,15 @@ from PySide6.QtGui import (QAction, QBrush, QColor, QConicalGradient,
     QTransform)
 from PySide6.QtWidgets import (QApplication, QGridLayout, QMainWindow, QMenu,
     QMenuBar, QSizePolicy, QTabWidget, QWidget)
-import resources_rc
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(800, 600)
+        MainWindow.resize(1440, 880)
+        MainWindow.setMinimumSize(QSize(1024, 640))
         icon = QIcon()
-        icon.addFile(u":/favicon.ico", QSize(), QIcon.Mode.Normal, QIcon.State.Off)
-        icon.addFile(u":/favicon.ico", QSize(), QIcon.Mode.Normal, QIcon.State.On)
+        icon.addFile(u"../favicon.ico", QSize(), QIcon.Mode.Normal, QIcon.State.Off)
         MainWindow.setWindowIcon(icon)
         MainWindow.setToolButtonStyle(Qt.ToolButtonStyle.ToolButtonIconOnly)
         self.actionshouye = QAction(MainWindow)
@@ -84,6 +83,10 @@ class Ui_MainWindow(object):
         self.actionshezhi.setObjectName(u"actionshezhi")
         self.actionhuancun = QAction(MainWindow)
         self.actionhuancun.setObjectName(u"actionhuancun")
+        self.actionblockly = QAction(MainWindow)
+        self.actionblockly.setObjectName(u"actionblockly")
+        self.actionyindao = QAction(MainWindow)
+        self.actionyindao.setObjectName(u"actionyindao")
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
         self.gridLayout = QGridLayout(self.centralwidget)
@@ -94,13 +97,15 @@ class Ui_MainWindow(object):
         self.tabWidget.setDocumentMode(True)
         self.tabWidget.setTabsClosable(True)
         self.tabWidget.setMovable(True)
+        self.tabWidget.setUsesScrollButtons(True)
+        self.tabWidget.setElideMode(Qt.TextElideMode.ElideRight)
 
         self.gridLayout.addWidget(self.tabWidget, 0, 0, 1, 1)
 
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QMenuBar(MainWindow)
         self.menubar.setObjectName(u"menubar")
-        self.menubar.setGeometry(QRect(0, 0, 800, 25))
+        self.menubar.setGeometry(QRect(0, 0, 1440, 25))
         self.functions = QMenu(self.menubar)
         self.functions.setObjectName(u"functions")
         self.calculus = QMenu(self.functions)
@@ -117,10 +122,13 @@ class Ui_MainWindow(object):
         self.about.setObjectName(u"about")
         self.file = QMenu(self.menubar)
         self.file.setObjectName(u"file")
+        self.blockly = QMenu(self.menubar)
+        self.blockly.setObjectName(u"blockly")
         MainWindow.setMenuBar(self.menubar)
 
         self.menubar.addAction(self.file.menuAction())
         self.menubar.addAction(self.functions.menuAction())
+        self.menubar.addAction(self.blockly.menuAction())
         self.menubar.addAction(self.about.menuAction())
         self.functions.addAction(self.actionshouye)
         self.functions.addAction(self.dingyi.menuAction())
@@ -148,12 +156,14 @@ class Ui_MainWindow(object):
         self.jisuan.addAction(self.actionljjisuan)
         self.about.addAction(self.actiongithub)
         self.about.addAction(self.actionwebsite)
+        self.about.addAction(self.actionyindao)
         self.about.addAction(self.actionhelp)
         self.file.addAction(self.actionsaveas)
         self.file.addAction(self.actionopen)
         self.file.addAction(self.actionhuancun)
         self.file.addAction(self.actionshezhi)
         self.file.addAction(self.actionexit)
+        self.blockly.addAction(self.actionblockly)
 
         self.retranslateUi(MainWindow)
 
@@ -192,6 +202,8 @@ class Ui_MainWindow(object):
         self.actionljjisuan.setText(QCoreApplication.translate("MainWindow", u"\u7acb\u4f53\u51e0\u4f55\u8ba1\u7b97", None))
         self.actionshezhi.setText(QCoreApplication.translate("MainWindow", u"\u8bbe\u7f6e", None))
         self.actionhuancun.setText(QCoreApplication.translate("MainWindow", u"\u7f13\u5b58\u533a", None))
+        self.actionblockly.setText(QCoreApplication.translate("MainWindow", u"\u7f16\u8f91\u5668", None))
+        self.actionyindao.setText(QCoreApplication.translate("MainWindow", u"\u5f15\u5bfc\u6559\u5b66", None))
         self.functions.setTitle(QCoreApplication.translate("MainWindow", u"\u529f\u80fd", None))
         self.calculus.setTitle(QCoreApplication.translate("MainWindow", u"\u5fae\u79ef\u5206", None))
         self.dingyi.setTitle(QCoreApplication.translate("MainWindow", u"\u5b9a\u4e49", None))
@@ -200,5 +212,6 @@ class Ui_MainWindow(object):
         self.jisuan.setTitle(QCoreApplication.translate("MainWindow", u"\u8ba1\u7b97", None))
         self.about.setTitle(QCoreApplication.translate("MainWindow", u"\u5173\u4e8e", None))
         self.file.setTitle(QCoreApplication.translate("MainWindow", u"\u6587\u4ef6", None))
+        self.blockly.setTitle(QCoreApplication.translate("MainWindow", u"\u79ef\u6728\u6a21\u5f0f", None))
     # retranslateUi
 

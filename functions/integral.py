@@ -7,11 +7,12 @@ def integral(f, v, fs, a = None, b = None):
     # f(str):被积函数表达式
     # v(str):积分变量表达式
     # fs(dict):函数列表
-    # a(str):定积分下限
+    # a(str):定积分下限（None 或空字符串表示不定积分）
     # b(str):定积分上限
     # return:返回导函数表达式
 
-    if a is None and b is None:
+    # 空字符串或 None 都视为"未指定上下限"（不定积分），避免把空串 sympify 成空符号。
+    if not a and not b:
         return radsimp(integrate(sympify(f, fs), sympify(v, fs)))
     else:
         return radsimp(integrate(sympify(f, fs), (sympify(v, fs), sympify(a, fs), sympify(b, fs))))

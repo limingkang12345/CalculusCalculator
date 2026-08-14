@@ -15,9 +15,9 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
+import os
 from PySide6.QtWidgets import (QApplication, QGridLayout, QSizePolicy, QTextBrowser,
     QWidget)
-import resources_rc
 
 class Ui_help(object):
     def setupUi(self, help):
@@ -29,7 +29,8 @@ class Ui_help(object):
         self.gridLayout.setContentsMargins(0, 0, 0, 0)
         self.textBrowser = QTextBrowser(help)
         self.textBrowser.setObjectName(u"textBrowser")
-        self.textBrowser.setSource(QUrl(u"qrc:/help.html"))
+        help_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'help.html'))
+        self.textBrowser.setSource(QUrl.fromLocalFile(help_path))
 
         self.gridLayout.addWidget(self.textBrowser, 0, 0, 1, 1)
 

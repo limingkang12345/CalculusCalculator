@@ -1,4 +1,4 @@
-from sympy import symbols, solveset, dsolve, Function, solve, simplify, Eq, radsimp, pi, sin, acos, cos, sqrt, asin
+from sympy import symbols, solveset, dsolve, Function, solve, simplify, Eq, radsimp, pi, sin, acos, cos, sqrt, asin, ImageSet, Union, Lambda, Expr
 from sympy.abc import x
 from core.sympify import sympify
 
@@ -14,6 +14,20 @@ def _radsimp_safe(expr):
     except Exception:
         return expr
 
+def _expand_imageset(result):
+    # 轻量后处理：仅对三角方程等产生的 ImageSet / Union 通解，
+    # 将其 Lambda 体展开（如 pi*(12*_n + 1)/6 -> 2*pi*_n + pi/6），
+    # 不改变数学正确性，仅提升可读性。非此类结构原样返回。
+    # 注意：不等式结果中的 ImageSet 其 Lambda 体可能是 Interval 等
+    # 非 Expr 对象（如 sin(x)>1/2），对其不可调用 expand，需跳过。
+    if isinstance(result, ImageSet):
+        lam = result.lamda
+        expr = lam.expr.expand() if isinstance(lam.expr, Expr) else lam.expr
+        return ImageSet(Lambda(lam.variables, expr), result.base_set)
+    if isinstance(result, Union):
+        return Union(*[_expand_imageset(s) for s in result.args])
+    return result
+
 def solve_fangcheng(eq, zhuyuan, domain, fs):
     # eq(sympy.core.relational.Equality):方程等式
     # zhuyuan(str):主元符号
@@ -21,7 +35,8 @@ def solve_fangcheng(eq, zhuyuan, domain, fs):
     # fs(dict):函数列表
     # return(sympy.sets.sets.FiniteSet):解集
 
-    return _radsimp_safe(simplify(solveset(eq, symbols(zhuyuan), sympify(domain, fs))))
+    result = _radsimp_safe(simplify(solveset(eq, symbols(zhuyuan), sympify(domain, fs))))
+    return _expand_imageset(result)
 
 def solve_weifenfangcheng(eq, zhuyuan, fs):
     # eq(sympy.core.relational.Equality):微分方程等式
@@ -51,7 +66,8 @@ def solve_budengshi(rel, zhuyuan, domain, fs):
     # fs(dict):函数列表
     # return(sympy.sets.sets.FiniteSet):解集
 
-    return _radsimp_safe(simplify(solveset(rel, symbols(zhuyuan), sympify(domain, fs))))
+    result = _radsimp_safe(simplify(solveset(rel, symbols(zhuyuan), sympify(domain, fs))))
+    return _expand_imageset(result)
 
 def solve_budengshizu(rels, zhuyuan, fs):
     # rels(list of sympy.core.relational.Relational):不等式列表
@@ -95,8 +111,8 @@ def solve_sanjiaoxing(angles, sides, fs):
             result_sides[list(angles.keys())[0].lower()] = 2 * R * sin(list(angles.values())[0])
             result_sides[list(angles.keys())[1].lower()] = 2 * R * sin(list(angles.values())[1])
         # 单个解，包装为列表的列表，并对所有值化简
-        return [[{k: simplify(v) for k, v in result_angles.items()},
-                 {k: simplify(v) for k, v in result_sides.items()}]]
+        return [[{k: _radsimp_safe(simplify(v)) for k, v in result_angles.items()},
+                 {k: _radsimp_safe(simplify(v)) for k, v in result_sides.items()}]]
 
     elif len(angles) == 1:
         if list(angles.keys())[0].lower() in sides.keys():
@@ -137,8 +153,8 @@ def solve_sanjiaoxing(angles, sides, fs):
                 third_side_name = [s for s in ['a','b','c'] if s not in result_sides][0]
                 result_sides[third_side_name] = third_side
 
-                solutions.append([{k: simplify(v) for k, v in result_angles.items()},
-                                  {k: simplify(v) for k, v in result_sides.items()}])
+                solutions.append([{k: _radsimp_safe(simplify(v)) for k, v in result_angles.items()},
+                                  {k: _radsimp_safe(simplify(v)) for k, v in result_sides.items()}])
 
             if len(solutions) == 2 and abs(solutions[0][0][other_angle_name] - solutions[1][0][other_angle_name]) < 1e-12:
                 solutions = solutions[:1]
@@ -151,16 +167,16 @@ def solve_sanjiaoxing(angles, sides, fs):
             result_angles = angles.copy()
             result_angles[list(sides.keys())[0].upper()] = get_cos(list(sides.values())[1], third_side, list(sides.values())[0])
             result_angles[list(sides.keys())[1].upper()] = get_cos(list(sides.values())[0], third_side, list(sides.values())[1])
-            return [[{k: simplify(v) for k, v in result_angles.items()},
-                     {k: simplify(v) for k, v in result_sides.items()}]]
+            return [[{k: _radsimp_safe(simplify(v)) for k, v in result_angles.items()},
+                     {k: _radsimp_safe(simplify(v)) for k, v in result_sides.items()}]]
 
     elif len(angles) == 0:  
         # 已知三边 (SSS)
         result_sides = sides.copy()
         a, b, c = sides["a"], sides["b"], sides["c"]
         result_angles = {"A": get_cos(b, c, a), "B": get_cos(a, c, b), "C": get_cos(a, b, c)}
-        return [[{k: simplify(v) for k, v in result_angles.items()},
-                 {k: simplify(v) for k, v in result_sides.items()}]]
+        return [[{k: _radsimp_safe(simplify(v)) for k, v in result_angles.items()},
+                 {k: _radsimp_safe(simplify(v)) for k, v in result_sides.items()}]]
 
     else:
         # AAA

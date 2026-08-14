@@ -1,9 +1,6 @@
 .vscode
+.codebuddy
 __pycache__
-ui/*.ui
-favicon.ico
-help.html
-resources.qrc
 test*.py
 test_output.txt
 history_*.md
@@ -12,4 +9,10 @@ build
 CalculusCalculator.egg-info
 *.qm
 _*.*
+docs
 site
+web
+mkdocs.yml
+*.yml
+dist
+*.iss

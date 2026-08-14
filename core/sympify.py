@@ -1,6 +1,6 @@
 ﻿import re
 from sympy import sympify as sympify_sympy
-from sympy import Symbol, simplify, radsimp
+from sympy import Symbol, simplify, radsimp, Basic as SympyBasic
 from sympy.core.sympify import SympifyError
 from latex2sympy2_extended import latex2sympy
 from PySide6.QtWidgets import QMessageBox
@@ -66,6 +66,12 @@ def sympify(expr, fs, locals = None, is_simplify = False, is_rationalize = False
     # is_rationalize(bool):是否对结果执行分母有理化
     # return:处理后的表达式
 
+    # 处理 expr 已经是 sympy 表达式对象的情况（例如 _py_func_value 在 arg 为空
+    # 时直接返回 sympy 表达式）。对其做下标访问或字符串解析都会出错，
+    # 因此这里直接按需求后处理后返回。
+    if isinstance(expr, SympyBasic):
+        result = radsimp(expr) if is_rationalize else expr
+        return result
     if expr == "":  return Symbol("", latex="")
     if expr[0]=="$":
         try:
