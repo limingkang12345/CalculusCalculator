@@ -7,13 +7,7 @@ from ui.ui_main import Ui_MainWindow
 from core.settings import apply_language, save_language, save_theme
 
 import webbrowser, sys
-import ui  # 提供 tabs_list, tabs_dict 等延迟加载配置
-
-# 注意：functions.saves / core.render（matplotlib+sympy）、math_input、
-# ui.huancun 等重量级模块一律延迟到实际使用时再导入，以加快启动速度。
-
-# tabs_list 和 tabs_dict 由 ui/__init__.py 通过 lazy_loader 延迟加载提供
-# 子模块仅在首次创建对应 tab 时才被导入
+import ui
 
 qss_light = """QWidget { color: #1f2329; }
 
@@ -58,6 +52,23 @@ QListView::item:hover, QTableView::item:hover {
 }
 QListWidget::item:selected, QTreeWidget::item:selected, QTableWidget::item:selected,
 QListView::item:selected, QTableView::item:selected,
+/* 窗口激活时选中项：蓝底白字 */
+QListWidget::item:selected, QTreeWidget::item:selected,
+QTableWidget::item:selected, QListView::item:selected,
+QTableView::item:selected,
+QComboBox QAbstractItemView::item:selected {
+    background-color: #0078d4;
+    color: #ffffff;
+}
+
+/* 窗口非激活时选中项：浅灰底 + 深色文字（清晰可见） */
+QListWidget::item:selected:!active, QTreeWidget::item:selected:!active,
+QTableWidget::item:selected:!active, QListView::item:selected:!active,
+QTableView::item:selected:!active,
+QComboBox QAbstractItemView::item:selected:!active {
+    background-color: #d0d4dc;   /* 浅灰色背景 */
+    color: #1f2329;              /* 深色文字（与正常文本颜色一致） */
+}
 QComboBox QAbstractItemView::item:selected {
     background-color: #0078d4;
     color: #ffffff;
@@ -156,10 +167,27 @@ QProgressBar::chunk {
 }"""
 
 qss_dark = """QWidget { color: white; }
-QGroupBox { border: 1px solid gray;}"""
+QGroupBox { border: 1px solid gray;}
+/* 深色主题列表项选中样式 */
+QListWidget::item:selected, QTreeWidget::item:selected,
+QTableWidget::item:selected, QListView::item:selected,
+QTableView::item:selected,
+QComboBox QAbstractItemView::item:selected {
+    background-color: #2a6ea5;   /* 深蓝色底 */
+    color: #ffffff;              /* 白色文字 */
+}
+
+/* 窗口非激活时：深灰背景 + 浅色文字 */
+QListWidget::item:selected:!active, QTreeWidget::item:selected:!active,
+QTableWidget::item:selected:!active, QListView::item:selected:!active,
+QTableView::item:selected:!active,
+QComboBox QAbstractItemView::item:selected:!active {
+    background-color: #3c4043;   /* 深灰色 */
+    color: #e8eaed;              /* 浅色文字 */
+}"""
 
 class MainWindow(QMainWindow):
-    def __init__(self, parent=None):
+    def __init__(self, parent=None, file_arg=None):
 
         super().__init__(parent)
         self.ui = Ui_MainWindow()
@@ -167,6 +195,7 @@ class MainWindow(QMainWindow):
         self.fs, self.tabs, self.eqs, self.rels, self.vs = {}, {}, {}, {}, {}
         self.tabs_n = [1] * len(ui.tabs_list)
         self.cache = []
+        self.file_arg = file_arg
 
         self.setup()
 
@@ -212,6 +241,14 @@ class MainWindow(QMainWindow):
             self.dark()
         else:
             self.light()
+
+    def show(self):
+        super().show()
+
+        # 显示启动引导
+        from core.settings import load_initialized
+        if not load_initialized() and self.file_arg is None:
+            self.show_guide()
 
     def _save_file(self):
         from functions.saves import savefile

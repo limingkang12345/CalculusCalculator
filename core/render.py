@@ -96,10 +96,10 @@ def setGraphicsView(n, l, g):
     rc = {
         'text.usetex': False,
         'mathtext.fontset': 'cm',
-        'font.family': 'sans-serif',
-        'font.sans-serif': _CJK_FONT_LIST,
+        'font.family': 'Microsoft YaHei',
         'axes.unicode_minus': False,
         'text.color': text_color,
+        'svg.fonttype': 'path',
     }
     with plt.rc_context(rc):
         fig, ax = plt.subplots()
