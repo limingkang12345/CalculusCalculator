@@ -192,7 +192,7 @@ class MainWindow(QMainWindow):
         super().__init__(parent)
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
-        self.fs, self.tabs, self.eqs, self.rels, self.vs = {}, {}, {}, {}, {}
+        self.fs, self.tabs, self.eqs, self.rels, self.vs, self.ss = {}, {}, {}, {}, {}, {}
         self.tabs_n = [1] * len(ui.tabs_list)
         self.cache = []
         self.file_arg = file_arg
@@ -230,6 +230,7 @@ class MainWindow(QMainWindow):
         self.ui.actionshezhi.triggered.connect(lambda:self.create_tab(20))
         self.ui.actionhuancun.triggered.connect(lambda:self.create_tab(21))
         self.ui.actionblockly.triggered.connect(lambda:self.create_tab(22))
+        self.ui.actionfunctions.triggered.connect(lambda:self.create_tab(23))
         
         self.ui.tabWidget.tabCloseRequested.connect(self.close_tab)
 

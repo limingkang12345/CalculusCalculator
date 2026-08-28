@@ -45,6 +45,12 @@
       <property name="currentIndex">
        <number>-1</number>
       </property>
+      <property name="elideMode">
+       <enum>Qt::TextElideMode::ElideRight</enum>
+      </property>
+      <property name="usesScrollButtons">
+       <bool>true</bool>
+      </property>
       <property name="documentMode">
        <bool>true</bool>
       </property>
@@ -53,12 +59,6 @@
       </property>
       <property name="movable">
        <bool>true</bool>
-      </property>
-      <property name="usesScrollButtons">
-       <bool>true</bool>
-      </property>
-      <property name="elideMode">
-       <enum>Qt::TextElideMode::ElideRight</enum>
       </property>
      </widget>
     </item>
@@ -126,6 +126,7 @@
     <addaction name="jisuan"/>
     <addaction name="solve"/>
     <addaction name="huitu"/>
+    <addaction name="actionfunctions"/>
    </widget>
    <widget class="QMenu" name="about">
     <property name="title">
@@ -300,6 +301,11 @@
   <action name="actionyindao">
    <property name="text">
     <string>引导教学</string>
+   </property>
+  </action>
+  <action name="actionfunctions">
+   <property name="text">
+    <string>功能集成</string>
    </property>
   </action>
  </widget>

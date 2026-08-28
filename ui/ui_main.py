@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'mainzUdjTv.ui'
+## Form generated from reading UI file 'mainKJFknP.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.11.1
+## Created by: Qt User Interface Compiler version 6.11.2
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -87,6 +87,8 @@ class Ui_MainWindow(object):
         self.actionblockly.setObjectName(u"actionblockly")
         self.actionyindao = QAction(MainWindow)
         self.actionyindao.setObjectName(u"actionyindao")
+        self.actionfunctions = QAction(MainWindow)
+        self.actionfunctions.setObjectName(u"actionfunctions")
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
         self.gridLayout = QGridLayout(self.centralwidget)
@@ -94,11 +96,11 @@ class Ui_MainWindow(object):
         self.gridLayout.setContentsMargins(0, 0, 0, 0)
         self.tabWidget = QTabWidget(self.centralwidget)
         self.tabWidget.setObjectName(u"tabWidget")
+        self.tabWidget.setElideMode(Qt.TextElideMode.ElideRight)
+        self.tabWidget.setUsesScrollButtons(True)
         self.tabWidget.setDocumentMode(True)
         self.tabWidget.setTabsClosable(True)
         self.tabWidget.setMovable(True)
-        self.tabWidget.setUsesScrollButtons(True)
-        self.tabWidget.setElideMode(Qt.TextElideMode.ElideRight)
 
         self.gridLayout.addWidget(self.tabWidget, 0, 0, 1, 1)
 
@@ -136,6 +138,7 @@ class Ui_MainWindow(object):
         self.functions.addAction(self.jisuan.menuAction())
         self.functions.addAction(self.solve.menuAction())
         self.functions.addAction(self.huitu.menuAction())
+        self.functions.addAction(self.actionfunctions)
         self.calculus.addAction(self.actionqiudao)
         self.calculus.addAction(self.actionjifen)
         self.dingyi.addAction(self.actiondingyi)
@@ -204,6 +207,7 @@ class Ui_MainWindow(object):
         self.actionhuancun.setText(QCoreApplication.translate("MainWindow", u"\u7f13\u5b58\u533a", None))
         self.actionblockly.setText(QCoreApplication.translate("MainWindow", u"\u7f16\u8f91\u5668", None))
         self.actionyindao.setText(QCoreApplication.translate("MainWindow", u"\u5f15\u5bfc\u6559\u5b66", None))
+        self.actionfunctions.setText(QCoreApplication.translate("MainWindow", u"\u529f\u80fd\u96c6\u6210", None))
         self.functions.setTitle(QCoreApplication.translate("MainWindow", u"\u529f\u80fd", None))
         self.calculus.setTitle(QCoreApplication.translate("MainWindow", u"\u5fae\u79ef\u5206", None))
         self.dingyi.setTitle(QCoreApplication.translate("MainWindow", u"\u5b9a\u4e49", None))

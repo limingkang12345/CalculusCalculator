@@ -1,5 +1,5 @@
 import os
-from PySide6.QtWidgets import QDialog, QVBoxLayout, QDialogButtonBox
+from PySide6.QtWidgets import QDialog, QVBoxLayout, QDialogButtonBox, QMessageBox
 from PySide6.QtWebEngineWidgets import QWebEngineView
 from PySide6.QtCore import QUrl, QEventLoop, QCoreApplication
 
@@ -68,7 +68,7 @@ class MathLiveDialog(QDialog):
         return self._result_latex
 
 
-def open_formula_dialog(parent):
+def open_formula_dialog(parent, is_return = False):
     """
     打开公式输入对话框，与原有接口完全兼容。
     获取的 LaTeX 会通过 sympify 转换为表达式再设置回去。
@@ -91,11 +91,21 @@ def open_formula_dialog(parent):
         zoom=1.2
     )
 
-    if dlg.exec() == QDialog.Accepted:
-        latex_str = dlg.result_latex()
-        try:
-            expr = sympify('$' + latex_str, {})
-            parent.setText(str(expr))
-        except Exception as e:
-            print(f"SymPy 转换失败: {e}")
-            parent.setText(latex_str)
+    if is_return:
+        if dlg.exec() == QDialog.Accepted:
+            latex_str = dlg.result_latex()
+            try:
+                return str(sympify('$' + latex_str, {}))
+            except Exception as e:
+                QMessageBox(parent=parent, title=QCoreApplication.translate("math_input", f"Sympy 转换失败: {e}"), buttons=QMessageBox.StandardButton.Ok)
+                return latex_str
+
+    else:
+        if dlg.exec() == QDialog.Accepted:
+            latex_str = dlg.result_latex()
+            try:
+                expr = sympify('$' + latex_str, {})
+                parent.setText(str(expr))
+            except Exception as e:
+                print(f"SymPy 转换失败: {e}")
+                parent.setText(latex_str)
