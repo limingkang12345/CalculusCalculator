@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'functionsLLDlXx.ui'
+## Form generated from reading UI file 'functionsnKPgYi.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.11.2
 ##
@@ -61,10 +61,25 @@ class Ui_functions(object):
         self.calc_groupbox.setObjectName(u"calc_groupbox")
         self.gridLayout_2 = QGridLayout(self.calc_groupbox)
         self.gridLayout_2.setObjectName(u"gridLayout_2")
-        self.calc_preview = QGraphicsView(self.calc_groupbox)
-        self.calc_preview.setObjectName(u"calc_preview")
+        self.calc_label_result = QLabel(self.calc_groupbox)
+        self.calc_label_result.setObjectName(u"calc_label_result")
 
-        self.gridLayout_2.addWidget(self.calc_preview, 5, 0, 1, 2)
+        self.gridLayout_2.addWidget(self.calc_label_result, 1, 0, 1, 1)
+
+        self.calc_output = QLineEdit(self.calc_groupbox)
+        self.calc_output.setObjectName(u"calc_output")
+
+        self.gridLayout_2.addWidget(self.calc_output, 7, 1, 1, 1)
+
+        self.calc_calc = QPushButton(self.calc_groupbox)
+        self.calc_calc.setObjectName(u"calc_calc")
+
+        self.gridLayout_2.addWidget(self.calc_calc, 2, 0, 1, 2)
+
+        self.calc_label_function = QLabel(self.calc_groupbox)
+        self.calc_label_function.setObjectName(u"calc_label_function")
+
+        self.gridLayout_2.addWidget(self.calc_label_function, 0, 0, 1, 1)
 
         self.calc_input = QTableWidget(self.calc_groupbox)
         if (self.calc_input.columnCount() < 1):
@@ -74,47 +89,43 @@ class Ui_functions(object):
         self.calc_input.setObjectName(u"calc_input")
         self.calc_input.horizontalHeader().setStretchLastSection(True)
 
-        self.gridLayout_2.addWidget(self.calc_input, 3, 0, 1, 2)
-
-        self.calc_output = QLineEdit(self.calc_groupbox)
-        self.calc_output.setObjectName(u"calc_output")
-
-        self.gridLayout_2.addWidget(self.calc_output, 6, 1, 1, 1)
-
-        self.calc_result = QLineEdit(self.calc_groupbox)
-        self.calc_result.setObjectName(u"calc_result")
-
-        self.gridLayout_2.addWidget(self.calc_result, 1, 1, 1, 1)
+        self.gridLayout_2.addWidget(self.calc_input, 4, 0, 1, 2)
 
         self.calc_label_output = QLabel(self.calc_groupbox)
         self.calc_label_output.setObjectName(u"calc_label_output")
 
-        self.gridLayout_2.addWidget(self.calc_label_output, 6, 0, 1, 1)
+        self.gridLayout_2.addWidget(self.calc_label_output, 7, 0, 1, 1)
 
-        self.calc_function = QComboBox(self.calc_groupbox)
-        self.calc_function.setObjectName(u"calc_function")
+        self.calc_result = QLineEdit(self.calc_groupbox)
+        self.calc_result.setObjectName(u"calc_result")
+        self.calc_result.setEnabled(False)
 
-        self.gridLayout_2.addWidget(self.calc_function, 0, 1, 1, 1)
+        self.gridLayout_2.addWidget(self.calc_result, 1, 1, 1, 1)
 
-        self.calc_label_result = QLabel(self.calc_groupbox)
-        self.calc_label_result.setObjectName(u"calc_label_result")
+        self.calc_preview = QGraphicsView(self.calc_groupbox)
+        self.calc_preview.setObjectName(u"calc_preview")
 
-        self.gridLayout_2.addWidget(self.calc_label_result, 1, 0, 1, 1)
-
-        self.calc_label_function = QLabel(self.calc_groupbox)
-        self.calc_label_function.setObjectName(u"calc_label_function")
-
-        self.gridLayout_2.addWidget(self.calc_label_function, 0, 0, 1, 1)
-
-        self.calc_calc = QPushButton(self.calc_groupbox)
-        self.calc_calc.setObjectName(u"calc_calc")
-
-        self.gridLayout_2.addWidget(self.calc_calc, 2, 0, 1, 2)
+        self.gridLayout_2.addWidget(self.calc_preview, 6, 0, 1, 2)
 
         self.calc_label_preview = QLabel(self.calc_groupbox)
         self.calc_label_preview.setObjectName(u"calc_label_preview")
 
-        self.gridLayout_2.addWidget(self.calc_label_preview, 4, 0, 1, 2)
+        self.gridLayout_2.addWidget(self.calc_label_preview, 5, 0, 1, 2)
+
+        self.calc_function = QComboBox(self.calc_groupbox)
+        self.calc_function.addItem("")
+        self.calc_function.addItem("")
+        self.calc_function.addItem("")
+        self.calc_function.addItem("")
+        self.calc_function.addItem("")
+        self.calc_function.setObjectName(u"calc_function")
+
+        self.gridLayout_2.addWidget(self.calc_function, 0, 1, 1, 1)
+
+        self.calc_clear = QPushButton(self.calc_groupbox)
+        self.calc_clear.setObjectName(u"calc_clear")
+
+        self.gridLayout_2.addWidget(self.calc_clear, 3, 0, 1, 2)
 
 
         self.gridLayout_3.addWidget(self.calc_groupbox, 0, 1, 1, 1)
@@ -138,9 +149,7 @@ class Ui_functions(object):
         __qtablewidgetitem1 = QTableWidgetItem()
         self.def_input.setHorizontalHeaderItem(0, __qtablewidgetitem1)
         self.def_input.setObjectName(u"def_input")
-        self.def_input.horizontalHeader().setCascadingSectionResizes(False)
         self.def_input.horizontalHeader().setStretchLastSection(True)
-        self.def_input.verticalHeader().setStretchLastSection(False)
 
         self.gridLayout.addWidget(self.def_input, 5, 0, 1, 2)
 
@@ -231,13 +240,20 @@ class Ui_functions(object):
 
         self.draw_draw.setText(QCoreApplication.translate("functions", u"\u7ed8\u5236", None))
         self.calc_groupbox.setTitle(QCoreApplication.translate("functions", u"\u8ba1\u7b97\u533a", None))
+        self.calc_label_result.setText(QCoreApplication.translate("functions", u"\u4fdd\u5b58\u4e3a(\u672a\u542f\u7528)\uff1a", None))
+        self.calc_calc.setText(QCoreApplication.translate("functions", u"\u8ba1\u7b97", None))
+        self.calc_label_function.setText(QCoreApplication.translate("functions", u"\u8ba1\u7b97\u529f\u80fd\uff1a", None))
         ___qtablewidgetitem = self.calc_input.horizontalHeaderItem(0)
         ___qtablewidgetitem.setText(QCoreApplication.translate("functions", u"\u8f93\u5165\u53c2\u6570", None))
         self.calc_label_output.setText(QCoreApplication.translate("functions", u"\u8f93\u51fa\uff1a", None))
-        self.calc_label_result.setText(QCoreApplication.translate("functions", u"\u7ed3\u679c\u4fdd\u5b58\u4e3a\uff1a", None))
-        self.calc_label_function.setText(QCoreApplication.translate("functions", u"\u8ba1\u7b97\u529f\u80fd\uff1a", None))
-        self.calc_calc.setText(QCoreApplication.translate("functions", u"\u8ba1\u7b97(Enter)", None))
-        self.calc_label_preview.setText(QCoreApplication.translate("functions", u"\u8ba1\u7b97\u7ed3\u679c\u9884\u89c8\uff1a", None))
+        self.calc_label_preview.setText(QCoreApplication.translate("functions", u"\u8ba1\u7b97\u7ed3\u679c\uff1a", None))
+        self.calc_function.setItemText(0, QCoreApplication.translate("functions", u"\u8ba1\u7b97", None))
+        self.calc_function.setItemText(1, QCoreApplication.translate("functions", u"\u6c42\u5bfc", None))
+        self.calc_function.setItemText(2, QCoreApplication.translate("functions", u"\u79ef\u5206", None))
+        self.calc_function.setItemText(3, QCoreApplication.translate("functions", u"\u89e3\u65b9\u7a0b", None))
+        self.calc_function.setItemText(4, QCoreApplication.translate("functions", u"\u89e3\u4e0d\u7b49\u5f0f", None))
+
+        self.calc_clear.setText(QCoreApplication.translate("functions", u"\u6e05\u7a7a", None))
         self.def_groupbox.setTitle(QCoreApplication.translate("functions", u"\u5b9a\u4e49\u533a", None))
         ___qtreewidgetitem = self.def_objs.headerItem()
         ___qtreewidgetitem.setText(1, QCoreApplication.translate("functions", u"\u5c5e\u6027\u503c", None))

@@ -4,7 +4,7 @@ tr = QCoreApplication.translate
 from ui.ui_functions import Ui_functions
 from core.render import setGraphicsView
 from core.sympify import sympify
-from sympy import latex
+from sympy import latex, Eq, Rel
 
 
 class Functions(QWidget, Ui_functions):
@@ -20,6 +20,9 @@ class Functions(QWidget, Ui_functions):
         self.def_edit.clicked.connect(self.click_def_edit)
         self.def_del.clicked.connect(self.click_def_del)
         self.def_preview_mode.currentIndexChanged.connect(lambda: self.update_def_preview(self.def_input.currentItem()))
+        self.calc_function.currentIndexChanged.connect(self.update_calc_input)
+        self.calc_clear.clicked.connect(self.clear_calc_input)
+        self.calc_calc.clicked.connect(self.click_calc_calc)
 
         # 2. 初始化对象字典
         self.fs = parent.fs
@@ -29,19 +32,29 @@ class Functions(QWidget, Ui_functions):
 
         # 3. 初始化定义输入表格相关内容
         self.def_input.verticalHeader().setSectionResizeMode(QHeaderView.ResizeMode.Stretch)
-        def_func_attr = [(tr("functions", "名称"), "f"), 
-                         (tr("functions", "表达式"), ""), 
-                         (tr("functions", "定义域"), tr("functions", "Reals")),
-                         (tr("functions", "自变量"), tr("functions", "x"))]
-        def_set_attr = [(tr("functions", "名称"), "set"), 
-                        (tr("functions", "表达式"), "")]
-        def_vec_attr = [(tr("functions", "名称"), "vec"), 
-                        (tr("functions", "x"), ""), 
-                        (tr("functions", "y"), "")]
-        def_pg_attr = [(tr("functions", "名称"), "pg"), 
-                       (tr("functions", "暂无"), "")]
-        def_sg_attr = [(tr("functions", "名称"), "sg"), 
-                       (tr("functions", "暂无"), "")]
+        def_func_attr = [
+            (tr("functions", "名称"), "f"), 
+            (tr("functions", "表达式"), ""), 
+            (tr("functions", "定义域"), tr("functions", "Reals")),
+            (tr("functions", "自变量"), tr("functions", "x"))
+            ]
+        def_set_attr = [
+            (tr("functions", "名称"), "set"), 
+            (tr("functions", "表达式"), "")
+            ]
+        def_vec_attr = [
+            (tr("functions", "名称"), "vec"), 
+            (tr("functions", "x"), ""), 
+            (tr("functions", "y"), "")
+            ]
+        def_pg_attr = [
+            (tr("functions", "名称"), "pg"), 
+            (tr("functions", "暂无"), "")
+            ]
+        def_sg_attr = [
+            (tr("functions", "名称"), "sg"), 
+            (tr("functions", "暂无"), "")
+            ]
         self.def_attrs = [def_func_attr, def_set_attr, def_vec_attr, def_pg_attr, def_sg_attr]
         # 当前版本不启用: self.def_obj_name_index = [0] * len(self.def_attrs)
         self.def_input_temp = {self.def_attrs.index(attrs): [attr[1] for attr in attrs] for attrs in self.def_attrs}
@@ -51,6 +64,40 @@ class Functions(QWidget, Ui_functions):
             self.def_input.setItem(i, 0, QTableWidgetItem("") 
                 if self.def_attrs[self.def_input_type][i][1] in self.objs_dicts[self.def_input_type].keys() and i==0 
                 else QTableWidgetItem(self.def_attrs[self.def_input_type][i][1]))
+
+        # 初始化计算输入表格相关内容
+        self.calc_input.verticalHeader().setSectionResizeMode(QHeaderView.ResizeMode.Stretch)
+        calc_calc_attr = [
+            (tr("functions", "表达式"), "")
+        ]
+        calc_diff_attr = [
+            (tr("functions", "表达式"), ""),
+            (tr("functions", "求导变量"), "x"),
+            (tr("functions", "求导次数"), "1")
+        ]
+        calc_integral_attr = [
+            (tr("functions", "表达式"), ""),
+            (tr("functions", "积分变量"), "x")
+        ]
+        calc_equation_attr = [
+            (tr("functions", "左式"), ""),
+            (tr("functions", "右式"), "0"),
+            (tr("functions", "求解变量"), "x"),
+            (tr("functions", "求解定义域"), "Reals")
+        ]
+        calc_inequality_attr = [
+            (tr("functions", "左式"), ""),
+            (tr("functions", "不等号"), "!="),
+            (tr("functions", "右式"), "0"),
+            (tr("functions", "求解变量"), "x"),
+            (tr("functions", "求解定义域"), "Reals")
+        ]
+        self.calc_attrs = [calc_calc_attr, calc_diff_attr, calc_integral_attr, calc_equation_attr, calc_inequality_attr]
+        self.calc_input_temp = {self.calc_attrs.index(attrs): [attr[1] for attr in attrs] for attrs in self.calc_attrs}
+        self.calc_input_type = 0
+        self.update_calc_input(0)
+        for i in range(self.calc_input.rowCount()):
+                self.calc_input.setItem(i, 0, QTableWidgetItem(self.calc_attrs[self.calc_input_type][i][1]))
 
     def update_def_objs(self):
         """更新树状列表数据（三层结构：类型 → 对象 → 属性）"""
@@ -230,8 +277,85 @@ class Functions(QWidget, Ui_functions):
                 try:
                     expr = sympify(item.text(), self.fs if self.def_preview_mode.currentIndex() == 1 else {})
                 except Exception as e:
-                    setGraphicsView("", "不是合法的表达式", self.def_preview)
+                    setGraphicsView("", tr("functions", "不是合法的表达式"), self.def_preview)
                     self.def_output.setText("")
                 else:
                     setGraphicsView("", latex(expr), self.def_preview)
                     self.def_output.setText(str(expr))
+
+    def update_calc_input(self, idx, is_temp = True):
+            """更新输入表格信息"""
+    
+            # 1. 缓存内容
+            if is_temp:
+                for i in range(self.calc_input.rowCount()):
+                    item = self.calc_input.item(i, 0)
+                    self.calc_input_temp[self.calc_input_type][i] = item.text() if item else ""
+    
+            # 2. 清空内容并重写当前类型缓存
+            self.calc_input.clearContents()
+            self.calc_input_type = idx
+    
+            # 3. 重设表格行数与各行标题
+            self.calc_input.setRowCount(len(self.calc_attrs[idx]))
+            self.calc_input.setVerticalHeaderLabels([i[0] for i in self.calc_attrs[idx]])
+    
+            # 4. 读取缓存并覆盖已有项
+            for i in range(self.calc_input.rowCount()):
+                try:
+                    item = QTableWidgetItem(self.calc_input_temp[idx][i])
+                    self.calc_input.setItem(i, 0, item)
+                except Exception as e:
+                    print(e)
+    
+    def clear_calc_input(self):
+        """清空输入表格"""
+
+        # 1. 清空表格内容和缓存列表对应内容
+        self.calc_input.clearContents()
+        self.calc_input_temp[self.calc_input_type] = [attr[1] for attr in self.calc_attrs[self.calc_input_type]]
+
+        # 2. 设置为默认文本
+        for i in range(self.calc_input.rowCount()):
+            self.calc_input.setItem(i, 0, QTableWidgetItem(self.calc_attrs[self.calc_input_type][i][1]))
+    
+    def click_calc_calc(self):
+        """保存对象"""
+
+        # 1. 提取输入的数据
+        inputs = [self.calc_input.item(i, 0).text() for i in range(self.calc_input.rowCount())]
+
+        # 2. 检查数据是否完整
+        if all(inputs):
+            try:
+                # 3. 根据计算类型执行运算
+                if self.calc_input_type == 0:
+                    # 设置计算结果长度上限
+                    import sys; sys.set_int_max_str_digits(0)
+                    # 调用sympy引擎计算
+                    result = sympify(inputs[0], self.fs, is_simplify = True)
+                elif self.calc_input_type == 1:
+                    from functions.derivative import derivative
+                    result = derivative(inputs[0], inputs[1], inputs[2], "", self.fs)
+                elif self.calc_input_type == 2:
+                    from functions.integral import integral
+                    result = integral(inputs[0], inputs[1], self.fs)
+                elif self.calc_input_type == 3:
+                    from functions.solvers import solve_fangcheng
+                    result = solve_fangcheng(Eq(sympify(inputs[0], self.fs), sympify(inputs[1], self.fs)), inputs[2], inputs[3], self.fs)
+                elif self.calc_input_type == 4:
+                    from functions.solvers import solve_budengshi
+                    result = solve_budengshi(Rel(sympify(inputs[0], self.fs), sympify(inputs[2], self.fs), inputs[1]), inputs[3], inputs[4], self.fs)
+
+                # 3. 渲染结果至预览框
+                setGraphicsView("", latex(result), self.calc_preview)
+                self.calc_output.setText(str(result))
+
+            # 4. 错误处理
+            except Exception as e:
+                setGraphicsView("", "\\text{" + str(e) + "}", self.calc_preview)
+                self.calc_output.setText(str(e))
+
+        # 5. 参数遗漏报错
+        else:
+            QMessageBox.critical(self, "Error", tr("functions", "有参数未输入"), QMessageBox.StandardButton.Ok)

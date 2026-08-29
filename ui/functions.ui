@@ -56,10 +56,31 @@
       <string>计算区</string>
      </property>
      <layout class="QGridLayout" name="gridLayout_2">
-      <item row="5" column="0" colspan="2">
-       <widget class="QGraphicsView" name="calc_preview"/>
+      <item row="1" column="0">
+       <widget class="QLabel" name="calc_label_result">
+        <property name="text">
+         <string>保存为(未启用)：</string>
+        </property>
+       </widget>
       </item>
-      <item row="3" column="0" colspan="2">
+      <item row="7" column="1">
+       <widget class="QLineEdit" name="calc_output"/>
+      </item>
+      <item row="2" column="0" colspan="2">
+       <widget class="QPushButton" name="calc_calc">
+        <property name="text">
+         <string>计算</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0">
+       <widget class="QLabel" name="calc_label_function">
+        <property name="text">
+         <string>计算功能：</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="0" colspan="2">
        <widget class="QTableWidget" name="calc_input">
         <attribute name="horizontalHeaderStretchLastSection">
          <bool>true</bool>
@@ -71,16 +92,27 @@
         </column>
        </widget>
       </item>
-      <item row="6" column="1">
-       <widget class="QLineEdit" name="calc_output"/>
-      </item>
-      <item row="1" column="1">
-       <widget class="QLineEdit" name="calc_result"/>
-      </item>
-      <item row="6" column="0">
+      <item row="7" column="0">
        <widget class="QLabel" name="calc_label_output">
         <property name="text">
          <string>输出：</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QLineEdit" name="calc_result">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="6" column="0" colspan="2">
+       <widget class="QGraphicsView" name="calc_preview"/>
+      </item>
+      <item row="5" column="0" colspan="2">
+       <widget class="QLabel" name="calc_label_preview">
+        <property name="text">
+         <string>计算结果：</string>
         </property>
        </widget>
       </item>
@@ -88,7 +120,7 @@
        <widget class="QComboBox" name="calc_function">
         <item>
          <property name="text">
-          <string>数值计算</string>
+          <string>计算</string>
          </property>
         </item>
         <item>
@@ -111,38 +143,12 @@
           <string>解不等式</string>
          </property>
         </item>
-        <item>
-         <property name="text">
-          <string>解三角形</string>
-         </property>
-        </item>
        </widget>
       </item>
-      <item row="1" column="0">
-       <widget class="QLabel" name="calc_label_result">
+      <item row="3" column="0" colspan="2">
+       <widget class="QPushButton" name="calc_clear">
         <property name="text">
-         <string>结果保存为：</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="0">
-       <widget class="QLabel" name="calc_label_function">
-        <property name="text">
-         <string>计算功能：</string>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="0" colspan="2">
-       <widget class="QPushButton" name="calc_calc">
-        <property name="text">
-         <string>计算(Enter)</string>
-        </property>
-       </widget>
-      </item>
-      <item row="4" column="0" colspan="2">
-       <widget class="QLabel" name="calc_label_preview">
-        <property name="text">
-         <string>计算结果预览：</string>
+         <string>清空</string>
         </property>
        </widget>
       </item>
@@ -189,14 +195,8 @@
       </item>
       <item row="5" column="0" colspan="2">
        <widget class="QTableWidget" name="def_input">
-        <attribute name="horizontalHeaderCascadingSectionResizes">
-         <bool>false</bool>
-        </attribute>
         <attribute name="horizontalHeaderStretchLastSection">
          <bool>true</bool>
-        </attribute>
-        <attribute name="verticalHeaderStretchLastSection">
-         <bool>false</bool>
         </attribute>
         <column>
          <property name="text">
