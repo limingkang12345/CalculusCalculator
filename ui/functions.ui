@@ -1,0 +1,311 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>functions</class>
+ <widget class="QWidget" name="functions">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1440</width>
+    <height>855</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout_3">
+   <item row="0" column="3">
+    <widget class="QGroupBox" name="draw">
+     <property name="title">
+      <string>绘图区</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout">
+      <item>
+       <widget class="QComboBox" name="draw_mode">
+        <item>
+         <property name="text">
+          <string>平面几何模式</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>立体几何模式</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="draw_draw">
+        <property name="text">
+         <string>绘制</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QListWidget" name="draw_objs"/>
+      </item>
+      <item>
+       <widget class="QGraphicsView" name="draw_output"/>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="0" column="1">
+    <widget class="QGroupBox" name="calc_groupbox">
+     <property name="title">
+      <string>计算区</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_2">
+      <item row="1" column="0">
+       <widget class="QLabel" name="calc_label_result">
+        <property name="text">
+         <string>保存为(未启用)：</string>
+        </property>
+       </widget>
+      </item>
+      <item row="7" column="1">
+       <widget class="QLineEdit" name="calc_output"/>
+      </item>
+      <item row="2" column="0" colspan="2">
+       <widget class="QPushButton" name="calc_calc">
+        <property name="text">
+         <string>计算</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0">
+       <widget class="QLabel" name="calc_label_function">
+        <property name="text">
+         <string>计算功能：</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="0" colspan="2">
+       <widget class="QTableWidget" name="calc_input">
+        <attribute name="horizontalHeaderStretchLastSection">
+         <bool>true</bool>
+        </attribute>
+        <column>
+         <property name="text">
+          <string>输入参数</string>
+         </property>
+        </column>
+       </widget>
+      </item>
+      <item row="7" column="0">
+       <widget class="QLabel" name="calc_label_output">
+        <property name="text">
+         <string>输出：</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QLineEdit" name="calc_result">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="6" column="0" colspan="2">
+       <widget class="QGraphicsView" name="calc_preview"/>
+      </item>
+      <item row="5" column="0" colspan="2">
+       <widget class="QLabel" name="calc_label_preview">
+        <property name="text">
+         <string>计算结果：</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QComboBox" name="calc_function">
+        <item>
+         <property name="text">
+          <string>计算</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>求导</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>积分</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>解方程</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>解不等式</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item row="3" column="0" colspan="2">
+       <widget class="QPushButton" name="calc_clear">
+        <property name="text">
+         <string>清空</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="0" column="0">
+    <widget class="QGroupBox" name="def_groupbox">
+     <property name="title">
+      <string>定义区</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout">
+      <item row="0" column="0" colspan="2">
+       <widget class="QTreeWidget" name="def_objs">
+        <attribute name="headerDefaultSectionSize">
+         <number>150</number>
+        </attribute>
+        <column>
+         <property name="text">
+          <string>对象/属性</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>属性值</string>
+         </property>
+        </column>
+        <item>
+         <property name="text">
+          <string>函数</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>集合</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>向量</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item row="5" column="0" colspan="2">
+       <widget class="QTableWidget" name="def_input">
+        <attribute name="horizontalHeaderStretchLastSection">
+         <bool>true</bool>
+        </attribute>
+        <column>
+         <property name="text">
+          <string>输入参数</string>
+         </property>
+        </column>
+       </widget>
+      </item>
+      <item row="6" column="0" colspan="2">
+       <layout class="QHBoxLayout" name="def_buttons">
+        <item>
+         <widget class="QPushButton" name="def_save">
+          <property name="text">
+           <string>保存输入</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="def_clear">
+          <property name="text">
+           <string>清空输入</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item row="1" column="0" colspan="2">
+       <layout class="QHBoxLayout" name="horizontalLayout">
+        <item>
+         <widget class="QPushButton" name="def_edit">
+          <property name="text">
+           <string>编辑定义</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="def_del">
+          <property name="text">
+           <string>删除定义</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="def_label_type">
+        <property name="text">
+         <string>类型：</string>
+        </property>
+       </widget>
+      </item>
+      <item row="9" column="1">
+       <widget class="QLineEdit" name="def_output"/>
+      </item>
+      <item row="9" column="0">
+       <widget class="QLabel" name="def_label_output">
+        <property name="text">
+         <string>输出：</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1" rowspan="2">
+       <widget class="QComboBox" name="def_type">
+        <item>
+         <property name="text">
+          <string>函数</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>集合</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>向量</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item row="8" column="0" colspan="2">
+       <widget class="QGraphicsView" name="def_preview"/>
+      </item>
+      <item row="7" column="0">
+       <widget class="QLabel" name="def_label_preview">
+        <property name="text">
+         <string>预览：</string>
+        </property>
+       </widget>
+      </item>
+      <item row="7" column="1">
+       <widget class="QComboBox" name="def_preview_mode">
+        <item>
+         <property name="text">
+          <string>直接模式(不自动替换表达式中的自定义函数)</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>替换模式(自动替换表达式中的自定义函数)</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
