@@ -192,14 +192,15 @@ class MainWindow(QMainWindow):
         super().__init__(parent)
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
-        self.fs, self.tabs, self.eqs, self.rels, self.vs, self.ss = {}, {}, {}, {}, {}, {}
-        self.tabs_n = [1] * len(ui.tabs_list)
-        self.cache = []
         self.file_arg = file_arg
-
-        self.setup()
+        self.fs, self.tabs = {}, {}
+        self.tabs_n = [1] * len(ui.tabs_list)
+        self.create_tab(0)
 
     def setup(self):
+
+        self.eqs, self.rels, self.vs, self.ss = {}, {}, {}, {}
+        self.cache = []
 
         self.ui.actionsaveas.triggered.connect(lambda:self._save_file())
         self.ui.actionopen.triggered.connect(lambda:self._open_file())
@@ -234,17 +235,12 @@ class MainWindow(QMainWindow):
         
         self.ui.tabWidget.tabCloseRequested.connect(self.close_tab)
 
-        self.create_tab(0)
-
         # 按保存的主题应用（默认浅色）；语言已在 run.py 启动时装入
         from core.settings import load_saved_theme
         if load_saved_theme() == "dark":
             self.dark()
         else:
             self.light()
-
-    def show(self):
-        super().show()
 
         # 显示启动引导
         from core.settings import load_initialized
