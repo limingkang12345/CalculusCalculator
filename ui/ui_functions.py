@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'functionsnKPgYi.ui'
+## Form generated from reading UI file 'functionsFHsVvU.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.11.2
 ##
@@ -98,7 +98,7 @@ class Ui_functions(object):
 
         self.calc_result = QLineEdit(self.calc_groupbox)
         self.calc_result.setObjectName(u"calc_result")
-        self.calc_result.setEnabled(False)
+        self.calc_result.setEnabled(True)
 
         self.gridLayout_2.addWidget(self.calc_result, 1, 1, 1, 1)
 
@@ -240,7 +240,7 @@ class Ui_functions(object):
 
         self.draw_draw.setText(QCoreApplication.translate("functions", u"\u7ed8\u5236", None))
         self.calc_groupbox.setTitle(QCoreApplication.translate("functions", u"\u8ba1\u7b97\u533a", None))
-        self.calc_label_result.setText(QCoreApplication.translate("functions", u"\u4fdd\u5b58\u4e3a(\u672a\u542f\u7528)\uff1a", None))
+        self.calc_label_result.setText(QCoreApplication.translate("functions", u"\u4fdd\u5b58\u4e3a\uff1a", None))
         self.calc_calc.setText(QCoreApplication.translate("functions", u"\u8ba1\u7b97", None))
         self.calc_label_function.setText(QCoreApplication.translate("functions", u"\u8ba1\u7b97\u529f\u80fd\uff1a", None))
         ___qtablewidgetitem = self.calc_input.horizontalHeaderItem(0)

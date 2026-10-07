@@ -59,7 +59,7 @@
       <item row="1" column="0">
        <widget class="QLabel" name="calc_label_result">
         <property name="text">
-         <string>保存为(未启用)：</string>
+         <string>保存为：</string>
         </property>
        </widget>
       </item>
@@ -102,7 +102,7 @@
       <item row="1" column="1">
        <widget class="QLineEdit" name="calc_result">
         <property name="enabled">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
        </widget>
       </item>

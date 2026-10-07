@@ -18,7 +18,7 @@ _current = "zh_CN"
 _theme = "light"
 
 # 应用版本号（单源）。首次运行时也会写入设置文件，便于检查更新与排查问题。
-APP_VERSION = "2.0.0"
+APP_VERSION = "2.0.3"
 
 
 def _qm_dir():

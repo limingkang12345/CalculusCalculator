@@ -6,7 +6,7 @@ from qdarktheme import setup_theme
 from ui.ui_main import Ui_MainWindow
 from core.settings import apply_language, save_language, save_theme
 
-import webbrowser, sys
+import webbrowser, sys, os
 import ui
 
 qss_light = """QWidget { color: #1f2329; }
@@ -195,7 +195,25 @@ class MainWindow(QMainWindow):
         self.file_arg = file_arg
         self.fs, self.tabs = {}, {}
         self.tabs_n = [1] * len(ui.tabs_list)
+        self.set_app_icon()
         self.create_tab(0)
+
+    def set_app_icon(self):
+        """设置窗口图标。
+
+        .ui 中的路径是设计期相对路径（../favicon.ico），运行期依赖当前工作目录，
+        冻结后往往取不到；这里按“项目根 / 可执行文件同级”解析，取不到时保持默认图标。
+        """
+        candidates = []
+        if getattr(sys, 'frozen', False):
+            exe_dir = os.path.dirname(os.path.abspath(sys.executable))
+            candidates.append(os.path.join(exe_dir, 'favicon.ico'))
+        base = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        candidates.append(os.path.join(base, 'favicon.ico'))
+        for path in candidates:
+            if os.path.isfile(path):
+                self.setWindowIcon(QIcon(path))
+                return
 
     def setup(self):
 
@@ -511,6 +529,10 @@ class MainWindow(QMainWindow):
                     self._on_insert_cache(lineedit)
             return run
         for i in new_tab.findChildren(QLineEdit):
+            # 已自带快捷按钮的输入框（如功能集成页表格中的单元格控件）不再重复添加，
+            # 否则同一个输入框会出现两组"可视化输入/打开缓存区/存入缓存区"按钮
+            if getattr(i, 'actions_wired', False):
+                continue
             i.input_action = QAction(QIcon.fromTheme("input-keyboard"), QCoreApplication.translate("MainWindow", "可视化输入"), i)
             i.input_action.triggered.connect(get_lambda(i, 0))
             i.addAction(i.input_action, QLineEdit.TrailingPosition)
