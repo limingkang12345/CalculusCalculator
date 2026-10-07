@@ -2,10 +2,35 @@ import sys
 import os
 from cx_Freeze import setup, Executable
 
-# ADD FILES
-# 将多语言翻译文件（.qm）随可执行文件一起打包，运行时位于 exe 同级 i18n/ 下
-files = [("i18n", "i18n"), ("mathjax", "lib/mathjax"), ("blockly", "lib/blockly"), \
-         ("help.html", "help.html"), ("help_en.html", "help_en.html")]
+# cx_Freeze 把 packages 中的模块放到 <exe>/lib/<包名>/，并自动复制包目录下的
+# 全部非 .py 文件（cx_Freeze.freezer.Freezer._copy_package_data），
+# 因此 math_input 内的 *.html 与 mathlive/（含字体）无需在此列出。
+#
+# 下面只列“包目录之外”的资源。目标路径必须与代码中的查找路径一致——
+# 冻结后各模块位于 <exe>/lib/，于是 `os.path.join(dirname(__file__), '..', X)`
+# 解析到 <exe>/lib/X。
+
+# i18n/*.qm：由 core/settings.py、ui/i18n.py 定位，两级回退
+#   冻结后 lib/i18n → <exe>/i18n，故放在可执行文件同级
+I18N_FILES = [("i18n", "i18n")]
+
+# 帮助文档：ui/help.py 与 ui/ui_help.py 都按 lib/help*.html 查找
+HELP_FILES = [
+    ("help.html", "lib/help.html"),
+    ("help_en.html", "lib/help_en.html"),
+]
+
+# 积木编辑器：ui/blockly.py 按 lib/blockly/index.html 查找
+# 其页面又以 ../mathjax/es5/tex-svg.js 引用公式渲染库，故两者同级
+BLOCKLY_FILES = [
+    ("blockly", "lib/blockly"),
+    ("mathjax", "lib/mathjax"),
+]
+
+# 应用图标：build 时嵌入 exe；运行时主窗口按 exe 同级目录查找
+ICON_FILES = [("favicon.ico", "favicon.ico")]
+
+files = I18N_FILES + HELP_FILES + BLOCKLY_FILES + ICON_FILES
 
 # TARGET
 target = Executable(
@@ -55,17 +80,21 @@ includes = (
     + collect_modules("math_input")
 )
 
+# 版本号与 core/settings.py 的 APP_VERSION 同源，避免两处不一致
+APP_VERSION = "2.0.3"
+
 # SETUP CX FREEZE
 setup(
     name="CalculusCalculator",
-    version="2.0.0",
-    description="微积分计算器v2.0.0",
+    version=APP_VERSION,
+    description="微积分计算器v" + APP_VERSION,
     author="LiMingkang",
     options={
         "build_exe": {
             "include_files": files,
             "includes": includes,
-            # ui / core 是常规包，functions 为命名空间包；packages 仅对前者有效
+            # ui / core / math_input 是常规包（math_input 的 html 与 mathlive/
+            # 作为包内数据自动复制）；functions 为命名空间包，只能用 includes
             "packages": ["ui", "core", "math_input", "lazy_loader"],
         }
     },

@@ -377,3 +377,76 @@ def _collect_points(obj):
     elif isinstance(obj, (Triangle, Polygon)):
         return list(obj.vertices)
     return []
+
+
+# ============================================================
+# 自定义函数绘图
+# ============================================================
+
+_FUNCTION_COLORS = ('#1f77b4', '#d62728', '#2ca02c', '#9467bd',
+                    '#ff7f0e', '#8c564b', '#17becf', '#e377c2')
+
+
+def draw_functions(entries, figsize=(6.0, 5.1), dpi=100,
+                   xlim=(-10.0, 10.0), ylim=None, samples=400, theme='light'):
+    """将自定义函数绘制为 matplotlib Figure
+
+    Parameters
+    ----------
+    entries : list of (name, sympy_expr, var_str)
+        待绘制的函数，每项为 (名称, 已解析的 sympy 表达式, 自变量名)。
+        表达式由调用方解析（可引用其他自定义函数），这里只负责采样与绘制。
+    figsize : tuple, default (6.0, 5.1)
+    dpi : int, default 100
+    xlim, ylim : tuple or None
+        坐标范围；None 表示由数据自动确定
+    samples : int, default 400
+        每条曲线的采样点数
+    theme : str, default 'light'
+        配色主题（'light' / 'dark'）
+
+    Returns
+    -------
+    matplotlib.figure.Figure
+    """
+    import matplotlib as _mpl
+    _fonts = ['Microsoft YaHei', 'SimHei', 'SimSun', 'KaiTi', 'DejaVu Sans']
+    _mpl.rcParams['font.sans-serif'] = _fonts
+    _mpl.rcParams['axes.unicode_minus'] = False
+
+    from sympy import lambdify
+    fig = Figure(figsize=figsize, dpi=dpi)
+    ax = fig.add_subplot(111)
+
+    from core.render import applyPlotTheme
+    _bg, fg, grid_c, axis_c = applyPlotTheme(fig, ax, theme)
+
+    xs = np.linspace(xlim[0], xlim[1], samples)
+    drawn = []
+    with _mpl.rc_context({'text.color': fg, 'axes.labelcolor': fg}):
+        for i, (name, expr, var_text) in enumerate(entries):
+            try:
+                var = Symbol(var_text)
+                func = lambdify(var, expr, modules='numpy')
+                ys = np.asarray(func(xs), dtype=float)
+            except Exception:
+                continue    # 无法数值化的函数（如关系式、分段式）跳过
+            if ys.shape != xs.shape:
+                continue
+            # 令 NaN / Inf 处断开，避免跨越渐近线或奇点连线
+            ys = np.where(np.isfinite(ys), ys, np.nan)
+            ax.plot(xs, ys, linewidth=1.6, color=_FUNCTION_COLORS[i % len(_FUNCTION_COLORS)],
+                    label=name)
+            drawn.append(name)
+
+        if not drawn:
+            raise ValueError('没有可绘制的函数')
+
+        ax.set_xlabel(entries[0][2] if entries else 'x')
+        ax.legend(loc='best', fontsize=8)
+        if xlim is not None:
+            ax.set_xlim(*xlim)
+        if ylim is not None:
+            ax.set_ylim(*ylim)
+
+    return fig

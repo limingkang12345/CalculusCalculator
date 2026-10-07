@@ -85,6 +85,87 @@
             MathfieldElement.locale = 'en';
         }
 
+        // MathLive returns LaTeX in which LaTeX 中，单字符参数常省略花括号（如 \sqrt3、\frac12），
+        // 这类写法无法被 sympify 解析，插入后会变成「不规范的表达式输入」。
+        // 这里在取值处就把花括号补齐，显示与回填都使用补全后的结果。
+        const ONE_ARG_COMMANDS = [
+            '\\sqrt', '\\overline', '\\underline', '\\vec', '\\hat', '\\bar', '\\tilde',
+            '\\dot', '\\ddot', '\\acute', '\\grave', '\\breve', '\\check', '\\mathring',
+            '\\mathrm', '\\mathbf', '\\mathbb', '\\mathcal', '\\mathfrak', '\\mathit',
+            '\\mathsf', '\\mathtt', '\\mathscr', '\\boldsymbol', '\\pmb',
+            '\\text', '\\textbf', '\\textit', '\\operatorname'
+        ];
+        const TWO_ARG_COMMANDS = [
+            '\\frac', '\\dfrac', '\\tfrac', '\\cfrac', '\\binom', '\\dbinom',
+            '\\tbinom', '\\overset', '\\underset'
+        ];
+        // 无花括号即不合法的旧式写法
+        const LEGACY_COMMANDS = {
+            '\\mathbbR': '\\mathbb{R}', '\\mathbbC': '\\mathbb{C}',
+            '\\mathbbN': '\\mathbb{N}', '\\mathbbQ': '\\mathbb{Q}',
+            '\\mathbbZ': '\\mathbb{Z}'
+        };
+
+        // 读取一个参数：已有花括号则原样取出，否则把整个记号包进花括号
+        function readLatexGroup(text, pos) {
+            if (pos >= text.length) return ['', pos];
+            if (text[pos] === '{') {
+                let depth = 0;
+                for (let k = pos; k < text.length; k++) {
+                    if (text[k] === '{') depth++;
+                    else if (text[k] === '}') {
+                        depth--;
+                        if (depth === 0) return [text.slice(pos, k + 1), k + 1];
+                    }
+                }
+                return [text.slice(pos), text.length];
+            }
+            let end = pos + 1;
+            if (text[pos] === '\\') {
+                while (end < text.length && /[a-zA-Z]/.test(text[end])) end++;
+            }
+            return ['{' + text.slice(pos, end) + '}', end];
+        }
+
+        function normalizeLatex(src) {
+            if (!src) return '';
+            let text = src;
+            for (const legacy in LEGACY_COMMANDS) {
+                text = text.split(legacy).join(LEGACY_COMMANDS[legacy]);
+            }
+            const out = [];
+            let pos = 0;
+            while (pos < text.length) {
+                if (text[pos] !== '\\') { out.push(text[pos]); pos++; continue; }
+                const matched = /^\\[a-zA-Z]+/.exec(text.slice(pos));
+                if (!matched) { out.push(text[pos]); pos++; continue; }
+                const command = matched[0];
+                pos += command.length;
+                out.push(command);
+                let count = TWO_ARG_COMMANDS.indexOf(command) >= 0 ? 2
+                    : (ONE_ARG_COMMANDS.indexOf(command) >= 0 ? 1 : 0);
+                if (count === 0) continue;
+                // 根式可带可选参数 [n]，先跳过再取真正的参数
+                if (command === '\\sqrt' && text[pos] === '[') {
+                    const close = text.indexOf(']', pos);
+                    if (close > 0) { out.push(text.slice(pos, close + 1)); pos = close + 1; }
+                }
+                for (let k = 0; k < count; k++) {
+                    while (pos < text.length && ' \t\r\n'.indexOf(text[pos]) >= 0) {
+                        out.push(text[pos]); pos++;
+                    }
+                    const group = readLatexGroup(text, pos);
+                    out.push(group[0]); pos = group[1];
+                }
+            }
+            return out.join('');
+        }
+
+        // 供 Python 端读取：返回补全花括号后的 LaTeX
+        window.mathInputValue = function () {
+            return normalizeLatex(document.getElementById('mf').value);
+        };
+
         window.addEventListener('load', function() {
             const mf = document.getElementById('mf');
             const latexDisplay = document.getElementById('latexDisplay');
@@ -94,14 +175,15 @@
                 keyboard.show();
             }
 
-            mf.addEventListener('input', function() {
-                latexDisplay.textContent = mf.value || '(empty)';
-            });
-            if (mf.value) latexDisplay.textContent = mf.value;
+            const refresh = function() {
+                latexDisplay.textContent = normalizeLatex(mf.value) || '(empty)';
+            };
+            mf.addEventListener('input', refresh);
+            refresh();
 
             document.getElementById('clearBtn').addEventListener('click', function() {
                 mf.value = '';
-                latexDisplay.textContent = '(empty)';
+                refresh();
             });
 
             console.log('MathLive initialized (keyboard always visible)');

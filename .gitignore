@@ -1,5 +1,6 @@
 .vscode
 .codebuddy
+.workbuddy
 __pycache__
 history_*.md
 *.cca

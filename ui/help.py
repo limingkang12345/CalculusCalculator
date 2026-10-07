@@ -1,6 +1,7 @@
 from ui.ui_help import *
 import os
 import re
+import sys
 from PySide6.QtWidgets import QWidget, QApplication
 from PySide6.QtCore import QUrl
 from PySide6.QtGui import QPalette
@@ -16,6 +17,25 @@ def _help_filename():
     if lang.lower().startswith("en"):
         return "help_en.html"
     return "help.html"
+
+
+def _help_path():
+    """定位帮助文档，兼容开发环境与冻结后（cx_Freeze）的目录布局。
+
+    冻结后模块位于 <exe>/lib/ui/，setup.py 把文档放在 <exe>/lib/；
+    这里同时兜底可执行文件同级目录，避免打包路径调整后帮助页空白。
+    """
+    name = _help_filename()
+    base = os.path.dirname(os.path.abspath(__file__))
+    candidates = [os.path.join(base, '..', name), os.path.join(base, name)]
+    if getattr(sys, 'frozen', False):
+        exe_dir = os.path.dirname(os.path.abspath(sys.executable))
+        candidates.append(os.path.join(exe_dir, name))
+        candidates.append(os.path.join(exe_dir, 'lib', name))
+    for path in candidates:
+        if os.path.isfile(path):
+            return os.path.abspath(path)
+    return os.path.abspath(candidates[0])
 
 # 暗色主题样式。
 # 注意：Qt 富文本引擎对 <style> 中的“类型选择器”（如 th / code）支持不稳定，
@@ -67,7 +87,7 @@ class Help(QWidget, Ui_help):
 
     def load_help(self):
         """根据当前界面语言读取对应的帮助文档（help.html / help_en.html），注入主题 class 与适配样式后显示。"""
-        help_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', _help_filename()))
+        help_path = _help_path()
         try:
             with open(help_path, 'r', encoding='utf-8') as fp:
                 html = fp.read()
