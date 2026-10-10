@@ -25,6 +25,11 @@ class MathLiveDialog(QDialog):
         layout.setSpacing(6)
         layout.setContentsMargins(8, 8, 8, 8)
 
+        # 首次打开时确保 WebEngine 内核已就绪（每进程至多等待一次；
+        # 已由积木编辑器预初始化过则立即返回，无额外开销）
+        from core.webengine import ensure_webengine_ready
+        ensure_webengine_ready()
+
         self.webview = QWebEngineView()
         # 按当前语言加载公式编辑器页面（zh_CN / en_US）
         try:
