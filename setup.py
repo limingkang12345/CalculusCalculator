@@ -81,7 +81,7 @@ includes = (
 )
 
 # 版本号与 core/settings.py 的 APP_VERSION 同源，避免两处不一致
-APP_VERSION = "2.0.3"
+APP_VERSION = "2.1.0"
 
 # SETUP CX FREEZE
 setup(

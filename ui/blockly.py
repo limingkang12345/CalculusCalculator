@@ -364,6 +364,10 @@ class PythonBridge(QObject):
 class Blockly(QWidget, Ui_blockly):
     def __init__(self, parent, fs):
         super().__init__(parent)
+        # 首次创建积木编辑器时才拉起 WebEngine 内核进程（每进程至多等待一次），
+        # 启动阶段不再预初始化；内核就绪后下方 setupUi 创建的正式视图加载更快。
+        from core.webengine import ensure_webengine_ready
+        ensure_webengine_ready()
         self.setupUi(self)
         # 积木编辑器使用独立于原生标签页的 fs（与主窗体共享 fs 互不影响）。
         # 函数名由"定义函数"积木放置/改名时通过 setFunctionNames 实时同步，

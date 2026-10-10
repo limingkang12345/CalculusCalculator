@@ -2,9 +2,9 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>CalculusCalculator v2.0.0 Help</title>
+<title>CalculusCalculator v2.1.0 Help</title>
 <style>
-body { font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif; font-size: 14px; line-height: 1.8; margin: 50px; }
+body { font-family: "Microsoft YaHei", "SimSun", sans-serif; font-size: 14px; line-height: 1.8; margin: 50px; }
 h1 { font-size: 22px; font-weight: bold; text-align: center; margin-bottom: 5px; }
 h2 { font-size: 18px; margin-top: 25px; margin-bottom: 10px; border-left: 4px solid #0078d4; padding-left: 10px; }
 h3 { font-size: 16px; margin-top: 20px; margin-bottom: 8px; }
@@ -21,11 +21,37 @@ code { background-color: #f0f0f0; padding: 1px 6px; border-radius: 3px; font-fam
 </head>
 <body>
 
-<h1>CalculusCalculator v2.0.0 Help</h1>
-<p style="text-align:center; color:#666;">The following are common standards for all text box inputs</p>
+<h1>CalculusCalculator v2.1.0 Help</h1>
+<p style="text-align:center; color:#666;">The following applies to all text input boxes</p>
 
-<h2>0. Direct LaTeX Code Input</h2>
-<p>In addition to the standard Python/SymPy syntax below, this version supports <b>entering LaTeX code directly</b>. Prefix the LaTeX code with a half-width dollar sign <code>$</code> as a marker, and the system will automatically convert the LaTeX expression into a SymPy expression for computation.</p>
+<h2>0. Interface Structure and Menus</h2>
+<p>Since v2.1.0, all former standalone feature tabs have been integrated into the <b>All-in-One</b> page, making the interface much simpler. The current menu bar and tab structure:</p>
+
+<h3>Menu bar</h3>
+<table>
+<tr><th>Menu</th><th>Items</th><th>Description</th></tr>
+<tr><td>File</td><td>Save As / Open / Cache / Settings / Exit</td><td>project save/load, cache management and interface settings</td></tr>
+<tr><td>Features</td><td>Home / All-in-One / Editor</td><td>open the home page, the All-in-One page, and the Blockly editor</td></tr>
+<tr><td>About</td><td>GitHub Link / Web Version / Guide / Help</td><td>project links and built-in help</td></tr>
+</table>
+
+<h3>Tabs</h3>
+<p>There are 6 kinds of tabs: <b>Home</b>, <b>All-in-One</b>, <b>Help</b>, <b>Settings</b>, <b>Cache</b>, and <b>Blockly Editor</b>. Multiple tabs of the same kind can be open at once (titles are auto-numbered); tabs can be closed and reordered by dragging.</p>
+
+<h3>All-in-One page</h3>
+<p>The All-in-One page is the main interface for all kinds of computation, divided left-to-right into three areas whose widths can be adjusted by dragging the splitters:</p>
+<ol>
+<li><b>Define area</b>: choose a type from the top dropdown (<b>Function, Set, Vector, Plane Geometry, Solid Geometry</b>) to define functions and objects; objects are grouped by type in the tree list and can be read or deleted.</li>
+<li><b>Compute area</b>: choose a computation type from the dropdown (<b>Compute, Derivative, Integral, Equation, Inequality, System of Equations, System of Inequalities, Plane Compute, Solid Compute, Transform, Solve Triangle</b> — 11 in total); the input rows adapt to the selected type.</li>
+<li><b>Plot area</b>: choose a mode from the dropdown (<b>Plane Geometry mode, Solid Geometry mode, Function mode</b>), check the objects to draw, then click <b>Plot or Update</b> to generate the image.</li>
+</ol>
+
+<div class="note">
+<b>Enter shortcut:</b> pressing <b>Enter</b> in the main text input box of each page automatically triggers the corresponding button (e.g. "Compute", "Save"), without manually clicking.
+</div>
+
+<h2>1. Direct LaTeX Code Input</h2>
+<p>Besides the standard Python/SymPy syntax below, you can <b>enter LaTeX code directly</b>. Prefix the LaTeX code with a half-width dollar sign <code>$</code>; the system converts the LaTeX expression into a SymPy expression automatically.</p>
 
 <p><b>Usage:</b></p>
 <table>
@@ -35,29 +61,29 @@ code { background-color: #f0f0f0; padding: 1px 6px; border-radius: 3px; font-fam
 <tr><td>3</td><td>square root of x</td><td><code>$\sqrt{x}</code></td><td><code>sqrt(x)</code></td></tr>
 <tr><td>4</td><td>sin(x)</td><td><code>$\sin{x}</code></td><td><code>sin(x)</code></td></tr>
 <tr><td>5</td><td>natural log ln(x)</td><td><code>$\ln{x}</code></td><td><code>log(x)</code></td></tr>
-<tr><td>6</td><td>pi</td><td><code>$\pi</code></td><td><code>pi</code></td></tr>
+<tr><td>6</td><td>pi π</td><td><code>$\pi</code></td><td><code>pi</code></td></tr>
 <tr><td>7</td><td>infinity ∞</td><td><code>$\infty</code></td><td><code>oo</code></td></tr>
 </table>
 
 <div class="note">
-<b>Note:</b> It must start with <code>$</code>, and it must be a half-width dollar sign. If it does not start with <code>$</code>, the system will parse the expression using the original SymPy/Python syntax rules. LaTeX parsing supports common mathematical symbols and structures; complex expressions may also mix LaTeX and SymPy syntax.
+<b>Note:</b> the prefix must be a half-width <code>$</code>. Without it, the expression is parsed with the standard SymPy/Python rules. LaTeX parsing supports common math symbols and structures; complex expressions may mix LaTeX and SymPy syntax.
 </div>
 
-<h2>1. Mathematical Symbol Input Standard</h2>
+<h2>2. Math Symbol Input Standard</h2>
 <ol>
-<li>Add/sub/mul/div: <code>+</code> <code>-</code> <code>*</code> <code>/</code></li>
+<li>Addition / subtraction / multiplication / division: <code>+</code> <code>-</code> <code>*</code> <code>/</code></li>
 <li>Power: <code>**</code> (e.g. <code>x**2</code> means x squared)</li>
 <li>Square root: <code>sqrt()</code></li>
 <li>Absolute value: <code>abs()</code></li>
-<li>General logarithm log_a(x): <code>log(x, a)</code></li>
-<li>Natural logarithm ln(x): <code>log(x)</code></li>
-<li>Trigonometric functions: <code>sin()</code> <code>cos()</code> <code>tan()</code> <code>cot()</code> <code>sec()</code> <code>csc()</code></li>
-<li>Inverse trigonometric functions: <code>asin()</code> <code>acos()</code> <code>atan()</code> <code>acot()</code> etc.</li>
+<li>Logarithm log_a(x): <code>log(x, a)</code></li>
+<li>Natural log ln(x): <code>log(x)</code></li>
+<li>Trig functions: <code>sin()</code> <code>cos()</code> <code>tan()</code> <code>cot()</code> <code>sec()</code> <code>csc()</code></li>
+<li>Inverse trig functions: <code>asin()</code> <code>acos()</code> <code>atan()</code> <code>acot()</code> etc.</li>
 <li>Hyperbolic functions: <code>sinh()</code> <code>cosh()</code> <code>tanh()</code> etc.</li>
 <li>Euler's number: <code>e</code></li>
 <li>Pi: <code>pi</code></li>
 <li>Positive / negative infinity: <code>oo</code> / <code>-oo</code></li>
-<li>Parentheses: round parentheses <code>()</code> are sufficient</li>
+<li>Parentheses: round brackets <code>()</code> work everywhere</li>
 <li>Imaginary unit: <code>I</code></li>
 </ol>
 
@@ -66,33 +92,33 @@ code { background-color: #f0f0f0; padding: 1px 6px; border-radius: 3px; font-fam
 <tr><th>#</th><th>Meaning</th><th>Expression to enter</th></tr>
 <tr><td>1</td><td>2x</td><td><code>2*x</code></td></tr>
 <tr><td>2</td><td>x squared</td><td><code>x**2</code></td></tr>
-<tr><td>3</td><td>arithmetic square root of x</td><td><code>sqrt(x)</code></td></tr>
-<tr><td>4</td><td>log base 2 of x</td><td><code>log(x,2)</code></td></tr>
+<tr><td>3</td><td>square root of x</td><td><code>sqrt(x)</code></td></tr>
+<tr><td>4</td><td>logarithm base 2 of x</td><td><code>log(x,2)</code></td></tr>
 <tr><td>5</td><td>natural log ln(x)</td><td><code>log(x)</code></td></tr>
 <tr><td>6</td><td>sine of x</td><td><code>sin(x)</code></td></tr>
 </table>
 
-<h2>2. Set / Interval Input Standard</h2>
+<h2>3. Set / Interval Input Standard</h2>
 <ol>
-<li><b>Roster method</b>: <code>FiniteSet(1,2,3)</code></li>
-<li><b>Set-builder method</b>: <code>ImageSet(Lambda(x, f(x)), Domain)</code></li>
-<li><b>Built-in sets:</b>
+<li><b>Roster form</b>: <code>FiniteSet(1,2,3)</code></li>
+<li><b>Set-builder form</b>: <code>ImageSet(Lambda(x, f(x)), Domain)</code></li>
+<li><b>Built-in sets</b>:
 <ul>
 <li>Real numbers: <code>Reals</code></li>
 <li>Complex numbers: <code>Complexes</code></li>
 <li>Natural numbers: <code>Naturals</code></li>
 <li>Non-negative integers: <code>Naturals0</code></li>
 <li>Integers: <code>Integers</code></li>
-<li>Rational numbers: <code>Rationals</code></li>
+<li>Rationals: <code>Rationals</code></li>
 <li>Empty set: <code>EmptySet</code></li>
 </ul>
 </li>
-<li><b>Intervals:</b>
+<li><b>Intervals</b>:
 <ul>
-<li>Closed interval [x,y]: <code>Interval(x,y)</code></li>
-<li>Left-open right-closed (x,y]: <code>Interval.Lopen(x,y)</code></li>
-<li>Left-closed right-open [x,y): <code>Interval.Ropen(x,y)</code></li>
-<li>Open interval (x,y): <code>Interval.open(x,y)</code></li>
+<li>Closed [x,y]: <code>Interval(x,y)</code></li>
+<li>Left-open (x,y]: <code>Interval.Lopen(x,y)</code></li>
+<li>Right-open [x,y): <code>Interval.Ropen(x,y)</code></li>
+<li>Open (x,y): <code>Interval.open(x,y)</code></li>
 </ul>
 </li>
 <li><b>Union</b>: <code>Union(A,B)</code></li>
@@ -114,8 +140,8 @@ code { background-color: #f0f0f0; padding: 1px 6px; border-radius: 3px; font-fam
 
 <h3>FiniteSet use cases</h3>
 <ul>
-<li>In the <b>function domain</b> input on the "Define" page, use <code>FiniteSet(1,2,3)</code> to restrict the domain to the discrete set {1,2,3}</li>
-<li>In the <b>principal variable range</b> input on the "Equation" page, use <code>FiniteSet(0,1)</code> to solve only for roots within that set</li>
+<li>In the Define area of the All-in-One page with the "Function" type, use <code>FiniteSet(1,2,3)</code> in the <b>function domain</b> input to restrict the domain to the discrete set {1,2,3}</li>
+<li>In the Compute area with the "Equation" type, use <code>FiniteSet(0,1)</code> in the <b>principal variable range</b> input to solve only for roots within that set</li>
 <li>Combine with set operations: <code>Union(Interval(0,1), FiniteSet(2))</code> represents the union of interval [0,1] and point 2</li>
 </ul>
 
@@ -123,25 +149,25 @@ code { background-color: #f0f0f0; padding: 1px 6px; border-radius: 3px; font-fam
 <ul>
 <li>Define a mapped set: <code>ImageSet(Lambda(x, x**2), Interval(0, 5))</code> represents {x² | x∈[0,5]}</li>
 <li>Periodic solutions with trig functions: the solution set of sin(x)=0 can be written as <code>ImageSet(Lambda(n, n*pi), Integers)</code>, where n is an integer</li>
-<li>Describe a complex range in the <b>domain</b> on the "Define" page: <code>ImageSet(Lambda(x, 2*x+1), Integers)</code> represents the set of all odd integers</li>
+<li>Describe a complex range in the Define area's <b>domain</b> input: <code>ImageSet(Lambda(x, 2*x+1), Integers)</code> represents the set of all odd integers</li>
 </ul>
 
-<h2>3. Function Input Standard</h2>
-<p>For a function already defined on the "Define" page, you can use it directly in most other input boxes:</p>
+<h2>4. Function Input Standard</h2>
+<p>For a function already defined in the Define area of the All-in-One page, you can use it directly in most other input boxes:</p>
 <ul>
 <li><b>As a symbol in operations</b>: e.g. if g(x)=x**2 is defined, entering <code>g+1/g</code> yields x**2 + 1/x**2</li>
 <li><b>As a function call with arguments</b>: e.g. if f(x)=x**2 is defined, entering <code>f(3)</code> computes 3**2 = 9 automatically; nested calls such as <code>f(g(2))</code> are supported</li>
 </ul>
 
-<h2>4. Denominator Rationalization</h2>
+<h2>5. Denominator Rationalization</h2>
 <p>In modules such as derivative, integral, equation solving, and expression simplification, if the denominator of a result contains a radical, the system automatically rationalizes the denominator, simplifying the result into its simplest form where both numerator and denominator are integral or radical expressions.</p>
 
 <div class="note">
 <b>Example:</b> When computing 1/sqrt(2), the result is automatically displayed as sqrt(2)/2 instead of 1/sqrt(2).
 </div>
 
-<h2>5. Compute Tab</h2>
-<p>Three computation engines are supported:</p>
+<h2>6. Computation Engines</h2>
+<p>In the Compute area of the All-in-One page with the "Compute" type, four computation engines are supported:</p>
 <ol>
 <li><b>Python built-in engine</b>: uses Python's built-in eval to quickly compute numeric expressions; results are shown as plain text</li>
 <li><b>Mpmath high-precision engine</b>: customizable decimal precision, suitable for high-precision numeric computation; results are shown as plain text</li>
@@ -149,8 +175,8 @@ code { background-color: #f0f0f0; padding: 1px 6px; border-radius: 3px; font-fam
 <li><b>Latex code generation engine</b>: generates the corresponding <b>Latex code</b> directly from the input Python expression</li>
 </ol>
 
-<h2>6. Vector Features</h2>
-<p>On the "Define Vector" page, you can define 2D vectors and perform vector operations.</p>
+<h2>7. Vector Features</h2>
+<p>In the Define area of the All-in-One page with the "Vector" type, you can define 2D vectors and perform vector operations.</p>
 
 <h3>Define a vector</h3>
 <ol>
@@ -178,8 +204,8 @@ code { background-color: #f0f0f0; padding: 1px 6px; border-radius: 3px; font-fam
 <b>Example:</b> Define v1 = (1, 0), v2 = (0, 1); the addition yields (1, 1), the dot product is 0, and the angle is π/2.
 </div>
 
-<h2>7. Triangle Solving</h2>
-<p>On the "Solve Triangle" page, enter the known conditions of a triangle to solve for the remaining unknowns.</p>
+<h2>8. Triangle Solving</h2>
+<p>In the Compute area of the All-in-One page with the "Solve Triangle" type, enter the known conditions of a triangle to solve for the remaining unknowns.</p>
 
 <h3>Condition input</h3>
 <ol>
@@ -203,15 +229,15 @@ code { background-color: #f0f0f0; padding: 1px 6px; border-radius: 3px; font-fam
 If multiple solutions exist (e.g. SSA), the system labels them "Solution 1", "Solution 2" respectively.
 </div>
 
-<h2>8. Function Plotting</h2>
-<p>On the "Plot Function" page, you can plot function graphs.</p>
+<h2>9. Function Plotting</h2>
+<p>In the Plot area of the All-in-One page with "Function mode" selected, you can plot function graphs.</p>
 
 <h3>Usage</h3>
 <ol>
 <li><b>Expression mode</b>: enter the function expression directly (e.g. <code>x**2</code>, <code>sin(x)</code>)</li>
-<li><b>Select function mode</b>: choose a function defined on the "Define" page from the dropdown</li>
+<li><b>Select function mode</b>: check functions defined in the Define area</li>
 <li>Set the left/right endpoints of the <b>domain</b> (default [-10, 10]), supporting SymPy expressions</li>
-<li>Click the <b>Plot</b> button to generate the graph</li>
+<li>Click <b>Plot or Update</b> to generate the graph</li>
 </ol>
 
 <h3>Features</h3>
@@ -225,8 +251,8 @@ If multiple solutions exist (e.g. SSA), the system labels them "Solution 1", "So
 <b>Example:</b> Enter <code>sin(x)</code>, set the domain to [0, 2*pi], and click Plot to see a complete sine wave.
 </div>
 
-<h2>9. Plane Geometry</h2>
-<p>On the "Plane Geometry" page, define points, lines, segments, circles, triangles, and polygons, then visualize them on the "Plane Plot" page.</p>
+<h2>10. Plane Geometry</h2>
+<p>In the Define area of the All-in-One page with the "Plane Geometry" type, define points, lines, segments, circles, triangles, and polygons, then visualize them in the Plot area with "Plane Geometry mode".</p>
 
 <h3>Define objects</h3>
 <ol>
@@ -261,10 +287,10 @@ If multiple solutions exist (e.g. SSA), the system labels them "Solution 1", "So
 </table>
 
 <h3>Plotting</h3>
-<p>Switch to the "Plane Plot" page; all defined objects are checked by default. Uncheck the ones you don't need, then click <b>Plot or Update</b> to generate the Matplotlib image.</p>
+<p>In the Plot area with "Plane Geometry mode", all defined objects are checked by default. Uncheck the ones you don't need, then click <b>Plot or Update</b> to generate the Matplotlib image.</p>
 
-<h2>10. Solid Geometry</h2>
-<p>On the "Solid Geometry" page, define 3D points, lines, planes, and segments, then visualize them in 3D on the "Solid Plot" page.</p>
+<h2>11. Solid Geometry</h2>
+<p>In the Define area of the All-in-One page with the "Solid Geometry" type, define 3D points, lines, planes, and segments, then visualize them in the Plot area with "Solid Geometry mode".</p>
 
 <h3>Supported methods</h3>
 <table>
@@ -284,10 +310,10 @@ If multiple solutions exist (e.g. SSA), the system labels them "Solution 1", "So
 </table>
 
 <h3>Plotting</h3>
-<p>Switch to the "Solid Plot" page, filter objects via checkboxes, then click <b>Plot or Update</b> to generate a 3D rotatable Matplotlib image (with transparent planes and colored lines).</p>
+<p>In the Plot area with "Solid Geometry mode", filter objects via checkboxes, then click <b>Plot or Update</b> to generate a 3D rotatable Matplotlib image (with transparent planes and colored lines).</p>
 
-<h2>11. Plane Geometry Calculation</h2>
-<p>On the "Plane Compute" page, use defined points, lines, circles, triangles, polygons, etc. for geometric computation. Parameters are separated by <b>half-width English commas</b>, and defined objects are referenced by name.</p>
+<h2>12. Plane Geometry Calculation</h2>
+<p>In the Compute area of the All-in-One page with the "Plane Compute" type, use defined points, lines, circles, triangles, polygons, etc. for geometric computation. Parameters are separated by <b>half-width English commas</b>, and defined objects are referenced by name.</p>
 
 <h3>Supported operations (32 in total)</h3>
 <table>
@@ -316,11 +342,11 @@ If multiple solutions exist (e.g. SSA), the system labels them "Solution 1", "So
 </table>
 
 <div class="note">
-<b>Example:</b> First define points A(0,0), B(3,0), C(0,4) on the "Plane Geometry" page; on "Plane Compute" select "Triangle Area" with parameters <code>A,B,C</code>; the result is 6.
+<b>Example:</b> First define points A(0,0), B(3,0), C(0,4) in the Define area with the "Plane Geometry" type; in the Compute area select "Plane Compute" → "Triangle Area" with parameters <code>A,B,C</code>; the result is 6.
 </div>
 
-<h2>12. Solid Geometry Calculation</h2>
-<p>On the "Solid Compute" page, use defined 3D points, lines, planes, etc. for spatial geometric computation.</p>
+<h2>13. Solid Geometry Calculation</h2>
+<p>In the Compute area of the All-in-One page with the "Solid Compute" type, use defined 3D points, lines, planes, etc. for spatial geometric computation.</p>
 
 <h3>Supported operations (22 in total)</h3>
 <table>
@@ -344,23 +370,16 @@ If multiple solutions exist (e.g. SSA), the system labels them "Solution 1", "So
 </table>
 
 <div class="note">
-<b>Example:</b> First define points A(0,0,0), B(1,0,0), C(0,1,0), D(0,0,1) on the "Solid Geometry" page; on "Solid Compute" select "Tetrahedron Volume" with parameters <code>A,B,C,D</code>; the result is 1/6.
+<b>Example:</b> First define points A(0,0,0), B(1,0,0), C(0,1,0), D(0,0,1) in the Define area with the "Solid Geometry" type; in the Compute area select "Solid Compute" → "Tetrahedron Volume" with parameters <code>A,B,C,D</code>; the result is 1/6.
 </div>
-
-<h2>13. Enter Shortcut and Menu Adjustment</h2>
-<ol>
-<li><b>Enter shortcut</b>: pressing <b>Enter</b> in the main text input box of each page automatically triggers the corresponding function button (e.g. "Derivative", "Integral", "Compute", "Save"), without manually clicking.</li>
-<li><b>Menu bar adjustment</b>: a "Compute" item is added to the menu bar, containing "Plane Compute", "Solid Compute", and the original "Compute" (general computation), for clearer categorization.</li>
-<li><b>Help page optimization</b>: the help page now auto-adjusts its layout with the window instead of being a fixed size.</li>
-</ol>
 
 <h2>14. Differential Equation Input Standard</h2>
 <p>Differential equation input does <b>not</b> follow the function input standard above, because the solution is unknown before solving. The system <b>excludes all defined functions</b> when parsing the expression to avoid interference, and the function to solve for is fixed as f(x).</p>
 <p>In the input, use <code>f(x).diff(x,n)</code> to denote the <b>n-th derivative with respect to x</b>. The 1 can be omitted, so <code>f(x).diff(x)</code> denotes the first derivative.</p>
-<p><b>Example:</b> check "Differential Equation", enter <code>f(x).diff(x,1)</code> on the left and <code>f(x)+1</code> on the right, completing the input of f'(x)=f(x)+1; click Solve to get f(x)=C1*exp(x)-1.</p>
+<p><b>Example:</b> in the Compute area select "Equation" and check "Differential Equation", enter <code>f(x).diff(x,1)</code> on the left and <code>f(x)+1</code> on the right, completing the input of f'(x)=f(x)+1; click Solve to get f(x)=C1*exp(x)-1.</p>
 
 <h2>15. Settings, Language and Theme</h2>
-<p>Open the settings page via the menu bar "Features → Settings" to configure the following:</p>
+<p>Open the settings page via the menu bar "File → Settings" to configure the following:</p>
 <ol>
 <li><b>Interface language</b>: Chinese / English. Takes effect immediately and is persisted; restored automatically on next launch.</li>
 <li><b>Interface theme</b>: Light / Dark. Takes effect immediately and is persisted; restored automatically on next launch.</li>
@@ -390,11 +409,11 @@ If multiple solutions exist (e.g. SSA), the system labels them "Solution 1", "So
 </table>
 
 <h2>17. Visual Formula Input</h2>
-<p>A visual math formula input panel based on pyqt5-math-widget (bundled in the <code>math_input/</code> directory). Since v2.0.0, the formula editor's <b>underlying engine has been replaced with MathLive</b>, offering a smoother input experience and more accurate symbol rendering.</p>
+<p>A visual math formula input panel based on MathLive (bundled in the <code>math_input/</code> directory). Since v2.0.0, the formula editor's <b>underlying engine has been replaced with MathLive</b>, offering a smoother input experience and more accurate symbol rendering.</p>
 
 <h3>Usage</h3>
 <ol>
-<li>Click the <b>keyboard icon</b> button on the right of any input box, or open the formula dialog via the menu "Edit → Formula Input"</li>
+<li>Click the <b>keyboard icon</b> button on the right of any input box to open the formula dialog</li>
 <li>In the dialog, use the toolbar to select math structures (fractions, roots, sub/superscripts, Greek letters, etc.), operators, or functions</li>
 <li>After editing, click <b>OK</b>; the formula is automatically converted to a SymPy expression and filled into the input box</li>
 </ol>
@@ -427,21 +446,13 @@ If multiple solutions exist (e.g. SSA), the system labels them "Solution 1", "So
 </table>
 
 <div class="note">
-<b>Tip:</b> All list items are checked by default. If you uncheck an item, that type of data will <b>not</b> be saved; when loading, if the save does not contain that type of data, the <b>current state is kept unchanged</b>.
+<b>Tip:</b> All list items are checked by default. If you uncheck an item, that type of data will <b>not</b> be saved; when loading, if the save does not contain that type of data, the <b>current state is kept unchanged</b>. Standalone tabs contained in older save files are skipped automatically when loading and do not affect the rest of the restore.
 </div>
 
-<h2>19. Menu Adjustment</h2>
-<ol>
-<li>The "<b>Solve Triangle</b>" feature moved from its standalone location to a sub-item of the "<b>Solve</b>" menu</li>
-<li>The "<b>Transform</b>" feature moved to a sub-item of the "<b>Compute</b>" menu</li>
-<li>A "<b>Cache</b>" sub-item is added under the "File" menu bar, clicking it opens the cache tab</li>
-<li>Project structure optimization: added <code>__init__.py</code> to the <code>core/</code> directory; refactored <code>ui/i18n.py</code> into <code>core/settings.py</code></li>
-</ol>
-
-<h2>20. Blockly Feature (new in v2.0.0)</h2>
-<p>A new "Blockly" feature lets you build a <b>visual computation flow</b> by dragging and snapping blocks together, completing complex computations without writing code. Open the block editor on the "Blockly" page. Currently supported:</p>
+<h2>19. Blockly Feature</h2>
+<p>Open the Blockly editor via "Features → Editor" and build a <b>visual computation flow</b> by dragging and snapping blocks together, completing complex computations without writing code. Currently supported:</p>
 <ul>
-<li><b>Sympy / Latex expression input</b>: blocks can directly take SymPy expressions, or use a leading <code>$</code> for LaTeX input (see "0. Direct LaTeX Code Input").</li>
+<li><b>Sympy / Latex expression input</b>: blocks can directly take SymPy expressions, or use a leading <code>$</code> for LaTeX input (see "1. Direct LaTeX Code Input").</li>
 <li><b>Run the flow directly in the editor</b>: click Run to execute the block-built flow in order, showing intermediate results in real time.</li>
 <li><b>Automatic output formula rendering</b>: results are automatically rendered as clear, good-looking math formulas in LaTeX.</li>
 <li><b>Dual-mode code preview</b>: click "Preview code" and use the dropdown to switch between <b>native SymPy code</b> (self-contained, only requires SymPy - copy and run directly in any interpreter with SymPy installed) and <b>CalculusCalculator library code</b> (the code actually executed by the Run button); native SymPy code is shown by default.</li>
@@ -451,8 +462,14 @@ If multiple solutions exist (e.g. SSA), the system labels them "Solution 1", "So
 <li><b>Project save / load</b>: Blockly projects can be saved and loaded, controlled by the "Save Settings" item in "Settings" (see "18. Save Settings").</li>
 </ul>
 
-<h2>21. Splash Screen and Startup Optimization (new in v2.0.0)</h2>
-<p>A new <b>splash screen</b> shows progress and hints while the program loads resources, avoiding a blank wait during startup. Combined with the existing lazy-loading (<code>lazy_loader</code>) mechanism, the overall <b>startup speed is optimized</b>.</p>
+<h2>20. Splash Screen and Startup Optimization</h2>
+<p>A <b>splash screen</b> shows progress and hints while the program loads resources, avoiding a blank wait during startup. v2.1.0 further optimizes the startup flow:</p>
+<ul>
+<li><b>Lazy browser engine initialization</b>: the QWebEngine kernel is no longer loaded at startup; instead it is initialized automatically when the Blockly editor or the visual formula input is opened for the first time, speeding up startup.</li>
+<li><b>Lightweight splash screen</b>: the splash screen is drawn and shown faster, giving visible feedback sooner.</li>
+<li><b>Streamlined initialization</b>: redundant refreshes of formula rendering views are skipped at startup.</li>
+<li>Combined with the existing lazy-loading (<code>lazy_loader</code>) mechanism, the overall <b>startup speed is optimized</b>.</li>
+</ul>
 
 <h2>Additional Resources</h2>
 <p>The above content fully references the language specifications of Python 3.12 and SymPy 1.14.</p>
@@ -467,12 +484,14 @@ If multiple solutions exist (e.g. SSA), the system labels them "Solution 1", "So
 <table>
 <tr><th>Version</th><th>Release date</th><th>Core updates</th></tr>
 
+<tr><td>v2.1.0</td><td>2026-10-10</td><td>Removed 18 standalone feature tabs (Define Function, Define Vector, Define Plane Geometry, Define Solid Geometry, Algebraic Compute, Transform, Plane Compute, Solid Compute, Solve Triangle, Equation, Inequality, System of Equations, System of Inequalities, Plot Function, Plane Plot, Solid Plot, Derivative, Integral) — all features integrated into the "All-in-One" page (Define / Compute / Plot areas); "Blockly mode" menu moved into the "Features" menu; startup optimizations: QWebEngine kernel lazily initialized on first use, lightweight splash screen, redundant formula view refreshes skipped at startup, staged startup profiling added</td></tr>
+
 <tr><td>v2.0.0</td><td>2026-08-14</td><td>New Blockly feature (visual computation flow); formula editor backend upgraded to MathLive; new splash screen and optimized startup; English help documentation added; Blockly added dual-mode code preview (native SymPy code / library code); fixed LaTeX output rendering misdetection; fixed subscript access error when sympify receives a SymPy object</td></tr>
 </table>
 
 <p>Thank you for using it!</p>
 <p class="right">LiMingkang</p>
-<p class="right">2026/8/14</p>
+<p class="right">2026/10/10</p>
 
 </body>
 </html>

@@ -12,3 +12,5 @@ venv
 docs
 activate.bat
 mkdocs.yml
+test
+test.py

@@ -224,41 +224,24 @@ class MainWindow(QMainWindow):
         self.ui.actionopen.triggered.connect(lambda:self._open_file())
         self.ui.actionexit.triggered.connect(lambda:sys.exit())
         self.ui.actionshouye.triggered.connect(lambda:self.create_tab(0))
-        self.ui.actiondingyi.triggered.connect(lambda:self.create_tab(1))
-        self.ui.actionqiudao.triggered.connect(lambda:self.create_tab(2))
-        self.ui.actionjifen.triggered.connect(lambda:self.create_tab(3))
-        self.ui.actionbianxing.triggered.connect(lambda:self.create_tab(4))
-        self.ui.actionfangcheng.triggered.connect(lambda:self.create_tab(5))
-        self.ui.actionfangchengzu.triggered.connect(lambda:self.create_tab(6))
-        self.ui.actionbudengshi.triggered.connect(lambda:self.create_tab(7))
-        self.ui.actionbudengshizu.triggered.connect(lambda:self.create_tab(8))
-        self.ui.actionjisuan.triggered.connect(lambda:self.create_tab(9))
-        self.ui.actionhelp.triggered.connect(lambda:self.create_tab(10))
+        self.ui.actionhelp.triggered.connect(lambda:self.create_tab(1))
         self.ui.actionyindao.triggered.connect(self.show_guide)
-        self.ui.actiondingyixiangliang.triggered.connect(lambda:self.create_tab(11))
-        self.ui.actionhuitu_hanshu.triggered.connect(lambda:self.create_tab(12))
-        self.ui.actionjiesanjiaoxing.triggered.connect(lambda:self.create_tab(13))
-        self.ui.actiondingyi_pj.triggered.connect(lambda:self.create_tab(14))
-        self.ui.actionhuitu_pingmianjihe.triggered.connect(lambda:self.create_tab(15))
-        self.ui.actiondingyi_lj.triggered.connect(lambda:self.create_tab(16))
-        self.ui.actionhuitu_litijihe.triggered.connect(lambda:self.create_tab(17))
-        self.ui.actionpjjisuan.triggered.connect(lambda:self.create_tab(18))
-        self.ui.actionljjisuan.triggered.connect(lambda:self.create_tab(19))
         self.ui.actiongithub.triggered.connect(lambda:webbrowser.open("https://github.com/limingkang12345/CalculusCalculator"))
         self.ui.actionwebsite.triggered.connect(lambda:webbrowser.open("https://limingkang.pythonanywhere.com"))
-        self.ui.actionshezhi.triggered.connect(lambda:self.create_tab(20))
-        self.ui.actionhuancun.triggered.connect(lambda:self.create_tab(21))
-        self.ui.actionblockly.triggered.connect(lambda:self.create_tab(22))
-        self.ui.actionfunctions.triggered.connect(lambda:self.create_tab(23))
+        self.ui.actionshezhi.triggered.connect(lambda:self.create_tab(2))
+        self.ui.actionhuancun.triggered.connect(lambda:self.create_tab(3))
+        self.ui.actionblockly.triggered.connect(lambda:self.create_tab(4))
+        self.ui.actionfunctions.triggered.connect(lambda:self.create_tab(5))
         
         self.ui.tabWidget.tabCloseRequested.connect(self.close_tab)
 
-        # 按保存的主题应用（默认浅色）；语言已在 run.py 启动时装入
+        # 按保存的主题应用（默认浅色）；语言已在 run.py 启动时装入。
+        # 初始化阶段尚无任何 QGraphicsView，跳过 render 导入与刷新以加快启动
         from core.settings import load_saved_theme
         if load_saved_theme() == "dark":
-            self.dark()
+            self.dark(refresh=False)
         else:
-            self.light()
+            self.light(refresh=False)
 
         # 显示启动引导
         from core.settings import load_initialized
@@ -278,14 +261,15 @@ class MainWindow(QMainWindow):
         from ui.guide import GuideDialog
         dlg = GuideDialog(
             self,
-            open_help_callback=lambda: self.create_tab(10),
+            open_help_callback=lambda: self.create_tab(1),
             apply_language_callback=self.change_language,
             apply_theme_callback=lambda t: (self.dark() if t == "dark" else self.light()),
         )
         dlg.exec()
 
-    def light(self):
+    def light(self, refresh=True):
         # 切换浅色主题，并将除Help页面外所有视图改为白色底色
+        # refresh=False 时不导入 core.render 也不刷新公式视图（初始化阶段无视图可刷）
         self.theme = "light"
         setup_theme(theme="light", additional_qss=qss_light)
         for tab_name, tab in self.tabs.items():
@@ -300,9 +284,10 @@ class MainWindow(QMainWindow):
             for view in tab.findChildren(QGraphicsView):
                 if view.scene() is not None:
                     view.scene().setBackgroundBrush(QColor(255, 255, 255))
-        # 延迟导入 matplotlib（重量级），仅切换主题时加载
-        from core.render import refreshGraphicsView
-        refreshGraphicsView()
+        # 延迟导入 matplotlib（重量级），仅切换主题时加载；初始化阶段跳过
+        if refresh:
+            from core.render import refreshGraphicsView
+            refreshGraphicsView()
         # 设置页强制更新设置选项
         for i in range(self.ui.tabWidget.count()):
             widget = self.ui.tabWidget.widget(i)
@@ -311,8 +296,9 @@ class MainWindow(QMainWindow):
                 widget.shezhi_shense.setChecked(False)
         save_theme(self.theme)
 
-    def dark(self):
+    def dark(self, refresh=True):
         # 切换深色主题，并将除Help页面外所有视图改为黑色底色
+        # refresh=False 时不导入 core.render 也不刷新公式视图（初始化阶段无视图可刷）
         self.theme = "dark"
         setup_theme(theme="dark", additional_qss=qss_dark)
         for tab_name, tab in self.tabs.items():
@@ -327,9 +313,10 @@ class MainWindow(QMainWindow):
             for view in tab.findChildren(QGraphicsView):
                 if view.scene() is not None:
                     view.scene().setBackgroundBrush(QColor(0, 0, 0))
-        # 延迟导入 matplotlib（重量级），仅切换主题时加载
-        from core.render import refreshGraphicsView
-        refreshGraphicsView()
+        # 延迟导入 matplotlib（重量级），仅切换主题时加载；初始化阶段跳过
+        if refresh:
+            from core.render import refreshGraphicsView
+            refreshGraphicsView()
         # 设置页强制更新设置选项
         for i in range(self.ui.tabWidget.count()):
             widget = self.ui.tabWidget.widget(i)

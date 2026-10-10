@@ -1,15 +1,15 @@
 import os
 import sys
 import time
+import unicodedata
+from contextlib import contextmanager
 
-from PySide6.QtCore import QCoreApplication, QEventLoop, QTimer, QUrl, Qt
+from PySide6.QtCore import QCoreApplication, QEventLoop, Qt
 from PySide6.QtGui import QColor, QFont, QPainter, QPixmap
-from PySide6.QtWidgets import QApplication, QSplashScreen
+from PySide6.QtWidgets import QApplication, QWidget
 
 QCoreApplication.setOrganizationName("CalculusCalculator")
 QCoreApplication.setApplicationName("CalculusCalculator")
-
-t0 = time.time()
 
 # 启动画面的静态资源：尺寸/配色集中定义，位图按主题缓存（见 make_splash_pixmap）。
 SPLASH_SIZE = (560, 300)
@@ -52,44 +52,51 @@ def make_splash_pixmap(theme='light'):
     return pm
 
 
-def preinit_webengine():
-    """预初始化 QWebEngine 进程，避免首次打开积木编辑器时闪退。
+class BootSplash(QWidget):
+    """轻量启动画面，提供 QSplashScreen 兼容的 showMessage()/finish() 子集。
 
-    用 QEventLoop + 定时超时替代 while + processEvents() 的轮询等待：
-    等待期间线程挂起、不占 CPU（旧写法会持续空转，与正在启动的浏览器进程
-    争抢 CPU，反而拖慢进程拉起），并保留 15 秒的超时上限。
-
-    返回 loadFinished 是否触发（True 表示内核已就绪）。
+    实测（Windows）：QSplashScreen.show() 约 1.4s，而普通 QWidget 加
+    Qt.SplashScreen 窗口标志仅约 0.5s——差距来自 QSplashScreen 内部
+    额外的窗口系统初始化，与位图绘制无关。故用带相同窗口标志的
+    QWidget 自绘实现，视觉与原版一致（背景位图 + 底部进度文本）。
     """
 
-    try:
-        from PySide6.QtWebEngineWidgets import QWebEngineView
+    def __init__(self, pixmap):
+        super().__init__(None, Qt.SplashScreen | Qt.WindowStaysOnTopHint)
+        self._pixmap = pixmap
+        self._message = ""
+        self.setFixedSize(pixmap.size())
 
-        # 视图不会显示，无需 resize：尺寸对进程拉起与 loadFinished 无影响。
-        view = QWebEngineView()
-        state = {"done": False}
-        loop = QEventLoop()
-        timer = QTimer()
-        timer.setSingleShot(True)
+    def showMessage(self, text, alignment=Qt.AlignHCenter | Qt.AlignBottom,
+                    color=QColor(SPLASH_TEXT_COLOR)):
+        """更新底部进度文本；对齐/颜色参数仅为兼容 QSplashScreen 签名。"""
+        del alignment
+        if text == self._message:
+            return
+        self._message = text
+        self._message_color = color
+        self.update()
 
-        def _on_loaded(*_args):
-            del _args
-            state["done"] = True
-            loop.quit()
+    def clearMessage(self):
+        self.showMessage("")
 
-        view.loadFinished.connect(_on_loaded)
-        timer.timeout.connect(loop.quit)
-        timer.start(15000)
-        view.load(QUrl("about:blank"))
-        loop.exec()
-        timer.stop()
-        view.loadFinished.disconnect(_on_loaded)
-        view.close()
-        view.deleteLater()
-        QCoreApplication.processEvents()
-        return state["done"]
-    except Exception:
-        return False
+    def paintEvent(self, event):
+        del event
+        painter = QPainter(self)
+        painter.drawPixmap(0, 0, self._pixmap)
+        if self._message:
+            painter.setPen(QColor(getattr(self, "_message_color",
+                                           SPLASH_TEXT_COLOR)))
+            # 底部留出少量边距，与原 QSplashScreen 的视觉位置一致
+            painter.drawText(self.rect().adjusted(0, 0, 0, -16),
+                             Qt.AlignHCenter | Qt.AlignBottom, self._message)
+
+    def finish(self, widget):
+        """关闭启动画面并激活主窗口（对齐 QSplashScreen.finish 行为）。"""
+        self.close()
+        if widget is not None:
+            widget.activateWindow()
+            widget.raise_()
 
 
 def boot_step(splash, text):
@@ -121,68 +128,121 @@ def open_file_arg():
     return None
 
 
+class BootProfiler:
+    """启动性能分析：分阶段计时，结束时输出规范化报告。
+
+    - 基于 time.perf_counter() 高精度单调时钟；
+    - stage() 上下文管理器记录每个阶段的起点与耗时；
+    - report() 输出对齐表格（阶段 / 耗时 / 占比 / 累计），未计入任何
+      阶段的间隙单独汇总为"其他"，便于定位开销来源；
+    - 设置环境变量 CALC_BOOT_PROFILE=0 可关闭报告输出。
+    """
+
+    def __init__(self, title="启动性能分析"):
+        self.title = title
+        self._t0 = time.perf_counter()
+        # [(名称, 起点相对偏移, 结束相对偏移)]
+        self.stages = []
+        self._reported = False
+
+    @contextmanager
+    def stage(self, name):
+        start = time.perf_counter()
+        try:
+            yield
+        finally:
+            self.stages.append((name, start - self._t0, time.perf_counter() - self._t0))
+
+    @staticmethod
+    def _pad(name, width):
+        """按显示宽度补齐（中日韩全角字符按 2 列计），保证表格对齐。"""
+        gap = width - sum(2 if unicodedata.east_asian_width(c) in "WF" else 1
+                          for c in name)
+        return name + " " * max(gap, 2)
+
+    def report(self):
+        """输出启动耗时报告；重复调用或被环境变量关闭时静默返回。"""
+        if self._reported:
+            return
+        self._reported = True
+        if os.environ.get("CALC_BOOT_PROFILE", "1").strip().lower() in ("0", "false", "off"):
+            return
+
+        total = time.perf_counter() - self._t0
+        spent = [end - start for _n, start, end in self.stages]
+        gap = total - sum(spent)  # 各阶段之间的间隙（boot_step 刷新等）
+
+        line = "=" * 62
+        print(line)
+        print("{}   总耗时 {:.3f} s   （CALC_BOOT_PROFILE=0 关闭本报告）".format(
+            self.title, total))
+        print(line)
+        print(self._pad("阶段", 22) + "{:>10}{:>9}{:>11}".format("耗时", "占比", "累计"))
+        printed = 0.0
+        for (name, _start, _end), dur in zip(self.stages, spent):
+            printed += dur
+            print(self._pad(name, 22)
+                  + "{:>8.3f} s{:>8.1%}{:>10.3f} s".format(
+                      dur, dur / total if total else 0.0, printed))
+        if gap > 0.0005:
+            print(self._pad("其他（事件处理等间隙）", 22)
+                  + "{:>8.3f} s{:>8.1%}{:>10.3f} s".format(
+                      gap, gap / total if total else 0.0, total))
+        print(line)
+
+
 def main():
 
-    # 1. 开启共享 OpenGL 上下文
+    prof = BootProfiler()
+
+    # 1. 开启共享 OpenGL 上下文（WebEngine 必需，必须先于 QApplication 设置）
     QApplication.setAttribute(Qt.AA_ShareOpenGLContexts, True)
 
     # 2. 创建 QApplication
-    app = QApplication(sys.argv)
-    print(time.time() - t0, "QApplication Created.")
+    with prof.stage("创建 QApplication"):
+        app = QApplication(sys.argv)
 
     # 3. 提前并应用语言（在启动画面显示前安装翻译器）
-    from core.settings import apply_language, load_saved_language
-    apply_language(load_saved_language())
-    print(time.time() - t0, "Language Applied.")
+    with prof.stage("应用语言设置"):
+        from core.settings import apply_language, load_saved_language
+        apply_language(load_saved_language())
 
     # 4. 启动画面
-    from core.settings import current_theme
-    print(time.time() - t0, "Theme Imported.")
-    splash_pixmap = make_splash_pixmap(current_theme())
-    print(time.time() - t0, "Pixmap Created.")
-    splash = QSplashScreen(splash_pixmap, Qt.WindowStaysOnTopHint)
-    print(time.time() - t0, "Splash Window Created.")
-    splash.show()
-    print(time.time() - t0, "Splash Window Showed.")
+    with prof.stage("显示启动画面"):
+        from core.settings import current_theme
+        splash = BootSplash(make_splash_pixmap(current_theme()))
+        splash.show()
 
-    # 5. 应用界面主题
-    boot_step(splash, QCoreApplication.translate("Boot", "正在应用界面主题…"))
-    from core.settings import load_saved_theme
-    print(time.time() - t0, "Theme Loader Imported.")
-    load_saved_theme()
-    print(time.time() - t0, "Theme Applied.")
-
-    # 6. 预初始化 QWebEngine 进程
-    boot_step(splash, QCoreApplication.translate("Boot", "正在初始化浏览器内核…"))
-    preinit_webengine()
-    print(time.time() - t0, "WebEngine Preinitialized.")
-
-    # 7. 创建主窗口
+    # 5. 创建主窗口
+    file_arg = open_file_arg()
     boot_step(splash, QCoreApplication.translate("Boot", "正在创建主窗口…"))
-    from ui.main import MainWindow
-    print(time.time() - t0, "Main Window Imported.")
-    mainWindow = MainWindow(file_arg=open_file_arg())
-    print(time.time() - t0, "Main Window Created.")
+    with prof.stage("导入主窗口模块"):
+        from ui.main import MainWindow
+    with prof.stage("创建主窗口"):
+        mainWindow = MainWindow(file_arg=file_arg)
 
-    # 8. 启动时通过命令行参数传入的存档文件（如文件管理器双击 .cca 文件）
-    if open_file_arg() is not None:
+    # 6. 启动时通过命令行参数传入的存档文件（如文件管理器双击 .cca 文件）
+    if file_arg is not None:
         boot_step(splash, QCoreApplication.translate("Boot", "正在加载启动存档…"))
-        from functions.saves import load_from_path
-        try:
-            load_from_path(mainWindow, open_file_arg())
-        except Exception:
-            pass
+        with prof.stage("加载启动存档"):
+            from functions.saves import load_from_path
+            try:
+                load_from_path(mainWindow, file_arg)
+            except Exception:
+                pass
     else:
         boot_step(splash, QCoreApplication.translate("Boot", "正在完成启动…"))
 
-    # 9. 启动完成：显示主窗口
-    splash.finish(mainWindow)
-    print(time.time() - t0, "Splash Window Closed.")
-    mainWindow.show()
-    print(time.time() - t0, "Main Window Showed.")
-    mainWindow.setup()
-    print(time.time() - t0, "Main Window Slot Function Bound.")
-    print("Wait for Main Window Being Closed...")
+    # 7. 启动完成：显示主窗口，再绑定菜单/应用主题（重活后置，先让窗口出现）
+    with prof.stage("显示主窗口"):
+        splash.finish(mainWindow)
+        mainWindow.show()
+
+    with prof.stage("初始化设置与菜单绑定"):
+        mainWindow.setup()
+
+    # 8. 输出启动性能报告后进入事件循环
+    prof.report()
     sys.exit(app.exec())
 
 

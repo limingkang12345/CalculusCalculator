@@ -217,7 +217,11 @@ def load_from_path(main_class, filename):
                 for tab_name in json_data.get("texts", {}).keys():
                     name_str = ''.join([c for c in tab_name if not c.isdigit()])
                     n_str = ''.join([c for c in tab_name if c.isdigit()])
-                    main_class.create_tab(ui.tabs_dict[name_str], n = int(n_str) if n_str else 0)
+                    idx = ui.tabs_dict.get(name_str)
+                    if idx is None:
+                        # 存档来自含已移除独立标签页的旧版本，跳过该页
+                        continue
+                    main_class.create_tab(idx, n = int(n_str) if n_str else 0)
                     # 将保存的文本框文本自动填入对应的 QLineEdit
                     saved_texts = json_data["texts"].get(tab_name, {})
                     if tab_name in main_class.tabs:

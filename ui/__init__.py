@@ -11,11 +11,8 @@ import lazy_loader
 # lazy_loader.attach returns __getattr__, __dir__, __all__ which must be
 # assigned at module level to enable deferred imports via ui.<submodule>.
 _submodules = [
-    "shouye", "dingyi", "qiudao", "jifen", "bianxing",
-    "fangcheng", "fangchengzu", "budengshi", "budengshizu",
-    "jisuan", "help", "dingyixiangliang", "huitu_hanshu",
-    "jiesanjiaoxing", "dingyi_pj", "huitu_pj", "dingyi_lj",
-    "huitu_lj", "pjjisuan", "ljjisuan", "shezhi", "huancun", "blockly", "functions"
+    "shouye", "help",
+    "shezhi", "huancun", "blockly", "functions"
 ]
 __getattr__, __dir__, __all__ = lazy_loader.attach(__name__, _submodules)
 
@@ -26,25 +23,7 @@ __all__ += ["tabs_list", "tabs_dict"]
 # Each entry: (submodule_name, class_name)
 _tab_registry = [
     ("shouye",           "Shouye"),
-    ("dingyi",           "Dingyi"),
-    ("qiudao",           "Qiudao"),
-    ("jifen",            "Jifen"),
-    ("bianxing",         "Bianxing"),
-    ("fangcheng",        "Fangcheng"),
-    ("fangchengzu",      "Fangchengzu"),
-    ("budengshi",        "Budengshi"),
-    ("budengshizu",      "Budengshizu"),
-    ("jisuan",           "Jisuan"),
     ("help",             "Help"),
-    ("dingyixiangliang", "Dingyixiangliang"),
-    ("huitu_hanshu",     "Huitu_hanshu"),
-    ("jiesanjiaoxing",   "Jiesanjiaoxing"),
-    ("dingyi_pj",        "Dingyi_pj"),
-    ("huitu_pj",         "Huitu_pj"),
-    ("dingyi_lj",        "Dingyi_lj"),
-    ("huitu_lj",         "Huitu_lj"),
-    ("pjjisuan",         "Pjjisuan"),
-    ("ljjisuan",         "Ljjisuan"),
     ("shezhi",           "Shezhi"),
     ("huancun",          "Huancun"),
     ("blockly",          "Blockly"),
@@ -53,12 +32,8 @@ _tab_registry = [
 
 # Tab name -> index mapping
 tabs_dict = {
-    "首页": 0,   "定义": 1,    "求导": 2,      "积分": 3,
-    "变形": 4,   "方程": 5,    "方程组": 6,    "不等式": 7,
-    "不等式组": 8, "计算": 9,   "帮助": 10,    "定义向量": 11,
-    "绘制函数": 12, "解三角形": 13, "平面几何": 14, "平面绘图": 15,
-    "立体几何": 16, "立体绘图": 17, "平面计算": 18, "立体计算": 19,
-    "设置": 20, "缓存区": 21, "积木编辑器": 22, "功能集成": 23
+    "首页": 0,   "帮助": 1,
+    "设置": 2,  "缓存区": 3,  "积木编辑器": 4, "功能集成": 5
 }
 
 # Cache to avoid repeated getattr after first import
