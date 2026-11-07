@@ -31,12 +31,12 @@ code { background-color: #f0f0f0; padding: 1px 6px; border-radius: 3px; font-fam
 <table>
 <tr><th>Menu</th><th>Items</th><th>Description</th></tr>
 <tr><td>File</td><td>Save As / Open / Cache / Settings / Exit</td><td>project save/load, cache management and interface settings</td></tr>
-<tr><td>Features</td><td>Home / All-in-One / Editor</td><td>open the home page, the All-in-One page, and the Blockly editor</td></tr>
+<tr><td>Features</td><td>Home / All-in-One / Blockly Editor / Expression Calculator</td><td>open the home page, the All-in-One page, the Blockly editor, and the expression canvas</td></tr>
 <tr><td>About</td><td>GitHub Link / Web Version / Guide / Help</td><td>project links and built-in help</td></tr>
 </table>
 
 <h3>Tabs</h3>
-<p>There are 6 kinds of tabs: <b>Home</b>, <b>All-in-One</b>, <b>Help</b>, <b>Settings</b>, <b>Cache</b>, and <b>Blockly Editor</b>. Multiple tabs of the same kind can be open at once (titles are auto-numbered); tabs can be closed and reordered by dragging.</p>
+<p>There are 7 kinds of tabs: <b>Home</b>, <b>All-in-One</b>, <b>Help</b>, <b>Settings</b>, <b>Cache</b>, <b>Blockly Editor</b>, and <b>Expression Calculator</b>. Multiple tabs of the same kind can be open at once (titles are auto-numbered); tabs can be closed and reordered by dragging.</p>
 
 <h3>All-in-One page</h3>
 <p>The All-in-One page is the main interface for all kinds of computation, divided left-to-right into three areas whose widths can be adjusted by dragging the splitters:</p>
@@ -465,11 +465,20 @@ If multiple solutions exist (e.g. SSA), the system labels them "Solution 1", "So
 <h2>20. Splash Screen and Startup Optimization</h2>
 <p>A <b>splash screen</b> shows progress and hints while the program loads resources, avoiding a blank wait during startup. v2.1.0 further optimizes the startup flow:</p>
 <ul>
-<li><b>Lazy browser engine initialization</b>: the QWebEngine kernel is no longer loaded at startup; instead it is initialized automatically when the Blockly editor or the visual formula input is opened for the first time, speeding up startup.</li>
+<li><b>Lazy browser engine initialization</b>: the QWebEngine kernel is no longer loaded at startup; instead it is initialized automatically when the Blockly editor, the visual formula input, or the Expression Calculator is opened for the first time, speeding up startup.</li>
 <li><b>Lightweight splash screen</b>: the splash screen is drawn and shown faster, giving visible feedback sooner.</li>
 <li><b>Streamlined initialization</b>: redundant refreshes of formula rendering views are skipped at startup.</li>
 <li>Combined with the existing lazy-loading (<code>lazy_loader</code>) mechanism, the overall <b>startup speed is optimized</b>.</li>
 </ul>
+
+<h2>21. Expression Calculator</h2>
+<p>Open the expression canvas tab via "Features → Expression Calculator". Type an expression in the input box and press <b>Enter</b> or click <b>Add</b>; the expression is added to the canvas with its input order and parentheses preserved, colored by tree depth (red → green → blue → purple).</p>
+<ul>
+<li><b>Select and inspect</b>: click any node in a formula to show its tree structure and the corresponding SymPy expression in the detail pane below; click <code>+</code> / <code>−</code> to swap adjacent terms, or click parentheses to expand them.</li>
+<li><b>Transforms and operations</b>: the "Transform" button at the lower right of the selection box offers simplify, expand, factor, cancel, together, apart, trigsimp, radsimp, plus replace, append, multiply, reciprocal, divide, square, square root and power; drag a selected node onto an expression card to apply replacement or arithmetic operations to the target node (fraction nodes also support multiplying/dividing both numerator and denominator).</li>
+<li><b>Layout and undo</b>: drag the red dot at a card's upper left to move it; use "Undo / Redo" or <code>Ctrl+Z</code> / <code>Ctrl+Y</code> to step through whole-canvas history snapshots; the slider at the upper right adjusts the font size.</li>
+</ul>
+<p>Formulas are rendered by the bundled local MathJax (<code>mathjax/es5/tex-svg.js</code>) with no network access; the page references it through the relative path <code>../mathjax/</code>, so keep that directory in place.</p>
 
 <h2>Additional Resources</h2>
 <p>The above content fully references the language specifications of Python 3.12 and SymPy 1.14.</p>

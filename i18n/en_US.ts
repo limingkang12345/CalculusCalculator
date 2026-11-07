@@ -117,6 +117,16 @@
         <translation>All-in-One</translation>
     </message>
     <message>
+        <location filename="../ui/main.ui" />
+        <source>功能集成页</source>
+        <translation>All-in-One</translation>
+    </message>
+    <message>
+        <location filename="../ui/main.ui" />
+        <source>解几计算器</source>
+        <translation>Expression Calculator</translation>
+    </message>
+    <message>
         <source>引导教学</source>
         <translation>Guide</translation>
     </message>

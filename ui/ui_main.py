@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'main.ui'
+## Form generated from reading UI file 'maindUhqaB.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.11.2
 ##
@@ -53,6 +53,8 @@ class Ui_MainWindow(object):
         self.actionyindao.setObjectName(u"actionyindao")
         self.actionfunctions = QAction(MainWindow)
         self.actionfunctions.setObjectName(u"actionfunctions")
+        self.actionexpr = QAction(MainWindow)
+        self.actionexpr.setObjectName(u"actionexpr")
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
         self.gridLayout = QGridLayout(self.centralwidget)
@@ -86,6 +88,7 @@ class Ui_MainWindow(object):
         self.functions.addAction(self.actionshouye)
         self.functions.addAction(self.actionfunctions)
         self.functions.addAction(self.actionblockly)
+        self.functions.addAction(self.actionexpr)
         self.about.addAction(self.actiongithub)
         self.about.addAction(self.actionwebsite)
         self.about.addAction(self.actionyindao)
@@ -115,9 +118,10 @@ class Ui_MainWindow(object):
         self.actionexit.setText(QCoreApplication.translate("MainWindow", u"\u9000\u51fa", None))
         self.actionshezhi.setText(QCoreApplication.translate("MainWindow", u"\u8bbe\u7f6e", None))
         self.actionhuancun.setText(QCoreApplication.translate("MainWindow", u"\u7f13\u5b58\u533a", None))
-        self.actionblockly.setText(QCoreApplication.translate("MainWindow", u"\u7f16\u8f91\u5668", None))
+        self.actionblockly.setText(QCoreApplication.translate("MainWindow", u"\u79ef\u6728\u7f16\u8f91\u5668", None))
         self.actionyindao.setText(QCoreApplication.translate("MainWindow", u"\u5f15\u5bfc\u6559\u5b66", None))
-        self.actionfunctions.setText(QCoreApplication.translate("MainWindow", u"\u529f\u80fd\u96c6\u6210", None))
+        self.actionfunctions.setText(QCoreApplication.translate("MainWindow", u"\u529f\u80fd\u96c6\u6210\u9875", None))
+        self.actionexpr.setText(QCoreApplication.translate("MainWindow", u"\u89e3\u51e0\u8ba1\u7b97\u5668", None))
         self.functions.setTitle(QCoreApplication.translate("MainWindow", u"\u529f\u80fd", None))
         self.about.setTitle(QCoreApplication.translate("MainWindow", u"\u5173\u4e8e", None))
         self.file.setTitle(QCoreApplication.translate("MainWindow", u"\u6587\u4ef6", None))

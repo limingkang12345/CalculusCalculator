@@ -12,7 +12,7 @@ import lazy_loader
 # assigned at module level to enable deferred imports via ui.<submodule>.
 _submodules = [
     "shouye", "help",
-    "shezhi", "huancun", "blockly", "functions"
+    "shezhi", "huancun", "blockly", "functions", "expr"
 ]
 __getattr__, __dir__, __all__ = lazy_loader.attach(__name__, _submodules)
 
@@ -27,13 +27,15 @@ _tab_registry = [
     ("shezhi",           "Shezhi"),
     ("huancun",          "Huancun"),
     ("blockly",          "Blockly"),
-    ("functions",       "Functions")
+    ("functions",       "Functions"),
+    ("expr",             "Expr")
 ]
 
 # Tab name -> index mapping
 tabs_dict = {
     "首页": 0,   "帮助": 1,
-    "设置": 2,  "缓存区": 3,  "积木编辑器": 4, "功能集成": 5
+    "设置": 2,  "缓存区": 3,  "积木编辑器": 4, "功能集成": 5,
+    "解几计算器": 6
 }
 
 # Cache to avoid repeated getattr after first import

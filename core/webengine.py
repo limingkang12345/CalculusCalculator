@@ -1,9 +1,10 @@
 """QWebEngine 惰性预初始化。
 
-整个程序中只有积木编辑器（ui/blockly.py）与可视化公式输入
-（math_input/math_input.py）使用 QWebEngineView。浏览器内核进程的拉起
-开销较大，本模块提供"每进程至多一次"的就绪等待，供上述两处首次创建
-视图前调用，把内核启动成本从程序启动阶段移到真正需要 WebEngine 的时刻。
+整个程序中积木编辑器（ui/blockly.py）、可视化公式输入
+（math_input/math_input.py）与解几计算器（expr_calculator/expr_viewer.py）
+使用 QWebEngineView。浏览器内核进程的拉起开销较大，本模块提供
+"每进程至多一次"的就绪等待，供上述各处首次创建视图前调用，
+把内核启动成本从程序启动阶段移到真正需要 WebEngine 的时刻。
 
 前提：QApplication 创建前已设置 AA_ShareOpenGLContexts（run.py 负责），
 否则 QWebEngineView 在部分环境下会闪退——这也是本等待逻辑最初存在的原因。

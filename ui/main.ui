@@ -80,6 +80,7 @@
     <addaction name="actionshouye"/>
     <addaction name="actionfunctions"/>
     <addaction name="actionblockly"/>
+    <addaction name="actionexpr"/>
    </widget>
    <widget class="QMenu" name="about">
     <property name="title">
@@ -151,7 +152,7 @@
   </action>
   <action name="actionblockly">
    <property name="text">
-    <string>编辑器</string>
+    <string>积木编辑器</string>
    </property>
   </action>
   <action name="actionyindao">
@@ -161,7 +162,12 @@
   </action>
   <action name="actionfunctions">
    <property name="text">
-    <string>功能集成</string>
+    <string>功能集成页</string>
+   </property>
+  </action>
+  <action name="actionexpr">
+   <property name="text">
+    <string>解几计算器</string>
    </property>
   </action>
  </widget>
