@@ -232,7 +232,8 @@ class MainWindow(QMainWindow):
         self.ui.actionhuancun.triggered.connect(lambda:self.create_tab(3))
         self.ui.actionblockly.triggered.connect(lambda:self.create_tab(4))
         self.ui.actionfunctions.triggered.connect(lambda:self.create_tab(5))
-        
+        self.ui.actionexpr.triggered.connect(lambda:self.create_tab(6))
+
         self.ui.tabWidget.tabCloseRequested.connect(self.close_tab)
 
         # 按保存的主题应用（默认浅色）；语言已在 run.py 启动时装入。

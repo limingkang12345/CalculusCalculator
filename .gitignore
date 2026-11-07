@@ -14,3 +14,4 @@ activate.bat
 mkdocs.yml
 test
 test.py
+replace.py

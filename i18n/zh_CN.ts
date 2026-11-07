@@ -113,6 +113,16 @@
         <translation>功能集成</translation>
     </message>
     <message>
+        <location filename="../ui/main.ui" />
+        <source>功能集成页</source>
+        <translation>功能集成页</translation>
+    </message>
+    <message>
+        <location filename="../ui/main.ui" />
+        <source>解几计算器</source>
+        <translation>解几计算器</translation>
+    </message>
+    <message>
         <source>积木编辑器</source>
         <translation>积木编辑器</translation>
     </message>

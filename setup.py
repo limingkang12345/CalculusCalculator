@@ -20,8 +20,9 @@ HELP_FILES = [
     ("help_en.html", "lib/help_en.html"),
 ]
 
-# 积木编辑器：ui/blockly.py 按 lib/blockly/index.html 查找
-# 其页面又以 ../mathjax/es5/tex-svg.js 引用公式渲染库，故两者同级
+# 积木编辑器与表达式画布：ui/blockly.py 按 lib/blockly/index.html 查找，
+# expr_calculator/expr_viewer.py 的 setHtml 以 lib/expr_calculator/ 为基准；
+# 两者的页面都以 ../mathjax/es5/tex-svg.js 引用公式渲染库，故同级放置
 BLOCKLY_FILES = [
     ("blockly", "lib/blockly"),
     ("mathjax", "lib/mathjax"),
@@ -70,12 +71,14 @@ def collect_modules(package_dir):
 ui_modules = collect_modules("ui")
 func_modules = collect_modules("functions")
 core_modules = collect_modules("core")
+expr_modules = collect_modules("expr_calculator")
 
 # 需要打包的全部模块（显式枚举，确保冻结后均可导入）
 includes = (
     ui_modules
     + func_modules
     + core_modules
+    + expr_modules
     + ["lazy_loader"]
     + collect_modules("math_input")
 )
@@ -95,7 +98,7 @@ setup(
             "includes": includes,
             # ui / core / math_input 是常规包（math_input 的 html 与 mathlive/
             # 作为包内数据自动复制）；functions 为命名空间包，只能用 includes
-            "packages": ["ui", "core", "math_input", "lazy_loader"],
+            "packages": ["ui", "core", "math_input", "expr_calculator", "lazy_loader"],
         }
     },
     executables=[target],
