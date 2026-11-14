@@ -2,14 +2,17 @@
 
 将 SymPy 表达式转换为按书写顺序保存子节点的树结构：
 
-    运算节点：Add、Mul、Pow、Div
+    运算节点：Add、Mul、Pow、Div、Eq、Relational
+    结构节点：Derivative、Integral、Piecewise、FiniteSet
     原子节点：Integer、Rational、Float、Symbol、Constant
     函数节点：Sin、Cos、Tan、Exp、Ln、Log ...
 
 约定：
     * 多参数节点按传入顺序保存参数，可在任意位置插入、交换、替换、删除；
     * Pow 的指数不接受负整数，构造时自动改写为 Div 分式节点；
-    * Div 提供通分（common_denominator）与约分（reduce）。
+    * Div 提供通分（common_denominator）与约分（reduce）；
+    * Derivative / Integral 的变量与阶数保存在节点元数据上，定积分的上下限是子节点；
+    * Piecewise 的参数按（表达式, 条件）成对保存。
 
 用法：
     from expr_tree import from_string, Div, Symbol, Integer
@@ -36,6 +39,13 @@ __all__ = [
     "Mul",
     "Pow",
     "Div",
+    "Derivative",
+    "Integral",
+    "Piecewise",
+    "Relational",
+    "LogicalOp",
+    "FiniteSet",
+    "Point",
     "Integer",
     "Rational",
     "Float",
@@ -84,6 +94,8 @@ _CONSTANT_VALUES = {
     "NegativeInfinity": -sympy.oo,
     "ComplexInfinity": sympy.zoo,
     "NaN": sympy.nan,
+    "True": sympy.true,
+    "False": sympy.false,
 }
 
 _CONSTANT_NAMES = {value: name for name, value in _CONSTANT_VALUES.items()}
@@ -106,6 +118,13 @@ class Expr:
     is_mul = False
     is_pow = False
     is_div = False
+    is_derivative = False
+    is_integral = False
+    is_piecewise = False
+    is_relational = False
+    is_finite_set = False
+    is_logical = False
+    is_point = False
 
     def __init__(self) -> None:
         self._parent: Expr | None = None
@@ -784,6 +803,376 @@ class Div(NaryOp):
         return f"{_fraction_text(self._args[0])}/{_fraction_text(self._args[1], True)}"
 
 
+_RELATION_SYMPY = {
+    "<": sympy.StrictLessThan,
+    "<=": sympy.LessThan,
+    ">": sympy.StrictGreaterThan,
+    ">=": sympy.GreaterThan,
+    "!=": sympy.Unequality,
+}
+
+_RELATION_KEYS = {builder.__name__: key for key, builder in _RELATION_SYMPY.items()}
+
+_RELATION_LATEX = {
+    "<": r"\lt",
+    "<=": r"\le",
+    ">": r"\gt",
+    ">=": r"\ge",
+    "!=": r"\ne",
+}
+
+_LOGIC_SYMPY = {
+    "and": sympy.And,
+    "or": sympy.Or,
+    "not": sympy.Not,
+}
+
+_LOGIC_KEYS = {"And": "and", "Or": "or", "Not": "not"}
+
+_LOGIC_LATEX = {"and": r"\land", "or": r"\lor", "not": r"\lnot"}
+
+
+def _normalize_variables(variables) -> tuple:
+    """把变量参数规范为 ((变量名, 阶数), ...)，相邻同名变量合并。"""
+    if variables is None:
+        return ()
+    if isinstance(variables, (str, sympy.Symbol)):
+        variables = (variables,)
+    result: list = []
+    for item in variables:
+        if isinstance(item, sympy.Symbol):
+            name, count = item.name, 1
+        elif isinstance(item, str):
+            name, count = item, 1
+        else:
+            sequence = tuple(item)
+            head = sequence[0]
+            name = head.name if isinstance(head, sympy.Symbol) else head
+            count = int(sequence[1]) if len(sequence) > 1 else 1
+        if not isinstance(name, str) or not name:
+            raise ValueError("变量名必须是非空字符串")
+        if count < 1:
+            raise ValueError("求导阶数必须是正整数")
+        if result and result[-1][0] == name:
+            result[-1] = (name, result[-1][1] + count)
+        else:
+            result.append((name, count))
+    return tuple(result)
+
+
+class Derivative(NaryOp):
+    """求导节点：对一个表达式求导，变量与阶数保存在节点上。"""
+
+    __slots__ = ("_variables",)
+
+    min_args = 1
+    max_args = 1
+    op = "d"
+    precedence = 30
+    is_derivative = True
+
+    def __init__(self, expression, variables=None) -> None:
+        node = as_expr(expression)
+        if variables is None:
+            names = sorted(symbol.name for symbol in node.free_symbols)
+            variables = (names[0],) if names else ("x",)
+        self._variables = _normalize_variables(variables)
+        super().__init__(node)
+
+    @property
+    def expression(self) -> Expr:
+        return self._args[0]
+
+    @property
+    def variables(self) -> tuple:
+        return self._variables
+
+    def _rebuild(self, args) -> "Derivative":
+        return type(self)(args[0], self._variables)
+
+    def copy(self) -> "Derivative":
+        return type(self)(self._args[0].copy(), self._variables)
+
+    def _key(self) -> tuple:
+        return (type(self).__name__, self._variables, tuple(child._key() for child in self._args))
+
+    def to_sympy(self):
+        targets = []
+        for name, count in self._variables:
+            targets.extend([sympy.Symbol(name)] * count)
+        return sympy.Derivative(self._args[0].to_sympy(), *targets, evaluate=False)
+
+    def __str__(self) -> str:
+        targets = []
+        for name, count in self._variables:
+            targets.append(name if count == 1 else "(" + name + ", " + str(count) + ")")
+        return "Derivative(" + str(self._args[0]) + ", " + ", ".join(targets) + ")"
+
+    def __repr__(self) -> str:
+        return f"Derivative({self._args[0]!r}, {self._variables!r})"
+
+
+class Integral(NaryOp):
+    """积分节点：不定积分只保存被积函数，定积分额外保存上下限。"""
+
+    __slots__ = ("_variable",)
+
+    min_args = 1
+    max_args = 3
+    op = "int"
+    precedence = 30
+    is_integral = True
+
+    def __init__(self, integrand, variable=None, lower=None, upper=None) -> None:
+        node = as_expr(integrand)
+        if variable is None:
+            names = sorted(symbol.name for symbol in node.free_symbols)
+            variable = names[0] if names else "x"
+        if isinstance(variable, sympy.Symbol):
+            variable = variable.name
+        if not isinstance(variable, str) or not variable:
+            raise ValueError("积分变量必须是非空字符串")
+        self._variable = variable
+        if lower is None and upper is None:
+            super().__init__(node)
+            return
+        if lower is None or upper is None:
+            raise ValueError("定积分需要同时给出上下限")
+        super().__init__(node, lower, upper)
+
+    @property
+    def integrand(self) -> Expr:
+        return self._args[0]
+
+    @property
+    def variable(self) -> str:
+        return self._variable
+
+    @property
+    def lower(self):
+        return self._args[1] if len(self._args) > 1 else None
+
+    @property
+    def upper(self):
+        return self._args[2] if len(self._args) > 2 else None
+
+    def _rebuild(self, args) -> "Integral":
+        if len(args) == 1:
+            return type(self)(args[0], self._variable)
+        return type(self)(args[0], self._variable, args[1], args[2])
+
+    def copy(self) -> "Integral":
+        return type(self)(
+            self._args[0].copy(),
+            self._variable,
+            *[child.copy() for child in self._args[1:]],
+        )
+
+    def _key(self) -> tuple:
+        return (type(self).__name__, self._variable, tuple(child._key() for child in self._args))
+
+    def to_sympy(self):
+        symbol = sympy.Symbol(self._variable)
+        body = self._args[0].to_sympy()
+        if self.lower is None:
+            return sympy.Integral(body, symbol)
+        return sympy.Integral(body, (symbol, self.lower.to_sympy(), self.upper.to_sympy()))
+
+    def __str__(self) -> str:
+        body = str(self._args[0])
+        if self.lower is None:
+            return f"Integral({body}, {self._variable})"
+        return f"Integral({body}, ({self._variable}, {self.lower}, {self.upper}))"
+
+    def __repr__(self) -> str:
+        if self.lower is None:
+            return f"Integral({self._args[0]!r}, {self._variable!r})"
+        return f"Integral({self._args[0]!r}, {self._variable!r}, {self.lower!r}, {self.upper!r})"
+
+
+class Piecewise(NaryOp):
+    """分段函数节点：参数按（表达式, 条件）成对保存。"""
+
+    __slots__ = ()
+
+    min_args = 2
+    max_args = None
+    op = "cases"
+    precedence = 10
+    is_piecewise = True
+
+    def _check_arity(self, count: int) -> None:
+        if count < 2 or count % 2 != 0:
+            raise ValueError("Piecewise 的参数必须成对出现：表达式、条件")
+
+    @property
+    def pairs(self) -> tuple:
+        return tuple(
+            (self._args[index], self._args[index + 1])
+            for index in range(0, len(self._args), 2)
+        )
+
+    def to_sympy(self):
+        return sympy.Piecewise(
+            *[(item.to_sympy(), condition.to_sympy()) for item, condition in self.pairs]
+        )
+
+    def __str__(self) -> str:
+        body = ", ".join(
+            "(" + str(item) + ", " + str(condition) + ")" for item, condition in self.pairs
+        )
+        return "Piecewise(" + body + ")"
+
+
+class Relational(NaryOp):
+    """关系节点：左式 关系符 右式，关系符支持 < <= > >= !=。"""
+
+    __slots__ = ("_relation",)
+
+    min_args = 2
+    max_args = 2
+    precedence = 10
+    is_relational = True
+
+    def __init__(self, left, right, relation: str = "<") -> None:
+        if relation not in _RELATION_SYMPY:
+            raise ValueError(f"不支持的关系符: {relation}")
+        self._relation = relation
+        super().__init__(left, right)
+
+    @property
+    def relation(self) -> str:
+        return self._relation
+
+    @property
+    def left(self) -> Expr:
+        return self._args[0]
+
+    @property
+    def right(self) -> Expr:
+        return self._args[1]
+
+    def _rebuild(self, args) -> "Relational":
+        return type(self)(args[0], args[1], self._relation)
+
+    def copy(self) -> "Relational":
+        return type(self)(self._args[0].copy(), self._args[1].copy(), self._relation)
+
+    def _key(self) -> tuple:
+        return (type(self).__name__, self._relation, tuple(child._key() for child in self._args))
+
+    def to_sympy(self):
+        builder = _RELATION_SYMPY[self._relation]
+        return builder(self._args[0].to_sympy(), self._args[1].to_sympy())
+
+    def __str__(self) -> str:
+        return f"{self._args[0]} {self._relation} {self._args[1]}"
+
+    def __repr__(self) -> str:
+        return f"Relational({self._args[0]!r}, {self._args[1]!r}, {self._relation!r})"
+
+
+class LogicalOp(NaryOp):
+    """逻辑连接节点：and（∧）、or（∨）多元，not（¬）一元。"""
+
+    __slots__ = ("_operator",)
+
+    min_args = 1
+    max_args = None
+    op = "and"
+    precedence = 8
+    is_logical = True
+
+    def __init__(self, *args, operator: str = "and") -> None:
+        if operator not in _LOGIC_SYMPY:
+            raise ValueError(f"不支持的逻辑运算符: {operator}")
+        if operator == "not" and len(args) != 1:
+            raise ValueError("Not 只接受一个参数")
+        self._operator = operator
+        super().__init__(*args)
+
+    @property
+    def operator(self) -> str:
+        return self._operator
+
+    def _rebuild(self, args) -> "LogicalOp":
+        return type(self)(*args, operator=self._operator)
+
+    def copy(self) -> "LogicalOp":
+        return type(self)(*[child.copy() for child in self._args], operator=self._operator)
+
+    def _key(self) -> tuple:
+        return (type(self).__name__, self._operator, tuple(child._key() for child in self._args))
+
+    def to_sympy(self):
+        builder = _LOGIC_SYMPY[self._operator]
+        return builder(*[child.to_sympy() for child in self._args])
+
+    def __str__(self) -> str:
+        if self._operator == "not":
+            return "not (" + str(self._args[0]) + ")"
+        joiner = " " + self._operator + " "
+        return joiner.join(str(child) for child in self._args)
+
+    def __repr__(self) -> str:
+        return (
+            "LogicalOp(" + ", ".join(repr(child) for child in self._args)
+            + ", operator=" + repr(self._operator) + ")"
+        )
+
+
+class FiniteSet(NaryOp):
+    """有限集节点：{a, b, c}，无参数时表示空集。"""
+
+    __slots__ = ()
+
+    min_args = 0
+    max_args = None
+    op = "set"
+    precedence = 10
+    is_finite_set = True
+
+    def _rebuild(self, args) -> "FiniteSet":
+        return type(self)(*args)
+
+    def copy(self) -> "FiniteSet":
+        return type(self)(*[child.copy() for child in self._args])
+
+    def to_sympy(self):
+        return sympy.FiniteSet(*[child.to_sympy() for child in self._args])
+
+    def __str__(self) -> str:
+        if not self._args:
+            return "{}"
+        return "{" + ", ".join(str(child) for child in self._args) + "}"
+
+
+class Point(NaryOp):
+    """点节点：(x, y)，只用于几何计算与展示。"""
+
+    __slots__ = ()
+
+    min_args = 2
+    max_args = 2
+    op = "point"
+    precedence = 100
+    is_point = True
+
+    @property
+    def x(self) -> Expr:
+        return self._args[0]
+
+    @property
+    def y(self) -> Expr:
+        return self._args[1]
+
+    def to_sympy(self):
+        return sympy.Tuple(self._args[0].to_sympy(), self._args[1].to_sympy())
+
+    def __str__(self) -> str:
+        return "(" + str(self._args[0]) + ", " + str(self._args[1]) + ")"
+
+
 class Function(NaryOp):
     __slots__ = ()
 
@@ -987,6 +1376,8 @@ _CONSTANT_LATEX = {
     "NegativeInfinity": r"-\infty",
     "ComplexInfinity": r"\tilde{\infty}",
     "NaN": r"\text{NaN}",
+    "True": r"\text{True}",
+    "False": r"\text{False}",
 }
 
 _FUNCTION_LATEX = {
@@ -1161,6 +1552,80 @@ class LatexPrinter:
     def _print_Eq(self, node: Eq) -> str:
         return self._print(node.left) + " = " + self._print(node.right)
 
+    def _print_Relational(self, node: Relational) -> str:
+        return (
+            self._print(node.left)
+            + " " + _RELATION_LATEX[node.relation] + " "
+            + self._print(node.right)
+        )
+
+    def _print_LogicalOp(self, node: LogicalOp) -> str:
+        if node.operator == "not":
+            return r"\lnot " + self._print(node.args[0])
+        joiner = " " + _LOGIC_LATEX[node.operator] + " "
+        parts = []
+        for child in node.args:
+            text = self._print(child)
+            if isinstance(child, LogicalOp) and child.operator != node.operator:
+                text = self._paren(text)
+            parts.append(text)
+        return joiner.join(parts)
+
+    def _print_Derivative(self, node: Derivative) -> str:
+        body = self._delimit(node.args[0])
+        groups = node.variables or (("x", 1),)
+        if len(groups) == 1:
+            name, count = groups[0]
+            variable = _symbol_latex(name)
+            if count == 1:
+                return r"\frac{\mathrm{d}}{\mathrm{d}" + variable + "}" + body
+            return (
+                r"\frac{\mathrm{d}^{" + str(count) + r"}}{\mathrm{d}"
+                + variable + "^{" + str(count) + "}}" + body
+            )
+        total = sum(count for _, count in groups)
+        parts = []
+        for name, count in groups:
+            piece = _symbol_latex(name)
+            if count > 1:
+                piece += "^{" + str(count) + "}"
+            parts.append(piece)
+        return (
+            r"\frac{\partial^{" + str(total) + r"}}{\partial "
+            + r" \partial ".join(parts) + "}" + body
+        )
+
+    def _print_Integral(self, node: Integral) -> str:
+        body = self._print(node.integrand)
+        variable = _symbol_latex(node.variable)
+        if node.lower is None:
+            return r"\int " + body + r"\,\mathrm{d}" + variable
+        return (
+            r"\int_{" + self._print(node.lower) + "}^{" + self._print(node.upper) + "} "
+            + body + r"\,\mathrm{d}" + variable
+        )
+
+    def _print_Piecewise(self, node: Piecewise) -> str:
+        rows = []
+        for expression, condition in node.pairs:
+            if isinstance(condition, Constant) and condition.name == "True":
+                tail = r"\text{otherwise}"
+            else:
+                tail = r"\text{if }" + self._print(condition)
+            rows.append(self._print(expression) + r" & " + tail)
+        return r"\begin{cases}" + r" \\ ".join(rows) + r"\end{cases}"
+
+    def _print_Point(self, node: Point) -> str:
+        return (
+            r"\left(" + self._print(node.args[0])
+            + r",\ " + self._print(node.args[1]) + r"\right)"
+        )
+
+    def _print_FiniteSet(self, node: FiniteSet) -> str:
+        if not node.args:
+            return r"\varnothing"
+        return r"\left\{" + ", ".join(self._print(item) for item in node.args) + r"\right\}"
+
     def _print_Pow(self, node: Pow) -> str:
         base, exponent = node.args
         if isinstance(exponent, Integer):
@@ -1251,7 +1716,7 @@ class LatexPrinter:
 
     def _base_text(self, node: Expr) -> str:
         text = self._print(node)
-        if isinstance(node, (Add, Mul, Div, Pow)):
+        if isinstance(node, (Add, Mul, Div, Pow, Derivative, Integral, Piecewise, Relational, LogicalOp, FiniteSet)):
             return self._paren(text)
         if isinstance(node, (Integer, Rational, Float)) and node.value < 0:
             return self._paren(text)
@@ -1259,7 +1724,7 @@ class LatexPrinter:
 
     def _factor(self, node: Expr) -> str:
         text = self._print(node)
-        if isinstance(node, Add):
+        if isinstance(node, (Add, Piecewise)):
             return self._paren(text)
         if isinstance(node, (Integer, Rational, Float)) and node.value < 0:
             return self._paren(text)
@@ -1630,6 +2095,47 @@ def _from_sympy(expr, ordered: bool) -> Expr:
             _from_sympy(expr.lhs, ordered),
             _from_sympy(expr.rhs, ordered),
         )
+    relation = _RELATION_KEYS.get(type(expr).__name__)
+    if relation is not None:
+        return Relational(
+            _from_sympy(expr.lhs, ordered),
+            _from_sympy(expr.rhs, ordered),
+            relation,
+        )
+    logic = _LOGIC_KEYS.get(type(expr).__name__)
+    if logic is not None:
+        return LogicalOp(
+            *[_from_sympy(item, ordered) for item in expr.args],
+            operator=logic,
+        )
+    if isinstance(expr, sympy.Derivative):
+        return Derivative(_from_sympy(expr.expr, ordered), expr.variables)
+    if isinstance(expr, sympy.Integral):
+        node = _from_sympy(expr.function, ordered)
+        for limit in reversed(expr.limits):
+            symbol = limit[0]
+            if len(limit) == 1:
+                node = Integral(node, symbol.name)
+            else:
+                node = Integral(
+                    node,
+                    symbol.name,
+                    _from_sympy(limit[1], ordered),
+                    _from_sympy(limit[2], ordered),
+                )
+        return node
+    if isinstance(expr, sympy.Piecewise):
+        items = []
+        for pair in expr.args:
+            items.append(_from_sympy(pair.expr, ordered))
+            items.append(_from_sympy(pair.cond, ordered))
+        return Piecewise(*items)
+    if isinstance(expr, sympy.FiniteSet) or expr is sympy.S.EmptySet:
+        return FiniteSet(*[_from_sympy(item, ordered) for item in expr.args])
+    if isinstance(expr, sympy.Tuple):
+        if len(expr.args) != 2:
+            raise TypeError("只支持二维点坐标")
+        return Point(_from_sympy(expr.args[0], ordered), _from_sympy(expr.args[1], ordered))
     if isinstance(expr, sympy.Add):
         items = expr.as_ordered_terms() if ordered else _flatten_args(expr, sympy.Add)
         nodes = [_from_sympy(item, ordered) for item in items]
