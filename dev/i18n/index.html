@@ -25,7 +25,7 @@
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.1">
     
     
       
@@ -656,6 +656,17 @@
   <a href="#_2" class="md-nav__link">
     <span class="md-ellipsis">
       
+        解几计算器的特殊处理
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
         文档中的国际化
       
     </span>
@@ -1208,6 +1219,62 @@
   
   
     <li class="md-nav__item">
+      <a href="../../api/modules/plotting/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    几何绘图
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/modules/saves/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    工程存档
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../api/modules/plane_geometry/" class="md-nav__link">
         
   
@@ -1313,6 +1380,34 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/modules/expr_calculator/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    解几计算器
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -1396,6 +1491,17 @@
   <a href="#_2" class="md-nav__link">
     <span class="md-ellipsis">
       
+        解几计算器的特殊处理
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
         文档中的国际化
       
     </span>
@@ -1432,6 +1538,35 @@
 <li><strong>编译为 <code>.qm</code></strong>：用 <code>lrelease</code> 把 <code>.ts</code> 编译成二进制 <code>.qm</code>，程序运行时由 <code>core.settings.apply_language()</code> 加载对应 <code>.qm</code> 并 <code>installTranslator</code>。</li>
 <li><strong>中文为源语言</strong>：当语言为 <code>zh_CN</code> 时卸载翻译器，直接显示源码中的中文字符串。</li>
 </ul>
+<h2 id="_2">解几计算器的特殊处理</h2>
+<p>解几计算器（<code>expr_calculator/</code>）的界面由三部分组成，翻译方式各有不同：</p>
+<table>
+<thead>
+<tr>
+<th>部位</th>
+<th>方式</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Qt 控件（工具栏、对话框、状态栏）</td>
+<td>模块内 <code>_t(text)</code>（即 <code>QCoreApplication.translate("expr_calculator", text)</code>），翻译上下文统一为 <code>expr_calculator</code></td>
+</tr>
+<tr>
+<td>常量表中的文案（常用方程、条件、几何量、变形项）</td>
+<td>常量值用 <code>QT_TRANSLATE_NOOP("expr_calculator", text)</code> 标记供提取，<strong>真正显示时再调用 <code>_t()</code></strong>，这样切换到英文不会影响内部用于判断的中文键值</td>
+</tr>
+<tr>
+<td>HTML/JS 页面（画布按钮、悬停提示、空画布提示）</td>
+<td>页面模板中的文案换成 <code>@@TOKEN@@</code> 占位符与 <code>window.__I18N__</code> 注入的 JSON，由 <code>page_html()</code> 在生成页面时填入译文</td>
+</tr>
+</tbody>
+</table>
+<p>语言切换时，<code>ui/main.py</code> 会调用标签页的 <code>retranslateUi(widget)</code>；<code>ui/expr.py</code> 把它转发给 <code>MainWindow.retranslate()</code>，后者刷新 Qt 控件文案并重新加载页面，<code>_on_page_loaded()</code> 再把已有卡片按原位置、标题、注释与折叠状态重建。</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>页面模板（<code>PAGE</code> / <code>DIALOG_PAGE</code>）保持为模块级字符串常量，但<strong>不能直接用于 <code>setHtml</code></strong>——必须经 <code>page_html()</code> 处理后使用，否则 <code>@@…@@</code> 占位符会原样显示。</p>
+</div>
 <div class="admonition example">
 <p class="admonition-title">Example</p>
 <p>新增页面时，在构造函数中：
@@ -1439,11 +1574,11 @@
 btn.setText(QCoreApplication.translate("XinGongneng", "计算"))</code>
 然后在 <code>i18n/en_US.ts</code> 的对应 <code>&lt;message&gt;</code> 中填写英文译文。</p>
 </div>
-<h2 id="_2">文档中的国际化</h2>
+<h2 id="_3">文档中的国际化</h2>
 <ul>
 <li>文档分为 <code>docs/zh/</code>（默认）与 <code>docs/en/</code> 两个独立目录，结构完全一致。</li>
 <li><code>mkdocs.yml</code> 使用 <code>i18n</code> 插件（<code>docs_structure: folder</code>），依据子目录名 <code>zh</code> / <code>en</code> 构建对应语言站点。</li>
-<li>导航里的中文文本通过 <code>nav_translations</code> 映射为英文，无需在 <code>en/</code> 目录重复维护导航。</li>
+<li>导航里的中文文本通过 <code>nav_translations</code> 映射为英文（写在 <code>mkdocs.yml</code> 中 <code>locale: en</code> 的条目下），无需在 <code>en/</code> 目录重复维护导航。</li>
 <li>新增文档页面时，务必在 <code>zh/</code> 与 <code>en/</code> 同步创建，保持文件名与相对路径一致。</li>
 </ul>
 <div class="admonition warning">

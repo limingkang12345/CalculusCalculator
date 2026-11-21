@@ -25,7 +25,7 @@
       
       
       <link rel="icon" href="../../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.1">
     
     
       
@@ -1276,6 +1276,62 @@
   
   
     <li class="md-nav__item">
+      <a href="../../modules/plotting/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    几何绘图
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../modules/saves/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    工程存档
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../modules/plane_geometry/" class="md-nav__link">
         
   
@@ -1368,6 +1424,34 @@
     
   
     立体几何计算
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../modules/expr_calculator/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    解几计算器
   
 
     
@@ -1723,8 +1807,8 @@ LaTeX 解析支持常见数学符号与结构，复杂表达式也可混合使�
 </table>
 <p><strong>FiniteSet 使用案例</strong></p>
 <ul>
-<li>"定义"页面的<strong>函数定义域</strong>中输入 <code>FiniteSet(1,2,3)</code> 将定义域限定为离散点集 {1,2,3}</li>
-<li>"方程"页面的<strong>主元取值范围</strong>中输入 <code>FiniteSet(0,1)</code> 限定只求解该集合中的根</li>
+<li>功能集成页定义区（函数类型）的<strong>函数定义域</strong>中输入 <code>FiniteSet(1,2,3)</code> 将定义域限定为离散点集 {1,2,3}</li>
+<li>功能集成页计算区（解方程类型）的<strong>主元取值范围</strong>中输入 <code>FiniteSet(0,1)</code> 限定只求解该集合中的根</li>
 <li>组合：<code>Union(Interval(0,1), FiniteSet(2))</code> 表示 [0,1] 与点 2 的并集</li>
 </ul>
 <p><strong>ImageSet 使用案例</strong></p>
@@ -1734,7 +1818,7 @@ LaTeX 解析支持常见数学符号与结构，复杂表达式也可混合使�
 <li>定义域描述：<code>ImageSet(Lambda(x, 2*x+1), Integers)</code> 表示所有奇数</li>
 </ul>
 <h2 id="_4">四、函数输入标准</h2>
-<p>对于在"定义"页面已定义的函数，可在其余大多数输入框直接使用：</p>
+<p>对于在功能集成页定义区已定义的函数，可在其余大多数输入框直接使用：</p>
 <ul>
 <li><strong>作为符号参与运算</strong>：已定义 <code>g(x)=x**2</code>，输入 <code>g+1/g</code> 得到 <code>x**2 + 1/x**2</code></li>
 <li><strong>以函数调用形式传参</strong>：已定义 <code>f(x)=x**2</code>，输入 <code>f(3)</code> 自动计算 <code>3**2=9</code>；支持嵌套调用如 <code>f(g(2))</code></li>

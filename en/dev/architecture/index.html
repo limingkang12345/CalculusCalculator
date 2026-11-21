@@ -25,11 +25,11 @@
       
       
       <link rel="icon" href="../../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.1">
     
     
       
-        <title>Architecture - CalculusCalculator 帮助文档</title>
+        <title>Architecture - CalculusCalculator Documentation</title>
       
     
     
@@ -96,7 +96,7 @@
 
 <header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="../../" title="CalculusCalculator 帮助文档" class="md-header__button md-logo" aria-label="CalculusCalculator 帮助文档" data-md-component="logo">
+    <a href="../../" title="CalculusCalculator Documentation" class="md-header__button md-logo" aria-label="CalculusCalculator Documentation" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -110,7 +110,7 @@
       <div class="md-header__ellipsis">
         <div class="md-header__topic">
           <span class="md-ellipsis">
-            CalculusCalculator 帮助文档
+            CalculusCalculator Documentation
           </span>
         </div>
         <div class="md-header__topic" data-md-component="header-topic">
@@ -244,13 +244,13 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../../" title="CalculusCalculator 帮助文档" class="md-nav__button md-logo" aria-label="CalculusCalculator 帮助文档" data-md-component="logo">
+    <a href="../../" title="CalculusCalculator Documentation" class="md-nav__button md-logo" aria-label="CalculusCalculator Documentation" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
 
     </a>
-    CalculusCalculator 帮助文档
+    CalculusCalculator Documentation
   </label>
   
     <div class="md-nav__source">
@@ -1230,6 +1230,62 @@
   
   
     <li class="md-nav__item">
+      <a href="../../api/modules/plotting/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Geometry Drawing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/modules/saves/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Project Save & Load
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../api/modules/plane_geometry/" class="md-nav__link">
         
   
@@ -1322,6 +1378,34 @@
     
   
     Solid Geometry Calculation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/modules/expr_calculator/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Expression Calculator
   
 
     
@@ -1475,7 +1559,8 @@
 ├── core/               # UI-independent foundation
 │   ├── sympify.py      # String → SymPy expression (unified input standard)
 │   ├── render.py       # LaTeX → SVG formula rendering (QGraphicsView)
-│   └── settings.py     # Persisted settings: language, theme, onboarding flag
+│   ├── settings.py     # Persisted settings: language, theme, onboarding flag
+│   └── webengine.py    # Lazy QWebEngine pre-initialization (kernel started on first Blockly editor / formula dialog open)
 ├── functions/          # Pure computation modules (no Qt dependency)
 │   ├── derivative.py   # Differentiation
 │   ├── integral.py     # Integration
@@ -1486,22 +1571,29 @@
 │   ├── solids.py       # Solid geometry
 │   ├── paint2D.py / paint3D.py  # Plotting
 │   └── saves.py        # Save / load
-├── ui/                 # PySide6 tab pages
+├── ui/                 # PySide6 UI layer
 │   ├── main.py         # MainWindow
 │   ├── __init__.py     # Tab registry (lazy loading)
-│   └── &lt;pinyin&gt;.py      # Feature pages (e.g. qiudao.py = Derivative)
+│   ├── functions.py    # All-in-One page (Define / Compute / Plot areas)
+│   └── &lt;pinyin&gt;.py      # Remaining pages (e.g. shouye.py = Home, shezhi.py = Settings)
 ├── math_input/         # Visual formula input (MathLive editor)
 ├── blockly/            # Visual block-based computation editor (v2.0.0)
+├── expr_calculator/    # Expression Calculator: expression canvas (v2.2.0)
+│   ├── expr_tree.py    # Expression tree, LaTeX printer and SymPy conversion (no Qt)
+│   └── expr_viewer.py  # Canvas window, MathJax page and operation dialogs
 ├── i18n/               # Translation sources .ts and compiled .qm
 └── docs/               # This help site (mkdocs, zh / en)
 </code></pre>
 <h2 id="layer-responsibilities">Layer Responsibilities</h2>
 <ul>
-<li><strong>Entry layer <code>run.py</code></strong>: configures Qt, pre-initializes WebEngine, loads language and theme, shows the splash screen, builds the main window, and shows the onboarding guide on first launch.</li>
+<li><strong>Entry layer <code>run.py</code></strong>: configures Qt, loads language, shows the splash screen (with staged startup profiling, disable via <code>CALC_BOOT_PROFILE=0</code>), builds the main window, and shows the onboarding guide on first launch. QWebEngine is no longer pre-initialized at startup; instead the kernel process is lazily started by <code>core/webengine.py</code> when the Blockly editor or the formula input dialog is opened for the first time.</li>
 <li><strong>Core layer <code>core/</code></strong>: provides three UI-independent services — input parsing, formula rendering, and settings persistence. Every feature page relies on <code>core.sympify</code> to parse input and <code>core.render</code> to render results.</li>
 <li><strong>Computation layer <code>functions/</code></strong>: each module exposes pure functions (SymPy expressions / parameters in, SymPy objects or strings out) with no Qt dependency, enabling standalone unit tests.</li>
-<li><strong>UI layer <code>ui/</code></strong>: each feature is a <code>QWidget</code> subclass (page). <code>ui/__init__.py</code> keeps a "tab registry" and uses <code>lazy_loader</code> so a module is imported only when its tab is first created, speeding up startup.</li>
+<li><strong>UI layer <code>ui/</code></strong>: each tab is a <code>QWidget</code> subclass. Since v2.1.0 there are 6 kinds of tabs (Home / Help / Settings / Cache / Blockly Editor / All-in-One); the former standalone feature tabs have been merged into the All-in-One page. v2.2.0 adds the "Expression Calculator" tab, for 7 kinds in total. <code>ui/__init__.py</code> keeps a "tab registry" and uses <code>lazy_loader</code> so a module is imported only when its tab is first created, speeding up startup.</li>
 <li><strong>Visual input <code>math_input/</code> / <code>blockly/</code></strong>: provide structured formula input and block-based flow editing respectively; both ultimately produce a standard SymPy expression that is handed to the computation layer.</li>
+<li><strong>Expression Calculator <code>expr_calculator/</code></strong>: <code>expr_tree.py</code> only converts between SymPy, the custom expression tree and LaTeX, without depending on Qt; <code>expr_viewer.py</code> renders the tree into a <code>QWebEngineView</code> (bundled MathJax) and reports canvas clicks, drags and transforms back to Python through <code>QWebChannel</code>. <code>ui/expr.py</code> is a thin tab wrapper that forwards <code>retranslateUi</code> so the canvas follows language switches.</li>
+<li><strong>Unified input tables</strong>: the definition area and calculation area of <code>ui/functions.py</code> share one table engine. Each type is described by a <code>_Spec</code> whose <code>rows</code> yields "row title + default + role" for the current values; <code>_InputTable</code> builds the widgets from it, caches values per selection combination, and handles the interactions. Plane / solid geometry is simply a spec with "two dropdowns and parameter rows that follow the creation method"; its method tables (<code>PLANE_GEOMETRY</code> / <code>SOLID_GEOMETRY</code>) map one-to-one onto the constructors in <code>functions/planes.py</code> and <code>functions/solids.py</code>, so a new creation method only needs one extra row in the table.</li>
+<li><strong>Drawing area</strong>: the drawing area on the All-in-One page takes the geometry objects already defined in <code>parent.pjs</code> / <code>parent.ljs</code> (or the functions in <code>parent.fs</code> in Function mode), calls <code>functions/paint2D.py</code> / <code>functions/paint3D.py</code> to build the chart, and embeds a matplotlib canvas with the navigation toolbar.</li>
 </ul>
 <h2 id="data-flow">Data Flow</h2>
 <pre><code>User input → core.sympify.sympify() → SymPy expression

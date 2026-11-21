@@ -25,11 +25,11 @@
       
       
       <link rel="icon" href="../../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.1">
     
     
       
-        <title>Adding a Feature Tab - CalculusCalculator 帮助文档</title>
+        <title>Adding a Feature Tab - CalculusCalculator Documentation</title>
       
     
     
@@ -96,7 +96,7 @@
 
 <header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="../../" title="CalculusCalculator 帮助文档" class="md-header__button md-logo" aria-label="CalculusCalculator 帮助文档" data-md-component="logo">
+    <a href="../../" title="CalculusCalculator Documentation" class="md-header__button md-logo" aria-label="CalculusCalculator Documentation" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -110,7 +110,7 @@
       <div class="md-header__ellipsis">
         <div class="md-header__topic">
           <span class="md-ellipsis">
-            CalculusCalculator 帮助文档
+            CalculusCalculator Documentation
           </span>
         </div>
         <div class="md-header__topic" data-md-component="header-topic">
@@ -244,13 +244,13 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../../" title="CalculusCalculator 帮助文档" class="md-nav__button md-logo" aria-label="CalculusCalculator 帮助文档" data-md-component="logo">
+    <a href="../../" title="CalculusCalculator Documentation" class="md-nav__button md-logo" aria-label="CalculusCalculator Documentation" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
 
     </a>
-    CalculusCalculator 帮助文档
+    CalculusCalculator Documentation
   </label>
   
     <div class="md-nav__source">
@@ -1230,6 +1230,62 @@
   
   
     <li class="md-nav__item">
+      <a href="../../api/modules/plotting/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Geometry Drawing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/modules/saves/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Project Save & Load
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../api/modules/plane_geometry/" class="md-nav__link">
         
   
@@ -1322,6 +1378,34 @@
     
   
     Solid Geometry Calculation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/modules/expr_calculator/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Expression Calculator
   
 
     
@@ -1468,9 +1552,13 @@
 
 
 <h1 id="adding-a-feature-tab">Adding a Feature Tab</h1>
-<p>Every feature in this app is presented as a tab. Adding a new feature takes three steps: create the page class, register it in the tab registry, and wire up the core services.</p>
+<p>After v2.1.0 the tabs have been consolidated into 6 kinds (Home / Help / Settings / Cache / Blockly Editor / All-in-One); computation features are extended inside the All-in-One page as new types / modes. If you do need a new standalone tab, the steps remain: create the page class, register it in the tab registry, and wire up the core services.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>If the new feature is just a new "computation type" or "definition type" of the All-in-One page, prefer extending <code>CALC_FUNCTION_NAMES</code> / <code>DEF_TYPE_NAMES</code> in <code>ui/functions.py</code> and the corresponding execution branches — no new tab needed.</p>
+</div>
 <h2 id="1-create-the-page-module">1. Create the page module</h2>
-<p>Create a new file under <code>ui/</code> whose name uses the Chinese pinyin of the feature (consistent with the existing convention, e.g. <code>qiudao.py</code>, <code>jifen.py</code>). Define a page class that subclasses <code>QWidget</code>:</p>
+<p>Create a new file under <code>ui/</code> whose name uses the Chinese pinyin of the feature (consistent with the existing convention, e.g. <code>shouye.py</code>, <code>shezhi.py</code>). Define a page class that subclasses <code>QWidget</code>:</p>
 <pre><code class="language-python"># ui/xin_gongneng.py
 from PySide6.QtWidgets import QWidget, QVBoxLayout, QPushButton, QLabel
 from PySide6.QtCore import QCoreApplication
@@ -1503,7 +1591,7 @@ class XinGongneng(QWidget):
 <p>Edit <code>ui/__init__.py</code> and add entries to <code>_submodules</code>, <code>_tab_registry</code>, and <code>tabs_dict</code> (increment the index, keep it unique):</p>
 <pre><code class="language-python">_submodules = [..., &quot;xin_gongneng&quot;]
 _tab_registry = [..., (&quot;xin_gongneng&quot;, &quot;XinGongneng&quot;)]
-tabs_dict = {..., &quot;New Feature&quot;: 23}
+tabs_dict = {..., &quot;New Feature&quot;: 6}
 </code></pre>
 <p><code>tabs_list</code> is a lazy-loading proxy and needs no change. <code>run.py</code> will automatically add the new page to the tab bar on startup.</p>
 <h2 id="3-wire-up-core-services">3. Wire up core services</h2>

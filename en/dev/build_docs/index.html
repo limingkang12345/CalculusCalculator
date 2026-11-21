@@ -25,11 +25,11 @@
       
       
       <link rel="icon" href="../../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.1">
     
     
       
-        <title>Documentation & Building - CalculusCalculator 帮助文档</title>
+        <title>Documentation & Building - CalculusCalculator Documentation</title>
       
     
     
@@ -96,7 +96,7 @@
 
 <header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="../../" title="CalculusCalculator 帮助文档" class="md-header__button md-logo" aria-label="CalculusCalculator 帮助文档" data-md-component="logo">
+    <a href="../../" title="CalculusCalculator Documentation" class="md-header__button md-logo" aria-label="CalculusCalculator Documentation" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -110,7 +110,7 @@
       <div class="md-header__ellipsis">
         <div class="md-header__topic">
           <span class="md-ellipsis">
-            CalculusCalculator 帮助文档
+            CalculusCalculator Documentation
           </span>
         </div>
         <div class="md-header__topic" data-md-component="header-topic">
@@ -244,13 +244,13 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../../" title="CalculusCalculator 帮助文档" class="md-nav__button md-logo" aria-label="CalculusCalculator 帮助文档" data-md-component="logo">
+    <a href="../../" title="CalculusCalculator Documentation" class="md-nav__button md-logo" aria-label="CalculusCalculator Documentation" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
 
     </a>
-    CalculusCalculator 帮助文档
+    CalculusCalculator Documentation
   </label>
   
     <div class="md-nav__source">
@@ -1252,6 +1252,62 @@
   
   
     <li class="md-nav__item">
+      <a href="../../api/modules/plotting/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Geometry Drawing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/modules/saves/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Project Save & Load
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../api/modules/plane_geometry/" class="md-nav__link">
         
   
@@ -1344,6 +1400,34 @@
     
   
     Solid Geometry Calculation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/modules/expr_calculator/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Expression Calculator
   
 
     
@@ -1514,11 +1598,26 @@
 <h1 id="documentation-building">Documentation &amp; Building</h1>
 <p>This documentation is built with <a href="https://www.mkdocs.org/">MkDocs</a> + the Material theme + the i18n plugin. The source is the <code>docs/</code> folder.</p>
 <h2 id="local-preview">Local preview</h2>
-<pre><code class="language-bash">pip install mkdocs mkdocs-material &quot;mkdocs-static-i18n&quot;
+<pre><code class="language-bash">pip install &quot;mkdocs&gt;=1.6&quot; &quot;mkdocs-material&gt;=9.7,&lt;9.8&quot; &quot;mkdocs-static-i18n&gt;=1.0&quot;
 mkdocs serve        # default http://127.0.0.1:8000, with live reload
 </code></pre>
+<div class="admonition warning">
+<p class="admonition-title">Version requirements</p>
+<ul>
+<li><strong>mkdocs-static-i18n must be ≥ 1.0.</strong> The 0.x line reads the material version and language list through <code>pkg_resources</code>, which setuptools ≥ 81 removed, and material 9.6 moved its templates to <code>material/templates/partials/</code>. With 0.x the plugin concludes that material is missing, so <strong>no language switcher is generated and <code>&lt;html lang&gt;</code> never changes</strong> — the site silently degrades to Chinese-only.</li>
+<li>material 9.7.2+ changed internal interfaces the plugin relies on; 9.7.1 is the safest choice. After upgrading material, run <code>mkdocs build --strict</code> again and confirm the switcher still renders.</li>
+</ul>
+</div>
 <h2 id="build-the-static-site">Build the static site</h2>
-<pre><code class="language-bash">mkdocs build        # output to site/; --strict fails on broken links / missing translations
+<pre><code class="language-bash">mkdocs build --strict   # output to site/; --strict fails on broken links, missing translations or pages absent from nav
+mkdocs gh-deploy        # publish to GitHub Pages
+</code></pre>
+<p>Output layout (the default language <code>zh</code> sits at the site root):</p>
+<pre><code>site/
+├── index.html          # Chinese (default language)
+├── en/                 # English
+├── search/             # shared bilingual search index (per-language stemming)
+└── sitemap.xml
 </code></pre>
 <h2 id="directory-convention">Directory convention</h2>
 <pre><code>docs/
@@ -1528,11 +1627,12 @@ mkdocs serve        # default http://127.0.0.1:8000, with live reload
 </code></pre>
 <ul>
 <li>Adding a page: create a same-named file in both <code>zh/</code> and <code>en/</code>, then register it in the <code>nav</code> of <code>mkdocs.yml</code>.</li>
-<li>Chinese → English navigation mappings live in <code>nav_translations</code>.</li>
+<li>Chinese → English navigation mappings live under <code>nav_translations</code> of the <code>locale: en</code> entry in <code>languages</code> (since 1.x this is <strong>per language</strong>, not a top-level option).</li>
+<li>The English site title can be overridden with <code>site_name</code> on the <code>locale: en</code> entry.</li>
 </ul>
 <h2 id="code-conventions-for-contributors">Code conventions (for contributors)</h2>
 <ul>
-<li><strong>File names</strong>: UI feature pages use Chinese pinyin (e.g. <code>qiudao.py</code> = Derivative); library modules such as <code>core/</code>, <code>functions/</code> use English.</li>
+<li><strong>File names</strong>: UI feature pages use Chinese pinyin (e.g. <code>shouye.py</code> = Home, <code>shezhi.py</code> = Settings); library modules such as <code>core/</code>, <code>functions/</code> use English.</li>
 <li><strong>Layering</strong>: computation logic goes in <code>functions/</code> (pure functions, no Qt); UI goes in <code>ui/</code>; shared services go in <code>core/</code>.</li>
 <li><strong>Docstrings</strong>: public functions / classes should have docstrings to support the API reference.</li>
 <li><strong>Lazy loading</strong>: new UI modules must be registered in <code>_submodules</code> of <code>ui/__init__.py</code> to benefit from faster startup.</li>

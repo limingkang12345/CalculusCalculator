@@ -25,7 +25,7 @@
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.1">
     
     
       
@@ -1230,6 +1230,62 @@
   
   
     <li class="md-nav__item">
+      <a href="../../api/modules/plotting/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    几何绘图
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/modules/saves/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    工程存档
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../api/modules/plane_geometry/" class="md-nav__link">
         
   
@@ -1322,6 +1378,34 @@
     
   
     立体几何计算
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/modules/expr_calculator/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    解几计算器
   
 
     
@@ -1475,7 +1559,8 @@
 ├── core/               # 与界面无关的底层支撑
 │   ├── sympify.py      # 字符串 → SymPy 表达式（统一输入标准）
 │   ├── render.py       # LaTeX → SVG 公式渲染（QGraphicsView）
-│   └── settings.py     # 语言、主题、引导标记等持久化设置
+│   ├── settings.py     # 语言、主题、引导标记等持久化设置
+│   └── webengine.py    # QWebEngine 惰性预初始化（首次打开积木编辑器/公式输入时拉起内核）
 ├── functions/          # 纯计算模块（不依赖 Qt）
 │   ├── derivative.py   # 求导
 │   ├── integral.py     # 积分
@@ -1486,22 +1571,29 @@
 │   ├── solids.py       # 立体几何
 │   ├── paint2D.py / paint3D.py  # 绘图
 │   └── saves.py        # 存档 / 读档
-├── ui/                 # PySide6 标签页界面
+├── ui/                 # PySide6 界面层
 │   ├── main.py         # 主窗口 MainWindow
 │   ├── __init__.py     # 选项卡登记表（懒加载）
-│   └── &lt;pinyin&gt;.py      # 各功能页（如 qiudao.py = 求导）
+│   ├── functions.py    # 功能集成页（定义区 / 计算区 / 绘图区）
+│   └── &lt;pinyin&gt;.py      # 其余功能页（如 shouye.py = 首页、shezhi.py = 设置）
 ├── math_input/         # 可视化公式输入（MathLive 编辑器）
 ├── blockly/            # 积木化可视化计算编辑器（v2.0.0）
+├── expr_calculator/    # 解几计算器：表达式画布（v2.2.0）
+│   ├── expr_tree.py    # 表达式树、LaTeX 打印器与 SymPy 互转（不依赖 Qt）
+│   └── expr_viewer.py  # 画布窗口、MathJax 页面与各操作对话框
 ├── i18n/               # 翻译源文件 .ts 与编译产物 .qm
 └── docs/               # 本帮助文档（mkdocs，zh / en 双语）
 </code></pre>
 <h2 id="_3">分层职责</h2>
 <ul>
-<li><strong>入口层 <code>run.py</code></strong>：设置 Qt 环境、预初始化 WebEngine、加载语言与主题、显示启动画面、构造主窗口，并在首次启动显示引导。</li>
+<li><strong>入口层 <code>run.py</code></strong>：设置 Qt 环境、加载语言、显示启动画面（带分阶段启动性能分析，<code>CALC_BOOT_PROFILE=0</code> 关闭）、构造主窗口，并在首次启动显示引导。QWebEngine 不再在启动阶段预初始化，改为首次打开积木编辑器或公式输入对话框时由 <code>core/webengine.py</code> 惰性拉起内核进程。</li>
 <li><strong>核心层 <code>core/</code></strong>：提供「输入解析」「公式渲染」「设置持久化」三组与界面无关的公共服务。所有功能页都依赖 <code>core.sympify</code> 解析输入、<code>core.render</code> 渲染结果。</li>
 <li><strong>计算层 <code>functions/</code></strong>：每个模块暴露纯函数（输入 SymPy 表达式 / 参数，输出 SymPy 对象或字符串），完全不依赖 Qt，可独立单元测试。</li>
-<li><strong>界面层 <code>ui/</code></strong>：每个功能对应一个 <code>QWidget</code> 子类（页面）。<code>ui/__init__.py</code> 维护「选项卡登记表」，通过 <code>lazy_loader</code> 懒加载，仅在创建对应标签页时才导入对应模块，加快启动。</li>
+<li><strong>界面层 <code>ui/</code></strong>：每个标签页对应一个 <code>QWidget</code> 子类。v2.1.0 起标签页缩减为 6 种（首页 / 帮助 / 设置 / 缓存区 / 积木编辑器 / 功能集成），原各独立功能标签页已并入功能集成页；v2.2.0 新增"解几计算器"标签页，共 7 种。<code>ui/__init__.py</code> 维护「选项卡登记表」，通过 <code>lazy_loader</code> 懒加载，仅在创建对应标签页时才导入对应模块，加快启动。</li>
 <li><strong>可视化输入 <code>math_input/</code> / <code>blockly/</code></strong>：分别提供结构化公式输入与积木化流程编辑，二者最终都转换为标准 SymPy 表达式后交由计算层处理。</li>
+<li><strong>解几计算器 <code>expr_calculator/</code></strong>：<code>expr_tree.py</code> 只做「SymPy ↔ 自定义表达式树 ↔ LaTeX」的转换，不依赖 Qt；<code>expr_viewer.py</code> 负责把表达式树渲染到 <code>QWebEngineView</code>（本地 MathJax），并通过 <code>QWebChannel</code> 把画布上的点击、拖拽、变形等操作回传 Python。<code>ui/expr.py</code> 仅做标签页包装，并转发 <code>retranslateUi</code> 以实现语言切换。</li>
+<li><strong>统一输入表</strong>：<code>ui/functions.py</code> 的定义区与计算区共用一套输入表引擎。每种类型由 <code>_Spec</code> 描述（<code>rows</code> 依当前取值给出「行标题 + 默认值 + 角色」），<code>_InputTable</code> 据此生成控件、按选择组合缓存取值并处理联动。平面 / 立体几何只是「带两个下拉框、参数行随创建方式变化」的一种规格，其创建方式表（<code>PLANE_GEOMETRY</code> / <code>SOLID_GEOMETRY</code>）直接对应 <code>functions/planes.py</code>、<code>functions/solids.py</code> 中的构造函数，新增创建方式只需在表中加一行。</li>
+<li><strong>绘图区</strong>：功能集成页的绘图区直接取用 <code>parent.pjs</code> / <code>parent.ljs</code> 中已定义的几何对象（或函数模式下取用 <code>parent.fs</code>），调用 <code>functions/paint2D.py</code>、<code>functions/paint3D.py</code> 生成图表并嵌入 matplotlib 画布与导航工具栏。</li>
 </ul>
 <h2 id="_4">数据流</h2>
 <pre><code>用户输入 → core.sympify.sympify() → SymPy 表达式

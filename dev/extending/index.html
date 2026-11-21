@@ -25,7 +25,7 @@
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.1">
     
     
       
@@ -1230,6 +1230,62 @@
   
   
     <li class="md-nav__item">
+      <a href="../../api/modules/plotting/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    几何绘图
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/modules/saves/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    工程存档
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../api/modules/plane_geometry/" class="md-nav__link">
         
   
@@ -1322,6 +1378,34 @@
     
   
     立体几何计算
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/modules/expr_calculator/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    解几计算器
   
 
     
@@ -1468,9 +1552,13 @@
 
 
 <h1 id="_1">新增功能选项卡</h1>
-<p>本程序所有功能都以「标签页」形式呈现。新增一个功能需要三步：创建页面类、登记到选项卡表、接入核心服务。</p>
+<p>本程序的标签页在 v2.1.0 后收敛为 6 种（首页 / 帮助 / 设置 / 缓存区 / 积木编辑器 / 功能集成），各类计算功能集中在功能集成页内以「类型 / 模式」形式扩展。若确需新增一个独立标签页，仍然遵循以下三步：创建页面类、登记到选项卡表、接入核心服务。</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>若新功能只是功能集成页的一种新「计算类型」或「定义类型」，优先扩展 <code>ui/functions.py</code> 中的 <code>CALC_FUNCTION_NAMES</code> / <code>DEF_TYPE_NAMES</code> 与对应执行分支，无需新增标签页。</p>
+</div>
 <h2 id="1">1. 创建页面模块</h2>
-<p>在 <code>ui/</code> 下新建一个文件，文件名用功能的中文拼音（与现有约定一致，如 <code>qiudao.py</code>、<code>jifen.py</code>）。定义一个继承自 <code>QWidget</code> 的页面类：</p>
+<p>在 <code>ui/</code> 下新建一个文件，文件名用功能的中文拼音（与现有约定一致，如 <code>shouye.py</code>、<code>shezhi.py</code>）。定义一个继承自 <code>QWidget</code> 的页面类：</p>
 <pre><code class="language-python"># ui/xin_gongneng.py
 from PySide6.QtWidgets import QWidget, QVBoxLayout, QPushButton, QLabel
 from PySide6.QtCore import QCoreApplication
@@ -1503,7 +1591,7 @@ class XinGongneng(QWidget):
 <p>编辑 <code>ui/__init__.py</code>，在 <code>_submodules</code>、<code>_tab_registry</code>、<code>tabs_dict</code> 三处同步添加（索引自增、保持唯一）：</p>
 <pre><code class="language-python">_submodules = [..., &quot;xin_gongneng&quot;]
 _tab_registry = [..., (&quot;xin_gongneng&quot;, &quot;XinGongneng&quot;)]
-tabs_dict = {..., &quot;新功能&quot;: 23}
+tabs_dict = {..., &quot;新功能&quot;: 6}
 </code></pre>
 <p><code>tabs_list</code> 是懒加载代理，无需改动。<code>run.py</code> 启动时会自动把新页加入标签页栏。</p>
 <h2 id="3">3. 接入核心服务</h2>

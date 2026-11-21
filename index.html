@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.1">
     
     
       
@@ -1226,6 +1226,62 @@
   
   
     <li class="md-nav__item">
+      <a href="api/modules/plotting/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    几何绘图
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="api/modules/saves/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    工程存档
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="api/modules/plane_geometry/" class="md-nav__link">
         
   
@@ -1318,6 +1374,34 @@
     
   
     立体几何计算
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="api/modules/expr_calculator/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    解几计算器
   
 
     
@@ -1464,11 +1548,13 @@
 
 
 <h1 id="calculuscalculator">CalculusCalculator 微积分计算器</h1>
-<p><strong>CalculusCalculator</strong> 是一个基于 SymPy 与 PySide6 的图形化微积分计算工具，覆盖求导、积分、函数性质分析、表达式变形、方程（组）与不等式（组）求解、微分方程、符号计算、向量运算、解三角形、函数绘图，以及平面 / 立体几何的定义、计算与绘图，并提供工程存档 / 读档、内置帮助文档、浅色 / 深色主题与中英文界面。v2.0.0 新增"积木编辑器"，可通过拼接积木完成可视化计算流程。</p>
+<p><strong>CalculusCalculator</strong> 是一个基于 SymPy 与 PySide6 的图形化微积分计算工具，覆盖求导、积分、函数性质分析、表达式变形、方程（组）与不等式（组）求解、微分方程、符号计算、向量运算、解三角形、函数绘图，以及平面 / 立体几何的定义、计算与绘图，并提供工程存档 / 读档、内置帮助文档、浅色 / 深色主题与中英文界面。v2.0.0 新增"积木编辑器"，可通过拼接积木完成可视化计算流程；v2.1.0 起全部计算功能整合进"功能集成"页（定义区 / 计算区 / 绘图区）；v2.2.0 新增"解几计算器"（表达式画布），可对公式做节点级的选中、变形与求解。</p>
 <p><a href="https://github.com/limingkang12345/CalculusCalculator">在 GitHub 上查看</a> · <a href="https://limingkang.pythonanywhere.com">网页版</a></p>
 <h2 id="_1">核心特性</h2>
 <ul>
 <li><strong>功能全面</strong>：微积分、代数、方程求解、几何计算一应俱全。</li>
+<li><strong>功能集成页</strong>：定义区 / 计算区 / 绘图区三区布局，一处完成定义、计算与绘图。</li>
+<li><strong>解几计算器</strong>（v2.2.0）：表达式画布，公式分层着色，任意子结构可点选、拖拽、变形、求解，常用方程还能按条件反推参数。</li>
 <li><strong>可视化界面</strong>：基于 PySide6 的多标签页界面，公式以 LaTeX 实时渲染。</li>
 <li><strong>自定义函数</strong>：可定义 <code>f(x)</code>、<code>g(t)</code>，并通过 <code>f(3)</code>、<code>f(g(2))</code> 形式调用。</li>
 <li><strong>分母有理化</strong>：含根号分母的结果自动有理化（如 <code>1/sqrt(2) → sqrt(2)/2</code>）。</li>
@@ -1496,7 +1582,7 @@
 <li>想参与开发 / 构建文档？看 <a href="dev/build_docs/">开发者文档</a>。</li>
 </ul>
 <h2 id="_4">许可证</h2>
-<p>本项目采用 GPL-v3 许可证。作者 LiMingkang。</p>
+<p>本项目采用 GPL-3.0 许可证。作者 LiMingkang。</p>
 
 
 

@@ -25,7 +25,7 @@
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.1">
     
     
       
@@ -502,7 +502,7 @@
   <a href="#_2" class="md-nav__link">
     <span class="md-ellipsis">
       
-        微积分
+        功能集成页
       
     </span>
   </a>
@@ -513,7 +513,7 @@
   <a href="#_3" class="md-nav__link">
     <span class="md-ellipsis">
       
-        方程与几何求解
+        微积分
       
     </span>
   </a>
@@ -524,7 +524,7 @@
   <a href="#_4" class="md-nav__link">
     <span class="md-ellipsis">
       
-        平面 / 立体几何
+        方程与几何求解
       
     </span>
   </a>
@@ -533,6 +533,17 @@
       
         <li class="md-nav__item">
   <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        平面 / 立体几何
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
     <span class="md-ellipsis">
       
         通用工具
@@ -1230,6 +1241,62 @@
   
   
     <li class="md-nav__item">
+      <a href="../../api/modules/plotting/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    几何绘图
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/modules/saves/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    工程存档
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../api/modules/plane_geometry/" class="md-nav__link">
         
   
@@ -1335,6 +1402,34 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/modules/expr_calculator/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    解几计算器
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -1407,7 +1502,7 @@
   <a href="#_2" class="md-nav__link">
     <span class="md-ellipsis">
       
-        微积分
+        功能集成页
       
     </span>
   </a>
@@ -1418,7 +1513,7 @@
   <a href="#_3" class="md-nav__link">
     <span class="md-ellipsis">
       
-        方程与几何求解
+        微积分
       
     </span>
   </a>
@@ -1429,7 +1524,7 @@
   <a href="#_4" class="md-nav__link">
     <span class="md-ellipsis">
       
-        平面 / 立体几何
+        方程与几何求解
       
     </span>
   </a>
@@ -1438,6 +1533,17 @@
       
         <li class="md-nav__item">
   <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        平面 / 立体几何
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
     <span class="md-ellipsis">
       
         通用工具
@@ -1468,32 +1574,41 @@
 
 
 <h1 id="_1">功能详解</h1>
-<p>CalculusCalculator 以标签页组织全部功能。下表按类别列出各功能及其说明，点击进入对应页面查看详细用法、输入示例与底层 API。</p>
-<h2 id="_2">微积分</h2>
+<p>自 v2.1.0 起，CalculusCalculator 将全部计算功能整合进<strong>功能集成</strong>页，另保留首页、帮助、设置、缓存区与积木编辑器共 6 种标签页；v2.2.0 起新增<strong>解几计算器</strong>（表达式画布），共 7 种标签页。</p>
+<h2 id="_2">功能集成页</h2>
+<p>页面自左向右分为三个区域，可拖动分割条调整宽度：</p>
+<ul>
+<li><strong>定义区</strong>：选择类型（函数 / 集合 / 向量 / 平面几何 / 立体几何）定义函数与对象，对象按类型分组显示在树状列表中。</li>
+<li><strong>计算区</strong>：选择计算类型（计算、求导、积分、解方程、解不等式、解方程组、解不等式组、平面计算、立体计算、变形、解三角形共 11 种）执行运算。</li>
+<li><strong>绘图区</strong>：选择模式（平面几何模式 / 立体几何模式 / 函数模式），勾选对象后点击"绘制or更新"生成图像。</li>
+</ul>
+<p>下表按类别列出各功能及其说明，点击进入对应页面查看详细用法、输入示例与底层 API。</p>
+<h2 id="_3">微积分</h2>
 <ul>
 <li><a href="../../api/modules/derivative/">求导</a>：单 / 多变量求导、高阶导数、偏导、全微分、隐函数求导。</li>
 <li><a href="../../api/modules/integral/">积分</a>：定积分、不定积分、二重积分。</li>
 <li><a href="../../api/modules/function_analysis/">函数性质分析</a>：值域、单调区间、奇偶性、周期性、最值。</li>
 <li><a href="../../api/modules/simplification/">表达式变形</a>：化简、展开、因式分解、通分等 13 种变换。</li>
 </ul>
-<h2 id="_3">方程与几何求解</h2>
+<h2 id="_4">方程与几何求解</h2>
 <ul>
 <li><a href="../../api/modules/solvers/">方程与不等式</a>：方程、方程组、不等式、不等式组、微分方程。</li>
 <li><a href="../../api/modules/triangle/">解三角形</a>：ASA / AAS / SAS / SSA / SSS 求解。</li>
 <li><a href="../../api/modules/vector/">向量运算</a>：定义二维向量，计算模、方向角、加减、点积、夹角。</li>
 <li><a href="../../api/modules/plot/">函数绘图</a>：Matplotlib 绘制函数图像，自动处理间断点。</li>
 </ul>
-<h2 id="_4">平面 / 立体几何</h2>
+<h2 id="_5">平面 / 立体几何</h2>
 <ul>
 <li><a href="../../api/modules/plane_geometry/">平面几何</a>：定义平面图形并计算面积、周长、角度、线段。</li>
 <li><a href="../../api/modules/solid_geometry/">立体几何</a>：定义立体并计算表面积、体积、角度。</li>
 <li><a href="../../api/modules/plane_calc/">平面几何计算</a>：多边形、圆等 32 种平面运算。</li>
 <li><a href="../../api/modules/solid_calc/">立体几何计算</a>：点、线、面、向量、四面体等 22 种立体运算。</li>
 </ul>
-<h2 id="_5">通用工具</h2>
+<h2 id="_6">通用工具</h2>
 <ul>
+<li><a href="../../api/modules/expr_calculator/">解几计算器</a>（v2.2.0）：表达式画布，节点级选中 / 拖拽 / 变形、常用方程条件反推、几何表达式、方程求解与联立、整画布撤销重做。</li>
 <li><a href="../../api/modules/calculation/">计算选项卡</a>：Python / Mpmath / SymPy / LaTeX 四种计算引擎。</li>
-<li><strong>积木编辑器</strong>（v2.0.0）：通过拼接积木实现计算流程的可视化，支持 Sympy / LaTeX 表达式、编辑器内直接执行、<strong>Python 代码预览（双模式）</strong>、定义函数 / 函数性质分析、求导 / 积分、解方程（组）/ 不等式（组）/ 解三角形、工程存档 / 读档。积木采用紧凑设计，默认隐藏冗余字段；点击积木左侧的"设置"齿轮按钮，可在弹出的面板中连接与本积木功能相关的高级选项积木（如变量、定义域、主元 / 换元等），从而启用对应的可连接参数。表达式积木仅用于输入文本，不包含"连接"输入。点击结果面板的"预览Python代码"可查看当前积木生成的 Python 代码（支持复制）；预览面板顶部下拉框可切换 <strong>原生 SymPy 代码</strong>（仅依赖 SymPy，复制后可在装有 SymPy 的解释器中直接运行）与 <strong>CalculusCalculator 库代码</strong>（运行按钮实际执行的代码），默认展示原生 SymPy 代码。详见<a href="../../about/">《关于》</a>。</li>
+<li><strong>积木编辑器</strong>（"功能 → 编辑器"打开）：通过拼接积木实现计算流程的可视化，支持 Sympy / LaTeX 表达式、编辑器内直接执行、<strong>Python 代码预览（双模式）</strong>、定义函数 / 函数性质分析、求导 / 积分、解方程（组）/ 不等式（组）/ 解三角形、工程存档 / 读档。积木采用紧凑设计，默认隐藏冗余字段；点击积木左侧的"设置"齿轮按钮，可在弹出的面板中连接与本积木功能相关的高级选项积木（如变量、定义域、主元 / 换元等），从而启用对应的可连接参数。表达式积木仅用于输入文本，不包含"连接"输入。点击结果面板的"预览Python代码"可查看当前积木生成的 Python 代码（支持复制）；预览面板顶部下拉框可切换 <strong>原生 SymPy 代码</strong>（仅依赖 SymPy，复制后可在装有 SymPy 的解释器中直接运行）与 <strong>CalculusCalculator 库代码</strong>（运行按钮实际执行的代码），默认展示原生 SymPy 代码。详见<a href="../../about/">《关于》</a>。</li>
 </ul>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>

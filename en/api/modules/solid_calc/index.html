@@ -14,7 +14,7 @@
         <link rel="prev" href="../plane_calc/">
       
       
-        <link rel="next" href="../../../about/">
+        <link rel="next" href="../expr_calculator/">
       
       
         
@@ -25,11 +25,11 @@
       
       
       <link rel="icon" href="../../../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.1">
     
     
       
-        <title>Solid Geometry Calculation - CalculusCalculator 帮助文档</title>
+        <title>Solid Geometry Calculation - CalculusCalculator Documentation</title>
       
     
     
@@ -96,7 +96,7 @@
 
 <header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="../../../" title="CalculusCalculator 帮助文档" class="md-header__button md-logo" aria-label="CalculusCalculator 帮助文档" data-md-component="logo">
+    <a href="../../../" title="CalculusCalculator Documentation" class="md-header__button md-logo" aria-label="CalculusCalculator Documentation" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -110,7 +110,7 @@
       <div class="md-header__ellipsis">
         <div class="md-header__topic">
           <span class="md-ellipsis">
-            CalculusCalculator 帮助文档
+            CalculusCalculator Documentation
           </span>
         </div>
         <div class="md-header__topic" data-md-component="header-topic">
@@ -244,13 +244,13 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../../../" title="CalculusCalculator 帮助文档" class="md-nav__button md-logo" aria-label="CalculusCalculator 帮助文档" data-md-component="logo">
+    <a href="../../../" title="CalculusCalculator Documentation" class="md-nav__button md-logo" aria-label="CalculusCalculator Documentation" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
 
     </a>
-    CalculusCalculator 帮助文档
+    CalculusCalculator Documentation
   </label>
   
     <div class="md-nav__source">
@@ -1141,6 +1141,62 @@
   
   
     <li class="md-nav__item">
+      <a href="../plotting/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Geometry Drawing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../saves/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Project Save & Load
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../plane_geometry/" class="md-nav__link">
         
   
@@ -1431,6 +1487,34 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../expr_calculator/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Expression Calculator
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -1661,7 +1745,7 @@
 <p><code>functions/solids.py</code> provides <strong>3D analytic geometry</strong> calculations (points, lines, planes, spatial vectors, tetrahedra, and the oblique projection / restoration of the "斜二测" axonometric drawing) as well as <strong>constructors</strong> for 3D objects (used by the definition page). Note: this module does <strong>not</strong> contain surface-area / volume formulas for spheres, cylinders, cones, prisms, pyramids, etc. — those are handled elsewhere by other feature pages. The public entry is <code>get_solids_result</code> (string interface); it also exports <strong>low-level helper functions</strong> that take sympy 3D geometry objects (<code>Point3D</code>, <code>Line3D</code>, <code>Plane</code>, ...) directly.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>For string-based calls use <code>get_solids_result</code>; the helpers below are for composing 3D geometry programmatically. The UI "Solid Geometry" definition page and the "Solid Geometry Calculation" page use the constructors / calculation functions of this module respectively.</p>
+<p>For string-based calls use <code>get_solids_result</code>; the helpers below are for composing 3D geometry programmatically. The UI All-in-One page uses the constructors / calculation functions of this module in the Define area ("Solid Geometry" type) and the Compute area ("Solid Compute" type) respectively.</p>
 </div>
 <h2 id="get_solids_result-unified-dispatch-string-interface">get_solids_result — unified dispatch (string interface)</h2>
 <p><strong>Purpose</strong>: call the matching 3D geometry computation by <code>op_index</code>; parameters are strings, parsed internally.</p>

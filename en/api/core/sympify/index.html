@@ -25,11 +25,11 @@
       
       
       <link rel="icon" href="../../../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.1">
     
     
       
-        <title>String Parsing - CalculusCalculator 帮助文档</title>
+        <title>String Parsing - CalculusCalculator Documentation</title>
       
     
     
@@ -96,7 +96,7 @@
 
 <header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="../../../" title="CalculusCalculator 帮助文档" class="md-header__button md-logo" aria-label="CalculusCalculator 帮助文档" data-md-component="logo">
+    <a href="../../../" title="CalculusCalculator Documentation" class="md-header__button md-logo" aria-label="CalculusCalculator Documentation" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -110,7 +110,7 @@
       <div class="md-header__ellipsis">
         <div class="md-header__topic">
           <span class="md-ellipsis">
-            CalculusCalculator 帮助文档
+            CalculusCalculator Documentation
           </span>
         </div>
         <div class="md-header__topic" data-md-component="header-topic">
@@ -244,13 +244,13 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../../../" title="CalculusCalculator 帮助文档" class="md-nav__button md-logo" aria-label="CalculusCalculator 帮助文档" data-md-component="logo">
+    <a href="../../../" title="CalculusCalculator Documentation" class="md-nav__button md-logo" aria-label="CalculusCalculator Documentation" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
 
     </a>
-    CalculusCalculator 帮助文档
+    CalculusCalculator Documentation
   </label>
   
     <div class="md-nav__source">
@@ -1276,6 +1276,62 @@
   
   
     <li class="md-nav__item">
+      <a href="../../modules/plotting/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Geometry Drawing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../modules/saves/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Project Save & Load
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../modules/plane_geometry/" class="md-nav__link">
         
   
@@ -1368,6 +1424,34 @@
     
   
     Solid Geometry Calculation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../modules/expr_calculator/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Expression Calculator
   
 
     
@@ -1723,8 +1807,8 @@ LaTeX parsing supports common mathematical symbols and structures; complex expre
 </table>
 <p><strong>FiniteSet use cases</strong></p>
 <ul>
-<li>Enter <code>FiniteSet(1,2,3)</code> in the <strong>function domain</strong> on the "Define" page to restrict the domain to the discrete point set {1,2,3}</li>
-<li>Enter <code>FiniteSet(0,1)</code> in the <strong>principal value range</strong> on the "Equation" page to restrict solving to roots only within this set</li>
+<li>Enter <code>FiniteSet(1,2,3)</code> in the <strong>function domain</strong> in the Define area of the All-in-One page (Function type) to restrict the domain to the discrete point set {1,2,3}</li>
+<li>Enter <code>FiniteSet(0,1)</code> in the <strong>principal value range</strong> in the Compute area of the All-in-One page (Equation type) to restrict solving to roots only within this set</li>
 <li>Combination: <code>Union(Interval(0,1), FiniteSet(2))</code> represents the union of [0,1] and point 2</li>
 </ul>
 <p><strong>ImageSet use cases</strong></p>
@@ -1734,7 +1818,7 @@ LaTeX parsing supports common mathematical symbols and structures; complex expre
 <li>Domain description: <code>ImageSet(Lambda(x, 2*x+1), Integers)</code> represents all odd numbers</li>
 </ul>
 <h2 id="function-input">4. Function Input Standard</h2>
-<p>For functions defined on the "Define" page, you can use them directly in most other input boxes:</p>
+<p>For functions defined in the Define area of the All-in-One page, you can use them directly in most other input boxes:</p>
 <ul>
 <li><strong>As a symbol in operations</strong>: having defined <code>g(x)=x**2</code>, input <code>g+1/g</code> yields <code>x**2 + 1/x**2</code></li>
 <li><strong>Pass arguments as function calls</strong>: having defined <code>f(x)=x**2</code>, input <code>f(3)</code> automatically computes <code>3**2=9</code>; nested calls such as <code>f(g(2))</code> are supported</li>

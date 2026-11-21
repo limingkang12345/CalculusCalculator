@@ -14,7 +14,7 @@
         <link rel="prev" href="../plane_calc/">
       
       
-        <link rel="next" href="../../../about/">
+        <link rel="next" href="../expr_calculator/">
       
       
         
@@ -25,7 +25,7 @@
       
       
       <link rel="icon" href="../../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.1">
     
     
       
@@ -1141,6 +1141,62 @@
   
   
     <li class="md-nav__item">
+      <a href="../plotting/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    几何绘图
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../saves/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    工程存档
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../plane_geometry/" class="md-nav__link">
         
   
@@ -1431,6 +1487,34 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../expr_calculator/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    解几计算器
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -1661,7 +1745,7 @@
 <p><code>functions/solids.py</code> 提供<strong>三维解析几何</strong>计算（点、直线、平面、空间向量、四面体，以及斜二测画法的投影与还原）。注意：本模块<strong>不包含</strong>球、圆柱、圆锥、棱柱、棱锥等立体的表面积 / 体积公式——这些由 UI 的「计算」等功能页以其他方式处理。对外主接口为 <code>get_solids_result</code>（字符串接口）；另导出一批<strong>底层辅助函数</strong>，直接接收 sympy 三维几何对象（<code>Point3D</code>、<code>Line3D</code>、<code>Plane</code> 等）。</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>若只想按字符串调用，请用 <code>get_solids_result</code>；下列辅助函数适用于编程组合三维几何对象的场景。UI 的「立体几何」定义页与「立体几何计算」页分别使用本模块的构造 / 计算函数。</p>
+<p>若只想按字符串调用，请用 <code>get_solids_result</code>；下列辅助函数适用于编程组合三维几何对象的场景。UI 的功能集成页在定义区（"立体几何"类型）与计算区（"立体计算"类型）分别使用本模块的构造 / 计算函数。</p>
 </div>
 <h2 id="get_solids_result">get_solids_result — 统一调度（字符串接口）</h2>
 <p><strong>作用</strong>：根据 <code>op_index</code> 调用对应的三维几何计算，参数为字符串，内部自动解析。</p>

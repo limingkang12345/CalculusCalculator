@@ -25,7 +25,7 @@
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.1">
     
     
       
@@ -1252,6 +1252,62 @@
   
   
     <li class="md-nav__item">
+      <a href="../../api/modules/plotting/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    几何绘图
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/modules/saves/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    工程存档
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../api/modules/plane_geometry/" class="md-nav__link">
         
   
@@ -1344,6 +1400,34 @@
     
   
     立体几何计算
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/modules/expr_calculator/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    解几计算器
   
 
     
@@ -1514,11 +1598,26 @@
 <h1 id="_1">文档与构建</h1>
 <p>本文档使用 <a href="https://www.mkdocs.org/">MkDocs</a> + Material 主题 + i18n 插件构建，源码即 <code>docs/</code> 目录。</p>
 <h2 id="_2">本地预览</h2>
-<pre><code class="language-bash">pip install mkdocs mkdocs-material &quot;mkdocs-static-i18n&quot;
+<pre><code class="language-bash">pip install &quot;mkdocs&gt;=1.6&quot; &quot;mkdocs-material&gt;=9.7,&lt;9.8&quot; &quot;mkdocs-static-i18n&gt;=1.0&quot;
 mkdocs serve        # 默认 http://127.0.0.1:8000，支持热更新
 </code></pre>
+<div class="admonition warning">
+<p class="admonition-title">版本要求</p>
+<ul>
+<li><strong>mkdocs-static-i18n 必须 ≥ 1.0</strong>。0.x 通过 <code>pkg_resources</code> 读取 material 的版本与语言列表，而 setuptools ≥ 81 已移除 <code>pkg_resources</code>，且 material 9.6 起把模板移到 <code>material/templates/partials/</code>，0.x 会判定“material 未安装”，结果 <strong>不生成语言切换器、<code>&lt;html lang&gt;</code> 不随语言变化</strong>，只剩中文单语站点。</li>
+<li>material 9.7.2+ 调整了插件依赖的内部接口，实测 9.7.1 最稳妥；升级 material 后请重新执行一次 <code>mkdocs build --strict</code> 确认切换器仍在。</li>
+</ul>
+</div>
 <h2 id="_3">构建静态站点</h2>
-<pre><code class="language-bash">mkdocs build        # 输出到 site/；--strict 可在断链 / 缺失翻译时报错
+<pre><code class="language-bash">mkdocs build --strict   # 输出到 site/；--strict 在断链 / 缺翻译 / 页面未登记 nav 时报错
+mkdocs gh-deploy        # 发布到 GitHub Pages
+</code></pre>
+<p>构建产物结构（默认语言 <code>zh</code> 在站点根目录）：</p>
+<pre><code>site/
+├── index.html          # 中文（默认语言）
+├── en/                 # 英文
+├── search/             # 双语共享搜索索引（按语言分别做词干处理）
+└── sitemap.xml
 </code></pre>
 <h2 id="_4">目录约定</h2>
 <pre><code>docs/
@@ -1528,11 +1627,12 @@ mkdocs serve        # 默认 http://127.0.0.1:8000，支持热更新
 </code></pre>
 <ul>
 <li>新增页面：在 <code>zh/</code> 与 <code>en/</code> 同步添加同名文件，并在 <code>mkdocs.yml</code> 的 <code>nav</code> 中登记。</li>
-<li>导航中文 → 英文的翻译在 <code>nav_translations</code> 中维护。</li>
+<li>导航中文 → 英文的翻译写在 <code>languages</code> 中 <code>locale: en</code> 的 <code>nav_translations</code> 下（1.x 起为<strong>每语言独立配置</strong>，不再是顶层 <code>nav_translations</code>）。</li>
+<li>英文站点的标题可在 <code>locale: en</code> 下用 <code>site_name</code> 单独覆盖。</li>
 </ul>
 <h2 id="_5">代码规范（贡献者参考）</h2>
 <ul>
-<li><strong>文件名</strong>：UI 功能页用中文拼音（如 <code>qiudao.py</code> = 求导）；<code>core/</code>、<code>functions/</code> 等库模块用英文。</li>
+<li><strong>文件名</strong>：UI 功能页用中文拼音（如 <code>shouye.py</code> = 首页、<code>shezhi.py</code> = 设置）；<code>core/</code>、<code>functions/</code> 等库模块用英文。</li>
 <li><strong>分层</strong>：计算逻辑放 <code>functions/</code>（纯函数，禁依赖 Qt）；界面放 <code>ui/</code>；公共服务放 <code>core/</code>。</li>
 <li><strong>文档字符串</strong>：公共函数 / 类应有 docstring，便于生成 API 参考。</li>
 <li><strong>懒加载</strong>：新增 UI 模块必须登记到 <code>ui/__init__.py</code> 的 <code>_submodules</code>，享受启动加速。</li>

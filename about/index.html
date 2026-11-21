@@ -11,7 +11,7 @@
         <link rel="canonical" href="https://limingkang12345.github.io/CalculusCalculator/about/">
       
       
-        <link rel="prev" href="../api/modules/solid_calc/">
+        <link rel="prev" href="../api/modules/expr_calculator/">
       
       
       
@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.1">
     
     
       
@@ -1135,6 +1135,62 @@
   
   
     <li class="md-nav__item">
+      <a href="../api/modules/plotting/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    几何绘图
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/modules/saves/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    工程存档
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../api/modules/plane_geometry/" class="md-nav__link">
         
   
@@ -1227,6 +1283,34 @@
     
   
     立体几何计算
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/modules/expr_calculator/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    解几计算器
   
 
     
@@ -1343,6 +1427,28 @@
   
     <nav class="md-nav" aria-label="版本历史">
       <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#v220" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        v2.2.0
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#v210" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        v2.1.0
+      
+    </span>
+  </a>
+  
+</li>
         
           <li class="md-nav__item">
   <a href="#v200" class="md-nav__link">
@@ -1605,6 +1711,28 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#v220" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        v2.2.0
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#v210" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        v2.1.0
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#v200" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1836,6 +1964,22 @@
 <li><strong>核心库</strong>：SymPy（符号计算）、PySide6（GUI）、Matplotlib（绘图）、PyQtDarkTheme-fork（主题）、latex2sympy2（LaTeX 解析）、pyqt5-math-widget（可视化公式输入）</li>
 </ul>
 <h2 id="_3">版本历史</h2>
+<h3 id="v220">v2.2.0</h3>
+<ul>
+<li>新增"解几计算器"标签页（表达式画布，<code>expr_calculator/</code>）：SymPy 表达式转自定义表达式树并按深度分层着色，节点可选中、拖拽与变形</li>
+<li>"变"对话框提供 8 种 SymPy 变形与 9 种节点操作（含换元），结果可覆盖原表达式或保存为副本</li>
+<li>支持方程求解、方程联立（直接求解 / 韦达定理）、表达式组合，以及常用方程（圆/直线/椭圆/双曲线/抛物线，可按条件反推参数）与几何表达式（距离 / 交点 / 中点 / 面积）</li>
+<li>卡片支持移动、复制、删除、折叠与标题，右侧属性区显示表达式、变量与取值范围，整张画布支持撤销 / 重做</li>
+<li>解几计算器界面完成中英文双语支持（翻译上下文 <code>expr_calculator</code>），切换语言后画布即时刷新并保留全部卡片</li>
+<li>README、内置帮助与文档站同步补充解几计算器章节</li>
+</ul>
+<h3 id="v210">v2.1.0</h3>
+<ul>
+<li>删除 18 个独立功能标签页（定义函数、定义向量、定义平面几何、定义立体几何、代数式计算、代数式变形、平面几何计算、立体几何计算、解三角形、解方程、解不等式、解方程组、解不等式组、函数绘图、平面几何绘图、立体几何绘图、求导、积分），全部功能整合进"功能集成"页（定义区 / 计算区 / 绘图区）</li>
+<li>"积木模式"菜单移入"功能"菜单（"功能 → 编辑器"）</li>
+<li>启动流程优化：QWebEngine 内核改为首次打开积木编辑器或公式输入时惰性初始化；启动画面替换为轻量自绘实现（QSplashScreen.show() 在 Windows 上约 1.4s，新实现约 0.5s）；初始化阶段跳过公式渲染视图的冗余刷新；新增分阶段启动性能分析（<code>CALC_BOOT_PROFILE=0</code> 关闭）</li>
+<li>读取旧版本存档时自动跳过已移除的独立标签页，不影响其余内容恢复</li>
+</ul>
 <h3 id="v200">v2.0.0</h3>
 <ul>
 <li>新增"积木化"功能：通过拼接积木实现计算流程的可视化，支持 Sympy/Latex 表达式输入、编辑器内直接执行流程、输出公式自动渲染、定义函数/函数性质分析、求导/积分、解方程(组)/不等式(组)/解三角形、工程存档/读档</li>
@@ -1933,7 +2077,7 @@
 <li>网页版受 PythonAnywhere 资源限制，难以处理超大计算任务。</li>
 </ul>
 <h2 id="_5">许可证</h2>
-<p>本项目采用 <a href="https://opensource.org/licenses/MIT">MIT 许可证</a>。</p>
+<p>本项目采用 <a href="https://opensource.org/license/gpl-3.0">GPL-3.0 许可证</a>。</p>
 <h2 id="_6">作者</h2>
 <p>LiMingkang — GitHub: <a href="https://github.com/limingkang12345">limingkang12345</a></p>
 

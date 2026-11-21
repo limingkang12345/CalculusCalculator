@@ -25,11 +25,11 @@
       
       
       <link rel="icon" href="../../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.1">
     
     
       
-        <title>Internationalization - CalculusCalculator 帮助文档</title>
+        <title>Internationalization - CalculusCalculator Documentation</title>
       
     
     
@@ -96,7 +96,7 @@
 
 <header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="../../" title="CalculusCalculator 帮助文档" class="md-header__button md-logo" aria-label="CalculusCalculator 帮助文档" data-md-component="logo">
+    <a href="../../" title="CalculusCalculator Documentation" class="md-header__button md-logo" aria-label="CalculusCalculator Documentation" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -110,7 +110,7 @@
       <div class="md-header__ellipsis">
         <div class="md-header__topic">
           <span class="md-ellipsis">
-            CalculusCalculator 帮助文档
+            CalculusCalculator Documentation
           </span>
         </div>
         <div class="md-header__topic" data-md-component="header-topic">
@@ -244,13 +244,13 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../../" title="CalculusCalculator 帮助文档" class="md-nav__button md-logo" aria-label="CalculusCalculator 帮助文档" data-md-component="logo">
+    <a href="../../" title="CalculusCalculator Documentation" class="md-nav__button md-logo" aria-label="CalculusCalculator Documentation" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
 
     </a>
-    CalculusCalculator 帮助文档
+    CalculusCalculator Documentation
   </label>
   
     <div class="md-nav__source">
@@ -646,6 +646,17 @@
     <span class="md-ellipsis">
       
         Internationalization in code
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-the-expression-calculator-is-handled" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How the Expression Calculator is handled
       
     </span>
   </a>
@@ -1208,6 +1219,62 @@
   
   
     <li class="md-nav__item">
+      <a href="../../api/modules/plotting/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Geometry Drawing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/modules/saves/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Project Save & Load
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../api/modules/plane_geometry/" class="md-nav__link">
         
   
@@ -1313,6 +1380,34 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/modules/expr_calculator/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Expression Calculator
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -1393,6 +1488,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#how-the-expression-calculator-is-handled" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How the Expression Calculator is handled
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#internationalization-in-docs" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1432,6 +1538,35 @@
 <li><strong>Compiling to <code>.qm</code></strong>: use <code>lrelease</code> to compile <code>.ts</code> into binary <code>.qm</code> files. At runtime <code>core.settings.apply_language()</code> loads the matching <code>.qm</code> and calls <code>installTranslator</code>.</li>
 <li><strong>Chinese as the source language</strong>: when the language is <code>zh_CN</code> the translator is uninstalled and the Chinese strings in source code are shown directly.</li>
 </ul>
+<h2 id="how-the-expression-calculator-is-handled">How the Expression Calculator is handled</h2>
+<p>The interface of the Expression Calculator (<code>expr_calculator/</code>) has three parts, each translated differently:</p>
+<table>
+<thead>
+<tr>
+<th>Part</th>
+<th>Approach</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Qt widgets (toolbar, dialogs, status bar)</td>
+<td>the module-local <code>_t(text)</code> (i.e. <code>QCoreApplication.translate("expr_calculator", text)</code>); the translation context is always <code>expr_calculator</code></td>
+</tr>
+<tr>
+<td>Text in constant tables (common equations, conditions, geometric quantities, transforms)</td>
+<td>constant values are marked with <code>QT_TRANSLATE_NOOP("expr_calculator", text)</code> for extraction, and <strong>translated with <code>_t()</code> only when displayed</strong>, so switching to English never changes the Chinese keys used internally by the logic</td>
+</tr>
+<tr>
+<td>HTML/JS page (canvas buttons, tooltips, empty-canvas hint)</td>
+<td>text in the page template becomes <code>@@TOKEN@@</code> placeholders plus a JSON blob injected as <code>window.__I18N__</code>; <code>page_html()</code> fills in the translations when the page is generated</td>
+</tr>
+</tbody>
+</table>
+<p>On a language switch, <code>ui/main.py</code> calls the tab's <code>retranslateUi(widget)</code>; <code>ui/expr.py</code> forwards it to <code>MainWindow.retranslate()</code>, which refreshes the Qt widgets and reloads the page, after which <code>_on_page_loaded()</code> rebuilds the existing cards with their positions, titles, notes and folded state.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The page templates (<code>PAGE</code> / <code>DIALOG_PAGE</code>) stay module-level string constants, but they <strong>must not be passed to <code>setHtml</code> directly</strong> — always run them through <code>page_html()</code>, otherwise the <code>@@…@@</code> placeholders would be displayed verbatim.</p>
+</div>
 <div class="admonition example">
 <p class="admonition-title">Example</p>
 <p>When adding a page, in the constructor:
@@ -1443,7 +1578,7 @@ Then fill in the English translation in the corresponding <code>&lt;message&gt;<
 <ul>
 <li>Docs are split into two independent folders <code>docs/zh/</code> (default) and <code>docs/en/</code> with identical structure.</li>
 <li><code>mkdocs.yml</code> uses the <code>i18n</code> plugin (<code>docs_structure: folder</code>) and builds a site per language based on the <code>zh</code> / <code>en</code> subfolder name.</li>
-<li>Chinese navigation labels are mapped to English through <code>nav_translations</code>, so the navigation does not need to be duplicated under <code>en/</code>.</li>
+<li>Chinese navigation labels are mapped to English through <code>nav_translations</code> (declared under the <code>locale: en</code> entry of <code>mkdocs.yml</code>), so the navigation does not need to be duplicated under <code>en/</code>.</li>
 <li>When adding a doc page, always create it in both <code>zh/</code> and <code>en/</code> with the same filename and relative path.</li>
 </ul>
 <div class="admonition warning">

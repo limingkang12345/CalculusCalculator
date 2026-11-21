@@ -25,7 +25,7 @@
       
       
       <link rel="icon" href="../../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.1">
     
     
       
@@ -1141,6 +1141,62 @@
   
   
     <li class="md-nav__item">
+      <a href="../plotting/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    几何绘图
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../saves/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    工程存档
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../plane_geometry/" class="md-nav__link">
         
   
@@ -1420,6 +1476,34 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../expr_calculator/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    解几计算器
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -1639,7 +1723,7 @@
 <p><code>functions/planes.py</code> 提供平面几何计算（点、线、圆、三角形、多边形、向量及几何变换）与平面几何对象的<strong>构造</strong>（定义页面使用）。对外主接口为 <code>get_planes_result</code>，参数以<strong>字符串</strong>传入；除此之外还导出一批<strong>底层辅助函数</strong>，它们直接接收 sympy 几何对象（如 <code>Point</code>、<code>Line</code>、<code>Circle</code>、<code>Triangle</code>、<code>Polygon</code>），返回 <code>radsimp</code> 化简后的表达式或坐标元组。</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>若只想按字符串调用，请用 <code>get_planes_result</code>；下列辅助函数适用于需要编程组合几何对象的场景。UI 的「平面几何」定义页与「平面几何计算」页分别使用本模块的构造 / 计算函数。</p>
+<p>若只想按字符串调用，请用 <code>get_planes_result</code>；下列辅助函数适用于需要编程组合几何对象的场景。UI 的功能集成页在定义区（"平面几何"类型）与计算区（"平面计算"类型）分别使用本模块的构造 / 计算函数。</p>
 </div>
 <h2 id="get_planes_result">get_planes_result — 统一调度（字符串接口）</h2>
 <p><strong>作用</strong>：根据 <code>op_index</code> 调用对应的底层几何计算，参数为字符串，内部自动解析。</p>
