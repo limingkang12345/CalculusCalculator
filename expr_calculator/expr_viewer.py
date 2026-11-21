@@ -11,7 +11,7 @@ from functools import partial
 import sympy
 from pathlib import Path
 
-from PySide6.QtCore import QCoreApplication, QObject, Qt, QTimer, QUrl, Signal, Slot
+from PySide6.QtCore import QCoreApplication, QObject, QT_TRANSLATE_NOOP, Qt, QTimer, QUrl, Signal, Slot
 from PySide6.QtGui import QAction, QFont, QIcon, QKeySequence, QShortcut
 from PySide6.QtWidgets import (
     QApplication,
@@ -47,8 +47,228 @@ from expr_calculator.expr_tree import Add, Div, Eq, Expr, Integer, LatexPrinter,
 BASE_DIR = Path(__file__).resolve().parent
 MATHJAX_FILE = BASE_DIR.parent / "mathjax" / "es5" / "tex-svg.js"
 
+CTX = "expr_calculator"
+
+
+def _t(text: str) -> str:
+    return QCoreApplication.translate(CTX, text)
+
+
+def _html_text(text: str) -> str:
+    return "<br>".join(html_lib.escape(line) for line in text.split("\n"))
+
+
+def _css_text(text: str) -> str:
+    return text.replace("\\", "\\\\").replace('"', '\\"')
+
+
+_THEME_CSS = """
+  :root {
+    --bg: #ffffff; --grid: #e6e9ee;
+    --card-bg: #ffffff; --card-border: #e5e7eb;
+    --card-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    --card-shadow-drag: 0 10px 28px rgba(0, 0, 0, 0.16);
+    --ink: #1f2328; --muted: #57606a; --hint: #8c959f; --placeholder: #c8ccd1;
+    --btn-bg: #f6f8fa; --btn-border: #d0d7de;
+    --btn-hover-bg: #eaeef2; --btn-hover-ink: #24292f;
+    --accent: #0969da; --accent-soft: rgba(9, 105, 218, 0.22);
+    --danger: #cf222e; --danger-bg: #fff5f5;
+    --note-bg: rgba(246, 248, 250, 0.94); --toolbar-bg: rgba(255, 255, 255, 0.94);
+    --collapsed-bg: #fbfcfd; --handle-bg: #ffffff;
+    --badge-bg: #24292f; --badge-ink: #ffffff; --badge-ink-on-accent: #ffffff;
+    --hover-fill: #000000;
+    --scroll-thumb: #c3c8cf; --scroll-thumb-hover: #a2a8b0;
+    --l0: #e53935; --l1: #2e7d32; --l2: #1565c0; --l3: #6a1b9a;
+  }
+  body.dark {
+    --bg: #1e1e1e; --grid: #2f2f2f;
+    --card-bg: #2d2d2d; --card-border: #3d3d3d;
+    --card-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+    --card-shadow-drag: 0 10px 28px rgba(0, 0, 0, 0.65);
+    --ink: #e6e6e6; --muted: #a8a8a8; --hint: #8a8a8a; --placeholder: #6b6b6b;
+    --btn-bg: #333333; --btn-border: #555555;
+    --btn-hover-bg: #3d3d3d; --btn-hover-ink: #ffffff;
+    --accent: #6d9dc3; --accent-soft: rgba(109, 157, 195, 0.35);
+    --danger: #ff7b72; --danger-bg: #3a2020;
+    --note-bg: rgba(45, 45, 45, 0.94); --toolbar-bg: rgba(45, 45, 45, 0.94);
+    --collapsed-bg: #262626; --handle-bg: #2d2d2d;
+    --badge-bg: #6d9dc3; --badge-ink: #1e1e1e; --badge-ink-on-accent: #1e1e1e;
+    --hover-fill: #ffffff;
+    --scroll-thumb: #4a4a4a; --scroll-thumb-hover: #5f5f5f;
+    --l0: #ef5350; --l1: #66bb6a; --l2: #42a5f5; --l3: #ab47bc;
+  }
+  ::-webkit-scrollbar {width: 10px; height: 10px;}
+  ::-webkit-scrollbar-track {background: transparent;}
+  ::-webkit-scrollbar-corner {background: transparent;}
+"""
+
+_QSS = """
+QWidget {background: @bg@; color: @ink@; font-size: 14px;}
+QLabel#hint {color: @muted@;}
+QLabel#count {color: @muted@; font-size: 12px;}
+QLineEdit {
+    border: 1px solid @input-border@; border-radius: 6px;
+    padding: 7px 10px; font-size: 15px;
+    background: @input-bg@; color: @ink@;
+    selection-background-color: @selection@; selection-color: @ink@;
+}
+QLineEdit:focus {border-color: @accent@;}
+QPlainTextEdit#detail {
+    border: 1px solid @input-border@; border-radius: 6px;
+    background: @detail-bg@; color: @detail-ink@;
+    font-family: Consolas, "Courier New", monospace;
+    font-size: 12px; padding: 4px 6px;
+}
+QLabel#selection {color: @muted@; font-size: 13px;}
+QLabel#status {color: @danger@; font-size: 13px;}
+QPushButton#history {
+    border: 1px solid @btn-border@; border-radius: 6px;
+    padding: 2px 12px; background: @btn-bg@; color: @btn-ink@;
+    font-size: 12px;
+}
+QPushButton#history:hover {background: @btn-hover@;}
+QPushButton#history:pressed {background: @btn-pressed@;}
+QPushButton#history:disabled {color: @disabled@; background: @bg@;}
+QPushButton#equation, QPushButton#geometry {
+    border: 1px solid @btn-border@; border-radius: 6px;
+    padding: 2px 12px; background: @bg@; color: @accent@;
+    font-size: 12px;
+}
+QPushButton#equation:hover, QPushButton#geometry:hover {background: @btn-bg@;}
+QPushButton#equation:pressed, QPushButton#geometry:pressed {background: @btn-pressed@;}
+QWidget#properties {
+    background: @panel-bg@;
+    border-left: 1px solid @panel-border@;
+}
+QWidget#properties QLabel {background: transparent;}
+QLabel#propertiesTitle {color: @ink@; font-size: 13px;}
+QLabel#propertiesBody {color: @ink@; font-size: 12px;}
+QSplitter::handle {background: @splitter@;}
+QSplitter::handle:horizontal {width: 4px;}
+QPushButton#add {
+    border: none; border-radius: 6px; background: @accent@;
+    color: @add-ink@; font-size: 14px; padding: 0 20px;
+}
+QPushButton#add:hover {background: @accent-hover@;}
+QPushButton#add:pressed {background: @accent-pressed@;}
+"""
+
+_PALETTES = {
+    "light": {
+        "bg": "#ffffff", "panel-bg": "#fbfcfd", "panel-border": "#e5e7eb",
+        "ink": "#1f2328", "muted": "#57606a",
+        "input-bg": "#ffffff", "input-border": "#d0d7de", "selection": "#b6e3ff",
+        "detail-bg": "#f6f8fa", "detail-ink": "#24292f",
+        "danger": "#cf222e", "disabled": "#8c959f",
+        "accent": "#0969da", "accent-hover": "#0860c4", "accent-pressed": "#0757b0",
+        "add-ink": "#ffffff", "splitter": "#e5e7eb",
+        "btn-bg": "#f6f8fa", "btn-hover": "#eaeef2", "btn-pressed": "#dfe3e6",
+        "btn-border": "#d0d7de", "btn-ink": "#24292f",
+        "checked-bg": "#ddf4ff", "checked-ink": "#0969da", "op-disabled": "#8c959f",
+        "hint-ink": "#57606a",
+    },
+    "dark": {
+        "bg": "#1e1e1e", "panel-bg": "#262626", "panel-border": "#333333",
+        "ink": "#e6e6e6", "muted": "#a8a8a8",
+        "input-bg": "#3c3c3c", "input-border": "#555555", "selection": "#2a4a66",
+        "detail-bg": "#262626", "detail-ink": "#e6e6e6",
+        "danger": "#ff7b72", "disabled": "#6b6b6b",
+        "accent": "#6d9dc3", "accent-hover": "#82a9c8", "accent-pressed": "#5c8bb0",
+        "add-ink": "#1e1e1e", "splitter": "#333333",
+        "btn-bg": "#333333", "btn-hover": "#3d3d3d", "btn-pressed": "#454545",
+        "btn-border": "#555555", "btn-ink": "#e6e6e6",
+        "checked-bg": "#24384a", "checked-ink": "#9fc4e0", "op-disabled": "#6b6b6b",
+        "hint-ink": "#a8a8a8",
+    },
+}
+
+
+def _normalize_theme(theme=None) -> str:
+    if theme in ("light", "dark"):
+        return theme
+    try:
+        from core.settings import current_theme
+        theme = current_theme()
+    except Exception:
+        theme = "light"
+    return "dark" if theme == "dark" else "light"
+
+
+def _qss(template: str, theme=None) -> str:
+    palette = _PALETTES[_normalize_theme(theme)]
+    out = template
+    for key, value in palette.items():
+        out = out.replace("@" + key + "@", value)
+    return out
+
+
+_DARK_NODE_COLORS = {
+    "#e53935": "#ef5350",
+    "#2e7d32": "#66bb6a",
+    "#1565c0": "#42a5f5",
+    "#6a1b9a": "#ab47bc",
+}
+
+
+def _display_color(color: str, theme=None) -> str:
+    if _normalize_theme(theme) != "dark":
+        return color
+    return _DARK_NODE_COLORS.get(str(color).lower(), color)
+
+
+
+def _page_texts() -> dict:
+    return {
+        "empty_hint": _t("在上方输入表达式，按回车或点击“添加”\n可向画布添加多个表达式；拖拽左上角红圈移动。"),
+        "size_label": _t("字号"),
+        "node_handle_title": _t("拖拽选中节点"),
+        "transform_title": _t("变形选中节点"),
+        "transform_text": _t("变"),
+        "title_placeholder": _t("双击设置标题"),
+        "swap": _t("⇄ 交换"),
+        "expand": _t("⤢ 展开"),
+        "node": _t("节点"),
+        "node_layer": _t("{type} · 第 {depth} 层"),
+        "drag_handle": _t("拖拽移动（第 0 层）"),
+        "edit_title": _t("双击编辑标题"),
+        "copy": _t("复制"),
+        "copy_title": _t("复制这张卡片"),
+        "delete": _t("删除"),
+        "delete_title": _t("删除这张卡片"),
+        "collapse": _t("折叠"),
+        "collapse_title": _t("折叠或展开这张卡片"),
+        "expand_card": _t("展开"),
+        "collapse_card": _t("折叠"),
+    }
+
+
+def _page_language() -> str:
+    try:
+        from core.settings import current_language
+        lang = current_language()
+    except Exception:
+        lang = "zh_CN"
+    return "en" if str(lang).lower().startswith("en") else "zh-CN"
+
+
+def page_html(template: str, theme=None) -> str:
+    texts = _page_texts()
+    theme = _normalize_theme(theme)
+    page = template.replace("@@THEME_CSS@@", _THEME_CSS)
+    page = page.replace("@@BODY_CLASS@@", "dark" if theme == "dark" else "")
+    page = page.replace("@@COLOR_SCHEME@@", theme)
+    page = page.replace("@@LANG@@", _page_language())
+    page = page.replace("@@TITLE_PLACEHOLDER@@", _css_text(texts["title_placeholder"]))
+    page = page.replace("@@EMPTY_HINT@@", _html_text(texts["empty_hint"]))
+    page = page.replace("@@SIZE_LABEL@@", html_lib.escape(texts["size_label"]))
+    page = page.replace("@@NODE_HANDLE_TITLE@@", html_lib.escape(texts["node_handle_title"]))
+    page = page.replace("@@TRANSFORM_TITLE@@", html_lib.escape(texts["transform_title"]))
+    page = page.replace("@@TRANSFORM_TEXT@@", html_lib.escape(texts["transform_text"]))
+    return page.replace("@@I18N@@", json.dumps(texts, ensure_ascii=False))
+
+
 PAGE = """<!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="@@LANG@@" style="color-scheme: @@COLOR_SCHEME@@">
 <head>
 <meta charset="utf-8">
 <script>window.MathJax = {
@@ -59,49 +279,55 @@ PAGE = """<!DOCTYPE html>
 <script src="../mathjax/es5/tex-svg.js"></script>
 <script src="qrc:///qtwebchannel/qwebchannel.js"></script>
 <style>
-  html, body {margin: 0; padding: 0; height: 100%; background: #ffffff; overflow: hidden;}
+  @@THEME_CSS@@
+  html, body {margin: 0; padding: 0; height: 100%; background: var(--bg); overflow: hidden;}
   #canvas-wrap {
     position: absolute; inset: 0; overflow: auto; padding: 16px;
     box-sizing: border-box;
   }
+  #canvas-wrap::-webkit-scrollbar {width: 10px; height: 10px;}
+  #canvas-wrap::-webkit-scrollbar-thumb {
+    background: #c3c8cf; border-radius: 5px;
+  }
+  #canvas-wrap::-webkit-scrollbar-thumb:hover {background: #a2a8b0;}
   #canvas {
     position: relative; width: 2200px; height: 1400px;
     font-size: 42px;
-    background-image: radial-gradient(#e6e9ee 1px, transparent 1px);
+    background-image: radial-gradient(var(--grid) 1px, transparent 1px);
     background-size: 24px 24px;
   }
   #empty-hint {
-    position: absolute; left: 40px; top: 40px; color: #8c959f;
+    position: absolute; left: 40px; top: 40px; color: var(--hint);
     font: 14px/1.9 "Microsoft YaHei", sans-serif; pointer-events: none;
   }
   .math-item {
     position: absolute; box-sizing: border-box;
-    padding: 16px 22px 34px; background: #ffffff;
-    border: 1px solid #e5e7eb; border-radius: 12px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    padding: 16px 22px 34px; background: var(--card-bg);
+    border: 1px solid var(--card-border); border-radius: 12px;
+    box-shadow: var(--card-shadow);
   }
   .math-item.dragging {
-    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.16);
-    border-color: #afb8c1;
+    box-shadow: var(--card-shadow-drag);
+    border-color: var(--muted);
   }
   .math-item.collision {
-    border-color: #cf222e; background: #fff5f5;
+    border-color: var(--danger); background: var(--danger-bg);
   }
   .drag-handle {
     position: absolute; left: -11px; top: -11px;
     width: 24px; height: 24px; border-radius: 50%;
-    border: 1.5px solid #e53935; background: #ffffff; color: #e53935;
+    border: 1.5px solid var(--l0); background: var(--handle-bg); color: var(--l0);
     display: flex; align-items: center; justify-content: center;
     font-size: 14px; line-height: 1; cursor: grab; user-select: none;
     z-index: 10; opacity: 0.7;
   }
-  .drag-handle:hover {opacity: 1; background: #fff5f5;}
+  .drag-handle:hover {opacity: 1; background: var(--danger-bg);}
   .math-item.dragging .drag-handle {cursor: grabbing;}
   .card-note {
     position: absolute; right: 10px; top: 8px; z-index: 11;
     padding: 1px 7px; border-radius: 999px;
-    background: rgba(246, 248, 250, 0.94); border: 1px solid #e5e7eb;
-    color: #57606a; font: 11px/1.6 "Microsoft YaHei", sans-serif;
+    background: var(--note-bg); border: 1px solid var(--card-border);
+    color: var(--muted); font: 11px/1.6 "Microsoft YaHei", sans-serif;
     pointer-events: none; white-space: nowrap;
   }
   .card-actions {
@@ -109,32 +335,33 @@ PAGE = """<!DOCTYPE html>
     display: flex; gap: 4px;
   }
   .card-button {
-    border: 1px solid #d0d7de; border-radius: 5px;
-    background: #f6f8fa; color: #57606a;
+    border: 1px solid var(--btn-border); border-radius: 5px;
+    background: var(--btn-bg); color: var(--muted);
     font: 11px/1.4 "Microsoft YaHei", sans-serif;
     padding: 2px 7px; cursor: pointer; user-select: none;
     white-space: nowrap;
   }
-  .card-button:hover {background: #eaeef2; color: #24292f;}
-  .card-button.delete:hover {background: #ffebe9; border-color: #cf222e; color: #cf222e;}
+  .card-button:hover {background: var(--btn-hover-bg); color: var(--btn-hover-ink);}
+  .card-button.delete:hover {background: var(--danger-bg); border-color: var(--danger); color: var(--danger);}
   .math-item.selected {
-    border-color: #0969da;
-    box-shadow: 0 0 0 2px rgba(9, 105, 218, 0.22), 0 1px 3px rgba(0, 0, 0, 0.06);
+    border-color: var(--accent);
+    box-shadow: 0 0 0 2px var(--accent-soft), var(--card-shadow);
   }
   .card-title {
-    font: 11px/1.4 "Microsoft YaHei", sans-serif; color: #57606a;
+    font: 11px/1.4 "Microsoft YaHei", sans-serif; color: var(--muted);
     margin: 0 0 5px; max-width: 240px; white-space: nowrap;
     overflow: hidden; text-overflow: ellipsis; cursor: text;
   }
-  .card-title:empty::before {content: "双击设置标题"; color: #c8ccd1;}
+  .card-title:empty::before {content: "@@TITLE_PLACEHOLDER@@"; color: var(--placeholder);}
   .title-input {
-    font: 11px "Microsoft YaHei", sans-serif; color: #1f2328;
-    border: 1px solid #0969da; border-radius: 4px;
+    font: 11px "Microsoft YaHei", sans-serif; color: var(--ink);
+    border: 1px solid var(--accent); border-radius: 4px;
+    background: var(--card-bg);
     padding: 0 4px; width: 150px; outline: none;
   }
   .math-item.collapsed {
     padding: 6px 12px; border-radius: 8px; box-shadow: none;
-    background: #fbfcfd; font-size: 0.66em;
+    background: var(--collapsed-bg); font-size: 0.66em;
   }
   .math-item.collapsed .card-title {
     display: inline; margin: 0 10px 0 0; font-size: 10px;
@@ -142,7 +369,7 @@ PAGE = """<!DOCTYPE html>
   }
   .math-item.collapsed .card-title:empty::before {content: none;}
   .math-item.collapsed .item-content {
-    position: relative; display: inline-block; color: #1f2328;
+    position: relative; display: inline-block; color: var(--ink);
     vertical-align: middle;
   }
   .math-item.collapsed .drag-handle {
@@ -151,7 +378,7 @@ PAGE = """<!DOCTYPE html>
   }
   .math-item.collapsed .card-note {
     position: static; display: inline-block; margin-left: 8px;
-    vertical-align: middle; font-size: 10px; border-color: #e5e7eb;
+    vertical-align: middle; font-size: 10px; border-color: var(--card-border);
   }
   .math-item.collapsed .card-actions {
     position: static; display: inline-flex; margin-left: 6px;
@@ -160,100 +387,108 @@ PAGE = """<!DOCTYPE html>
   .math-item.collapsed .card-actions .card-button {display: none;}
   .math-item.collapsed .card-actions .card-button.collapse {
     display: inline-block; padding: 0 5px; border: none;
-    background: transparent; color: #8c959f; font-size: 10px;
+    background: transparent; color: var(--hint); font-size: 10px;
   }
   .math-item.collapsed .card-actions .card-button.collapse:hover {
-    background: #eaeef2; color: #24292f;
+    background: var(--btn-hover-bg); color: var(--btn-hover-ink);
   }
   .math-item.collapsed svg,
   .math-item.collapsed g[id*="__l0-"],
   .math-item.collapsed g[id*="__l1-"],
   .math-item.collapsed g[id*="__l2-"],
-  .math-item.collapsed g[id*="__l3-"] {color: #1f2328;}
-  .item-content {position: relative; color: #1f2328; display: inline-block;}
+  .math-item.collapsed g[id*="__l3-"] {color: var(--ink);}
+  .item-content {position: relative; color: var(--ink); display: inline-block;}
   .item-content.error {
-    color: #cf222e; font: 14px/1.6 "Microsoft YaHei", sans-serif;
+    color: var(--danger); font: 14px/1.6 "Microsoft YaHei", sans-serif;
     white-space: pre-wrap; max-width: 520px;
   }
   .action-layer {
     position: absolute; inset: 0; z-index: 6; pointer-events: none;
   }
   .action-hit {position: absolute; pointer-events: auto; cursor: pointer;}
-  svg {color: #1f2328;}
-  g[id*="__l0-"] {color: #e53935;}
-  g[id*="__l1-"] {color: #2e7d32;}
-  g[id*="__l2-"] {color: #1565c0;}
-  g[id*="__l3-"] {color: #6a1b9a;}
+  svg {color: var(--ink);}
+  g[id*="__l0-"] {color: var(--l0);}
+  g[id*="__l1-"] {color: var(--l1);}
+  g[id*="__l2-"] {color: var(--l2);}
+  g[id*="__l3-"] {color: var(--l3);}
   g[id*="__l"] {cursor: pointer;}
   #toolbar {
     position: fixed; top: 10px; right: 14px; z-index: 15;
     display: flex; align-items: center; gap: 8px;
     padding: 4px 12px; border-radius: 999px;
-    background: rgba(255, 255, 255, 0.94);
-    border: 1px solid #d0d7de; box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
-    font: 12px "Microsoft YaHei", sans-serif; color: #57606a;
+    background: var(--toolbar-bg);
+    border: 1px solid var(--btn-border); box-shadow: var(--card-shadow);
+    font: 12px "Microsoft YaHei", sans-serif; color: var(--muted);
     user-select: none;
   }
-  #size-slider {width: 120px; accent-color: #0969da;}
+  #size-slider {width: 120px; accent-color: var(--accent);}
   #selection-box {
     position: fixed; display: none; pointer-events: none; z-index: 20;
-    border: 1.5px dashed #0969da; border-radius: 6px;
+    border: 1.5px dashed var(--accent); border-radius: 6px;
     box-sizing: border-box;
   }
   #selection-tag {
     position: fixed; display: none; pointer-events: none; z-index: 21;
-    padding: 2px 7px; border-radius: 4px; background: #ffffff;
+    padding: 2px 7px; border-radius: 4px; background: var(--card-bg);
     border: 1px solid currentColor;
     font: 12px/1.4 "Microsoft YaHei", sans-serif;
     white-space: nowrap;
   }
   #node-handle {
     position: fixed; display: none; width: 20px; height: 20px;
-    border-radius: 50%; background: #ffffff; border: 1.5px solid #0969da;
-    color: #0969da; align-items: center; justify-content: center;
+    border-radius: 50%; background: var(--handle-bg); border: 1.5px solid var(--accent);
+    color: var(--accent); align-items: center; justify-content: center;
     font-size: 12px; line-height: 1; cursor: grab; z-index: 25;
-    user-select: none; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+    user-select: none; box-shadow: var(--card-shadow);
   }
-  #node-handle:hover {background: #f0f7ff;}
+  #node-handle:hover {background: var(--btn-hover-bg);}
   #transform-button {
     position: fixed; display: none; width: 20px; height: 20px;
-    border-radius: 50%; background: #ffffff; border: 1.5px solid #0969da;
-    color: #0969da; align-items: center; justify-content: center;
+    border-radius: 50%; background: var(--handle-bg); border: 1.5px solid var(--accent);
+    color: var(--accent); align-items: center; justify-content: center;
     font-size: 11px; line-height: 1; cursor: pointer; z-index: 25;
-    user-select: none; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+    user-select: none; box-shadow: var(--card-shadow);
   }
-  #transform-button:hover {background: #f0f7ff;}
+  #transform-button:hover {background: var(--btn-hover-bg);}
   #action-badge {
     position: fixed; display: none; z-index: 30;
     padding: 3px 9px; border-radius: 999px;
-    background: #24292f; color: #ffffff;
+    background: var(--badge-bg); color: var(--badge-ink);
     font: 12px/1.4 "Microsoft YaHei", sans-serif;
     cursor: pointer; user-select: none; white-space: nowrap;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.18);
   }
-  #action-badge:hover {background: #0969da;}
+  #action-badge:hover {background: var(--accent); color: var(--badge-ink-on-accent);}
 </style>
+<style id="scrollbar-theme"></style>
 </head>
-<body>
-<div id="canvas-wrap">
+<body class="@@BODY_CLASS@@">
+<div id="canvas-wrap" class="@@BODY_CLASS@@">
   <div id="canvas">
-    <div id="empty-hint">在上方输入表达式，按回车或点击“添加”<br>可向画布添加多个表达式；拖拽左上角红圈移动。</div>
+    <div id="empty-hint">@@EMPTY_HINT@@</div>
   </div>
 </div>
 <div id="toolbar">
-  <span>字号</span>
+  <span id="size-label">@@SIZE_LABEL@@</span>
   <input id="size-slider" type="range" min="24" max="96" step="2" value="42">
   <span id="size-value">42px</span>
 </div>
 <div id="selection-box"></div>
 <div id="selection-tag"></div>
-<div id="node-handle" title="拖拽选中节点">⠿</div>
-<div id="transform-button" title="变形选中节点">变</div>
+<div id="node-handle" title="@@NODE_HANDLE_TITLE@@">⠿</div>
+<div id="transform-button" title="@@TRANSFORM_TITLE@@">@@TRANSFORM_TEXT@@</div>
 <div id="action-badge"></div>
 <script>
+const T = @@I18N@@;
 const canvas = document.getElementById('canvas');
 const badge = document.getElementById('action-badge');
 const SVG_NS = 'http://www.w3.org/2000/svg';
+
+function nodeTag(meta) {
+  const type = meta.type || T.node;
+  const depth = (meta.depth === undefined ? '?' : meta.depth);
+  return T.node_layer.replace('{type}', type).replace('{depth}', depth);
+}
 
 let nodeMeta = {};
 let selectedId = null;
@@ -353,10 +588,10 @@ function setHover(group) {
   }
   if (!hoverRect) {
     hoverRect = document.createElementNS(SVG_NS, 'rect');
-    hoverRect.setAttribute('fill', '#000000');
     hoverRect.setAttribute('fill-opacity', '0.08');
     hoverRect.setAttribute('pointer-events', 'none');
   }
+  hoverRect.setAttribute('fill', themeValue('--hover-fill', '#000000'));
   const area = group.__hitBox;
   hoverRect.setAttribute('x', area.x);
   hoverRect.setAttribute('y', area.y);
@@ -368,6 +603,36 @@ function setHover(group) {
     ? first.nextSibling : first;
   group.insertBefore(hoverRect, anchor);
   hoverNode = group;
+}
+
+function themeValue(name, fallback) {
+  const value = getComputedStyle(document.body).getPropertyValue(name);
+  return (value || '').trim() || fallback;
+}
+
+function applyScrollbarTheme() {
+  const thumb = themeValue('--scroll-thumb', '#c3c8cf');
+  const hover = themeValue('--scroll-thumb-hover', '#a2a8b0');
+  document.getElementById('scrollbar-theme').textContent =
+    '#canvas-wrap::-webkit-scrollbar-thumb{background:' + thumb + ';border-radius:5px}' +
+    '#canvas-wrap::-webkit-scrollbar-thumb:hover{background:' + hover + '}';
+  const scroller = document.getElementById('canvas-wrap');
+  if (scroller) {
+    scroller.style.overflow = 'hidden';
+    void scroller.offsetHeight;
+    scroller.style.overflow = '';
+  }
+}
+
+function setTheme(theme) {
+  const dark = theme === 'dark';
+  document.body.classList.toggle('dark', dark);
+  document.documentElement.style.colorScheme = dark ? 'dark' : 'light';
+  document.getElementById('canvas-wrap').classList.toggle('dark', dark);
+  applyScrollbarTheme();
+  setHover(null);
+  hideBadge();
+  refreshHitAreas();
 }
 
 function actionForMo(mo) {
@@ -456,7 +721,7 @@ function interactiveAt(target) {
 
 function showBadge(action) {
   actionTarget = action;
-  badge.textContent = action.kind === 'swap' ? '⇄ 交换' : '⤢ 展开';
+  badge.textContent = action.kind === 'swap' ? T.swap : T.expand;
   badge.style.display = 'block';
   const rect = action.rect;
   const width = badge.offsetWidth;
@@ -511,7 +776,7 @@ function selectNode(group) {
   box.style.background = colorToRgba(color, 0.08);
   tag.style.display = 'block';
   tag.style.color = color;
-  tag.textContent = (meta.type || '节点') + ' · 第 ' + (meta.depth === undefined ? '?' : meta.depth) + ' 层';
+  tag.textContent = nodeTag(meta);
   const above = rect.top - 28;
   tag.style.left = Math.max(4, rect.left) + 'px';
   tag.style.top = (above > 4 ? above : rect.bottom + 8) + 'px';
@@ -714,7 +979,7 @@ function createItemElement(data) {
   const handle = document.createElement('div');
   handle.className = 'drag-handle';
   handle.textContent = '⠿';
-  handle.title = '拖拽移动（第 0 层）';
+  handle.title = T.drag_handle;
   handle.addEventListener('pointerdown', startDrag);
   handle.addEventListener('pointermove', moveDrag);
   handle.addEventListener('pointerup', endDrag);
@@ -724,7 +989,7 @@ function createItemElement(data) {
   const title = document.createElement('div');
   title.className = 'card-title';
   title.textContent = data.title || '';
-  title.title = '双击编辑标题';
+  title.title = T.edit_title;
   title.addEventListener('dblclick', function (event) {
     event.preventDefault();
     event.stopPropagation();
@@ -743,8 +1008,8 @@ function createItemElement(data) {
   const copyButton = document.createElement('button');
   copyButton.type = 'button';
   copyButton.className = 'card-button';
-  copyButton.textContent = '复制';
-  copyButton.title = '复制这张卡片';
+  copyButton.textContent = T.copy;
+  copyButton.title = T.copy_title;
   copyButton.addEventListener('click', function (event) {
     event.preventDefault();
     event.stopPropagation();
@@ -755,8 +1020,8 @@ function createItemElement(data) {
   const deleteButton = document.createElement('button');
   deleteButton.type = 'button';
   deleteButton.className = 'card-button delete';
-  deleteButton.textContent = '删除';
-  deleteButton.title = '删除这张卡片';
+  deleteButton.textContent = T.delete;
+  deleteButton.title = T.delete_title;
   deleteButton.addEventListener('click', function (event) {
     event.preventDefault();
     event.stopPropagation();
@@ -767,8 +1032,8 @@ function createItemElement(data) {
   const collapseButton = document.createElement('button');
   collapseButton.type = 'button';
   collapseButton.className = 'card-button collapse';
-  collapseButton.textContent = '折叠';
-  collapseButton.title = '折叠或展开这张卡片';
+  collapseButton.textContent = T.collapse;
+  collapseButton.title = T.collapse_title;
   collapseButton.addEventListener('click', function (event) {
     event.preventDefault();
     event.stopPropagation();
@@ -839,7 +1104,7 @@ function selectCardById(itemId) {
 function setCollapsed(item, collapsed) {
   item.classList.toggle('collapsed', collapsed);
   const button = item.querySelector('.card-button.collapse');
-  if (button) button.textContent = collapsed ? '展开' : '折叠';
+  if (button) button.textContent = collapsed ? T.expand_card : T.collapse_card;
 }
 
 async function toggleCollapse(item) {
@@ -1172,6 +1437,7 @@ sizeSlider.addEventListener('input', function () {
 });
 
 setupBridge();
+applyScrollbarTheme();
 updateEmptyHint();
 </script>
 </body>
@@ -1271,7 +1537,7 @@ class SelectionBridge(QObject):
 
 
 DIALOG_PAGE = """<!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="@@LANG@@" style="color-scheme: @@COLOR_SCHEME@@">
 <head>
 <meta charset="utf-8">
 <script>window.MathJax = {
@@ -1282,44 +1548,58 @@ DIALOG_PAGE = """<!DOCTYPE html>
 <script src="../mathjax/es5/tex-svg.js"></script>
 <script src="qrc:///qtwebchannel/qwebchannel.js"></script>
 <style>
-  html, body {margin: 0; height: 100%; background: #ffffff; overflow: hidden;}
+  @@THEME_CSS@@
+  html, body {margin: 0; height: 100%; background: var(--bg); overflow: hidden;}
   #stage {
     height: 100vh; box-sizing: border-box; padding: 18px;
     display: flex; align-items: center; justify-content: center; overflow: auto;
   }
-  #formula {font-size: 34px; color: #1f2328; text-align: center;}
-  svg {color: #1f2328;}
-  g[id*="__l0-"] {color: #e53935;}
-  g[id*="__l1-"] {color: #2e7d32;}
-  g[id*="__l2-"] {color: #1565c0;}
-  g[id*="__l3-"] {color: #6a1b9a;}
+  #stage::-webkit-scrollbar {width: 10px; height: 10px;}
+  #stage::-webkit-scrollbar-thumb {
+    background: #c3c8cf; border-radius: 5px;
+  }
+  #stage::-webkit-scrollbar-thumb:hover {background: #a2a8b0;}
+  #formula {font-size: 34px; color: var(--ink); text-align: center;}
+  svg {color: var(--ink);}
+  g[id*="__l0-"] {color: var(--l0);}
+  g[id*="__l1-"] {color: var(--l1);}
+  g[id*="__l2-"] {color: var(--l2);}
+  g[id*="__l3-"] {color: var(--l3);}
   g[id*="__l"] {cursor: pointer;}
   #formula.error {
-    color: #cf222e; font: 14px/1.6 "Microsoft YaHei", sans-serif;
+    color: var(--danger); font: 14px/1.6 "Microsoft YaHei", sans-serif;
     white-space: pre-wrap; max-width: 520px;
   }
   #selection-box {
     position: fixed; display: none; pointer-events: none; z-index: 20;
-    border: 1.5px dashed #0969da; border-radius: 6px; box-sizing: border-box;
+    border: 1.5px dashed var(--accent); border-radius: 6px; box-sizing: border-box;
   }
   #selection-tag {
     position: fixed; display: none; pointer-events: none; z-index: 21;
-    padding: 2px 7px; border-radius: 4px; background: #ffffff;
+    padding: 2px 7px; border-radius: 4px; background: var(--card-bg);
     border: 1px solid currentColor;
     font: 12px/1.4 "Microsoft YaHei", sans-serif; white-space: nowrap;
   }
 </style>
+<style id="scrollbar-theme"></style>
 </head>
-<body>
-<div id="stage"><div id="formula"></div></div>
+<body class="@@BODY_CLASS@@">
+<div id="stage" class="@@BODY_CLASS@@"><div id="formula"></div></div>
 <div id="selection-box"></div>
 <div id="selection-tag"></div>
 <script>
+const T = @@I18N@@;
 const SVG_NS = 'http://www.w3.org/2000/svg';
 let nodeMeta = {};
 let selectedId = null;
 let hoverNode = null;
 let hoverRect = null;
+
+function nodeTag(meta) {
+  const type = meta.type || T.node;
+  const depth = (meta.depth === undefined ? '?' : meta.depth);
+  return T.node_layer.replace('{type}', type).replace('{depth}', depth);
+}
 
 function hideSelection() {
   document.getElementById('selection-box').style.display = 'none';
@@ -1343,10 +1623,10 @@ function setHover(group) {
   }
   if (!hoverRect) {
     hoverRect = document.createElementNS(SVG_NS, 'rect');
-    hoverRect.setAttribute('fill', '#000000');
     hoverRect.setAttribute('fill-opacity', '0.08');
     hoverRect.setAttribute('pointer-events', 'none');
   }
+  hoverRect.setAttribute('fill', themeValue('--hover-fill', '#000000'));
   const area = group.__hitBox;
   hoverRect.setAttribute('x', area.x);
   hoverRect.setAttribute('y', area.y);
@@ -1358,6 +1638,35 @@ function setHover(group) {
     ? first.nextSibling : first;
   group.insertBefore(hoverRect, anchor);
   hoverNode = group;
+}
+
+function themeValue(name, fallback) {
+  const value = getComputedStyle(document.body).getPropertyValue(name);
+  return (value || '').trim() || fallback;
+}
+
+function applyScrollbarTheme() {
+  const thumb = themeValue('--scroll-thumb', '#c3c8cf');
+  const hover = themeValue('--scroll-thumb-hover', '#a2a8b0');
+  document.getElementById('scrollbar-theme').textContent =
+    '#stage::-webkit-scrollbar-thumb{background:' + thumb + ';border-radius:5px}' +
+    '#stage::-webkit-scrollbar-thumb:hover{background:' + hover + '}';
+  const scroller = document.getElementById('stage');
+  if (scroller) {
+    scroller.style.overflow = 'hidden';
+    void scroller.offsetHeight;
+    scroller.style.overflow = '';
+  }
+}
+
+function setTheme(theme) {
+  const dark = theme === 'dark';
+  document.body.classList.toggle('dark', dark);
+  document.documentElement.style.colorScheme = dark ? 'dark' : 'light';
+  document.getElementById('stage').classList.toggle('dark', dark);
+  applyScrollbarTheme();
+  setHover(null);
+  if (selectedId) selectById(selectedId);
 }
 
 function installHitAreas() {
@@ -1423,7 +1732,7 @@ function selectNode(group) {
   box.style.background = 'transparent';
   tag.style.display = 'block';
   tag.style.color = color;
-  tag.textContent = (meta.type || '节点') + ' · 第 ' + (meta.depth === undefined ? '?' : meta.depth) + ' 层';
+  tag.textContent = nodeTag(meta);
   const above = rect.top - 28;
   tag.style.left = Math.max(4, rect.left) + 'px';
   tag.style.top = (above > 4 ? above : rect.bottom + 8) + 'px';
@@ -1479,6 +1788,7 @@ function renderFormula(source, meta) {
 }
 
 setupBridge();
+applyScrollbarTheme();
 </script>
 </body>
 </html>
@@ -1501,16 +1811,16 @@ class ExpressionDialog(QDialog):
     """在对话框内对表达式做节点级操作。"""
 
     BASE_OPERATIONS = (
-        ("replace", "替换"),
-        ("add", "加"),
-        ("sub", "减"),
-        ("mul", "乘"),
-        ("div", "除"),
-        ("pow", "乘方"),
+        ("replace", QT_TRANSLATE_NOOP("expr_calculator", "替换")),
+        ("add", QT_TRANSLATE_NOOP("expr_calculator", "加")),
+        ("sub", QT_TRANSLATE_NOOP("expr_calculator", "减")),
+        ("mul", QT_TRANSLATE_NOOP("expr_calculator", "乘")),
+        ("div", QT_TRANSLATE_NOOP("expr_calculator", "除")),
+        ("pow", QT_TRANSLATE_NOOP("expr_calculator", "乘方")),
     )
     DIV_OPERATIONS = (
-        ("div_mul", "上下同乘"),
-        ("div_div", "上下同除"),
+        ("div_mul", QT_TRANSLATE_NOOP("expr_calculator", "上下同乘")),
+        ("div_div", QT_TRANSLATE_NOOP("expr_calculator", "上下同除")),
     )
 
     def __init__(self, tree: Expr, source: Expr, parent=None) -> None:
@@ -1523,7 +1833,7 @@ class ExpressionDialog(QDialog):
         self.selected_node = None
         self.operation = None
 
-        self.setWindowTitle("重叠的表达式")
+        self.setWindowTitle(_t("重叠的表达式"))
         self.resize(980, 580)
         self.setModal(True)
 
@@ -1544,11 +1854,11 @@ class ExpressionDialog(QDialog):
         right.setContentsMargins(6, 0, 0, 0)
         right.setSpacing(7)
 
-        title = QLabel("可用操作")
+        title = QLabel(_t("可用操作"))
         title.setObjectName("panelTitle")
         right.addWidget(title)
 
-        self.selection_label = QLabel("在左侧点击选择节点")
+        self.selection_label = QLabel(_t("在左侧点击选择节点"))
         self.selection_label.setObjectName("panelInfo")
         self.selection_label.setWordWrap(True)
         self.selection_label.setTextFormat(Qt.RichText)
@@ -1557,12 +1867,12 @@ class ExpressionDialog(QDialog):
         source_text = str(self.source)
         if len(source_text) > 48:
             source_text = source_text[:45] + "..."
-        self.source_label = QLabel("拖拽节点：" + type(self.source).__name__ + "\n" + source_text)
+        self.source_label = QLabel(_t("拖拽节点：") + type(self.source).__name__ + "\n" + source_text)
         self.source_label.setObjectName("panelHint")
         self.source_label.setWordWrap(True)
         right.addWidget(self.source_label)
 
-        hint = QLabel("运算顺序：选中节点 运算 拖拽节点")
+        hint = QLabel(_t("运算顺序：选中节点 运算 拖拽节点"))
         hint.setObjectName("panelHint")
         hint.setWordWrap(True)
         right.addWidget(hint)
@@ -1575,12 +1885,12 @@ class ExpressionDialog(QDialog):
         self._group = QButtonGroup(self)
         self._group.setExclusive(True)
         for key, label in self.BASE_OPERATIONS:
-            self._add_operation(ops_layout, key, label)
-        divider = QLabel("Div 专用")
+            self._add_operation(ops_layout, key, _t(label))
+        divider = QLabel(_t("Div 专用"))
         divider.setObjectName("panelHint")
         ops_layout.addWidget(divider)
         for key, label in self.DIV_OPERATIONS:
-            self._add_operation(ops_layout, key, label)
+            self._add_operation(ops_layout, key, _t(label))
         self.ops_box.setVisible(False)
         right.addWidget(self.ops_box)
         right.addStretch(1)
@@ -1588,30 +1898,31 @@ class ExpressionDialog(QDialog):
         main.addLayout(body, 1)
 
         box = QDialogButtonBox(self)
-        self.confirm_button = box.addButton("确认", QDialogButtonBox.ButtonRole.AcceptRole)
-        box.addButton("取消", QDialogButtonBox.ButtonRole.RejectRole)
+        self.confirm_button = box.addButton(_t("确认"), QDialogButtonBox.ButtonRole.AcceptRole)
+        box.addButton(_t("取消"), QDialogButtonBox.ButtonRole.RejectRole)
         self.confirm_button.setEnabled(False)
         box.accepted.connect(self._confirm)
         box.rejected.connect(self.reject)
         main.addWidget(box)
 
-        self.setStyleSheet(
+        self.setStyleSheet(_qss(
             """
-            QLabel#panelTitle {font-size: 14px; font-weight: 600; color: #1f2328;}
-            QLabel#panelInfo {color: #1f2328; font-size: 12px;}
-            QLabel#panelHint {color: #57606a; font-size: 11px;}
+            QLabel#panelTitle {font-size: 14px; font-weight: 600; color: @ink@;}
+            QLabel#panelInfo {color: @ink@; font-size: 12px;}
+            QLabel#panelHint {color: @hint-ink@; font-size: 11px;}
             QPushButton#op {
-                border: 1px solid #d0d7de; border-radius: 6px;
-                padding: 5px 10px; background: #f6f8fa; text-align: left;
+                border: 1px solid @btn-border@; border-radius: 6px;
+                padding: 5px 10px; background: @btn-bg@; color: @btn-ink@;
+                text-align: left;
                 font-size: 12px;
             }
-            QPushButton#op:hover {background: #eaeef2;}
+            QPushButton#op:hover {background: @btn-hover@;}
             QPushButton#op:checked {
-                background: #ddf4ff; border-color: #0969da; color: #0969da;
+                background: @checked-bg@; border-color: @accent@; color: @checked-ink@;
             }
-            QPushButton#op:disabled {color: #8c959f; background: #ffffff;}
+            QPushButton#op:disabled {color: @op-disabled@; background: @bg@;}
             """
-        )
+        ))
 
         self._bridge = DialogBridge(self)
         self._bridge.selected.connect(self._on_selected)
@@ -1619,7 +1930,7 @@ class ExpressionDialog(QDialog):
         self._channel.registerObject("bridge", self._bridge)
         self.view.page().setWebChannel(self._channel)
         self.view.loadFinished.connect(self._on_loaded)
-        self.view.setHtml(DIALOG_PAGE, QUrl.fromLocalFile(str(BASE_DIR) + "/"))
+        self.view.setHtml(page_html(DIALOG_PAGE), QUrl.fromLocalFile(str(BASE_DIR) + "/"))
 
     def _add_operation(self, layout, key: str, label: str) -> None:
         button = QPushButton(label)
@@ -1649,7 +1960,7 @@ class ExpressionDialog(QDialog):
     def _on_selected(self, node_id: str) -> None:
         if not node_id:
             self.selected_node = None
-            self.selection_label.setText("在左侧点击选择节点")
+            self.selection_label.setText(_t("在左侧点击选择节点"))
             self.ops_box.setVisible(False)
             self._set_buttons_enabled(False, False)
             self._reset_operation()
@@ -1663,9 +1974,11 @@ class ExpressionDialog(QDialog):
         if len(text) > 60:
             text = text[:57] + "..."
         self.selection_label.setText(
-            "已选中：<b>" + html_lib.escape(info.get("type", type(node).__name__))
-            + "</b> · 第 " + str(info.get("depth", "?")) + " 层<br>"
-            + html_lib.escape(text)
+            _t("已选中：<b>{type}</b> · 第 {depth} 层<br>{text}").format(
+                type=html_lib.escape(info.get("type", type(node).__name__)),
+                depth=info.get("depth", "?"),
+                text=html_lib.escape(text),
+            )
         )
         is_div = isinstance(node, Div)
         self.ops_box.setVisible(True)
@@ -1703,10 +2016,10 @@ class ExpressionDialog(QDialog):
         try:
             self._apply(self.selected_node, self.operation)
         except ZeroDivisionError:
-            QMessageBox.warning(self, "无法执行", "拖拽节点为零，不能作为除数或乘数。")
+            QMessageBox.warning(self, _t("无法执行"), _t("拖拽节点为零，不能作为除数或乘数。"))
             return
         except Exception as exc:
-            QMessageBox.warning(self, "无法执行", str(exc))
+            QMessageBox.warning(self, _t("无法执行"), str(exc))
             return
         self.result_tree = self.tree
         self.accept()
@@ -1767,25 +2080,25 @@ class TransformDialog(QDialog):
     """选择 SymPy 变形或节点操作方式。"""
 
     TRANSFORMS = (
-        ("simplify", "化简 simplify", "通用化简，尝试多种化简策略"),
-        ("expand", "展开 expand", "展开括号、幂与乘积"),
-        ("factor", "因式分解 factor", "把多项式分解为因式乘积"),
-        ("cancel", "约分 cancel", "约去分子与分母的公因式"),
-        ("together", "通分 together", "把和式合并为单个分式"),
-        ("apart", "拆分 apart", "部分分式分解"),
-        ("trigsimp", "三角化简 trigsimp", "使用三角恒等式化简"),
-        ("radsimp", "有理化 radsimp", "化简含根式的分母"),
+        ("simplify", QT_TRANSLATE_NOOP("expr_calculator", "化简 simplify"), QT_TRANSLATE_NOOP("expr_calculator", "通用化简，尝试多种化简策略")),
+        ("expand", QT_TRANSLATE_NOOP("expr_calculator", "展开 expand"), QT_TRANSLATE_NOOP("expr_calculator", "展开括号、幂与乘积")),
+        ("factor", QT_TRANSLATE_NOOP("expr_calculator", "因式分解 factor"), QT_TRANSLATE_NOOP("expr_calculator", "把多项式分解为因式乘积")),
+        ("cancel", QT_TRANSLATE_NOOP("expr_calculator", "约分 cancel"), QT_TRANSLATE_NOOP("expr_calculator", "约去分子与分母的公因式")),
+        ("together", QT_TRANSLATE_NOOP("expr_calculator", "通分 together"), QT_TRANSLATE_NOOP("expr_calculator", "把和式合并为单个分式")),
+        ("apart", QT_TRANSLATE_NOOP("expr_calculator", "拆分 apart"), QT_TRANSLATE_NOOP("expr_calculator", "部分分式分解")),
+        ("trigsimp", QT_TRANSLATE_NOOP("expr_calculator", "三角化简 trigsimp"), QT_TRANSLATE_NOOP("expr_calculator", "使用三角恒等式化简")),
+        ("radsimp", QT_TRANSLATE_NOOP("expr_calculator", "有理化 radsimp"), QT_TRANSLATE_NOOP("expr_calculator", "化简含根式的分母")),
     )
     OPERATIONS = (
-        ("op_replace", "替换", "用输入的表达式替换选中节点"),
-        ("op_add", "追加（选中 + 输入）", "在选中节点后追加输入表达式，即相加"),
-        ("op_mul", "追乘（选中 × 输入）", "在选中节点后乘上输入表达式"),
-        ("op_recip", "倒数（1 / 选中）", "把选中节点取倒数"),
-        ("op_div", "除以（选中 ÷ 输入）", "用选中节点除以输入表达式"),
-        ("op_square", "平方（选中²）", "把选中节点平方"),
-        ("op_sqrt", "算术平方根（√选中）", "对选中节点取算术平方根"),
-        ("op_pow", "乘方（选中 ^ 输入）", "以输入表达式为指数"),
-        ("op_subs", "换元", "输入换元符号 t 与换元式（如 x+1，即令 t = x+1），把整张卡片中的 x 换成 t 的表达式"),
+        ("op_replace", QT_TRANSLATE_NOOP("expr_calculator", "替换"), QT_TRANSLATE_NOOP("expr_calculator", "用输入的表达式替换选中节点")),
+        ("op_add", QT_TRANSLATE_NOOP("expr_calculator", "追加（选中 + 输入）"), QT_TRANSLATE_NOOP("expr_calculator", "在选中节点后追加输入表达式，即相加")),
+        ("op_mul", QT_TRANSLATE_NOOP("expr_calculator", "追乘（选中 × 输入）"), QT_TRANSLATE_NOOP("expr_calculator", "在选中节点后乘上输入表达式")),
+        ("op_recip", QT_TRANSLATE_NOOP("expr_calculator", "倒数（1 / 选中）"), QT_TRANSLATE_NOOP("expr_calculator", "把选中节点取倒数")),
+        ("op_div", QT_TRANSLATE_NOOP("expr_calculator", "除以（选中 ÷ 输入）"), QT_TRANSLATE_NOOP("expr_calculator", "用选中节点除以输入表达式")),
+        ("op_square", QT_TRANSLATE_NOOP("expr_calculator", "平方（选中²）"), QT_TRANSLATE_NOOP("expr_calculator", "把选中节点平方")),
+        ("op_sqrt", QT_TRANSLATE_NOOP("expr_calculator", "算术平方根（√选中）"), QT_TRANSLATE_NOOP("expr_calculator", "对选中节点取算术平方根")),
+        ("op_pow", QT_TRANSLATE_NOOP("expr_calculator", "乘方（选中 ^ 输入）"), QT_TRANSLATE_NOOP("expr_calculator", "以输入表达式为指数")),
+        ("op_subs", QT_TRANSLATE_NOOP("expr_calculator", "换元"), QT_TRANSLATE_NOOP("expr_calculator", "输入换元符号 t 与换元式（如 x+1，即令 t = x+1），把整张卡片中的 x 换成 t 的表达式")),
     )
     NEEDS_INPUT = {"op_replace", "op_add", "op_mul", "op_div", "op_pow", "op_subs"}
 
@@ -1795,7 +2108,7 @@ class TransformDialog(QDialog):
         self.input_tree = None
         self.replace_tree = None
         self.as_copy = False
-        self.setWindowTitle("选择变形方式")
+        self.setWindowTitle(_t("选择变形方式"))
         self.resize(500, 580)
         self.setModal(True)
 
@@ -1807,26 +2120,28 @@ class TransformDialog(QDialog):
         if len(text) > 60:
             text = text[:57] + "..."
         info_label = QLabel(
-            "选中节点：<b>" + html_lib.escape(info.get("type", type(node).__name__))
-            + "</b> · 第 " + str(info.get("depth", "?")) + " 层<br>"
-            + html_lib.escape(text)
+            _t("选中节点：<b>{type}</b> · 第 {depth} 层<br>{text}").format(
+                type=html_lib.escape(info.get("type", type(node).__name__)),
+                depth=info.get("depth", "?"),
+                text=html_lib.escape(text),
+            )
         )
         info_label.setWordWrap(True)
         layout.addWidget(info_label)
 
         self.list = QListWidget(self)
-        self._add_group("SymPy 变形", self.TRANSFORMS)
-        self._add_group("节点操作", self.OPERATIONS)
+        self._add_group(_t("SymPy 变形"), self.TRANSFORMS)
+        self._add_group(_t("节点操作"), self.OPERATIONS)
         self.list.currentItemChanged.connect(self._on_current_changed)
         self.list.itemDoubleClicked.connect(lambda *_: self.accept())
         layout.addWidget(self.list, 1)
 
         input_row = QHBoxLayout()
         input_row.setSpacing(8)
-        self.input_label = QLabel("输入表达式")
+        self.input_label = QLabel(_t("输入表达式"))
         self.input_label.setFixedWidth(72)
         self.input_edit = QLineEdit(self)
-        self.input_edit.setPlaceholderText("例如：x+1")
+        self.input_edit.setPlaceholderText(_t("例如：x+1"))
         self.input_edit.setEnabled(False)
         input_row.addWidget(self.input_label)
         input_row.addWidget(self.input_edit, 1)
@@ -1836,10 +2151,10 @@ class TransformDialog(QDialog):
         replace_layout = QHBoxLayout(self.replace_row)
         replace_layout.setContentsMargins(0, 0, 0, 0)
         replace_layout.setSpacing(8)
-        replace_label = QLabel("换元式")
+        replace_label = QLabel(_t("换元式"))
         replace_label.setFixedWidth(72)
         self.replace_edit = QLineEdit(self.replace_row)
-        self.replace_edit.setPlaceholderText("例如：x+1（令 t = x+1）")
+        self.replace_edit.setPlaceholderText(_t("例如：x+1（令 t = x+1）"))
         replace_layout.addWidget(replace_label)
         replace_layout.addWidget(self.replace_edit, 1)
         self.replace_row.setVisible(False)
@@ -1852,9 +2167,9 @@ class TransformDialog(QDialog):
 
         result_row = QHBoxLayout()
         result_row.setSpacing(10)
-        result_row.addWidget(QLabel("结果"))
-        self.replace_radio = QRadioButton("覆盖原表达式")
-        self.copy_radio = QRadioButton("保存为副本")
+        result_row.addWidget(QLabel(_t("结果")))
+        self.replace_radio = QRadioButton(_t("覆盖原表达式"))
+        self.copy_radio = QRadioButton(_t("保存为副本"))
         self.replace_radio.setChecked(True)
         group = QButtonGroup(self)
         group.addButton(self.replace_radio)
@@ -1865,15 +2180,15 @@ class TransformDialog(QDialog):
         layout.addLayout(result_row)
 
         box = QDialogButtonBox(self)
-        box.addButton("确定", QDialogButtonBox.ButtonRole.AcceptRole)
-        box.addButton("取消", QDialogButtonBox.ButtonRole.RejectRole)
+        box.addButton(_t("确定"), QDialogButtonBox.ButtonRole.AcceptRole)
+        box.addButton(_t("取消"), QDialogButtonBox.ButtonRole.RejectRole)
         box.accepted.connect(self.accept)
         box.rejected.connect(self.reject)
         layout.addWidget(box)
 
-        self.setStyleSheet(
-            "QLabel#transformDesc {color: #57606a; font-size: 12px;}"
-        )
+        self.setStyleSheet(_qss(
+            "QLabel#transformDesc {color: @hint-ink@; font-size: 12px;}"
+        ))
         self.list.setCurrentRow(1)
         _wire_line_edits(self, parent if parent is not None else self)
 
@@ -1882,9 +2197,9 @@ class TransformDialog(QDialog):
         header.setFlags(Qt.NoItemFlags)
         self.list.addItem(header)
         for key, label, description in entries:
-            item = QListWidgetItem(label)
+            item = QListWidgetItem(_t(label))
             item.setData(Qt.UserRole, key)
-            item.setData(Qt.UserRole + 1, description)
+            item.setData(Qt.UserRole + 1, _t(description))
             self.list.addItem(item)
 
     def _on_current_changed(self, current, _previous) -> None:
@@ -1896,8 +2211,8 @@ class TransformDialog(QDialog):
         self.desc_label.setText(current.data(Qt.UserRole + 1) or "")
         self.input_edit.setEnabled(key in self.NEEDS_INPUT)
         substituting = key == "op_subs"
-        self.input_label.setText("换元符号" if substituting else "输入表达式")
-        self.input_edit.setPlaceholderText("例如：t" if substituting else "例如：x+1")
+        self.input_label.setText(_t("换元符号") if substituting else _t("输入表达式"))
+        self.input_edit.setPlaceholderText(_t("例如：t") if substituting else _t("例如：x+1"))
         self.replace_row.setVisible(substituting)
 
     def accept(self) -> None:
@@ -1911,23 +2226,23 @@ class TransformDialog(QDialog):
         if key in self.NEEDS_INPUT:
             text = self.input_edit.text().strip()
             if not text:
-                QMessageBox.warning(self, "缺少表达式", "当前操作需要输入一个表达式。")
+                QMessageBox.warning(self, _t("缺少表达式"), _t("当前操作需要输入一个表达式。"))
                 return
             try:
                 expression = parse_sympy(text)
                 self.input_tree = from_sympy(expression, ordered=False)
             except Exception as exc:
-                QMessageBox.warning(self, "表达式无效", str(exc))
+                QMessageBox.warning(self, _t("表达式无效"), str(exc))
                 return
             if key == "op_subs":
                 replace_text = self.replace_edit.text().strip()
                 if not replace_text:
-                    QMessageBox.warning(self, "缺少换元式", "请填写换元表达式，例如 x+1。")
+                    QMessageBox.warning(self, _t("缺少换元式"), _t("请填写换元表达式，例如 x+1。"))
                     return
                 try:
                     self.replace_tree = from_sympy(parse_sympy(replace_text), ordered=False)
                 except Exception as exc:
-                    QMessageBox.warning(self, "换元式无效", str(exc))
+                    QMessageBox.warning(self, _t("换元式无效"), str(exc))
                     return
         else:
             self.input_tree = None
@@ -1953,7 +2268,7 @@ def _open_formula_editor(edit) -> None:
     try:
         from math_input.math_input import open_formula_dialog
     except Exception as exc:
-        QMessageBox.warning(edit.window(), "无法打开公式编辑器", str(exc))
+        QMessageBox.warning(edit.window(), _t("无法打开公式编辑器"), str(exc))
         return
     open_formula_dialog(edit)
     _normalize_equation_text(edit)
@@ -1963,7 +2278,7 @@ def _open_cache_dialog(edit) -> None:
     try:
         from ui.huancun import open_cache
     except Exception as exc:
-        QMessageBox.warning(edit.window(), "无法打开缓存区", str(exc))
+        QMessageBox.warning(edit.window(), _t("无法打开缓存区"), str(exc))
         return
     open_cache(edit)
 
@@ -1992,17 +2307,17 @@ def _wire_line_edits(root, window) -> None:
         if getattr(edit, "actions_wired", False):
             continue
         edit.actions_wired = True
-        edit.input_action = QAction(QIcon.fromTheme("input-keyboard"), "可视化输入", edit)
+        edit.input_action = QAction(QIcon.fromTheme("input-keyboard"), _t("可视化输入"), edit)
         edit.input_action.triggered.connect(
             lambda *_args, target=edit: _open_formula_editor(target)
         )
         edit.addAction(edit.input_action, QLineEdit.TrailingPosition)
-        edit.cache_action = QAction(QIcon.fromTheme("document-open"), "打开缓存区", edit)
+        edit.cache_action = QAction(QIcon.fromTheme("document-open"), _t("打开缓存区"), edit)
         edit.cache_action.triggered.connect(
             lambda *_args, target=edit: _open_cache_dialog(target)
         )
         edit.addAction(edit.cache_action, QLineEdit.TrailingPosition)
-        edit.insert_action = QAction(QIcon.fromTheme("list-add"), "存入缓存区", edit)
+        edit.insert_action = QAction(QIcon.fromTheme("list-add"), _t("存入缓存区"), edit)
         edit.insert_action.triggered.connect(
             lambda *_args, target=edit: _insert_into_cache(window, target)
         )
@@ -2088,7 +2403,7 @@ class SolveDialog(QDialog):
         super().__init__(parent)
         self.node = node
         self.roots = []
-        self.setWindowTitle("求解方程")
+        self.setWindowTitle(_t("求解方程"))
         self.resize(520, 340)
         self.setModal(True)
 
@@ -2100,14 +2415,14 @@ class SolveDialog(QDialog):
         if len(text) > 80:
             text = text[:77] + "..."
         info_label = QLabel(
-            "方程：<b>" + html_lib.escape(text) + "</b>"
+            _t("方程：<b>{text}</b>").format(text=html_lib.escape(text))
         )
         info_label.setWordWrap(True)
         layout.addWidget(info_label)
 
         variables = sorted(node.free_symbols, key=lambda item: item.name)
         variable_row = QHBoxLayout()
-        variable_row.addWidget(QLabel("求解变量"))
+        variable_row.addWidget(QLabel(_t("求解变量")))
         self.variable_box = QComboBox(self)
         for variable in variables:
             self.variable_box.addItem(variable.name)
@@ -2115,13 +2430,13 @@ class SolveDialog(QDialog):
         layout.addLayout(variable_row)
 
         domain_row = QHBoxLayout()
-        domain_row.addWidget(QLabel("求解范围"))
+        domain_row.addWidget(QLabel(_t("求解范围")))
         self.domain_edit = QLineEdit("Reals", self)
         self.domain_edit.setPlaceholderText("Reals / Complexes / Interval(0, 1)")
         domain_row.addWidget(self.domain_edit, 1)
         layout.addLayout(domain_row)
 
-        hint = QLabel("范围使用 SymPy 集合：Reals（默认）、Complexes、Integers、Interval(a, b) 等")
+        hint = QLabel(_t("范围使用 SymPy 集合：Reals（默认）、Complexes、Integers、Interval(a, b) 等"))
         hint.setObjectName("solveHint")
         hint.setWordWrap(True)
         layout.addWidget(hint)
@@ -2132,16 +2447,16 @@ class SolveDialog(QDialog):
         layout.addWidget(self.preview_label)
 
         box = QDialogButtonBox(self)
-        self.solve_button = box.addButton("求解", QDialogButtonBox.ButtonRole.AcceptRole)
-        box.addButton("取消", QDialogButtonBox.ButtonRole.RejectRole)
+        self.solve_button = box.addButton(_t("求解"), QDialogButtonBox.ButtonRole.AcceptRole)
+        box.addButton(_t("取消"), QDialogButtonBox.ButtonRole.RejectRole)
         box.accepted.connect(self.accept)
         box.rejected.connect(self.reject)
         layout.addWidget(box)
 
-        self.setStyleSheet("QLabel#solveHint {color: #57606a; font-size: 11px;}")
+        self.setStyleSheet(_qss("QLabel#solveHint {color: @hint-ink@; font-size: 11px;}"))
         if not variables:
             self.solve_button.setEnabled(False)
-            self.preview_label.setText("方程中没有自由变量，无法求解。")
+            self.preview_label.setText(_t("方程中没有自由变量，无法求解。"))
 
     def _parse_domain(self, text: str):
         locals_dict = {
@@ -2158,30 +2473,30 @@ class SolveDialog(QDialog):
         }
         domain = sympy.sympify(text, locals=locals_dict)
         if not isinstance(domain, sympy.Set):
-            raise TypeError("求解范围必须是一个 SymPy 集合")
+            raise TypeError(_t("求解范围必须是一个 SymPy 集合"))
         return domain
 
     def _solve(self) -> bool:
         name = self.variable_box.currentText()
         if not name:
-            QMessageBox.warning(self, "无法求解", "请选择一个求解变量。")
+            QMessageBox.warning(self, _t("无法求解"), _t("请选择一个求解变量。"))
             return False
         try:
             domain = self._parse_domain(self.domain_edit.text().strip() or "Reals")
             equation = self.node.to_sympy()
             solutions = sympy.solveset(equation, sympy.Symbol(name), domain)
         except Exception as exc:
-            QMessageBox.warning(self, "求解失败", str(exc))
+            QMessageBox.warning(self, _t("求解失败"), str(exc))
             return False
         roots = _finite_solution_roots(solutions)
         if roots == []:
-            QMessageBox.information(self, "无解", "方程在指定范围内没有解。")
+            QMessageBox.information(self, _t("无解"), _t("方程在指定范围内没有解。"))
             return False
         if roots is None:
             QMessageBox.information(
                 self,
-                "解集不是有限集",
-                "解集为：\n" + str(solutions) + "\n\n当前只能把有限个根添加为卡片。",
+                _t("解集不是有限集"),
+                _t("解集为：\n{solutions}\n\n当前只能把有限个根添加为卡片。").format(solutions=solutions),
             )
             return False
         seen = set()
@@ -2196,7 +2511,7 @@ class SolveDialog(QDialog):
             try:
                 trees.append(from_sympy(value, ordered=True))
             except Exception as exc:
-                QMessageBox.warning(self, "根转换失败", str(exc))
+                QMessageBox.warning(self, _t("根转换失败"), str(exc))
                 return False
         self.roots = trees
         return True
@@ -2216,7 +2531,7 @@ class SystemDialog(QDialog):
         self.equations = equations
         self.result_cards = []
         self._updating_checks = False
-        self.setWindowTitle("联立方程")
+        self.setWindowTitle(_t("联立方程"))
         self.resize(580, 440)
         self.setModal(True)
 
@@ -2225,13 +2540,17 @@ class SystemDialog(QDialog):
         layout.setSpacing(10)
 
         for index, equation in enumerate(equations, 1):
-            label = QLabel("方程 " + str(index) + "：<b>" + html_lib.escape(str(equation)) + "</b>")
+            label = QLabel(
+                _t("方程 {index}：<b>{equation}</b>").format(
+                    index=index, equation=html_lib.escape(str(equation))
+                )
+            )
             label.setWordWrap(True)
             layout.addWidget(label)
 
         mode_row = QHBoxLayout()
-        self.direct_radio = QRadioButton("直接求解", self)
-        self.vieta_radio = QRadioButton("应用韦达定理", self)
+        self.direct_radio = QRadioButton(_t("直接求解"), self)
+        self.vieta_radio = QRadioButton(_t("应用韦达定理"), self)
         self.direct_radio.setChecked(True)
         mode_group = QButtonGroup(self)
         mode_group.addButton(self.direct_radio, 0)
@@ -2246,7 +2565,7 @@ class SystemDialog(QDialog):
             free_names.update(symbol.name for symbol in equation.free_symbols)
         self.variable_checks = {}
         variable_row = QHBoxLayout()
-        variable_row.addWidget(QLabel("自由变量"))
+        variable_row.addWidget(QLabel(_t("自由变量")))
         for name in sorted(free_names):
             check = QCheckBox(name, self)
             check.setChecked(True)
@@ -2260,11 +2579,11 @@ class SystemDialog(QDialog):
         output_layout = QHBoxLayout(self.output_row)
         output_layout.setContentsMargins(0, 0, 0, 0)
         output_layout.setSpacing(12)
-        output_layout.addWidget(QLabel("生成"))
+        output_layout.addWidget(QLabel(_t("生成")))
         self.sum_check = QCheckBox("x₁ + x₂", self.output_row)
         self.product_check = QCheckBox("x₁·x₂", self.output_row)
         self.abs_check = QCheckBox("|x₁ − x₂|", self.output_row)
-        self.delta_check = QCheckBox("判别式 Δ", self.output_row)
+        self.delta_check = QCheckBox(_t("判别式 Δ"), self.output_row)
         for check in (self.sum_check, self.product_check, self.abs_check, self.delta_check):
             output_layout.addWidget(check)
         self.sum_check.setChecked(True)
@@ -2284,13 +2603,13 @@ class SystemDialog(QDialog):
         layout.addStretch(1)
 
         box = QDialogButtonBox(self)
-        box.addButton("确定", QDialogButtonBox.ButtonRole.AcceptRole)
-        box.addButton("取消", QDialogButtonBox.ButtonRole.RejectRole)
+        box.addButton(_t("确定"), QDialogButtonBox.ButtonRole.AcceptRole)
+        box.addButton(_t("取消"), QDialogButtonBox.ButtonRole.RejectRole)
         box.accepted.connect(self.accept)
         box.rejected.connect(self.reject)
         layout.addWidget(box)
 
-        self.setStyleSheet("QLabel#systemHint {color: #57606a; font-size: 11px;}")
+        self.setStyleSheet(_qss("QLabel#systemHint {color: @hint-ink@; font-size: 11px;}"))
         self.direct_radio.toggled.connect(self._on_mode_changed)
         self.vieta_radio.toggled.connect(self._on_mode_changed)
         self._on_mode_changed()
@@ -2328,8 +2647,8 @@ class SystemDialog(QDialog):
             self.output_row.setVisible(self.vieta_radio.isChecked())
         if self.vieta_radio.isChecked():
             self.hint_label.setText(
-                "韦达定理：只勾选一个主变量；x/y/z 等变量优先消元，a/b/c 等符号视为参数保留在系数中。"
-                "默认选择二次项最明显的变量，可手动改选；下方可勾选要生成的表达式卡片。"
+                _t("韦达定理：只勾选一个主变量；x/y/z 等变量优先消元，a/b/c 等符号视为参数保留在系数中。\n"
+                   "默认选择二次项最明显的变量，可手动改选；下方可勾选要生成的表达式卡片。")
             )
             preferred = self._preferred_vieta_variable()
             self._updating_checks = True
@@ -2338,7 +2657,7 @@ class SystemDialog(QDialog):
             self._updating_checks = False
         else:
             self.hint_label.setText(
-                "直接求解：勾选需要求解的自由变量，每个解的每项会生成一张“变量名 = 根”方程卡片。"
+                _t("直接求解：勾选需要求解的自由变量，每个解的每项会生成一张“变量名 = 根”方程卡片。")
             )
 
     def _selected_names(self):
@@ -2350,17 +2669,17 @@ class SystemDialog(QDialog):
     def _direct_solve(self) -> bool:
         names = self._selected_names()
         if not names:
-            self._warn("无法求解", "请至少勾选一个求解变量。")
+            self._warn(_t("无法求解"), _t("请至少勾选一个求解变量。"))
             return False
         symbols = [sympy.Symbol(name) for name in names]
         equations = [equation.to_sympy() for equation in self.equations]
         try:
             solutions = sympy.solve(equations, symbols, dict=True)
         except Exception as exc:
-            self._warn("求解失败", str(exc))
+            self._warn(_t("求解失败"), str(exc))
             return False
         if not solutions:
-            QMessageBox.information(self, "无解", "联立方程组没有找到解。")
+            QMessageBox.information(self, _t("无解"), _t("联立方程组没有找到解。"))
             return False
         cards = []
         for index, solution in enumerate(solutions, 1):
@@ -2373,11 +2692,11 @@ class SystemDialog(QDialog):
                 try:
                     root = from_sympy(solution[symbol], ordered=True)
                 except Exception as exc:
-                    self._warn("根转换失败", str(exc))
+                    self._warn(_t("根转换失败"), str(exc))
                     return False
-                cards.append((Eq(Symbol(name), root), "解 " + str(index)))
+                cards.append((Eq(Symbol(name), root), _t("解 {index}").format(index=index)))
         if not cards:
-            QMessageBox.information(self, "无结果", "求解结果中没有可生成卡片的变量赋值。")
+            QMessageBox.information(self, _t("无结果"), _t("求解结果中没有可生成卡片的变量赋值。"))
             return False
         self.result_cards = cards
         return True
@@ -2438,7 +2757,7 @@ class SystemDialog(QDialog):
                             continue
                         if resultant == 0:
                             continue
-                        collect(resultant, "消去 " + str(other))
+                        collect(resultant, _t("消去 {name}").format(name=other))
 
         eliminable = [
             symbol for symbol in other_symbols
@@ -2450,7 +2769,7 @@ class SystemDialog(QDialog):
         ]
         collect_resultants(eliminable)
         for index, expression in enumerate(expressions, 1):
-            collect(expression, "方程 " + str(index))
+            collect(expression, _t("方程 {index}").format(index=index))
         collect_resultants(parameters)
         return found, diagnostics
 
@@ -2458,12 +2777,12 @@ class SystemDialog(QDialog):
         names = self._selected_names()
         if len(names) != 1:
             self._warn(
-                "无法应用韦达定理",
-                "请只勾选一个主变量；其余自由变量会作为参数保留在系数中。",
+                _t("无法应用韦达定理"),
+                _t("请只勾选一个主变量；其余自由变量会作为参数保留在系数中。"),
             )
             return False
         if len(self.equations) < 2:
-            self._warn("无法应用韦达定理", "韦达定理需要至少两条方程。")
+            self._warn(_t("无法应用韦达定理"), _t("韦达定理需要至少两条方程。"))
             return False
         variable_name = names[0]
         variable = sympy.Symbol(variable_name)
@@ -2478,22 +2797,23 @@ class SystemDialog(QDialog):
                 expressions, variable, other_symbols
             )
         except Exception as exc:
-            self._warn("消元失败", str(exc))
+            self._warn(_t("消元失败"), str(exc))
             return False
         if not polynomials:
             detail = "\n".join(diagnostics[:4])
             QMessageBox.information(
                 self,
-                "不是二次方程",
-                "未找到关于 " + variable_name + " 的二次多项式。\n\n"
-                + detail
-                + "\n\n其余自由变量会作为参数保留；请确认主变量选择是否正确。",
+                _t("不是二次方程"),
+                _t("未找到关于 {variable} 的二次多项式。\n\n{detail}\n\n"
+                   "其余自由变量会作为参数保留；请确认主变量选择是否正确。").format(
+                    variable=variable_name, detail=detail
+                ),
             )
             return False
         polynomial = polynomials[0]
         coefficients = polynomial.all_coeffs()
         if len(coefficients) != 3:
-            self._warn("无法应用韦达定理", "消元多项式不是标准二次式。")
+            self._warn(_t("无法应用韦达定理"), _t("消元多项式不是标准二次式。"))
             return False
         a, b, c = coefficients
         try:
@@ -2502,7 +2822,7 @@ class SystemDialog(QDialog):
             sum_tree = from_sympy(sum_value, ordered=True)
             product_tree = from_sympy(product_value, ordered=True)
         except Exception as exc:
-            self._warn("韦达定理失败", str(exc))
+            self._warn(_t("韦达定理失败"), str(exc))
             return False
         try:
             discriminant = sympy.simplify(b ** 2 - 4 * a * c)
@@ -2523,10 +2843,10 @@ class SystemDialog(QDialog):
             if self.delta_check.isChecked():
                 cards.append((from_sympy(discriminant, ordered=True), "Δ"))
         except Exception as exc:
-            self._warn("无法生成表达式", str(exc))
+            self._warn(_t("无法生成表达式"), str(exc))
             return False
         if not cards:
-            self._warn("未勾选生成项", "请至少勾选一个要生成的表达式卡片。")
+            self._warn(_t("未勾选生成项"), _t("请至少勾选一个要生成的表达式卡片。"))
             return False
         self.result_cards = cards
         return True
@@ -2542,73 +2862,211 @@ class SystemDialog(QDialog):
 
 COMMON_EQUATIONS = (
     (
-        "圆",
+        QT_TRANSLATE_NOOP("expr_calculator", "圆"),
         (
-            ("标准方程 (x−a)²+(y−b)²=r²", "(x-({a}))**2+(y-({b}))**2=({r})**2", ("a", "b", "r"), "a、b 为圆心坐标，r 为半径"),
+            (
+                QT_TRANSLATE_NOOP("expr_calculator", "标准方程 (x−a)²+(y−b)²=r²"),
+                "(x-({a}))**2+(y-({b}))**2=({r})**2",
+                ("a", "b", "r"),
+                QT_TRANSLATE_NOOP("expr_calculator", "a、b 为圆心坐标，r 为半径"),
+            ),
         ),
     ),
     (
-        "直线",
+        QT_TRANSLATE_NOOP("expr_calculator", "直线"),
         (
-            ("一般式 Ax+By+C=0", "({A})*x+({B})*y+({C})=0", ("A", "B", "C"), "A、B 不同时为 0"),
-            ("斜截式 y=kx+m", "y=({k})*x+({m})", ("k", "m"), "k 为斜率，m 为纵截距"),
+            (
+                QT_TRANSLATE_NOOP("expr_calculator", "一般式 Ax+By+C=0"),
+                "({A})*x+({B})*y+({C})=0",
+                ("A", "B", "C"),
+                QT_TRANSLATE_NOOP("expr_calculator", "A、B 不同时为 0"),
+            ),
+            (
+                QT_TRANSLATE_NOOP("expr_calculator", "斜截式 y=kx+m"),
+                "y=({k})*x+({m})",
+                ("k", "m"),
+                QT_TRANSLATE_NOOP("expr_calculator", "k 为斜率，m 为纵截距"),
+            ),
         ),
     ),
     (
-        "椭圆",
+        QT_TRANSLATE_NOOP("expr_calculator", "椭圆"),
         (
-            ("标准方程 x²/a²+y²/b²=1", "x**2/({a})**2+y**2/({b})**2=1", ("a", "b"), "a 为长半轴，b 为短半轴"),
+            (
+                QT_TRANSLATE_NOOP("expr_calculator", "标准方程 x²/a²+y²/b²=1"),
+                "x**2/({a})**2+y**2/({b})**2=1",
+                ("a", "b"),
+                QT_TRANSLATE_NOOP("expr_calculator", "a 为长半轴，b 为短半轴"),
+            ),
         ),
     ),
     (
-        "双曲线",
+        QT_TRANSLATE_NOOP("expr_calculator", "双曲线"),
         (
-            ("横轴 x²/a²−y²/b²=1", "x**2/({a})**2-y**2/({b})**2=1", ("a", "b"), "a 为实半轴，b 为虚半轴"),
-            ("纵轴 y²/a²−x²/b²=1", "y**2/({a})**2-x**2/({b})**2=1", ("a", "b"), "a 为实半轴，b 为虚半轴"),
+            (
+                QT_TRANSLATE_NOOP("expr_calculator", "横轴 x²/a²−y²/b²=1"),
+                "x**2/({a})**2-y**2/({b})**2=1",
+                ("a", "b"),
+                QT_TRANSLATE_NOOP("expr_calculator", "a 为实半轴，b 为虚半轴"),
+            ),
+            (
+                QT_TRANSLATE_NOOP("expr_calculator", "纵轴 y²/a²−x²/b²=1"),
+                "y**2/({a})**2-x**2/({b})**2=1",
+                ("a", "b"),
+                QT_TRANSLATE_NOOP("expr_calculator", "a 为实半轴，b 为虚半轴"),
+            ),
         ),
     ),
     (
-        "抛物线",
+        QT_TRANSLATE_NOOP("expr_calculator", "抛物线"),
         (
-            ("开口向右 y²=2px", "y**2=2*({p})*x", ("p",), "p 为焦点参数"),
-            ("开口向左 y²=−2px", "y**2=-2*({p})*x", ("p",), "p 为焦点参数"),
-            ("开口向上 x²=2py", "x**2=2*({p})*y", ("p",), "p 为焦点参数"),
-            ("开口向下 x²=−2py", "x**2=-2*({p})*y", ("p",), "p 为焦点参数"),
-            ("顶点式 y=a(x−h)²+k", "y=({a})*(x-({h}))**2+({k})", ("a", "h", "k"), "a 为开口系数，顶点为 (h, k)"),
+            (
+                QT_TRANSLATE_NOOP("expr_calculator", "开口向右 y²=2px"),
+                "y**2=2*({p})*x",
+                ("p",),
+                QT_TRANSLATE_NOOP("expr_calculator", "p 为焦点参数"),
+            ),
+            (
+                QT_TRANSLATE_NOOP("expr_calculator", "开口向左 y²=−2px"),
+                "y**2=-2*({p})*x",
+                ("p",),
+                QT_TRANSLATE_NOOP("expr_calculator", "p 为焦点参数"),
+            ),
+            (
+                QT_TRANSLATE_NOOP("expr_calculator", "开口向上 x²=2py"),
+                "x**2=2*({p})*y",
+                ("p",),
+                QT_TRANSLATE_NOOP("expr_calculator", "p 为焦点参数"),
+            ),
+            (
+                QT_TRANSLATE_NOOP("expr_calculator", "开口向下 x²=−2py"),
+                "x**2=-2*({p})*y",
+                ("p",),
+                QT_TRANSLATE_NOOP("expr_calculator", "p 为焦点参数"),
+            ),
+            (
+                QT_TRANSLATE_NOOP("expr_calculator", "顶点式 y=a(x−h)²+k"),
+                "y=({a})*(x-({h}))**2+({k})",
+                ("a", "h", "k"),
+                QT_TRANSLATE_NOOP("expr_calculator", "a 为开口系数，顶点为 (h, k)"),
+            ),
         ),
     ),
 )
 
 
 GENERAL_CONDITIONS = (
-    ("通过点", (("x0", "横坐标", "例如 2"), ("y0", "纵坐标", "例如 3")), "曲线经过该点", "通过点 ({x0}, {y0})"),
-    ("参数关系", (("relation", "方程", "例如 a=2b"),), "参数之间的关系式", "参数关系 {relation}"),
+    (
+        QT_TRANSLATE_NOOP("expr_calculator", "通过点"),
+        (
+            ("x0", QT_TRANSLATE_NOOP("expr_calculator", "横坐标"), QT_TRANSLATE_NOOP("expr_calculator", "例如 2")),
+            ("y0", QT_TRANSLATE_NOOP("expr_calculator", "纵坐标"), QT_TRANSLATE_NOOP("expr_calculator", "例如 3")),
+        ),
+        QT_TRANSLATE_NOOP("expr_calculator", "曲线经过该点"),
+        QT_TRANSLATE_NOOP("expr_calculator", "通过点 ({x0}, {y0})"),
+    ),
+    (
+        QT_TRANSLATE_NOOP("expr_calculator", "参数关系"),
+        (("relation", QT_TRANSLATE_NOOP("expr_calculator", "方程"), QT_TRANSLATE_NOOP("expr_calculator", "例如 a=2b")),),
+        QT_TRANSLATE_NOOP("expr_calculator", "参数之间的关系式"),
+        QT_TRANSLATE_NOOP("expr_calculator", "参数关系 {relation}"),
+    ),
 )
 
 TYPE_CONDITIONS = {
-    "直线": (
-        ("斜率", (("k", "数值", "例如 2"),), "留空即保留参数 k", "斜率 = {k}"),
-        ("截距", (("m", "数值", "例如 -1"),), "在 y 轴上的截距", "截距 = {m}"),
+    QT_TRANSLATE_NOOP("expr_calculator", "直线"): (
+        (
+            QT_TRANSLATE_NOOP("expr_calculator", "斜率"),
+            (("k", QT_TRANSLATE_NOOP("expr_calculator", "数值"), QT_TRANSLATE_NOOP("expr_calculator", "例如 2")),),
+            QT_TRANSLATE_NOOP("expr_calculator", "留空即保留参数 k"),
+            QT_TRANSLATE_NOOP("expr_calculator", "斜率 = {k}"),
+        ),
+        (
+            QT_TRANSLATE_NOOP("expr_calculator", "截距"),
+            (("m", QT_TRANSLATE_NOOP("expr_calculator", "数值"), QT_TRANSLATE_NOOP("expr_calculator", "例如 -1")),),
+            QT_TRANSLATE_NOOP("expr_calculator", "在 y 轴上的截距"),
+            QT_TRANSLATE_NOOP("expr_calculator", "截距 = {m}"),
+        ),
     ),
-    "圆": (
-        ("圆心所在直线", (("line", "方程", "例如 x=1"),), "圆心 (a, b) 在这条直线上", "圆心在 {line}"),
-        ("半径", (("r", "数值", "例如 3"),), "留空即保留参数 r", "半径 = {r}"),
+    QT_TRANSLATE_NOOP("expr_calculator", "圆"): (
+        (
+            QT_TRANSLATE_NOOP("expr_calculator", "圆心所在直线"),
+            (("line", QT_TRANSLATE_NOOP("expr_calculator", "方程"), QT_TRANSLATE_NOOP("expr_calculator", "例如 x=1")),),
+            QT_TRANSLATE_NOOP("expr_calculator", "圆心 (a, b) 在这条直线上"),
+            QT_TRANSLATE_NOOP("expr_calculator", "圆心在 {line}"),
+        ),
+        (
+            QT_TRANSLATE_NOOP("expr_calculator", "半径"),
+            (("r", QT_TRANSLATE_NOOP("expr_calculator", "数值"), QT_TRANSLATE_NOOP("expr_calculator", "例如 3")),),
+            QT_TRANSLATE_NOOP("expr_calculator", "留空即保留参数 r"),
+            QT_TRANSLATE_NOOP("expr_calculator", "半径 = {r}"),
+        ),
     ),
-    "椭圆": (
-        ("离心率", (("e", "数值", "例如 1/2"),), "0 < e < 1", "离心率 = {e}"),
-        ("长轴长", (("L", "数值", "例如 6"),), "等于 2a", "长轴长 = {L}"),
-        ("短轴长", (("S", "数值", "例如 4"),), "等于 2b", "短轴长 = {S}"),
-        ("焦距", (("F", "数值", "例如 4"),), "等于 2c，且 c² = a² − b²", "焦距 = {F}"),
+    QT_TRANSLATE_NOOP("expr_calculator", "椭圆"): (
+        (
+            QT_TRANSLATE_NOOP("expr_calculator", "离心率"),
+            (("e", QT_TRANSLATE_NOOP("expr_calculator", "数值"), QT_TRANSLATE_NOOP("expr_calculator", "例如 1/2")),),
+            QT_TRANSLATE_NOOP("expr_calculator", "0 < e < 1"),
+            QT_TRANSLATE_NOOP("expr_calculator", "离心率 = {e}"),
+        ),
+        (
+            QT_TRANSLATE_NOOP("expr_calculator", "长轴长"),
+            (("L", QT_TRANSLATE_NOOP("expr_calculator", "数值"), QT_TRANSLATE_NOOP("expr_calculator", "例如 6")),),
+            QT_TRANSLATE_NOOP("expr_calculator", "等于 2a"),
+            QT_TRANSLATE_NOOP("expr_calculator", "长轴长 = {L}"),
+        ),
+        (
+            QT_TRANSLATE_NOOP("expr_calculator", "短轴长"),
+            (("S", QT_TRANSLATE_NOOP("expr_calculator", "数值"), QT_TRANSLATE_NOOP("expr_calculator", "例如 4")),),
+            QT_TRANSLATE_NOOP("expr_calculator", "等于 2b"),
+            QT_TRANSLATE_NOOP("expr_calculator", "短轴长 = {S}"),
+        ),
+        (
+            QT_TRANSLATE_NOOP("expr_calculator", "焦距"),
+            (("F", QT_TRANSLATE_NOOP("expr_calculator", "数值"), QT_TRANSLATE_NOOP("expr_calculator", "例如 4")),),
+            QT_TRANSLATE_NOOP("expr_calculator", "等于 2c，且 c² = a² − b²"),
+            QT_TRANSLATE_NOOP("expr_calculator", "焦距 = {F}"),
+        ),
     ),
-    "双曲线": (
-        ("离心率", (("e", "数值", "例如 2"),), "e > 1", "离心率 = {e}"),
-        ("实轴长", (("L", "数值", "例如 4"),), "等于 2a", "实轴长 = {L}"),
-        ("虚轴长", (("S", "数值", "例如 4"),), "等于 2b", "虚轴长 = {S}"),
-        ("焦距", (("F", "数值", "例如 4"),), "等于 2c，且 c² = a² + b²", "焦距 = {F}"),
+    QT_TRANSLATE_NOOP("expr_calculator", "双曲线"): (
+        (
+            QT_TRANSLATE_NOOP("expr_calculator", "离心率"),
+            (("e", QT_TRANSLATE_NOOP("expr_calculator", "数值"), QT_TRANSLATE_NOOP("expr_calculator", "例如 2")),),
+            QT_TRANSLATE_NOOP("expr_calculator", "e > 1"),
+            QT_TRANSLATE_NOOP("expr_calculator", "离心率 = {e}"),
+        ),
+        (
+            QT_TRANSLATE_NOOP("expr_calculator", "实轴长"),
+            (("L", QT_TRANSLATE_NOOP("expr_calculator", "数值"), QT_TRANSLATE_NOOP("expr_calculator", "例如 4")),),
+            QT_TRANSLATE_NOOP("expr_calculator", "等于 2a"),
+            QT_TRANSLATE_NOOP("expr_calculator", "实轴长 = {L}"),
+        ),
+        (
+            QT_TRANSLATE_NOOP("expr_calculator", "虚轴长"),
+            (("S", QT_TRANSLATE_NOOP("expr_calculator", "数值"), QT_TRANSLATE_NOOP("expr_calculator", "例如 4")),),
+            QT_TRANSLATE_NOOP("expr_calculator", "等于 2b"),
+            QT_TRANSLATE_NOOP("expr_calculator", "虚轴长 = {S}"),
+        ),
+        (
+            QT_TRANSLATE_NOOP("expr_calculator", "焦距"),
+            (("F", QT_TRANSLATE_NOOP("expr_calculator", "数值"), QT_TRANSLATE_NOOP("expr_calculator", "例如 4")),),
+            QT_TRANSLATE_NOOP("expr_calculator", "等于 2c，且 c² = a² + b²"),
+            QT_TRANSLATE_NOOP("expr_calculator", "焦距 = {F}"),
+        ),
     ),
-    "抛物线": (
-        ("准线", (("d", "方程或数值", "例如 x=-2"),), "标准形式下使用", "准线 {d}"),
-        ("焦点坐标", (("f", "坐标", "例如 (1, 0)"),), "标准形式下使用", "焦点 {f}"),
+    QT_TRANSLATE_NOOP("expr_calculator", "抛物线"): (
+        (
+            QT_TRANSLATE_NOOP("expr_calculator", "准线"),
+            (("d", QT_TRANSLATE_NOOP("expr_calculator", "方程或数值"), QT_TRANSLATE_NOOP("expr_calculator", "例如 x=-2")),),
+            QT_TRANSLATE_NOOP("expr_calculator", "标准形式下使用"),
+            QT_TRANSLATE_NOOP("expr_calculator", "准线 {d}"),
+        ),
+        (
+            QT_TRANSLATE_NOOP("expr_calculator", "焦点坐标"),
+            (("f", QT_TRANSLATE_NOOP("expr_calculator", "坐标"), QT_TRANSLATE_NOOP("expr_calculator", "例如 (1, 0)")),),
+            QT_TRANSLATE_NOOP("expr_calculator", "标准形式下使用"),
+            QT_TRANSLATE_NOOP("expr_calculator", "焦点 {f}"),
+        ),
     ),
 }
 
@@ -2618,9 +3076,9 @@ STANDARD_PARABOLA_VARIANTS = (0, 1, 2, 3)
 def _numeric_value(text: str):
     value = parse_sympy(text.strip())
     if not isinstance(value, sympy.Expr) or value.free_symbols:
-        raise ValueError("“" + text.strip() + "”不是有效数值")
+        raise ValueError(_t("“{value}”不是有效数值").format(value=text.strip()))
     if value.is_real is False:
-        raise ValueError("“" + text.strip() + "”不是实数")
+        raise ValueError(_t("“{value}”不是实数").format(value=text.strip()))
     return value
 
 
@@ -2628,7 +3086,7 @@ def _coordinate_value(text: str, horizontal: bool):
     cleaned = text.strip().strip("()（）").replace("，", ",")
     parts = [part for part in cleaned.split(",") if part.strip()]
     if not parts:
-        raise ValueError("请填写坐标，例如 (1, 0)")
+        raise ValueError(_t("请填写坐标，例如 (1, 0)"))
     values = [_numeric_value(part) for part in parts]
     if len(values) == 1:
         return values[0]
@@ -2643,7 +3101,7 @@ def _directrix_value(text: str):
             left, right = right, left
         expression = left
     if expression.free_symbols:
-        raise ValueError("准线应写成 x=-2 或 y=1 这样的形式")
+        raise ValueError(_t("准线应写成 x=-2 或 y=1 这样的形式"))
     return expression
 
 
@@ -2718,10 +3176,10 @@ def _condition_equations(type_name, name, variant, param_names, base_expression,
         if isinstance(expression, sympy.Eq):
             expression = expression.lhs - expression.rhs
         if not isinstance(expression, sympy.Expr):
-            raise ValueError("关系式无法解析")
+            raise ValueError(_t("关系式无法解析"))
         extra = expression.free_symbols - set(params.values())
         if extra:
-            raise ValueError("关系式只能包含参数：" + "、".join(param_names))
+            raise ValueError(_t("关系式只能包含参数：") + "、".join(param_names))
         return [expression]
     if name == "斜率":
         value = _numeric_value(values["k"])
@@ -2738,36 +3196,36 @@ def _condition_equations(type_name, name, variant, param_names, base_expression,
         if isinstance(line, sympy.Eq):
             line = line.lhs - line.rhs
         if not isinstance(line, sympy.Expr):
-            raise ValueError("直线方程无法解析")
+            raise ValueError(_t("直线方程无法解析"))
         return [line.subs({x: params["a"], y: params["b"]})]
     if name == "半径":
         value = _numeric_value(values["r"])
         if not value > 0:
-            raise ValueError("半径必须是正数")
+            raise ValueError(_t("半径必须是正数"))
         return [params["r"] - value]
     if name == "离心率":
         value = _numeric_value(values["e"])
         if type_name == "椭圆":
             if not 0 < value < 1:
-                raise ValueError("椭圆的离心率需满足 0 < e < 1")
+                raise ValueError(_t("椭圆的离心率需满足 0 < e < 1"))
             return [params["a"] ** 2 * (1 - value ** 2) - params["b"] ** 2]
         if not value > 1:
-            raise ValueError("双曲线的离心率需大于 1")
+            raise ValueError(_t("双曲线的离心率需大于 1"))
         return [params["a"] ** 2 * (value ** 2 - 1) - params["b"] ** 2]
     if name in ("长轴长", "实轴长"):
         value = _numeric_value(values["L"])
         if not value > 0:
-            raise ValueError("轴长必须是正数")
+            raise ValueError(_t("轴长必须是正数"))
         return [2 * params["a"] - value]
     if name in ("短轴长", "虚轴长"):
         value = _numeric_value(values["S"])
         if not value > 0:
-            raise ValueError("轴长必须是正数")
+            raise ValueError(_t("轴长必须是正数"))
         return [2 * params["b"] - value]
     if name == "焦距":
         value = _numeric_value(values["F"])
         if not value > 0:
-            raise ValueError("焦距必须是正数")
+            raise ValueError(_t("焦距必须是正数"))
         if type_name == "椭圆":
             return [params["a"] ** 2 - params["b"] ** 2 - (value / 2) ** 2]
         return [params["a"] ** 2 + params["b"] ** 2 - (value / 2) ** 2]
@@ -2780,7 +3238,7 @@ def _condition_equations(type_name, name, variant, param_names, base_expression,
         value = _coordinate_value(values["f"], horizontal)
         sign = 2 if variant in (0, 2) else -2
         return [params["p"] - sign * value]
-    raise ValueError("未知条件：" + name)
+    raise ValueError(_t("未知条件：") + name)
 
 
 def _tidy_expression(expression):
@@ -2835,7 +3293,7 @@ class CommonEquationDialog(QDialog):
 
     def __init__(self, parent=None) -> None:
         super().__init__(parent)
-        self.setWindowTitle("添加常用方程")
+        self.setWindowTitle(_t("添加常用方程"))
         self.resize(820, 520)
         self.setModal(True)
 
@@ -2852,35 +3310,35 @@ class CommonEquationDialog(QDialog):
         columns = QHBoxLayout()
         columns.setSpacing(10)
 
-        method_box = QGroupBox("添加方式", self)
+        method_box = QGroupBox(_t("添加方式"), self)
         method_layout = QVBoxLayout(method_box)
         method_layout.setContentsMargins(8, 8, 8, 8)
         self.method_list = QListWidget(method_box)
-        self.method_list.addItem(QListWidgetItem("直接输入参数"))
-        self.method_list.addItem(QListWidgetItem("通过条件创建"))
+        self.method_list.addItem(QListWidgetItem(_t("直接输入参数")))
+        self.method_list.addItem(QListWidgetItem(_t("通过条件创建")))
         self.method_list.setCurrentRow(0)
         method_layout.addWidget(self.method_list, 1)
-        self.method_hint = self._hint_label("直接填写参数数值")
+        self.method_hint = self._hint_label(_t("直接填写参数数值"))
         method_layout.addWidget(self.method_hint)
         method_box.setFixedWidth(150)
 
-        self.type_box = QGroupBox("方程类型", self)
+        self.type_box = QGroupBox(_t("方程类型"), self)
         type_layout = QVBoxLayout(self.type_box)
         type_layout.setContentsMargins(8, 8, 8, 8)
         self.type_list = QListWidget(self.type_box)
         for name, _variants in COMMON_EQUATIONS:
-            self.type_list.addItem(QListWidgetItem(name))
+            self.type_list.addItem(QListWidgetItem(_t(name)))
         type_layout.addWidget(self.type_list, 1)
         self.type_box.setFixedWidth(150)
 
-        self.param_box = QGroupBox("参数", self)
+        self.param_box = QGroupBox(_t("参数"), self)
         param_layout = QVBoxLayout(self.param_box)
         param_layout.setContentsMargins(10, 8, 10, 8)
         param_layout.setSpacing(8)
 
         form_row = QHBoxLayout()
         form_row.setSpacing(8)
-        form_row.addWidget(QLabel("形式"))
+        form_row.addWidget(QLabel(_t("形式")))
         self.variant_combo = QComboBox(self.param_box)
         form_row.addWidget(self.variant_combo, 1)
         param_layout.addLayout(form_row)
@@ -2909,10 +3367,10 @@ class CommonEquationDialog(QDialog):
 
         pick_row = QHBoxLayout()
         pick_row.setSpacing(6)
-        pick_row.addWidget(QLabel("条件"))
+        pick_row.addWidget(QLabel(_t("条件")))
         self.condition_combo = QComboBox(self.condition_page)
         pick_row.addWidget(self.condition_combo, 1)
-        self.add_condition_button = QPushButton("添加", self.condition_page)
+        self.add_condition_button = QPushButton(_t("添加"), self.condition_page)
         self.add_condition_button.setFixedHeight(24)
         self.add_condition_button.clicked.connect(self._add_condition)
         pick_row.addWidget(self.add_condition_button)
@@ -2932,14 +3390,14 @@ class CommonEquationDialog(QDialog):
 
         remove_row = QHBoxLayout()
         remove_row.setSpacing(6)
-        self.remove_condition_button = QPushButton("删除选中条件", self.condition_page)
+        self.remove_condition_button = QPushButton(_t("删除选中条件"), self.condition_page)
         self.remove_condition_button.setFixedHeight(24)
         self.remove_condition_button.clicked.connect(self._remove_condition)
         remove_row.addWidget(self.remove_condition_button)
         remove_row.addStretch(1)
         condition_layout.addLayout(remove_row)
 
-        self.condition_hint = self._hint_label("添加一个或多个条件，确定后联立求解参数")
+        self.condition_hint = self._hint_label(_t("添加一个或多个条件，确定后联立求解参数"))
         condition_layout.addWidget(self.condition_hint)
         self.stack.addWidget(self.condition_page)
 
@@ -2951,8 +3409,8 @@ class CommonEquationDialog(QDialog):
         layout.addLayout(columns, 1)
 
         box = QDialogButtonBox(self)
-        box.addButton("确定", QDialogButtonBox.ButtonRole.AcceptRole)
-        box.addButton("取消", QDialogButtonBox.ButtonRole.RejectRole)
+        box.addButton(_t("确定"), QDialogButtonBox.ButtonRole.AcceptRole)
+        box.addButton(_t("取消"), QDialogButtonBox.ButtonRole.RejectRole)
         box.accepted.connect(self.accept)
         box.rejected.connect(self.reject)
         layout.addWidget(box)
@@ -2967,7 +3425,7 @@ class CommonEquationDialog(QDialog):
         label = QLabel(text)
         label.setObjectName("commonHint")
         label.setWordWrap(True)
-        label.setStyleSheet("QLabel#commonHint {color: #57606a; font-size: 12px;}")
+        label.setStyleSheet(_qss("QLabel#commonHint {color: @hint-ink@; font-size: 12px;}"))
         return label
 
     def _cache_owner(self):
@@ -2990,14 +3448,14 @@ class CommonEquationDialog(QDialog):
         if row < 0:
             return
         if row == 0:
-            self.type_box.setTitle("方程类型")
-            self.param_box.setTitle("参数")
-            self.method_hint.setText("直接填写参数数值")
+            self.type_box.setTitle(_t("方程类型"))
+            self.param_box.setTitle(_t("参数"))
+            self.method_hint.setText(_t("直接填写参数数值"))
             self.stack.setCurrentWidget(self.param_page)
             return
-        self.type_box.setTitle("创建对象")
-        self.param_box.setTitle("条件")
-        self.method_hint.setText("用条件反推参数")
+        self.type_box.setTitle(_t("创建对象"))
+        self.param_box.setTitle(_t("条件"))
+        self.method_hint.setText(_t("用条件反推参数"))
         self.stack.setCurrentWidget(self.condition_page)
         self._rebuild_condition_combo()
 
@@ -3008,7 +3466,7 @@ class CommonEquationDialog(QDialog):
         self.variant_combo.blockSignals(True)
         self.variant_combo.clear()
         for label, _template, _names, _hint in COMMON_EQUATIONS[row][1]:
-            self.variant_combo.addItem(label)
+            self.variant_combo.addItem(_t(label))
         self.variant_combo.setCurrentIndex(0)
         self.variant_combo.blockSignals(False)
         self._conditions = []
@@ -3034,12 +3492,12 @@ class CommonEquationDialog(QDialog):
         _label, _template, names, hint = self._current_variant()
         for name in names:
             edit = QLineEdit(self.param_area)
-            edit.setPlaceholderText("留空保留 " + name)
+            edit.setPlaceholderText(_t("留空保留 {name}").format(name=name))
             edit.setText(self._values.get(name, ""))
             edit.returnPressed.connect(self.accept)
             self.param_form.addRow(name + " =", edit)
             self._edits[name] = edit
-        self.hint_label.setText(hint + "；留空表示保留该参数符号。")
+        self.hint_label.setText(_t(hint) + _t("；留空表示保留该参数符号。"))
         _wire_line_edits(self.param_area, self._cache_owner())
         if self._edits:
             next(iter(self._edits.values())).setFocus()
@@ -3061,7 +3519,7 @@ class CommonEquationDialog(QDialog):
         self.condition_combo.blockSignals(True)
         self.condition_combo.clear()
         for entry in self._available_conditions():
-            self.condition_combo.addItem(entry[0])
+            self.condition_combo.addItem(_t(entry[0]), entry[0])
         self.condition_combo.blockSignals(False)
         self._rebuild_condition_fields()
 
@@ -3072,20 +3530,20 @@ class CommonEquationDialog(QDialog):
         while self.condition_form.rowCount():
             self.condition_form.removeRow(0)
         self._condition_edits = {}
-        entry = self._condition_spec(self.condition_combo.currentText())
+        entry = self._condition_spec(self.condition_combo.currentData())
         if entry is None:
             return
         _name, fields, hint, _template = entry
         for key, label, placeholder in fields:
             edit = QLineEdit(self.condition_area)
-            edit.setPlaceholderText(placeholder)
-            self.condition_form.addRow(label, edit)
+            edit.setPlaceholderText(_t(placeholder))
+            self.condition_form.addRow(_t(label), edit)
             self._condition_edits[key] = edit
         _wire_line_edits(self.condition_area, self._cache_owner())
         if self._condition_edits:
             next(iter(self._condition_edits.values())).setFocus()
         if not self._conditions:
-            self.condition_hint.setText(hint)
+            self.condition_hint.setText(_t(hint))
 
     def _condition_preview(self, name: str, values: dict):
         _label, template, names, _hint = self._current_variant()
@@ -3100,27 +3558,27 @@ class CommonEquationDialog(QDialog):
         )
 
     def _add_condition(self) -> None:
-        entry = self._condition_spec(self.condition_combo.currentText())
+        entry = self._condition_spec(self.condition_combo.currentData())
         if entry is None:
             return
         name, fields, hint, _template = entry
         values = {key: edit.text().strip() for key, edit in self._condition_edits.items()}
         if not any(values.values()):
-            self.condition_hint.setText("请先填写条件数值")
+            self.condition_hint.setText(_t("请先填写条件数值"))
             return
         if any(not text for text in values.values()):
-            self.condition_hint.setText("条件填写不完整，请补全或清空")
+            self.condition_hint.setText(_t("条件填写不完整，请补全或清空"))
             return
         try:
             self._condition_preview(name, values)
         except Exception as exc:
-            self.condition_hint.setText("条件不可用：" + str(exc))
+            self.condition_hint.setText(_t("条件不可用：") + str(exc))
             return
         self._conditions.append({"name": name, "values": values})
         for edit in self._condition_edits.values():
             edit.clear()
         self._refresh_condition_list()
-        self.condition_hint.setText(hint)
+        self.condition_hint.setText(_t(hint))
 
     def _refresh_condition_list(self) -> None:
         self.condition_list.clear()
@@ -3128,7 +3586,7 @@ class CommonEquationDialog(QDialog):
             entry = self._condition_spec(item["name"])
             if entry is None:
                 continue
-            self.condition_list.addItem(QListWidgetItem(entry[3].format(**item["values"])))
+            self.condition_list.addItem(QListWidgetItem(_t(entry[3]).format(**item["values"])))
 
     def _remove_condition(self) -> None:
         row = self.condition_list.currentRow()
@@ -3154,19 +3612,19 @@ class CommonEquationDialog(QDialog):
     def build_tree(self) -> Expr:
         equation = parse_sympy(self.build_text(), evaluate=False)
         if not isinstance(equation, sympy.Eq):
-            raise ValueError("生成的不是方程，请检查参数")
+            raise ValueError(_t("生成的不是方程，请检查参数"))
         try:
             return from_sympy(_tidy_expression(equation), ordered=False)
         except ZeroDivisionError:
-            raise ValueError("参数取值使分母为 0，请检查 a、b 等分母参数") from None
+            raise ValueError(_t("参数取值使分母为 0，请检查 a、b 等分母参数")) from None
 
     def build_condition_trees(self) -> list:
         if not self._conditions:
-            raise ValueError("请至少添加一个条件")
+            raise ValueError(_t("请至少添加一个条件"))
         _label, template, names, _hint = self._current_variant()
         base_equation = parse_sympy(template.format(**{key: key for key in names}), evaluate=False)
         if not isinstance(base_equation, sympy.Eq):
-            raise ValueError("方程形式无法解析")
+            raise ValueError(_t("方程形式无法解析"))
         equations = []
         for item in self._conditions:
             equations.extend(self._condition_preview(item["name"], item["values"]))
@@ -3174,9 +3632,9 @@ class CommonEquationDialog(QDialog):
         try:
             solutions = sympy.solve(equations, unknowns, dict=True)
         except Exception as exc:
-            raise ValueError("联立求解失败：" + str(exc)) from None
+            raise ValueError(_t("联立求解失败：") + str(exc)) from None
         if not solutions:
-            raise ValueError("这些条件互相矛盾，或不足以确定参数")
+            raise ValueError(_t("这些条件互相矛盾，或不足以确定参数"))
         is_general_line = self._current_type() == "直线" and self._variant_index() == 0
         protected = {"a", "b", "r", "p"}
         trees = []
@@ -3205,11 +3663,11 @@ class CommonEquationDialog(QDialog):
         if not trees:
             if rejected:
                 raise ValueError(
-                    "这些条件在实数范围内无解：解出的半轴为虚数或为零。\n"
-                    "椭圆需要 焦距 < 长轴长 且 0 < e < 1；"
-                    "双曲线需要 焦距 > 实轴长 且 e > 1。"
+                    _t("这些条件在实数范围内无解：解出的半轴为虚数或为零。\n"
+                       "椭圆需要 焦距 < 长轴长 且 0 < e < 1；"
+                       "双曲线需要 焦距 > 实轴长 且 e > 1。")
                 )
-            raise ValueError("条件没有产生新的方程")
+            raise ValueError(_t("条件没有产生新的方程"))
         return trees
 
     def build_trees(self) -> list:
@@ -3221,7 +3679,7 @@ class CommonEquationDialog(QDialog):
         try:
             self.result_trees = self.build_trees()
         except Exception as exc:
-            QMessageBox.warning(self, "无法生成方程", str(exc))
+            QMessageBox.warning(self, _t("无法生成方程"), str(exc))
             return
         super().accept()
 
@@ -3234,7 +3692,7 @@ class ExpressionPairDialog(QDialog):
         self.covered = covered
         self.dragged = dragged
         self.result_tree = None
-        self.setWindowTitle("组合表达式")
+        self.setWindowTitle(_t("组合表达式"))
         self.resize(560, 320)
         self.setModal(True)
 
@@ -3242,16 +3700,16 @@ class ExpressionPairDialog(QDialog):
         layout.setContentsMargins(16, 16, 16, 12)
         layout.setSpacing(10)
 
-        layout.addWidget(self._pair_label("A（被覆盖）", covered))
-        layout.addWidget(self._pair_label("B（拖拽）", dragged))
+        layout.addWidget(self._pair_label(_t("A（被覆盖）"), covered))
+        layout.addWidget(self._pair_label(_t("B（拖拽）"), dragged))
 
-        hint = QLabel("输入含 A、B 的表达式或方程：A 表示被覆盖的表达式，B 表示拖拽的表达式。例如 A+B、A*B、A=B。")
+        hint = QLabel(_t("输入含 A、B 的表达式或方程：A 表示被覆盖的表达式，B 表示拖拽的表达式。例如 A+B、A*B、A=B。"))
         hint.setObjectName("pairHint")
         hint.setWordWrap(True)
         layout.addWidget(hint)
 
         self.input_edit = QLineEdit(self)
-        self.input_edit.setPlaceholderText("例如：A+B 或 A*B")
+        self.input_edit.setPlaceholderText(_t("例如：A+B 或 A*B"))
         self.input_edit.textChanged.connect(self._update_preview)
         self.input_edit.returnPressed.connect(self.accept)
         layout.addWidget(self.input_edit)
@@ -3263,13 +3721,13 @@ class ExpressionPairDialog(QDialog):
         layout.addStretch(1)
 
         box = QDialogButtonBox(self)
-        box.addButton("确定", QDialogButtonBox.ButtonRole.AcceptRole)
-        box.addButton("取消", QDialogButtonBox.ButtonRole.RejectRole)
+        box.addButton(_t("确定"), QDialogButtonBox.ButtonRole.AcceptRole)
+        box.addButton(_t("取消"), QDialogButtonBox.ButtonRole.RejectRole)
         box.accepted.connect(self.accept)
         box.rejected.connect(self.reject)
         layout.addWidget(box)
 
-        self.setStyleSheet("QLabel#pairHint {color: #57606a; font-size: 12px;}")
+        self.setStyleSheet(_qss("QLabel#pairHint {color: @hint-ink@; font-size: 12px;}"))
         _wire_line_edits(self, parent if parent is not None else self)
         self.input_edit.setFocus()
 
@@ -3277,25 +3735,25 @@ class ExpressionPairDialog(QDialog):
         text = str(tree)
         if len(text) > 70:
             text = text[:68] + "…"
-        label = QLabel(title + "：<b>" + html_lib.escape(text) + "</b>")
+        label = QLabel(_t("{title}：<b>{text}</b>").format(title=title, text=html_lib.escape(text)))
         label.setWordWrap(True)
         return label
 
     def _build_tree(self):
         text = self.input_edit.text().strip()
         if not text:
-            raise ValueError("请输入含 A、B 的表达式或方程")
+            raise ValueError(_t("请输入含 A、B 的表达式或方程"))
         local = {"A": sympy.Symbol("A"), "B": sympy.Symbol("B")}
         try:
             template = from_sympy(parse_sympy(text, local, evaluate=False), ordered=False)
         except Exception:
-            raise ValueError("表达式无法解析：只能使用 A、B 和常数") from None
+            raise ValueError(_t("表达式无法解析：只能使用 A、B 和常数")) from None
         names = {symbol.name for symbol in template.free_symbols}
         extra = names - {"A", "B"}
         if extra:
-            raise ValueError("只能使用 A、B 和常数，不能出现：" + "、".join(sorted(extra)))
+            raise ValueError(_t("只能使用 A、B 和常数，不能出现：") + "、".join(sorted(extra)))
         if not names:
-            raise ValueError("请输入含 A、B 的表达式或方程")
+            raise ValueError(_t("请输入含 A、B 的表达式或方程"))
         result = template.subs(Symbol("A"), self.covered.copy())
         return result.subs(Symbol("B"), self.dragged.copy())
 
@@ -3308,13 +3766,13 @@ class ExpressionPairDialog(QDialog):
         preview = str(result)
         if len(preview) > 90:
             preview = preview[:88] + "…"
-        self.preview_label.setText("预览：" + preview)
+        self.preview_label.setText(_t("预览：") + preview)
 
     def accept(self) -> None:
         try:
             self.result_tree = self._build_tree()
         except Exception as exc:
-            QMessageBox.warning(self, "无法组合", str(exc))
+            QMessageBox.warning(self, _t("无法组合"), str(exc))
             return
         super().accept()
 
@@ -3322,33 +3780,50 @@ class ExpressionPairDialog(QDialog):
 GEOMETRY_TYPES = (
     (
         "distance",
-        "点到直线距离",
-        "点 P 到直线的距离",
-        (("点 P", "point", "p"), ("直线", "line", "line")),
+        QT_TRANSLATE_NOOP("expr_calculator", "点到直线距离"),
+        QT_TRANSLATE_NOOP("expr_calculator", "点 P 到直线的距离"),
+        (
+            (QT_TRANSLATE_NOOP("expr_calculator", "点 P"), "point", "p"),
+            (QT_TRANSLATE_NOOP("expr_calculator", "直线"), "line", "line"),
+        ),
     ),
     (
         "intersection",
-        "两直线交点",
-        "两条直线的交点坐标",
-        (("直线 1", "line", "line1"), ("直线 2", "line", "line2")),
+        QT_TRANSLATE_NOOP("expr_calculator", "两直线交点"),
+        QT_TRANSLATE_NOOP("expr_calculator", "两条直线的交点坐标"),
+        (
+            (QT_TRANSLATE_NOOP("expr_calculator", "直线 1"), "line", "line1"),
+            (QT_TRANSLATE_NOOP("expr_calculator", "直线 2"), "line", "line2"),
+        ),
     ),
     (
         "midpoint",
-        "交点线段中点",
-        "直线与二次曲线的两个交点为端点的线段中点",
-        (("直线", "line", "line"), ("二次曲线", "curve", "curve")),
+        QT_TRANSLATE_NOOP("expr_calculator", "交点线段中点"),
+        QT_TRANSLATE_NOOP("expr_calculator", "直线与二次曲线的两个交点为端点的线段中点"),
+        (
+            (QT_TRANSLATE_NOOP("expr_calculator", "直线"), "line", "line"),
+            (QT_TRANSLATE_NOOP("expr_calculator", "二次曲线"), "curve", "curve"),
+        ),
     ),
     (
         "area3",
-        "三角形面积（三点）",
-        "三个点围成的三角形面积",
-        (("点 P1", "point", "p1"), ("点 P2", "point", "p2"), ("点 P3", "point", "p3")),
+        QT_TRANSLATE_NOOP("expr_calculator", "三角形面积（三点）"),
+        QT_TRANSLATE_NOOP("expr_calculator", "三个点围成的三角形面积"),
+        (
+            (QT_TRANSLATE_NOOP("expr_calculator", "点 P1"), "point", "p1"),
+            (QT_TRANSLATE_NOOP("expr_calculator", "点 P2"), "point", "p2"),
+            (QT_TRANSLATE_NOOP("expr_calculator", "点 P3"), "point", "p3"),
+        ),
     ),
     (
         "area_lc",
-        "三角形面积（直线+曲线+点）",
-        "直线与曲线的两个交点，再与给定点围成三角形",
-        (("直线", "line", "line"), ("二次曲线", "curve", "curve"), ("点 P", "point", "p")),
+        QT_TRANSLATE_NOOP("expr_calculator", "三角形面积（直线+曲线+点）"),
+        QT_TRANSLATE_NOOP("expr_calculator", "直线与曲线的两个交点，再与给定点围成三角形"),
+        (
+            (QT_TRANSLATE_NOOP("expr_calculator", "直线"), "line", "line"),
+            (QT_TRANSLATE_NOOP("expr_calculator", "二次曲线"), "curve", "curve"),
+            (QT_TRANSLATE_NOOP("expr_calculator", "点 P"), "point", "p"),
+        ),
     ),
 )
 
@@ -3358,17 +3833,17 @@ def _line_expression(text: str):
     if isinstance(expression, sympy.Eq):
         expression = expression.lhs - expression.rhs
     if not isinstance(expression, sympy.Expr):
-        raise ValueError("直线方程无法解析")
+        raise ValueError(_t("直线方程无法解析"))
     expression = sympy.expand(expression)
     x, y = sympy.Symbol("x"), sympy.Symbol("y")
     try:
         polynomial = sympy.Poly(expression, x, y)
     except sympy.PolynomialError:
-        raise ValueError("直线方程必须是 x、y 的一次式") from None
+        raise ValueError(_t("直线方程必须是 x、y 的一次式")) from None
     if polynomial.total_degree() > 1:
-        raise ValueError("直线方程必须是 x、y 的一次式")
+        raise ValueError(_t("直线方程必须是 x、y 的一次式"))
     if polynomial.total_degree() == 0:
-        raise ValueError("直线方程不能是常数")
+        raise ValueError(_t("直线方程不能是常数"))
     return expression
 
 
@@ -3388,7 +3863,7 @@ def _curve_expression(text: str):
     if isinstance(expression, sympy.Eq):
         expression = expression.lhs - expression.rhs
     if not isinstance(expression, sympy.Expr):
-        raise ValueError("曲线方程无法解析")
+        raise ValueError(_t("曲线方程无法解析"))
     return sympy.expand(expression)
 
 
@@ -3396,7 +3871,7 @@ def _intersections(first, second, x, y):
     try:
         solutions = sympy.solve([first, second], [x, y], dict=True)
     except Exception as exc:
-        raise ValueError("求解交点失败：" + str(exc)) from None
+        raise ValueError(_t("求解交点失败：") + str(exc)) from None
     points = []
     seen = set()
     for solution in solutions:
@@ -3435,7 +3910,7 @@ class GeometryDialog(QDialog):
         self.expressions = list(expressions or [])
         self.result_tree = None
         self._widgets = {}
-        self.setWindowTitle("添加几何表达式")
+        self.setWindowTitle(_t("添加几何表达式"))
         self.resize(600, 380)
         self.setModal(True)
 
@@ -3445,10 +3920,10 @@ class GeometryDialog(QDialog):
 
         type_row = QHBoxLayout()
         type_row.setSpacing(8)
-        type_row.addWidget(QLabel("几何量"))
+        type_row.addWidget(QLabel(_t("几何量")))
         self.type_combo = QComboBox(self)
         for _key, label, _hint, _fields in GEOMETRY_TYPES:
-            self.type_combo.addItem(label)
+            self.type_combo.addItem(_t(label))
         type_row.addWidget(self.type_combo, 1)
         layout.addLayout(type_row)
 
@@ -3467,13 +3942,13 @@ class GeometryDialog(QDialog):
         layout.addStretch(1)
 
         box = QDialogButtonBox(self)
-        box.addButton("确定", QDialogButtonBox.ButtonRole.AcceptRole)
-        box.addButton("取消", QDialogButtonBox.ButtonRole.RejectRole)
+        box.addButton(_t("确定"), QDialogButtonBox.ButtonRole.AcceptRole)
+        box.addButton(_t("取消"), QDialogButtonBox.ButtonRole.RejectRole)
         box.accepted.connect(self.accept)
         box.rejected.connect(self.reject)
         layout.addWidget(box)
 
-        self.setStyleSheet("QLabel#geometryHint {color: #57606a; font-size: 12px;}")
+        self.setStyleSheet(_qss("QLabel#geometryHint {color: @hint-ink@; font-size: 12px;}"))
         self.type_combo.currentIndexChanged.connect(self._rebuild_fields)
         self._rebuild_fields()
 
@@ -3487,15 +3962,15 @@ class GeometryDialog(QDialog):
         return combo
 
     def _point_combo(self):
-        return self._editable_combo(self.points, "输入坐标 (a, b)，或从下拉选择已有的点")
+        return self._editable_combo(self.points, _t("输入坐标 (a, b)，或从下拉选择已有的点"))
 
     def _line_combo(self):
-        return self._editable_combo(self.equations, "输入直线方程，或从下拉选择已有的方程卡片")
+        return self._editable_combo(self.equations, _t("输入直线方程，或从下拉选择已有的方程卡片"))
 
     def _curve_combo(self):
         items = list(self.equations)
         items.extend(text for text in self.expressions if text not in items)
-        return self._editable_combo(items, "输入曲线方程，或从下拉选择已有的卡片")
+        return self._editable_combo(items, _t("输入曲线方程，或从下拉选择已有的卡片"))
 
     def _rebuild_fields(self, *_args) -> None:
         while self.form.rowCount():
@@ -3509,9 +3984,9 @@ class GeometryDialog(QDialog):
                 widget = self._line_combo()
             else:
                 widget = self._curve_combo()
-            self.form.addRow(label, widget)
+            self.form.addRow(_t(label), widget)
             self._widgets[name] = widget
-        self.hint_label.setText(spec[2])
+        self.hint_label.setText(_t(spec[2]))
         _wire_line_edits(self.form_area, self._cache_owner())
         if self._widgets:
             next(iter(self._widgets.values())).setFocus()
@@ -3520,7 +3995,7 @@ class GeometryDialog(QDialog):
         text = combo.currentText().strip()
         parsed = _parse_point_text(text)
         if parsed is None:
-            raise ValueError("点坐标应写成 (a, b)，当前为：" + (text or "空"))
+            raise ValueError(_t("点坐标应写成 (a, b)，当前为：") + (text or _t("空")))
         return parsed[0].to_sympy(), parsed[1].to_sympy()
 
     def _cache_owner(self):
@@ -3541,14 +4016,14 @@ class GeometryDialog(QDialog):
             second = _line_expression(widgets["line2"].currentText())
             points = _intersections(first, second, x, y)
             if not points:
-                raise ValueError("两条直线没有交点（可能平行）")
+                raise ValueError(_t("两条直线没有交点（可能平行）"))
             return Point(from_sympy(points[0][0], ordered=True), from_sympy(points[0][1], ordered=True))
         if key == "midpoint":
             line = _line_expression(widgets["line"].currentText())
             curve = _curve_expression(widgets["curve"].currentText())
             points = _intersections(line, curve, x, y)
             if len(points) != 2:
-                raise ValueError("直线与二次曲线应有 2 个交点，实际得到 " + str(len(points)) + " 个")
+                raise ValueError(_t("直线与二次曲线应有 2 个交点，实际得到 {count} 个").format(count=len(points)))
             middle_x = sympy.simplify((points[0][0] + points[1][0]) / 2)
             middle_y = sympy.simplify((points[0][1] + points[1][1]) / 2)
             return Point(from_sympy(middle_x, ordered=True), from_sympy(middle_y, ordered=True))
@@ -3562,25 +4037,30 @@ class GeometryDialog(QDialog):
             curve = _curve_expression(widgets["curve"].currentText())
             points = _intersections(line, curve, x, y)
             if len(points) != 2:
-                raise ValueError("直线与二次曲线应有 2 个交点，实际得到 " + str(len(points)) + " 个")
+                raise ValueError(_t("直线与二次曲线应有 2 个交点，实际得到 {count} 个").format(count=len(points)))
             third = self._point_value(widgets["p"])
             value = _triangle_area(points[0], points[1], third)
             return from_sympy(value, ordered=True)
-        raise ValueError("未知几何量")
+        raise ValueError(_t("未知几何量"))
 
     def accept(self) -> None:
         try:
             self.result_tree = self._compute()
         except Exception as exc:
-            QMessageBox.warning(self, "无法计算", str(exc))
+            QMessageBox.warning(self, _t("无法计算"), str(exc))
             return
         super().accept()
 
 
 class MainWindow(QMainWindow):
+    SELECTION_HINT = QT_TRANSLATE_NOOP(
+        "expr_calculator",
+        "拖拽左上角红圈移动表达式 · 点击 + / − 交换相邻项 · 点击括号展开 · 点击节点查看结构",
+    )
+
     def __init__(self) -> None:
         super().__init__()
-        self.setWindowTitle("表达式画布 — 分层着色、节点操作与拖拽布局")
+        self.setWindowTitle(_t("表达式画布 — 分层着色、节点操作与拖拽布局"))
         self.resize(1060, 860)
         self._items: list[CanvasItem] = []
         self._item_infos: dict = {}
@@ -3600,6 +4080,7 @@ class MainWindow(QMainWindow):
         self.fs: dict = {}
         self._titles: dict = {}
         self._range_cache: dict = {}
+        self.theme = _normalize_theme()
         self._build_ui()
         self.view.loadFinished.connect(self._on_page_loaded)
 
@@ -3609,14 +4090,15 @@ class MainWindow(QMainWindow):
         layout.setContentsMargins(18, 14, 18, 12)
         layout.setSpacing(8)
 
-        hint = QLabel("输入表达式或方程（如 x^2=4），按回车或点击“添加”加入画布")
+        hint = QLabel(_t("输入表达式或方程（如 x^2=4），按回车或点击“添加”加入画布"))
         hint.setObjectName("hint")
+        self.hint_label = hint
 
-        self.count_label = QLabel("0 个表达式")
+        self.count_label = QLabel(_t("{count} 个表达式").format(count=0))
         self.count_label.setObjectName("count")
 
-        self.undo_button = QPushButton("撤销")
-        self.redo_button = QPushButton("重做")
+        self.undo_button = QPushButton(_t("撤销"))
+        self.redo_button = QPushButton(_t("重做"))
         for button in (self.undo_button, self.redo_button):
             button.setObjectName("history")
             button.setFixedHeight(26)
@@ -3625,13 +4107,13 @@ class MainWindow(QMainWindow):
         self.undo_button.clicked.connect(self.undo)
         self.redo_button.clicked.connect(self.redo)
 
-        self.equation_button = QPushButton("添加常用方程")
+        self.equation_button = QPushButton(_t("添加常用方程"))
         self.equation_button.setObjectName("equation")
         self.equation_button.setFixedHeight(26)
         self.equation_button.setCursor(Qt.PointingHandCursor)
         self.equation_button.clicked.connect(self._on_common_equation)
 
-        self.geometry_button = QPushButton("添加几何表达式")
+        self.geometry_button = QPushButton(_t("添加几何表达式"))
         self.geometry_button.setObjectName("geometry")
         self.geometry_button.setFixedHeight(26)
         self.geometry_button.setCursor(Qt.PointingHandCursor)
@@ -3651,11 +4133,11 @@ class MainWindow(QMainWindow):
         top_row.addWidget(self.redo_button)
 
         self.input = QLineEdit()
-        self.input.setPlaceholderText("例如：2*(x+1) + 1/(x-1) 或 x^2=4")
+        self.input.setPlaceholderText(_t("例如：2*(x+1) + 1/(x-1) 或 x^2=4"))
         self.input.setText("2*(x+1) + 1/(x-1)")
         self.input.returnPressed.connect(self.add_current)
 
-        self.add_button = QPushButton("添加")
+        self.add_button = QPushButton(_t("添加"))
         self.add_button.setObjectName("add")
         self.add_button.setFixedHeight(36)
         self.add_button.setCursor(Qt.PointingHandCursor)
@@ -3682,7 +4164,7 @@ class MainWindow(QMainWindow):
         self.detail_view = QPlainTextEdit()
         self.detail_view.setObjectName("detail")
         self.detail_view.setReadOnly(True)
-        self.detail_view.setPlaceholderText("点击画布中的节点，查看其自定义结构与 SymPy 表达式")
+        self.detail_view.setPlaceholderText(_t("点击画布中的节点，查看其自定义结构与 SymPy 表达式"))
         self.detail_view.setMinimumHeight(60)
         self.detail_view.setMaximumHeight(92)
 
@@ -3703,57 +4185,7 @@ class MainWindow(QMainWindow):
         layout.addWidget(self.status_label)
 
         self.setCentralWidget(central)
-        self.setStyleSheet(
-            """
-            QWidget {background: #ffffff; color: #1f2328; font-size: 14px;}
-            QLabel#hint {color: #57606a;}
-            QLabel#count {color: #57606a; font-size: 12px;}
-            QLineEdit {
-                border: 1px solid #d0d7de; border-radius: 6px;
-                padding: 7px 10px; font-size: 15px;
-                selection-background-color: #b6e3ff;
-            }
-            QLineEdit:focus {border-color: #0969da;}
-            QPlainTextEdit#detail {
-                border: 1px solid #d0d7de; border-radius: 6px;
-                background: #f6f8fa; color: #24292f;
-                font-family: Consolas, "Courier New", monospace;
-                font-size: 12px; padding: 4px 6px;
-            }
-            QLabel#selection {color: #57606a; font-size: 13px;}
-            QLabel#status {color: #cf222e; font-size: 13px;}
-            QPushButton#history {
-                border: 1px solid #d0d7de; border-radius: 6px;
-                padding: 2px 12px; background: #f6f8fa; color: #24292f;
-                font-size: 12px;
-            }
-            QPushButton#history:hover {background: #eaeef2;}
-            QPushButton#history:pressed {background: #dfe3e6;}
-            QPushButton#history:disabled {color: #8c959f; background: #ffffff;}
-            QPushButton#equation, QPushButton#geometry {
-                border: 1px solid #d0d7de; border-radius: 6px;
-                padding: 2px 12px; background: #ffffff; color: #0969da;
-                font-size: 12px;
-            }
-            QPushButton#equation:hover, QPushButton#geometry:hover {background: #f6f8fa;}
-            QPushButton#equation:pressed, QPushButton#geometry:pressed {background: #eaeef2;}
-            QWidget#properties {
-                background: #fbfcfd;
-                border-left: 1px solid #e5e7eb;
-            }
-            QWidget#properties QLabel {background: transparent;}
-            QLabel#propertiesTitle {color: #1f2328; font-size: 13px;}
-            QLabel#propertiesBody {color: #1f2328; font-size: 12px;}
-            QSplitter::handle {background: #e5e7eb;}
-            QSplitter::handle:horizontal {width: 4px;}
-            QPushButton#add {
-                border: none; border-radius: 6px; background: #0969da;
-                color: #ffffff; font-size: 14px; padding: 0 20px;
-            }
-            QPushButton#add:hover {background: #0860c4;}
-            QPushButton#add:pressed {background: #0757b0;}
-            """
-        )
+        self.setStyleSheet(_qss(_QSS, self.theme))
 
         self._bridge = SelectionBridge(self)
         self._bridge.changed.connect(self._on_selection)
@@ -3774,7 +4206,7 @@ class MainWindow(QMainWindow):
         self._channel = QWebChannel(self.view.page())
         self._channel.registerObject("bridge", self._bridge)
         self.view.page().setWebChannel(self._channel)
-        self.view.setHtml(PAGE, QUrl.fromLocalFile(str(BASE_DIR) + "/"))
+        self.view.setHtml(page_html(PAGE, self.theme), QUrl.fromLocalFile(str(BASE_DIR) + "/"))
 
         self._shortcuts = []
         for sequence, slot in (
@@ -3787,11 +4219,9 @@ class MainWindow(QMainWindow):
             self._shortcuts.append(shortcut)
 
         _wire_line_edits(self, self)
-        self.selection_label.setText(
-            "拖拽左上角红圈移动表达式 · 点击 + / − 交换相邻项 · 点击括号展开 · 点击节点查看结构"
-        )
+        self.selection_label.setText(_t(self.SELECTION_HINT))
         if not MATHJAX_FILE.exists():
-            self.status_label.setText(f"未找到 MathJax 文件：{MATHJAX_FILE}")
+            self.status_label.setText(_t("未找到 MathJax 文件：{path}").format(path=MATHJAX_FILE))
 
     def _build_properties_panel(self) -> QWidget:
         panel = QWidget()
@@ -3801,9 +4231,10 @@ class MainWindow(QMainWindow):
         panel_layout = QVBoxLayout(panel)
         panel_layout.setContentsMargins(14, 12, 14, 12)
         panel_layout.setSpacing(6)
-        title = QLabel("属性")
+        title = QLabel(_t("属性"))
+        self.properties_title = title
         title.setObjectName("propertiesTitle")
-        self.properties_label = QLabel("选中节点或卡片后在此显示属性")
+        self.properties_label = QLabel(_t("选中节点或卡片后在此显示属性"))
         self.properties_label.setObjectName("propertiesBody")
         self.properties_label.setWordWrap(True)
         self.properties_label.setTextFormat(Qt.RichText)
@@ -3835,16 +4266,14 @@ class MainWindow(QMainWindow):
         return "expression"
 
     def _update_count(self) -> None:
-        self.count_label.setText(f"{len(self._items)} 个表达式")
+        self.count_label.setText(_t("{count} 个表达式").format(count=len(self._items)))
 
     def _clear_detail(self) -> None:
         self.detail_view.clear()
 
     def _clear_selection(self) -> None:
         self.view.page().runJavaScript("clearSelection(false)")
-        self.selection_label.setText(
-            "拖拽左上角红圈移动表达式 · 点击 + / − 交换相邻项 · 点击括号展开 · 点击节点查看结构"
-        )
+        self.selection_label.setText(_t(self.SELECTION_HINT))
         self._clear_detail()
         self._update_properties(None)
 
@@ -3857,14 +4286,14 @@ class MainWindow(QMainWindow):
             self.status_label.setText("")
             self.input.clear()
             self._add_item(Point(coordinates[0], coordinates[1]))
-            self.status_label.setText("已添加点")
+            self.status_label.setText(_t("已添加点"))
             self.input.setFocus()
             return
         try:
             expression = parse_sympy(text)
             tree = from_sympy(expression, ordered=False)
         except Exception as exc:
-            self.status_label.setText(f"解析失败：{exc}")
+            self.status_label.setText(_t("解析失败：") + str(exc))
             return
         self.status_label.setText("")
         self.input.clear()
@@ -3885,10 +4314,10 @@ class MainWindow(QMainWindow):
         self.status_label.setText("")
         if len(trees) == 1:
             self._add_item(trees[0])
-            self.status_label.setText("已添加常用方程")
+            self.status_label.setText(_t("已添加常用方程"))
             return
         self._group_item_ids = {self._add_item(tree) for tree in trees}
-        self.status_label.setText(f"已添加 {len(trees)} 张方程卡片")
+        self.status_label.setText(_t("已添加 {count} 张方程卡片").format(count=len(trees)))
 
     def _clear_equation_dialog(self, *_args) -> None:
         self._equation_dialog = None
@@ -3927,7 +4356,7 @@ class MainWindow(QMainWindow):
             return
         self.status_label.setText("")
         self._add_item(tree)
-        self.status_label.setText("已添加点" if isinstance(tree, Point) else "已添加几何表达式")
+        self.status_label.setText(_t("已添加点") if isinstance(tree, Point) else _t("已添加几何表达式"))
 
     def _clear_geometry_dialog(self, *_args) -> None:
         self._geometry_dialog = None
@@ -3938,7 +4367,7 @@ class MainWindow(QMainWindow):
         if item is None or node is None:
             return
         self._add_item(node.copy(), x=x, y=y)
-        self.status_label.setText("已用选中部分生成新卡片")
+        self.status_label.setText(_t("已用选中部分生成新卡片"))
 
     def _on_expression_pair(self, dragged_id: str, target_id: str) -> None:
         dragged = self._find_item(dragged_id)
@@ -3959,7 +4388,7 @@ class MainWindow(QMainWindow):
         if dialog.result_tree is None:
             return
         self._add_item(dialog.result_tree)
-        self.status_label.setText("已用 A、B 组合生成新卡片")
+        self.status_label.setText(_t("已用 A、B 组合生成新卡片"))
 
     def _clear_pair_dialog(self, *_args) -> None:
         self._pair_dialog = None
@@ -3970,7 +4399,7 @@ class MainWindow(QMainWindow):
             return
         self.view.page().runJavaScript("selectCardById(" + json.dumps(item_id) + ")")
         label = self._titles.get(item_id) or item_id
-        self.selection_label.setText("已选中卡片：<b>" + html_lib.escape(label) + "</b>")
+        self.selection_label.setText(_t("已选中卡片：<b>{label}</b>").format(label=html_lib.escape(label)))
         self._clear_detail()
         self._update_properties(item)
 
@@ -3979,24 +4408,26 @@ class MainWindow(QMainWindow):
             self._titles[item_id] = title
         else:
             self._titles.pop(item_id, None)
-        if self.selection_label.text().startswith("已选中卡片"):
+        if self.selection_label.text().startswith(_t("已选中卡片：")):
             item = self._find_item(item_id)
             if item is not None:
                 self._update_properties(item)
 
     def _update_properties(self, item) -> None:
+        self._properties_source = item
         if item is None:
             self.properties_label.setText(
-                "<span style='color:#8c959f'>选中节点或卡片后在此显示属性</span>"
+                "<span style='color:" + _PALETTES[self.theme]["muted"] + "'>"
+                + _t("选中节点或卡片后在此显示属性") + "</span>"
             )
             return
         rows = []
         title = self._titles.get(item.item_id, "")
         if title:
-            rows.append("<b>标题</b>　" + html_lib.escape(title))
+            rows.append("<b>" + _t("标题") + "</b>　" + html_lib.escape(title))
         if isinstance(item.tree, Point):
             rows.append(
-                "<b>坐标</b>　" + html_lib.escape(
+                "<b>" + _t("坐标") + "</b>　" + html_lib.escape(
                     "(" + str(item.tree.x) + ", " + str(item.tree.y) + ")"
                 )
             )
@@ -4005,11 +4436,11 @@ class MainWindow(QMainWindow):
         text = str(item.tree)
         if len(text) > 80:
             text = text[:78] + "…"
-        rows.append("<b>表达式</b>　" + html_lib.escape(text))
+        rows.append("<b>" + _t("表达式") + "</b>　" + html_lib.escape(text))
         symbols = sorted(item.tree.free_symbols, key=lambda symbol: symbol.name)
         if symbols:
-            rows.append("<b>变量</b>　" + "、".join(symbol.name for symbol in symbols))
-        rows.append("<b>取值范围</b>　" + html_lib.escape(self._range_text(item)))
+            rows.append("<b>" + _t("变量") + "</b>　" + _t("、").join(symbol.name for symbol in symbols))
+        rows.append("<b>" + _t("取值范围") + "</b>　" + html_lib.escape(self._range_text(item)))
         self.properties_label.setText("<br>".join(rows))
 
     def _range_text(self, item: CanvasItem) -> str:
@@ -4024,21 +4455,21 @@ class MainWindow(QMainWindow):
         try:
             expression = tree.to_sympy()
         except Exception:
-            return "无法计算"
+            return _t("无法计算")
         if isinstance(expression, sympy.Eq):
-            return "方程暂无取值范围"
+            return _t("方程暂无取值范围")
         symbols = sorted(expression.free_symbols, key=lambda symbol: symbol.name)
         if not symbols:
             return str(expression)
         if len(symbols) > 1:
-            return "含多个变量，暂不支持"
+            return _t("含多个变量，暂不支持")
         if sympy.count_ops(expression) > 60:
-            return "表达式较复杂，暂不计算"
+            return _t("表达式较复杂，暂不计算")
         try:
             from sympy.calculus.util import function_range
             value = function_range(expression, symbols[0], sympy.S.Reals)
         except Exception:
-            return "无法计算"
+            return _t("无法计算")
         return _format_range(value)
 
     def _add_item(
@@ -4096,7 +4527,7 @@ class MainWindow(QMainWindow):
         if item is None or node is None:
             return
         if isinstance(node, Point):
-            self.status_label.setText("点是几何对象，暂不支持变形")
+            self.status_label.setText(_t("点是几何对象，暂不支持变形"))
             return
         info = self._item_infos.get(item_id, {}).get(node_id, {})
         if isinstance(node, Eq):
@@ -4126,7 +4557,7 @@ class MainWindow(QMainWindow):
             collapsed=item.item_id in self._collapsed,
             title=self._titles.get(item.item_id, ""),
         )
-        self.status_label.setText("已复制卡片")
+        self.status_label.setText(_t("已复制卡片"))
 
     def _on_delete_item(self, item_id: str) -> None:
         item = self._find_item(item_id)
@@ -4142,7 +4573,7 @@ class MainWindow(QMainWindow):
         self._clear_selection()
         self._update_count()
         self._push_history()
-        self.status_label.setText("已删除卡片")
+        self.status_label.setText(_t("已删除卡片"))
 
     def _on_system_requested(self, first_id: str, second_id: str) -> None:
         first = self._find_item(first_id)
@@ -4166,13 +4597,13 @@ class MainWindow(QMainWindow):
         self._group_item_ids = {
             self._add_item(tree, note=note) for tree, note in cards
         }
-        self.status_label.setText(f"已添加 {len(cards)} 张联立结果卡片")
+        self.status_label.setText(_t("已添加 {count} 张联立结果卡片").format(count=len(cards)))
 
     def _add_solution_cards(self, roots) -> None:
         if not roots:
             return
         self._group_item_ids = {self._add_item(root) for root in roots}
-        self.status_label.setText(f"已添加 {len(roots)} 个根卡片")
+        self.status_label.setText(_t("已添加 {count} 个根卡片").format(count=len(roots)))
 
     def _clear_transform_dialog(self, *_args) -> None:
         self._transform_dialog = None
@@ -4194,7 +4625,7 @@ class MainWindow(QMainWindow):
                 result = getattr(sympy, method)(node.to_sympy())
                 transformed = from_sympy(result, ordered=True)
         except Exception as exc:
-            QMessageBox.warning(self, "变形失败", str(exc))
+            QMessageBox.warning(self, _t("变形失败"), str(exc))
             return
         if as_copy:
             copy_item = CanvasItem(item.item_id, item.tree.copy(), item.x, item.y, item.note)
@@ -4207,7 +4638,7 @@ class MainWindow(QMainWindow):
                 note=item.note,
                 title=self._titles.get(item.item_id, ""),
             )
-            self.status_label.setText("已保存为副本")
+            self.status_label.setText(_t("已保存为副本"))
             return
         target = self._replace_node(item, node, transformed)
         if target is None:
@@ -4218,7 +4649,7 @@ class MainWindow(QMainWindow):
 
     def _apply_substitution(self, item: CanvasItem, input_tree, replace_tree, as_copy: bool = False) -> None:
         if not isinstance(input_tree, Symbol):
-            QMessageBox.warning(self, "无法换元", "请只输入一个符号，例如 t。")
+            QMessageBox.warning(self, _t("无法换元"), _t("请只输入一个符号，例如 t。"))
             return
         if replace_tree is None:
             return
@@ -4226,14 +4657,16 @@ class MainWindow(QMainWindow):
         card_names = {symbol.name for symbol in item.tree.free_symbols}
         candidates = sorted({symbol.name for symbol in replace_tree.free_symbols} & card_names)
         if not candidates:
-            QMessageBox.warning(self, "无法换元", "换元式里的变量没有出现在表达式中。")
+            QMessageBox.warning(self, _t("无法换元"), _t("换元式里的变量没有出现在表达式中。"))
             return
         if len(candidates) > 1:
-            QMessageBox.warning(self, "无法换元", "换元式只能包含一个变量，例如 x+1。")
+            QMessageBox.warning(self, _t("无法换元"), _t("换元式只能包含一个变量，例如 x+1。"))
             return
         variable_name = candidates[0]
         if name in card_names - {variable_name}:
-            QMessageBox.warning(self, "无法换元", f"符号 {name} 已在表达式中使用，请换一个符号。")
+            QMessageBox.warning(
+                self, _t("无法换元"), _t("符号 {name} 已在表达式中使用，请换一个符号。").format(name=name)
+            )
             return
         variable = sympy.Symbol(variable_name)
         try:
@@ -4243,16 +4676,19 @@ class MainWindow(QMainWindow):
                 dict=True,
             )
         except Exception as exc:
-            QMessageBox.warning(self, "无法换元", "解换元式失败：" + str(exc))
+            QMessageBox.warning(self, _t("无法换元"), _t("解换元式失败：") + str(exc))
             return
         if not solutions:
-            QMessageBox.warning(self, "无法换元", f"无法从换元式解出 {variable_name}，请检查换元式。")
+            QMessageBox.warning(
+                self, _t("无法换元"),
+                _t("无法从换元式解出 {variable}，请检查换元式。").format(variable=variable_name),
+            )
             return
         if len(solutions) > 1:
             QMessageBox.warning(
                 self,
-                "无法换元",
-                f"换元式对 {variable_name} 有多组解（如平方），暂不支持，请改用一次式。",
+                _t("无法换元"),
+                _t("换元式对 {variable} 有多组解（如平方），暂不支持，请改用一次式。").format(variable=variable_name),
             )
             return
         replacement = from_sympy(solutions[0][variable], ordered=True)
@@ -4268,11 +4704,11 @@ class MainWindow(QMainWindow):
         note = (item.note + "；" + definition) if item.note else definition
         if as_copy:
             self._add_item(substituted, note=note, title=self._titles.get(item.item_id, ""))
-            self.status_label.setText(f"已换元并保存副本：{definition}")
+            self.status_label.setText(_t("已换元并保存副本：{definition}").format(definition=definition))
             return
         item.tree = substituted
         item.note = note
-        self.status_label.setText(f"已换元：{definition}")
+        self.status_label.setText(_t("已换元：{definition}").format(definition=definition))
         self._update_item(item)
         self._push_history()
 
@@ -4370,9 +4806,7 @@ class MainWindow(QMainWindow):
         info = self._item_infos.get(item_id, {}).get(node_id) if node_id else None
         node = self._item_maps.get(item_id, {}).get(node_id) if node_id else None
         if info is None or node is None:
-            self.selection_label.setText(
-                "拖拽左上角红圈移动表达式 · 点击 + / − 交换相邻项 · 点击括号展开 · 点击节点查看结构"
-            )
+            self.selection_label.setText(_t(self.SELECTION_HINT))
             self._clear_detail()
             self._update_properties(None)
             return
@@ -4380,12 +4814,15 @@ class MainWindow(QMainWindow):
         if len(text) > 80:
             text = text[:77] + "..."
         self.selection_label.setText(
-            "已选中：<b>" + html_lib.escape(info["type"]) + "</b> · 第 "
-            + str(info["depth"]) + " 层 · <span style='color:"
-            + info["color"] + "'>" + html_lib.escape(text) + "</span>"
+            _t("已选中：<b>{type}</b> · 第 {depth} 层 · {text}").format(
+                type=html_lib.escape(info["type"]),
+                depth=info["depth"],
+                text="<span style='color:" + _display_color(info["color"], self.theme) + "'>"
+                + html_lib.escape(text) + "</span>",
+            )
         )
         self.detail_view.setPlainText(
-            "节点结构：" + repr(node) + "\nSymPy：" + str(node.to_sympy())
+            _t("节点结构：") + repr(node) + "\n" + _t("SymPy：") + str(node.to_sympy())
         )
         self._update_properties(self._find_item(item_id))
 
@@ -4528,15 +4965,52 @@ class MainWindow(QMainWindow):
     @Slot(bool)
     def _on_page_loaded(self, ok: bool) -> None:
         if not ok:
-            self.status_label.setText("页面加载失败，请检查 ../mathjax/es5/tex-svg.js 是否存在。")
+            self.status_label.setText(_t("页面加载失败，请检查 ../mathjax/es5/tex-svg.js 是否存在。"))
             return
         self._update_count()
+        if self._items:
+            self._render_all_items()
+
+    def set_theme(self, theme) -> None:
+        self.theme = _normalize_theme(theme)
+        self.setStyleSheet(_qss(_QSS, self.theme))
+        self._update_properties(getattr(self, "_properties_source", None))
+        self.view.page().runJavaScript(
+            "setTheme(" + json.dumps(self.theme) + ")"
+        )
+
+    def retranslate(self) -> None:
+        self.setWindowTitle(_t("表达式画布 — 分层着色、节点操作与拖拽布局"))
+        self.hint_label.setText(_t("输入表达式或方程（如 x^2=4），按回车或点击“添加”加入画布"))
+        self.undo_button.setText(_t("撤销"))
+        self.redo_button.setText(_t("重做"))
+        self.equation_button.setText(_t("添加常用方程"))
+        self.geometry_button.setText(_t("添加几何表达式"))
+        self.add_button.setText(_t("添加"))
+        self.input.setPlaceholderText(_t("例如：2*(x+1) + 1/(x-1) 或 x^2=4"))
+        self.detail_view.setPlaceholderText(_t("点击画布中的节点，查看其自定义结构与 SymPy 表达式"))
+        self.properties_title.setText(_t("属性"))
+        self._update_count()
+        self.status_label.setText("")
+        if not MATHJAX_FILE.exists():
+            self.status_label.setText(_t("未找到 MathJax 文件：{path}").format(path=MATHJAX_FILE))
+        self._clear_selection()
+        for edit in self.findChildren(QLineEdit):
+            for attr, key in (
+                ("input_action", "可视化输入"),
+                ("cache_action", "打开缓存区"),
+                ("insert_action", "存入缓存区"),
+            ):
+                action = getattr(edit, attr, None)
+                if action is not None:
+                    action.setText(_t(key))
+        self.view.setHtml(page_html(PAGE, self.theme), QUrl.fromLocalFile(str(BASE_DIR) + "/"))
 
 
 def main() -> int:
     QCoreApplication.setAttribute(Qt.AA_ShareOpenGLContexts)
     app = QApplication(sys.argv)
-    app.setApplicationName("表达式画布")
+    app.setApplicationName(_t("表达式画布"))
     app.setFont(QFont("Microsoft YaHei", 10))
     window = MainWindow()
     window.show()
