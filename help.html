@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<title>CalculusCalculator v2.1.0 帮助文档</title>
+<title>CalculusCalculator v2.2.0 帮助文档</title>
 <style>
 body { font-family: "Microsoft YaHei", "SimSun", sans-serif; font-size: 14px; line-height: 1.8; margin: 50px; }
 h1 { font-size: 22px; font-weight: bold; text-align: center; margin-bottom: 5px; }
@@ -21,486 +21,236 @@ code { background-color: #f0f0f0; padding: 1px 6px; border-radius: 3px; font-fam
 </head>
 <body>
 
-<h1>微积分计算器 v2.1.0 帮助文档</h1>
-<p style="text-align:center; color:#666;">以下内容为所有文本框输入的共同标准</p>
+<h1>微积分计算器 v2.2.0 帮助文档</h1>
+<p style="text-align:center; color:#666;">输入语法、功能用法与常见操作速查</p>
 
-<h2>〇、界面结构与菜单</h2>
-<p>v2.1.0 起，原有的各类独立功能标签页已全部整合进<b>功能集成</b>页，界面更加简洁。当前菜单栏与标签页结构如下：</p>
-
-<h3>菜单栏</h3>
+<h2>〇、界面与菜单</h2>
 <table>
 <tr><th>菜单</th><th>子项</th><th>说明</th></tr>
-<tr><td>文件</td><td>保存为 / 打开 / 缓存区 / 设置 / 退出</td><td>工程存档、缓存区管理与界面设置</td></tr>
-<tr><td>功能</td><td>首页 / 功能集成页 / 积木编辑器 / 解几计算器</td><td>分别打开首页、功能集成页、积木编辑器与表达式画布</td></tr>
+<tr><td>文件</td><td>保存为 / 打开 / 缓存区 / 设置 / 退出</td><td>工程存档、缓存区与界面设置</td></tr>
+<tr><td>功能</td><td>首页 / 功能集成页 / 积木编辑器 / 解几计算器</td><td>打开对应标签页</td></tr>
 <tr><td>关于</td><td>Github链接 / 网页版 / 引导教学 / 帮助</td><td>项目链接与内置帮助</td></tr>
 </table>
 
-<h3>标签页</h3>
-<p>程序共 7 种标签页：<b>首页</b>、<b>功能集成</b>、<b>帮助</b>、<b>设置</b>、<b>缓存区</b>、<b>积木编辑器</b>、<b>解几计算器</b>。同类标签页可同时打开多个（标题自动编号），可关闭、可拖动排序。</p>
+<p>共 7 种标签页：<b>首页</b>、<b>功能集成</b>、<b>帮助</b>、<b>设置</b>、<b>缓存区</b>、<b>积木编辑器</b>、<b>解几计算器</b>。同类标签页可同时打开多个（标题自动编号），可关闭、可拖动排序。</p>
 
-<h3>功能集成页</h3>
-<p>功能集成页是完成各类计算的主界面，自左向右分为三个区域，可拖动分割条调整宽度：</p>
+<p><b>功能集成页</b>是完成各类计算的主界面，自左向右分为三个区域，分割条可拖动：</p>
 <ol>
-<li><b>定义区</b>：通过顶部下拉框选择类型（<b>函数、集合、向量、平面几何、立体几何</b>），定义函数与各类对象，对象按类型分组显示在树状列表中，支持读取与删除。</li>
-<li><b>计算区</b>：通过下拉框选择计算类型（<b>计算、求导、积分、解方程、解不等式、解方程组、解不等式组、平面计算、立体计算、变形、解三角形</b>共 11 种），输入区随后按所选类型变化。</li>
-<li><b>绘图区</b>：通过下拉框选择模式（<b>平面几何模式、立体几何模式、函数模式</b>），勾选需要绘制（或更新）的对象后点击<b>绘制or更新</b>生成图像。</li>
+<li><b>定义区</b>：选择类型（函数 / 集合 / 向量 / 平面几何 / 立体几何）定义函数与对象，对象按类型分组显示在树状列表中。</li>
+<li><b>计算区</b>：选择计算类型（计算、求导、积分、解方程、解不等式、解方程组、解不等式组、平面计算、立体计算、变形、解三角形，共 11 种）。</li>
+<li><b>绘图区</b>：选择模式（平面几何 / 立体几何 / 函数），勾选对象后点击<b>绘制or更新</b>。</li>
 </ol>
 
 <div class="note">
-<b>回车快捷键：</b>各页面的主要文本输入框中按下<b>回车键</b>，将自动触发对应的功能按钮（如"计算""保存"等），无需手动点击按钮。
+<b>回车快捷键：</b>各页面主要输入框中按<b>回车</b>即触发对应按钮（如"计算""保存"），无需鼠标点击。
 </div>
 
-<h2>一、LaTeX 代码直接输入</h2>
-<p>除了使用下方的标准 Python/SymPy 语法，本程序支持<b>直接输入 LaTeX 代码</b>。在 LaTeX 代码前添加半角美元符号 <code>$</code> 作为标识，系统会自动将 LaTeX 表达式转换为 SymPy 表达式进行计算。</p>
+<h2>一、输入标准</h2>
 
-<p><b>使用方式：</b></p>
+<h3>数学符号</h3>
 <table>
-<tr><th>序号</th><th>数学含义</th><th>LaTeX 输入</th><th>等价 SymPy 输入</th></tr>
-<tr><td>1</td><td>二分之 x</td><td><code>$\frac{x}{2}</code></td><td><code>x/2</code></td></tr>
-<tr><td>2</td><td>x 的平方</td><td><code>$x^{2}</code></td><td><code>x**2</code></td></tr>
-<tr><td>3</td><td>根号 x</td><td><code>$\sqrt{x}</code></td><td><code>sqrt(x)</code></td></tr>
-<tr><td>4</td><td>sin(x)</td><td><code>$\sin{x}</code></td><td><code>sin(x)</code></td></tr>
-<tr><td>5</td><td>自然对数 ln(x)</td><td><code>$\ln{x}</code></td><td><code>log(x)</code></td></tr>
-<tr><td>6</td><td>圆周率 π</td><td><code>$\pi</code></td><td><code>pi</code></td></tr>
-<tr><td>7</td><td>无穷大 ∞</td><td><code>$\infty</code></td><td><code>oo</code></td></tr>
+<tr><th>含义</th><th>输入</th><th>含义</th><th>输入</th></tr>
+<tr><td>加减乘除</td><td><code>+ - * /</code></td><td>乘方</td><td><code>x**2</code></td></tr>
+<tr><td>根号 / 绝对值</td><td><code>sqrt(x)</code> / <code>abs(x)</code></td><td>对数</td><td><code>log(x, a)</code>、<code>log(x)</code>（ln）</td></tr>
+<tr><td>三角 / 反三角</td><td><code>sin cos tan cot sec csc</code><br><code>asin acos atan acot</code></td><td>双曲</td><td><code>sinh cosh tanh</code></td></tr>
+<tr><td>常数</td><td><code>e</code>、<code>pi</code>、<code>oo</code>、<code>I</code></td><td>括号</td><td>统一用圆括号 <code>()</code></td></tr>
 </table>
+<p>示例：<code>2*x</code>、<code>x**2</code>、<code>sqrt(x)</code>、<code>log(x,2)</code>、<code>log(x)</code>、<code>sin(x)</code>。</p>
 
+<h3>LaTeX 直接输入</h3>
+<p>表达式前加半角美元符号 <code>$</code> 即可直接写 LaTeX，例如 <code>$\frac{x}{2}</code> → <code>x/2</code>、<code>$x^{2}</code> → <code>x**2</code>、<code>$\sqrt{x}</code> → <code>sqrt(x)</code>、<code>$\int_{0}^{1} x^2 \mathrm{d}x</code>。</p>
 <div class="note">
-<b>注意：</b>必须以 <code>$</code> 开头且必须为半角美元符号。如果不以 <code>$</code> 开头，系统将按原有 SymPy/Python 语法规则解析表达式。LaTeX 解析支持常见的数学符号与结构，复杂表达式也可混合使用 LaTeX 和 SymPy 语法。
+必须以半角 <code>$</code> 开头，否则按 SymPy / Python 语法解析；两种写法可在同一表达式中混用。
 </div>
 
-<h2>二、数学符号输入标准</h2>
-<ol>
-<li>加减乘除：<code>+</code> <code>-</code> <code>*</code> <code>/</code></li>
-<li>乘方：<code>**</code>（例如 <code>x**2</code> 表示 x 的平方）</li>
-<li>根号：<code>sqrt()</code></li>
-<li>绝对值：<code>abs()</code></li>
-<li>普通对数 log_a(x)：<code>log(x, a)</code></li>
-<li>自然对数 ln(x)：<code>log(x)</code></li>
-<li>三角函数：<code>sin()</code> <code>cos()</code> <code>tan()</code> <code>cot()</code> <code>sec()</code> <code>csc()</code></li>
-<li>反三角函数：<code>asin()</code> <code>acos()</code> <code>atan()</code> <code>acot()</code> 等</li>
-<li>双曲函数：<code>sinh()</code> <code>cosh()</code> <code>tanh()</code> 等</li>
-<li>自然常数：<code>e</code></li>
-<li>圆周率：<code>pi</code></li>
-<li>正无穷 / 负无穷：<code>oo</code> / <code>-oo</code></li>
-<li>括号：全部使用圆括号 <code>()</code> 即可</li>
-<li>虚数单位：<code>I</code></li>
-</ol>
-
-<p><b>示例：</b></p>
+<h3>集合与区间</h3>
 <table>
-<tr><th>序号</th><th>数学含义</th><th>应输入的表达式</th></tr>
-<tr><td>1</td><td>2x</td><td><code>2*x</code></td></tr>
-<tr><td>2</td><td>x 的平方</td><td><code>x**2</code></td></tr>
-<tr><td>3</td><td>x 的算术平方根</td><td><code>sqrt(x)</code></td></tr>
-<tr><td>4</td><td>以 2 为底 x 的对数</td><td><code>log(x,2)</code></td></tr>
-<tr><td>5</td><td>自然对数 ln(x)</td><td><code>log(x)</code></td></tr>
-<tr><td>6</td><td>x 的正弦值</td><td><code>sin(x)</code></td></tr>
+<tr><th>写法</th><th>输入</th><th>写法</th><th>输入</th></tr>
+<tr><td>列举法</td><td><code>FiniteSet(1,2,3)</code></td><td>描述法</td><td><code>ImageSet(Lambda(x, f(x)), Domain)</code></td></tr>
+<tr><td>闭区间 [a,b]</td><td><code>Interval(a,b)</code></td><td>开区间 (a,b)</td><td><code>Interval.open(a,b)</code></td></tr>
+<tr><td>左开右闭 (a,b]</td><td><code>Interval.Lopen(a,b)</code></td><td>左闭右开 [a,b)</td><td><code>Interval.Ropen(a,b)</code></td></tr>
+<tr><td>并 / 交 / 补</td><td><code>Union(A,B)</code>、<code>Intersection(A,B)</code><br><code>Complement(A,B)</code></td><td>内置数集</td><td><code>Reals</code>、<code>Complexes</code>、<code>Integers</code><br><code>Naturals</code>、<code>Rationals</code>、<code>EmptySet</code></td></tr>
 </table>
+<p>集合常用于「函数定义域」「求解范围」等输入框，例如 <code>FiniteSet(0,1)</code> 限定只取离散根，<code>ImageSet(Lambda(n, n*pi), Integers)</code> 表示 <code>sin(x)=0</code> 的通解。</p>
 
-<h2>三、集合 / 区间输入标准</h2>
-<ol>
-<li><b>列举法</b>：<code>FiniteSet(1,2,3)</code></li>
-<li><b>描述法</b>：<code>ImageSet(Lambda(x, f(x)), Domain)</code></li>
-<li><b>内置集合：</b>
+<h3>自定义函数与微分方程</h3>
 <ul>
-<li>实数集：<code>Reals</code></li>
-<li>复数集：<code>Complexes</code></li>
-<li>自然数集：<code>Naturals</code></li>
-<li>正整数集：<code>Naturals0</code></li>
-<li>整数集：<code>Integers</code></li>
-<li>有理数集：<code>Rationals</code></li>
-<li>空集：<code>EmptySet</code></li>
+<li><b>自定义函数</b>：在定义区定义后即可在其它输入框使用——作符号参与运算（已定义 <code>g=x**2</code> 时输入 <code>g+1/g</code>），或调用传参：<code>f(3)</code>、嵌套 <code>f(g(2))</code>。</li>
+<li><b>微分方程</b>：待解函数固定为 <code>f(x)</code>，用 <code>f(x).diff(x,n)</code> 表示 n 阶导数（n 可省略）。例：左式 <code>f(x).diff(x)</code>、右式 <code>f(x)+1</code>，解为 <code>f(x)=C1*exp(x)-1</code>。</li>
 </ul>
-</li>
-<li><b>区间：</b>
-<ul>
-<li>闭区间 [x,y]：<code>Interval(x,y)</code></li>
-<li>左开右闭 (x,y]：<code>Interval.Lopen(x,y)</code></li>
-<li>左闭右开 [x,y)：<code>Interval.Ropen(x,y)</code></li>
-<li>开区间 (x,y)：<code>Interval.open(x,y)</code></li>
-</ul>
-</li>
-<li><b>并集</b>：<code>Union(A,B)</code></li>
-<li><b>交集</b>：<code>Intersection(A,B)</code></li>
-<li><b>补集 / 差集</b>：<code>Complement(A,B)</code>，其中 A 为全集</li>
-</ol>
 
-<p><b>示例：</b></p>
+<h2>二、计算与结果</h2>
 <table>
-<tr><th>序号</th><th>数学含义</th><th>应输入的表达式</th></tr>
-<tr><td>1</td><td>集合 {1,2}</td><td><code>FiniteSet(1,2)</code></td></tr>
-<tr><td>2</td><td>区间 [1,2]</td><td><code>Interval(1,2)</code></td></tr>
-<tr><td>3</td><td>区间 [1,2)</td><td><code>Interval.Ropen(1,2)</code></td></tr>
-<tr><td>4</td><td>区间 (1,2)</td><td><code>Interval.open(1,2)</code></td></tr>
-<tr><td>5</td><td>并集 {0}∪[1,2]</td><td><code>Union(FiniteSet(0),Interval(1,2))</code></td></tr>
-<tr><td>6</td><td>交集 {1,2}∩{2,3}</td><td><code>Intersection(FiniteSet(1,2),FiniteSet(2,3))</code></td></tr>
-<tr><td>7</td><td>补集 R \ [-1,1]</td><td><code>Complement(Reals,Interval(-1,1))</code></td></tr>
+<tr><th>引擎</th><th>适用场景</th><th>结果形式</th></tr>
+<tr><td>Python 内置</td><td>简单数值计算</td><td>纯文本</td></tr>
+<tr><td>Mpmath</td><td>高精度数值（可设十进制位数）</td><td>纯文本</td></tr>
+<tr><td>SymPy</td><td>符号运算</td><td>LaTeX + 纯文本</td></tr>
+<tr><td>LaTeX 代码生成</td><td>把 Python 表达式转成 LaTeX 代码</td><td>LaTeX 源码</td></tr>
 </table>
+<p><b>分母有理化</b>：求导、积分、方程求解与变形结果若分母含根号，会自动有理化，例如 <code>1/sqrt(2)</code> 显示为 <code>sqrt(2)/2</code>。</p>
 
-<h3>FiniteSet 使用案例</h3>
-<ul>
-<li>在功能集成页定义区选择"函数"类型时，在<b>函数定义域</b>输入框中使用 <code>FiniteSet(1,2,3)</code> 将函数定义域限定为离散点集 {1,2,3}</li>
-<li>在功能集成页计算区选择"解方程"类型时，在<b>主元取值范围</b>输入框中使用 <code>FiniteSet(0,1)</code> 限定只求解该集合中的根</li>
-<li>与集合运算组合使用：<code>Union(Interval(0,1), FiniteSet(2))</code> 表示区间 [0,1] 与点 2 的并集</li>
-</ul>
-
-<h3>ImageSet 使用案例</h3>
-<ul>
-<li>定义映射集合：<code>ImageSet(Lambda(x, x**2), Interval(0, 5))</code> 表示 {x² | x∈[0,5]}</li>
-<li>配合三角函数的周期解：方程 sin(x)=0 的解集可表示为 <code>ImageSet(Lambda(n, n*pi), Integers)</code>，其中 n 为整数</li>
-<li>在定义区的<b>定义域</b>中描述复杂范围：<code>ImageSet(Lambda(x, 2*x+1), Integers)</code> 表示所有奇数组成的集合</li>
-</ul>
-
-<h2>四、函数输入标准</h2>
-<p>对于已经在功能集成页定义区定义好的函数，可以在其余大多数输入框内直接使用该函数：</p>
-<ul>
-<li><b>作为符号参与运算</b>：例如已定义 g(x)=x**2，则输入 <code>g+1/g</code> 得到 x**2 + 1/x**2</li>
-<li><b>以函数调用形式传参</b>：例如已定义 f(x)=x**2，则输入 <code>f(3)</code> 自动计算 3**2 = 9；支持嵌套调用如 <code>f(g(2))</code></li>
-</ul>
-
-<h2>五、分母有理化</h2>
-<p>在求导、积分、方程求解、表达式变形等模块中，如果计算结果的分母含有根号，系统会自动执行分母有理化，将结果化简为分子分母均为整式或根式的最简形式。</p>
-
-<div class="note">
-<b>示例：</b>计算 1/sqrt(2) 时，结果自动显示为 sqrt(2)/2，而非 1/sqrt(2)。
-</div>
-
-<h2>六、计算引擎</h2>
-<p>在功能集成页计算区选择"计算"类型，支持四种计算引擎：</p>
-<ol>
-<li><b>Python 内置引擎</b>：使用 Python 内置的 eval 快速计算数值表达式，结果显示为普通文本</li>
-<li><b>Mpmath 高精度引擎</b>：可自定义十进制精度，适合高精度数值计算，结果显示为普通文本</li>
-<li><b>Sympy 符号引擎</b>：基于 Sympy 进行符号运算，结果<b>同时以 LaTeX 代码和纯文本两种形式</b>显示。</li>
-<li><b>Latex 代码生成引擎</b>：根据输入的Python表达式直接生成对应的<b>Latex代码</b></li>
-</ol>
-
-<h2>七、向量功能</h2>
-<p>在功能集成页定义区选择"向量"类型，可以定义二维向量并执行向量运算。</p>
-
-<h3>定义向量</h3>
-<ol>
-<li><b>向量名称</b>：默认为 <code>v</code>，可自定义</li>
-<li><b>向量 x/y 坐标</b>：分别输入 x 和 y 分量，支持 SymPy 表达式（如 <code>sqrt(3)</code>、<code>pi/2</code>）</li>
-<li>点击<b>保存</b>将向量添加到列表中，点击<b>删除</b>移除选中的向量</li>
-</ol>
-
-<h3>向量属性</h3>
-<ul>
-<li><b>表达式</b>：以坐标形式显示向量</li>
-<li><b>模</b>：向量的长度，即 sqrt(x² + y²)</li>
-<li><b>方向角</b>：向量与 x 轴正方向的夹角</li>
-<li><b>单位向量</b>：与该向量方向相同、模为 1 的向量</li>
-</ul>
-
-<h3>向量运算</h3>
-<ol>
-<li>在下拉框中选择两个已定义的向量</li>
-<li>选择运算类型：<b>加法</b>、<b>减法</b>、<b>点积</b>、<b>夹角</b></li>
-<li>点击<b>计算</b>，结果以 LaTeX 渲染和纯文本两种形式显示</li>
-</ol>
-
-<div class="note">
-<b>示例：</b>定义向量 v1 = (1, 0)，v2 = (0, 1)，计算加法得到 (1, 1)，点积为 0，夹角为 π/2。
-</div>
-
-<h2>八、解三角形功能</h2>
-<p>在功能集成页计算区选择"解三角形"类型，输入三角形的已知条件即可求解其余未知元素。</p>
-
-<h3>条件输入</h3>
-<ol>
-<li>三个条件框，每个可从下拉框中选择类型：<b>角A</b>、<b>角B</b>、<b>角C</b>、<b>边a</b>、<b>边b</b>、<b>边c</b></li>
-<li>在对应的输入框中填入值，支持 SymPy 表达式（如 <code>pi/3</code>、<code>sqrt(2)</code>）</li>
-<li>必须填入恰好 3 个有效条件</li>
-</ol>
-
-<h3>支持的求解情形</h3>
+<h2>三、向量与解三角形</h2>
+<p><b>向量</b>（定义区 → 向量）：填写名称与 x / y 分量（支持 <code>sqrt(3)</code>、<code>pi/2</code> 等表达式）后保存；可查看表达式、模、方向角、单位向量，并可做加法、减法、点积与夹角运算。</p>
+<p><b>解三角形</b>（计算区 → 解三角形）：从角 A/B/C、边 a/b/c 中给出<b>恰好 3 个</b>条件，支持五种情形：</p>
 <table>
-<tr><th>情形</th><th>已知条件</th><th>说明</th></tr>
-<tr><td>ASA</td><td>两角一边（边为两角夹边）</td><td>唯一解</td></tr>
-<tr><td>AAS</td><td>两角一边（边为其中一角对边）</td><td>唯一解</td></tr>
+<tr><th>情形</th><th>已知</th><th>解的个数</th></tr>
+<tr><td>ASA / AAS</td><td>两角一边（夹边 / 对边）</td><td>唯一解</td></tr>
 <tr><td>SAS</td><td>两边及夹角</td><td>唯一解</td></tr>
-<tr><td>SSA</td><td>两边及其中一边对角</td><td>可能两解、一解或无解</td></tr>
+<tr><td>SSA</td><td>两边及其中一边对角</td><td>可能两解、一解或无解（自动标注"解1""解2"）</td></tr>
 <tr><td>SSS</td><td>三边</td><td>唯一解</td></tr>
 </table>
 
-<div class="note">
-<b>示例：</b>条件1=角A=pi/3，条件2=角B=pi/4，条件3=边c=5，求得角C、边a、边b。<br>
-若存在多解（如SSA情形），系统会分别标注"解1""解2"。
-</div>
+<h2>四、函数绘图</h2>
+<p>绘图区选「函数模式」：直接输入表达式（如 <code>sin(x)</code>），或勾选定义区已定义的函数；设置定义域左右端点（默认 <code>[-10, 10]</code>，支持表达式），点击<b>绘制or更新</b>。图像由 Matplotlib 渲染，自动处理间断点（如 <code>1/x</code> 在 0 处断开），y 轴自适应可见范围，并支持放缩、拖动与保存。</p>
 
-<h2>九、函数绘图</h2>
-<p>在功能集成页绘图区选择"函数模式"，可以绘制函数图像。</p>
+<h2>五、平面 / 立体几何</h2>
+<p>在定义区选择「平面几何」或「立体几何」，依次选择<b>创建方法</b>、填写<b>对象名称</b>与<b>参数</b>（英文半角逗号分隔），回车或点击<b>保存</b>。参数中引用的是已定义对象的名称。</p>
 
-<h3>使用方式</h3>
-<ol>
-<li><b>表达式模式</b>：直接在表达式输入框中输入函数表达式（如 <code>x**2</code>、<code>sin(x)</code>）</li>
-<li><b>选择函数模式</b>：勾选在定义区已定义的函数</li>
-<li>设置<b>定义域</b>左右端点（默认 [-10, 10]），支持 SymPy 表达式</li>
-<li>点击<b>绘制or更新</b>按钮生成图像</li>
-</ol>
-
-<h3>特性</h3>
-<ul>
-<li>图像以 Matplotlib 渲染，坐标轴清晰标注</li>
-<li>自动处理间断点（如 <code>1/x</code> 在 x=0 处断开曲线）</li>
-<li>y 轴自动缩放到可见范围</li>
-</ul>
-
-<div class="note">
-<b>示例：</b>输入 <code>sin(x)</code>，定义域设为 [0, 2*pi]，点击绘制即可看到一个完整的正弦波形。
-</div>
-
-<h2>十、平面几何</h2>
-<p>在功能集成页定义区选择"平面几何"类型，定义点、直线、线段、圆、三角形、多边形，然后在绘图区选择"平面几何模式"可视化。</p>
-
-<h3>定义对象</h3>
-<ol>
-<li>从下拉框中选择<b>创建对象方法</b>（共 19 种）</li>
-<li>输入<b>对象名称</b></li>
-<li>输入<b>参数</b>（以英文半角逗号分隔）</li>
-<li>回车或点击<b>保存</b>按钮创建对象</li>
-</ol>
-
-<h3>支持的创建方法</h3>
+<h3>平面几何构造（19 种）</h3>
 <table>
-<tr><th>类别</th><th>方法</th><th>参数</th></tr>
-<tr><td>基础创建</td><td>通过坐标创建点</td><td>x, y</td></tr>
-<tr><td>基础创建</td><td>通过两点创建直线</td><td>点1, 点2</td></tr>
-<tr><td>基础创建</td><td>通过圆心和半径创建圆</td><td>圆心, 半径</td></tr>
-<tr><td>基础创建</td><td>通过三点创建圆（外接圆）</td><td>点1, 点2, 点3</td></tr>
-<tr><td>基础创建</td><td>通过三点创建三角形</td><td>点1, 点2, 点3</td></tr>
-<tr><td>基础创建</td><td>通过顶点列表创建多边形</td><td>点1, 点2, ...</td></tr>
-<tr><td>圆的构造</td><td>以两点为直径端点作圆</td><td>点1, 点2</td></tr>
-<tr><td>圆的构造</td><td>以圆心和圆上一点作圆</td><td>圆心, 圆上点</td></tr>
-<tr><td>直线构造</td><td>线段的中垂线</td><td>线段名</td></tr>
-<tr><td>直线构造</td><td>过一点作平行线</td><td>点名, 线段名</td></tr>
-<tr><td>直线构造</td><td>过一点作垂线</td><td>点名, 线段名</td></tr>
-<tr><td>直线构造</td><td>两直线角平分线</td><td>直线1, 直线2</td></tr>
-<tr><td>直线构造</td><td>角平分线（三点）</td><td>点1, 点2(顶点), 点3</td></tr>
-<tr><td>三角形构造</td><td>三角形的中线</td><td>三角形名, 顶点索引(0/1/2)</td></tr>
-<tr><td>三角形构造</td><td>三角形的高线</td><td>三角形名, 顶点索引(0/1/2)</td></tr>
-<tr><td>三角形构造</td><td>三角形的中位线</td><td>三角形名</td></tr>
-<tr><td>三角形构造</td><td>三角形的内切圆</td><td>三角形名</td></tr>
-<tr><td>三角形构造</td><td>三角形的旁切圆</td><td>三角形名, 顶点索引(0/1/2)</td></tr>
-<tr><td>线段</td><td>通过两点构造线段</td><td>点1, 点2</td></tr>
+<tr><th>类别</th><th>方法（参数）</th></tr>
+<tr><td>基础</td><td>点 (x, y)、直线 (点1, 点2)、线段 (点1, 点2)、圆 (圆心, 半径) 或 (三点外接)、三角形 (三点)、多边形 (顶点表)</td></tr>
+<tr><td>圆的构造</td><td>以两点为直径端点、以圆心和圆上一点</td></tr>
+<tr><td>直线构造</td><td>线段的中垂线、过一点作平行线 / 垂线、两直线角平分线、三点角平分线（第二点为顶点）</td></tr>
+<tr><td>三角形构造</td><td>中线 / 高线（三角形, 顶点索引 0/1/2）、中位线、内切圆、旁切圆（三角形, 顶点索引）</td></tr>
 </table>
 
-<h3>绘图</h3>
-<p>在绘图区选择"平面几何模式"，所有已定义对象默认全部勾选。取消不需要的对象后点击<b>绘制or更新</b>，即可生成 Matplotlib 图像。</p>
-
-<h2>十一、立体几何</h2>
-<p>在功能集成页定义区选择"立体几何"类型，定义三维点、直线、平面、线段，然后在绘图区选择"立体几何模式"进行 3D 可视化。</p>
-
-<h3>支持的方法</h3>
+<h3>立体几何构造（12 种）</h3>
 <table>
-<tr><th>方法</th><th>参数</th></tr>
-<tr><td>通过坐标创建点</td><td>x, y, z</td></tr>
-<tr><td>通过两点创建直线</td><td>点1, 点2</td></tr>
-<tr><td>过一点作平面的平行平面</td><td>平面名, 点名</td></tr>
-<tr><td>过一点作直线的垂直平面</td><td>直线名, 点名</td></tr>
-<tr><td>过一点作直线的平行线</td><td>直线名, 点名</td></tr>
-<tr><td>过一点作直线的垂线</td><td>点名, 直线名</td></tr>
-<tr><td>过一点作平面的垂线</td><td>平面名, 点名</td></tr>
-<tr><td>过一直线和线外一点作平面</td><td>直线名, 点名</td></tr>
-<tr><td>过两相交/平行直线作平面</td><td>直线1名, 直线2名</td></tr>
-<tr><td>点到平面的垂足</td><td>点名, 平面名</td></tr>
-<tr><td>点到直线的垂足</td><td>点名, 直线名</td></tr>
-<tr><td>通过两点构造三维线段</td><td>点1, 点2</td></tr>
+<tr><th>类别</th><th>方法</th></tr>
+<tr><td>点与线</td><td>点 (x, y, z)、直线 (点1, 点2)、线段 (点1, 点2)</td></tr>
+<tr><td>平行 / 垂直</td><td>过点作平面的平行平面、过点作直线的垂直平面、过点作直线的平行线 / 垂线、过点作平面的垂线</td></tr>
+<tr><td>平面构造</td><td>一直线 + 线外一点、两条相交或平行直线</td></tr>
+<tr><td>垂足</td><td>点到平面的垂足、点到直线的垂足</td></tr>
 </table>
 
-<h3>绘图</h3>
-<p>在绘图区选择"立体几何模式"，通过复选框筛选对象后点击<b>绘制or更新</b>，生成 3D 旋转视角的 Matplotlib 图像（含透明平面和彩色直线）。</p>
+<p><b>绘图</b>：绘图区选对应模式，所有对象默认勾选，取消不需要的对象后点击<b>绘制or更新</b>。立体模式生成 3D 旋转视角（透明平面 + 彩色直线）。</p>
 
-<h2>十二、平面几何计算</h2>
-<p>在功能集成页计算区选择"平面计算"类型，使用已定义的点、直线、圆、三角形、多边形等对象进行几何运算。参数以<b>英文半角逗号</b>分隔，通过对象名称引用已定义对象。</p>
-
-<h3>支持的操作（共 32 种）</h3>
+<h2>六、几何计算</h2>
+<p>计算区选「平面计算」或「立体计算」，用已定义对象的<b>名称</b>作参数（半角逗号分隔）。</p>
 <table>
-<tr><th>类别</th><th>操作</th><th>参数示例</th></tr>
-<tr><td>点运算</td><td>两点距离</td><td>A, B</td></tr>
-<tr><td>点运算</td><td>中点坐标</td><td>A, B</td></tr>
-<tr><td>点运算</td><td>多点共线判断</td><td>A, B, C</td></tr>
-<tr><td>点运算</td><td>平移点</td><td>A, 1, 2</td></tr>
-<tr><td>点运算</td><td>绕定点旋转点</td><td>A, pi/2, O</td></tr>
-<tr><td>点运算</td><td>点关于直线反射</td><td>A, L1</td></tr>
-<tr><td>直线运算</td><td>直线方程</td><td>A, B</td></tr>
-<tr><td>直线运算</td><td>直线斜率</td><td>A, B</td></tr>
-<tr><td>直线运算</td><td>两直线交点</td><td>L1, L2</td></tr>
-<tr><td>直线运算</td><td>点到直线距离</td><td>A, L1</td></tr>
-<tr><td>直线运算</td><td>两直线夹角</td><td>L1, L2</td></tr>
-<tr><td>直线运算</td><td>平行判断 / 垂直判断</td><td>L1, L2</td></tr>
-<tr><td>圆运算</td><td>圆心坐标 / 半径 / 面积 / 周长</td><td>C1</td></tr>
-<tr><td>圆运算</td><td>两圆交点</td><td>C1, C2</td></tr>
-<tr><td>圆运算</td><td>圆切线方程</td><td>A, C1</td></tr>
-<tr><td>三角形运算</td><td>面积 / 周长 / 外心 / 内心 / 重心 / 垂心</td><td>T1</td></tr>
-<tr><td>三角形运算</td><td>外接圆半径 / 内切圆半径</td><td>T1</td></tr>
-<tr><td>三角形运算</td><td>直角/等腰/等边判断</td><td>T1</td></tr>
-<tr><td>多边形运算</td><td>面积 / 周长</td><td>A, B, C, D</td></tr>
-<tr><td>变换</td><td>平移 / 旋转 / 反射</td><td>见点运算</td></tr>
-<tr><td>向量运算</td><td>两点向量 / 向量模 / 点积 / 夹角</td><td>A, B</td></tr>
+<tr><th>平面计算（32 种）</th><th>操作</th></tr>
+<tr><td>点</td><td>两点距离、中点、多点共线、平移、绕定点旋转、关于直线反射</td></tr>
+<tr><td>直线</td><td>直线方程、斜率、两直线交点、点到直线距离、两直线夹角、平行 / 垂直判断</td></tr>
+<tr><td>圆</td><td>圆心 / 半径 / 面积 / 周长、两圆交点、圆的切线</td></tr>
+<tr><td>三角形</td><td>面积 / 周长 / 外心 / 内心 / 重心 / 垂心、外接圆与内切圆半径、直角 / 等腰 / 等边判断</td></tr>
+<tr><td>多边形 / 向量</td><td>面积 / 周长；两点向量、向量模、点积、夹角</td></tr>
+</table>
+<table>
+<tr><th>立体计算（22 种）</th><th>操作</th></tr>
+<tr><td>点</td><td>两点距离 / 中点、点到平面距离、点到直线距离、点在平面 / 直线上的投影、多点共面</td></tr>
+<tr><td>直线</td><td>方向向量、两直线交点、夹角、平行 / 垂直判断、直线在平面上的投影</td></tr>
+<tr><td>平面</td><td>三点求平面方程、法向量、两平面夹角 / 交线 / 平行与垂直判断</td></tr>
+<tr><td>线面 / 体积</td><td>平面与直线交点、直线与平面夹角；四面体体积</td></tr>
+<tr><td>向量 / 斜二测</td><td>三维向量（模、点积、叉积、夹角）；斜二测投影、逆变换、面积比</td></tr>
 </table>
 
 <div class="note">
-<b>示例：</b>先在定义区选择"平面几何"类型定义点 A(0,0)、B(3,0)、C(0,4)，在计算区选择"平面计算"中的"三角形面积"，参数输入 <code>A,B,C</code>，计算结果为 6。
+<b>示例：</b>点 A(0,0)、B(3,0)、C(0,4)，「三角形面积」参数 <code>A,B,C</code> → 6；点 A(0,0,0)、B(1,0,0)、C(0,1,0)、D(0,0,1)，「四面体体积」参数 <code>A,B,C,D</code> → 1/6。
 </div>
 
-<h2>十三、立体几何计算</h2>
-<p>在功能集成页计算区选择"立体计算"类型，使用已定义的三维点、直线、平面等对象进行空间几何运算。</p>
+<h2>七、解几计算器</h2>
+<p>通过菜单"功能 → 解几计算器"打开<b>表达式画布</b>：表达式、方程与点都以卡片形式摆放，公式按表达式树深度着色（红 → 绿 → 蓝 → 紫，四层循环），任意子结构都能点选、拖拽、变形或求解。</p>
+<ul>
+<li><b>顶部工具栏</b>：输入框与「添加」、表达式计数、添加几何表达式、添加常用方程、撤销 / 重做。</li>
+<li><b>画布</b>：卡片自由摆放，右上角滑块调整字号（默认 42px）。</li>
+<li><b>属性区</b>（右）：所选卡片的标题、表达式、变量与取值范围，宽度可拖动（150–520px）。</li>
+<li><b>详情区</b>（下）：选中节点的树结构与 SymPy 表达式。</li>
+</ul>
 
-<h3>支持的操作（共 22 种）</h3>
+<h3>添加与选中</h3>
+<ul>
+<li>输入表达式或方程后按<b>回车</b>或点「添加」；输入 <code>(a, b)</code> 生成<b>点卡片</b>。解析保留输入顺序与括号（<code>2*(x+1)</code> 不会自动展开）。</li>
+<li>点击公式中任意节点即可选中：出现虚线框、左上角拖拽手柄、右下角「变」按钮与"类型 · 第 N 层"标签。</li>
+<li>点击加法项之间的 <code>+</code> / <code>−</code>（或悬停徽标「⇄ 交换」）交换相邻项；点击括号（或「⤢ 展开」）展开乘积与乘方。</li>
+</ul>
+
+<h3>「变」对话框</h3>
+<p>选中节点后点右下角<b>变</b>。若选中的是方程根节点，则改为打开求解对话框。</p>
 <table>
-<tr><th>类别</th><th>操作</th><th>参数示例</th></tr>
-<tr><td>点运算</td><td>两点距离 / 中点坐标</td><td>A, B</td></tr>
-<tr><td>点运算</td><td>点到平面距离</td><td>A, P1</td></tr>
-<tr><td>点运算</td><td>点到直线距离</td><td>A, L1</td></tr>
-<tr><td>点运算</td><td>点在平面/直线投影</td><td>A, P1 或 A, L1</td></tr>
-<tr><td>点运算</td><td>多点共面判断</td><td>A, B, C, D</td></tr>
-<tr><td>直线运算</td><td>方向向量 / 交点 / 夹角</td><td>L1, L2</td></tr>
-<tr><td>直线运算</td><td>平行/垂直判断</td><td>L1, L2</td></tr>
-<tr><td>直线运算</td><td>直线在平面投影</td><td>L1, P1</td></tr>
-<tr><td>平面运算</td><td>三点求平面方程</td><td>A, B, C</td></tr>
-<tr><td>平面运算</td><td>平面法向量</td><td>P1</td></tr>
-<tr><td>平面运算</td><td>两平面夹角 / 交线 / 平行/垂直</td><td>P1, P2</td></tr>
-<tr><td>线面关系</td><td>平面与直线交点</td><td>P1, L1</td></tr>
-<tr><td>线面关系</td><td>直线与平面夹角</td><td>L1, P1</td></tr>
-<tr><td>体积</td><td>四面体体积</td><td>A, B, C, D</td></tr>
-<tr><td>向量运算(3D)</td><td>两点向量 / 模 / 点积 / 叉积 / 夹角</td><td>A, B</td></tr>
-<tr><td>斜二测画法</td><td>投影 / 逆变换 / 面积比</td><td>A 或 1,2,0</td></tr>
+<tr><th>SymPy 变形（无需输入）</th><th>节点操作</th></tr>
+<tr><td>化简、展开、因式分解、约分、通分、拆分、三角化简、有理化</td><td>替换、追加、追乘、倒数、除以、平方、算术平方根、乘方、换元<br>（替换 / 追加 / 追乘 / 除以 / 乘方 / 换元需输入表达式）</td></tr>
+</table>
+<p>结果可选择<b>覆盖原表达式</b>（默认）或<b>保存为副本</b>。<b>换元</b>需填符号（如 <code>t</code>）与换元式（如 <code>x+1</code>，即 <code>t = x+1</code>），程序解出 <code>x</code> 后代换整张卡片并展开，卡片右上角记录该关系。</p>
+
+<h3>节点拖拽与求解</h3>
+<ul>
+<li>拖动手柄生成浮动节点：拖到空白处<b>新建卡片</b>；拖到卡片上弹出「重叠的表达式」，按<b>目标节点 运算 拖拽节点</b>执行（分式节点另有上下同乘 / 同除）。</li>
+<li>两张<b>表达式卡片</b>重叠 → 「组合表达式」，用 <code>A</code>（被覆盖）、<code>B</code>（拖拽）写出 <code>A+B</code>、<code>A*B</code>、<code>A=B</code> 等。</li>
+<li>两张<b>方程卡片</b>重叠 → 「联立方程」：<b>直接求解</b>（按勾选变量生成"变量 = 根"卡片）或<b>应用韦达定理</b>（只勾一个主变量，生成 <code>x₁+x₂</code>、<code>x₁·x₂</code>、<code>|x₁−x₂|</code>、判别式卡片）。</li>
+<li><b>求解方程</b>：选方程根节点 → 变 → 选变量与范围（SymPy 集合，默认 <code>Reals</code>）→ 求解，每个根生成一张卡片；解集无限时只提示不生成。</li>
+</ul>
+
+<h3>常用方程与几何表达式</h3>
+<p><b>添加常用方程</b>支持五种模板；参数可填数字或表达式，<b>留空表示保留该参数符号</b>：</p>
+<table>
+<tr><th>类型</th><th>形式</th><th>参数</th></tr>
+<tr><td>圆</td><td>(x−a)²+(y−b)²=r²</td><td>a、b、r</td></tr>
+<tr><td>直线</td><td>Ax+By+C=0 / y=kx+m</td><td>A、B、C / k、m</td></tr>
+<tr><td>椭圆</td><td>x²/a²+y²/b²=1</td><td>a、b</td></tr>
+<tr><td>双曲线</td><td>x²/a²−y²/b²=1 / y²/a²−x²/b²=1</td><td>a、b</td></tr>
+<tr><td>抛物线</td><td>y²=2px / y²=−2px / x²=2py / x²=−2py / y=a(x−h)²+k</td><td>p / a、h、k</td></tr>
+</table>
+<p>左侧选「通过条件创建」还可反推参数：通用条件有<b>通过点</b>与<b>参数关系</b>；各类型另有专属条件——直线（斜率、截距）、圆（圆心所在直线、半径）、椭圆与双曲线（离心率、轴长、焦距）、抛物线（准线、焦点坐标，仅标准形式）。<b>解出几组参数就生成几张卡片</b>；条件不足时保留参数，矛盾或实数范围无解时给出提示。</p>
+<p><b>添加几何表达式</b>：点到直线距离、两直线交点、交点线段中点、三角形面积（三点 / 直线+曲线+点）。点、直线、曲线可下拉选择已有卡片，也可直接输入（<code>(2, 3)</code>、<code>y=x+1</code>、<code>x^2/9+y^2/4=1</code>），结果仍是可继续变形的卡片。</p>
+
+<h3>卡片与撤销</h3>
+<ul>
+<li>拖拽左上角红色手柄移动卡片；松开时若与其它卡片重叠（8px 间距）则退回原位并短暂红框提示。</li>
+<li>右下角三个按钮：<b>复制</b>、<b>删除</b>、<b>折叠</b>（折叠后仍渲染公式，但不再响应节点交互）。</li>
+<li>双击标题行可编辑，回车提交、Esc 取消；属性区显示标题、表达式、变量与取值范围。</li>
+<li>顶部「撤销 / 重做」或 <code>Ctrl+Z</code> / <code>Ctrl+Y</code> 回退整张画布快照；调整字号与选中节点不进入历史。</li>
+<li>界面支持中英文；在设置页切换语言后画布即时刷新并保留全部卡片。<b>主题</b>随主窗口浅色 / 深色自动切换，卡片、公式分层配色、滚动条一并同步，无需重新添加卡片。公式由内置 MathJax 渲染，无需联网。</li>
+</ul>
+
+<h2>八、效率工具</h2>
+<h3>缓存区</h3>
+<p>通过"文件 → 缓存区"打开缓存区标签页，展示所有已缓存表达式，双击可复制到剪贴板。每个输入框右侧另有三个快捷按钮：</p>
+<table>
+<tr><th>按钮</th><th>功能</th><th>说明</th></tr>
+<tr><td>键盘</td><td>可视化输入</td><td>打开公式编辑器，图形化插入数学符号</td></tr>
+<tr><td>打开</td><td>打开缓存区</td><td>弹出缓存列表，双击填入当前输入框</td></tr>
+<tr><td>加号</td><td>存入缓存区</td><td>存入当前文本（重复项置顶，图标短暂变对勾）</td></tr>
 </table>
 
-<div class="note">
-<b>示例：</b>先在定义区选择"立体几何"类型定义点 A(0,0,0)、B(1,0,0)、C(0,1,0)、D(0,0,1)，在计算区选择"立体计算"中的"四面体体积"，参数输入 <code>A,B,C,D</code>，计算结果为 1/6。
-</div>
+<h3>可视化公式输入</h3>
+<p>基于 MathLive（内置于 <code>math_input/</code>）的公式面板：点击输入框右侧键盘图标打开，通过工具栏选择结构（分式、根号、上下标、括号）、希腊字母、运算符与常用函数，点<b>确定</b>后自动转换为 SymPy 表达式填入输入框。</p>
 
-<h2>十四、微分方程输入标准</h2>
-<p>微分方程的输入<b>不符合</b>上面的函数输入标准，因为微分方程的解在求解之前是未知的。系统会在解析表达式时<b>排除所有已定义的函数</b>来避免干扰，同时待求解的函数被固定为 f(x)。</p>
-<p>输入中，使用 <code>f(x).diff(x,n)</code> 表示<b>对 x 的 n 阶导数</b>。可省略 1，直接输入 <code>f(x).diff(x)</code> 表示一阶导数。</p>
-<p><b>示例：</b>在计算区选择"解方程"并勾选"微分方程"，左式输入 <code>f(x).diff(x,1)</code>，右式输入 <code>f(x)+1</code>，即完成方程 f'(x)=f(x)+1 的输入，点击求解得到 f(x)=C1*exp(x)-1。</p>
-
-<h2>十五、设置、语言与主题</h2>
-<p>通过菜单栏"文件 → 设置"打开设置页面，可进行以下配置：</p>
-<ol>
-<li><b>界面语言</b>：中文 / English。切换后立即生效，并持久化保存，下次启动自动恢复。</li>
-<li><b>界面主题</b>：浅色 / 深色。切换后立即生效，并持久化保存，下次启动自动恢复。</li>
-<li><b>英文帮助文档</b>：帮助页面随界面语言自动切换，选择 English 后自动加载英文帮助（见本页英文版 <code>help_en.html</code>）。</li>
-</ol>
-<p>两项设置以 JSON 形式保存在 Qt 标准配置目录下（典型路径 <code>AppData/Local/CalculusCalculator/CalculusCalculator/settings.json</code>），内容为 <code>{"language": "zh_CN", "theme": "dark"}</code> 等形式。</p>
-
-<p>通过菜单栏"文件 → 保存 / 打开"可将当前工作现场（含主题与语言）保存为项目文件，打开时自动恢复其中保存的主题与语言设置。</p>
-
-<h2>十六、表达式缓存</h2>
-<p>通过"缓存区"功能暂存和管理常用表达式，支持两种使用方式：</p>
-
-<h3>缓存区标签页</h3>
-<ol>
-<li>通过菜单栏"文件 → 缓存区"打开缓存区标签页，显示所有已缓存的表达式</li>
-<li><b>双击</b>列表中的任意缓存项，可将其文本复制到剪贴板</li>
-<li>标签页中的缓存列表随主窗口的 cache 数据实时同步</li>
-</ol>
-
-<h3>输入框快捷按钮</h3>
-<p>每个文本输入框右侧有三个带图标的快捷按钮：</p>
+<h2>九、设置与存档</h2>
+<p>通过"文件 → 设置"打开设置页：<b>界面语言</b>（中文 / English）、<b>界面主题</b>（浅色 / 深色）均即时生效并持久化，下次启动自动恢复；帮助页会随语言自动切换中 / 英文档。设置以 JSON 保存在 <code>AppData/Local/CalculusCalculator/CalculusCalculator/settings.json</code>。</p>
+<p><b>存档设置</b>可控制保存时写入哪些数据（默认全选）：</p>
 <table>
-<tr><th>图标</th><th>功能</th><th>说明</th></tr>
-<tr><td>键盘</td><td><b>可视化输入</b></td><td>打开公式编辑器对话框，以图形化方式插入数学符号与结构</td></tr>
-<tr><td>打开</td><td><b>打开缓存区</b></td><td>弹出缓存区对话框，双击缓存项可将表达式填入当前输入框</td></tr>
-<tr><td>加号</td><td><b>存入缓存区</b></td><td>将当前输入框文本存入缓存区（重复项移至最前，图标短暂变为对勾）</td></tr>
+<tr><th>类别</th><th>包含内容</th></tr>
+<tr><td>数据</td><td>函数列表、方程 / 不等式列表、向量列表、缓存区内容</td></tr>
+<tr><td>几何</td><td>平面几何对象、立体几何对象</td></tr>
+<tr><td>界面</td><td>所有文本框文本、选择框选项、公式显示框内容、标签页序号 / 语言 / 主题等设置</td></tr>
 </table>
+<p>取消勾选的类别不写入存档；读档时存档中缺少该类别则保持当前状态。工程文件后缀为 <code>.cca</code>（JSON），双击即可打开并恢复现场。</p>
 
-<h2>十七、可视化公式输入</h2>
-<p>基于 MathLive（已内置于 <code>math_input/</code> 目录）的可视化数学公式输入面板。自 v2.0.0 起，公式编辑器的<b>底层引擎由旧版组件更换为 MathLive</b>，输入体验更流畅，符号渲染更精准。</p>
-
-<h3>使用方式</h3>
-<ol>
-<li>点击任意输入框右侧的<b>键盘图标</b>按钮打开公式对话框</li>
-<li>在对话框中通过工具栏选择数学结构（分式、根号、上下标、希腊字母等）、运算符或函数</li>
-<li>编辑完成后点击<b>确定</b>，公式自动转换为 SymPy 表达式并填入输入框</li>
-</ol>
-
-<h3>工具栏分组</h3>
+<h2>十、积木编辑器与启动</h2>
+<p>通过"功能 → 编辑器"打开积木编辑器，拖拽拼接积木即可搭建<b>可视化计算流程</b>，无需写代码：</p>
 <ul>
-<li><b>结构</b>：分式、根号、幂次、绝对值、括号等</li>
-<li><b>希腊字母</b>：α~ω 等常用希腊字母</li>
-<li><b>编辑</b>：撤销、重做、剪切等</li>
-<li><b>运算符</b>：+、-、×、÷、=、≠ 等</li>
-<li><b>函数</b>：sin、cos、log、lim 等常用函数</li>
+<li>支持 SymPy 表达式与 <code>$</code> 前缀 LaTeX 输入，点击运行按顺序执行并实时显示中间结果与 LaTeX 渲染。</li>
+<li>覆盖定义函数、函数性质分析、求导 / 积分、解方程（组）、解不等式（组）、解三角形等。</li>
+<li><b>代码预览双模式</b>：可切换查看<b>原生 SymPy 代码</b>（仅依赖 SymPy，可复制到任意解释器运行）与<b>库代码</b>（运行按钮实际执行的代码），默认前者。</li>
+<li>工程可存档 / 读档，受「存档设置」控制。</li>
 </ul>
-
-<h2>十八、存档设置</h2>
-<p>在"设置"页面的"存档设置（保存时）"区域中，可以通过勾选/取消复选框来精细控制存档时要保存哪些类型的信息：</p>
-
-<table>
-<tr><th>选项</th><th>说明</th></tr>
-<tr><td>函数列表</td><td>自定义函数定义（fs 字典）</td></tr>
-<tr><td>方程列表（方程组）</td><td>所有已输入方程的表达式列表</td></tr>
-<tr><td>不等式列表（不等式组）</td><td>所有已输入不等式的表达式列表</td></tr>
-<tr><td>向量列表</td><td>所有已定义的向量</td></tr>
-<tr><td>所有缓存区内容</td><td>缓存区中暂存的所有表达式</td></tr>
-<tr><td>平面几何对象列表</td><td>平面几何中定义的点、线、圆、三角形等</td></tr>
-<tr><td>立体几何对象列表</td><td>立体几何中定义的点、线、面等</td></tr>
-<tr><td>所有文本框文本</td><td>所有输入框中的文字内容</td></tr>
-<tr><td>所有选择框选项</td><td>所有下拉选择框的当前选中项</td></tr>
-<tr><td>所有表达式显示框内容</td><td>所有公式渲染视图的内容</td></tr>
-<tr><td>所有设置选项</td><td>标签页序号、语言、主题等框架设置</td></tr>
-</table>
-
-<div class="note">
-<b>提示：</b>所有列表项默认全选。若取消勾选某项，存档时将<b>不保存</b>该类数据；读档时存档中不含该类数据则<b>保持当前状态不变</b>。旧版本存档中包含的独立标签页在读取时会自动跳过，不影响其余内容恢复。
-</div>
-
-<h2>十九、积木化功能</h2>
-<p>通过菜单"功能 → 编辑器"打开积木编辑器，通过拖拽拼接积木搭建<b>可视化计算流程</b>，无需编写代码即可完成复杂计算。目前支持：</p>
-<ul>
-<li><b>Sympy / Latex 表达式输入</b>：积木中可直接输入 SymPy 表达式，或以前导 <code>$</code> 输入 LaTeX 代码（参见"一、LaTeX 代码直接输入"）。</li>
-<li><b>编辑器内直接执行流程</b>：点击运行，按顺序执行积木搭建的流程，并实时显示中间结果。</li>
-<li><b>输出公式自动渲染</b>：计算结果以 LaTeX 形式自动渲染为清晰美观的数学公式。</li>
-<li><b>代码预览双模式</b>：点击"预览代码"，可通过下拉框切换展示<b>原生 SymPy 代码</b>（仅依赖 SymPy，复制后可在装有 SymPy 的解释器中直接运行）与<b>CalculusCalculator 库代码</b>（运行按钮实际执行的代码）；默认展示原生 SymPy 代码。</li>
-<li><b>定义函数 / 函数性质分析</b>：通过积木定义函数，并分析其定义域、单调性、奇偶性等性质。</li>
-<li><b>求导 / 积分</b>：使用对应积木对函数求导或积分。</li>
-<li><b>解方程(组) / 不等式(组) / 解三角形</b>：使用求解积木处理方程、不等式及三角形问题。</li>
-<li><b>工程存档 / 读档</b>：积木工程可保存与读取，受"设置"中"存档设置"项控制（参见"十八、存档设置"）。</li>
-</ul>
-
-<h2>二十、启动界面与启动优化</h2>
-<p>程序启动时显示<b>启动画面（Splash）</b>，展示加载进度，避免启动期间的空白等待。v2.1.0 进一步优化了启动流程：</p>
-<ul>
-<li><b>浏览器内核惰性初始化</b>：QWebEngine 内核不再在启动阶段加载，改为首次打开积木编辑器、可视化公式输入或解几计算器时自动初始化，加快启动速度。</li>
-<li><b>轻量启动画面</b>：启动画面绘制与显示更迅速，尽快给用户可见反馈。</li>
-<li><b>初始化阶段精简</b>：启动时跳过公式渲染视图的冗余刷新。</li>
-<li>配合既有懒加载（<code>lazy_loader</code>）机制，整体<b>启动速度得到优化</b>。</li>
-</ul>
-
-<h2>二十一、解几计算器</h2>
-<p>通过菜单"功能 → 解几计算器"打开表达式画布标签页。在输入框键入表达式后按<b>回车</b>或点击<b>添加</b>，表达式会以保留输入顺序与括号的形式加入画布，并按表达式树深度分层着色（红 → 绿 → 蓝 → 紫）。</p>
-<ul>
-<li><b>选中与结构查看</b>：点击公式中任意节点，下方详情区显示该节点的树结构与对应 SymPy 表达式；点击 <code>+</code> / <code>−</code> 可交换相邻项，点击括号可展开。</li>
-<li><b>变形与运算</b>：选中框右下角"变"提供化简、展开、因式分解、约分、通分、拆分、三角化简、有理化，以及替换、追加、追乘、倒数、除以、平方、算术平方根、乘方；把选中节点拖到某张表达式卡片上，可对目标节点执行替换与四则运算（分式节点另支持上下同乘 / 上下同除）。</li>
-<li><b>布局与撤销</b>：拖拽卡片左上角红色圆点移动卡片；顶部"撤销 / 重做"或 <code>Ctrl+Z</code> / <code>Ctrl+Y</code> 回退整张画布的历史快照；右上角滑块调整字号。</li>
-</ul>
-<p>公式由程序内置的本地 MathJax（<code>mathjax/es5/tex-svg.js</code>）渲染，无需联网；页面以 <code>../mathjax/</code> 相对路径引用，请勿移动该目录。</p>
+<p><b>启动</b>：启动时显示轻量启动画面；QWebEngine 内核改为首次打开积木编辑器、公式输入或解几计算器时才初始化，配合懒加载加快启动。</p>
 
 <h2>补充资料</h2>
-<p>以上内容完全参考 Python 3.12 与 SymPy 1.14 的语言规范。</p>
-<p>若有疑问，请参考：</p>
-<ol>
-<li><b>Python 官方文档</b>：<a href="https://docs.python.org/zh-cn/3.12/" target="_blank">https://docs.python.org/zh-cn/3.12/</a></li>
-<li><b>SymPy 官方文档</b>：<a href="https://docs.sympy.org/latest/index.html" target="_blank">https://docs.sympy.org/latest/index.html</a></li>
-<li><b>Mpmath 官方文档</b>：<a href="https://mpmath.readthedocs.io/en/latest/" target="_blank">https://mpmath.readthedocs.io/en/latest/</a></li>
-</ol>
+<p>本帮助内容参照 Python 3.12 与 SymPy 1.14 的语言规范。更多信息请见 <a href="https://docs.python.org/zh-cn/3.12/" target="_blank">Python 官方文档</a>、<a href="https://docs.sympy.org/latest/index.html" target="_blank">SymPy 官方文档</a>与 <a href="https://mpmath.readthedocs.io/en/latest/" target="_blank">Mpmath 官方文档</a>。</p>
 
 <h2>版本历史</h2>
 <table>
 <tr><th>版本</th><th>发布日期</th><th>核心更新</th></tr>
-
-<tr><td>v2.1.0</td><td>2026-10-10</td><td>删除 18 个独立功能标签页（定义函数、定义向量、定义平面几何、定义立体几何、代数式计算、代数式变形、平面几何计算、立体几何计算、解三角形、解方程、解不等式、解方程组、解不等式组、函数绘图、平面几何绘图、立体几何绘图、求导、积分），全部功能整合进"功能集成"页（定义区 / 计算区 / 绘图区）；"积木模式"菜单移入"功能"菜单；启动流程优化：QWebEngine 内核改为首次使用时惰性初始化、轻量启动画面、初始化阶段跳过公式视图刷新、新增分阶段启动性能分析</td></tr>
-
-<tr><td>v2.0.0</td><td>2026-08-14</td><td>新增积木化功能（可视化计算流程）；公式编辑器后端升级为 MathLive；新增启动界面并优化启动速度；帮助文档新增英文支持；积木化新增"代码预览双模式"（原生 SymPy 代码 / 库代码）；修复输出 LaTeX 渲染误判问题；修复 sympify 传入 SymPy 对象时的下标访问错误</td></tr>
+<tr><td>v2.2.0</td><td>2026-11-21</td><td>新增"解几计算器"（表达式画布）：分层着色、节点级选中 / 拖拽 / 变形、换元、方程求解与联立（含韦达定理）、表达式组合、常用方程按条件反推、几何表达式、卡片折叠与属性区、整画布撤销；界面完成中英文双语支持</td></tr>
+<tr><td>v2.1.0</td><td>2026-10-10</td><td>18 个独立功能标签页全部整合进"功能集成"页；"积木模式"菜单移入"功能"菜单；启动优化（内核惰性初始化、轻量启动画面、跳过冗余刷新）</td></tr>
+<tr><td>v2.0.0</td><td>2026-08-14</td><td>新增积木化功能与启动界面；公式编辑器升级为 MathLive；帮助文档支持英文；积木化代码预览双模式</td></tr>
 </table>
 
 <p>感谢您的使用！</p>
 <p class="right">LiMingkang</p>
-<p class="right">2026/10/10</p>
+<p class="right">2026/11/21</p>
 
 </body>
 </html>

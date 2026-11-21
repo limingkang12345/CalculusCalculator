@@ -15,3 +15,10 @@ class Expr(QWidget):
         layout.addWidget(self.viewer)
         '''for lineedit in self.viewer.findChildren(QLineEdit):
             lineedit.actions_wired = True'''
+
+    def retranslateUi(self, widget=None):
+        del widget
+        self.viewer.retranslate()
+
+    def set_theme(self, theme):
+        self.viewer.set_theme(theme)

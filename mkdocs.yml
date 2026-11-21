@@ -61,6 +61,7 @@ plugins:
           立体几何: Solid Geometry
           平面几何计算: Plane Geometry Calculation
           立体几何计算: Solid Geometry Calculation
+          解几计算器: Expression Calculator
           关于: About
 nav:
   - 首页: index.md
@@ -93,4 +94,5 @@ nav:
       - 立体几何: api/modules/solid_geometry.md
       - 平面几何计算: api/modules/plane_calc.md
       - 立体几何计算: api/modules/solid_calc.md
+      - 解几计算器: api/modules/expr_calculator.md
   - 关于: about.md
